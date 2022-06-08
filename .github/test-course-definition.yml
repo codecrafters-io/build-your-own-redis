@@ -1,5 +1,6 @@
 name: Test Course Definition
 
+# This'll be extracted out into codecrafters-io/course-definition-tester-soon
 on:
   workflow_call:
 
