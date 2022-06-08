@@ -11,4 +11,4 @@ concurrency:
 
 jobs:
   test_course_definition:
-    uses: ./.github/workflows/workflow-2.yml
+    uses: ./.github/workflows/test-course-definition.yml
