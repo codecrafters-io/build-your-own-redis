@@ -1,0 +1,170 @@
+slug: "redis"
+name: "Build your own Redis"
+release_status: "live"
+
+description_md: |
+  In this challenge, you'll build a toy Redis clone
+  that's capable of handling basic commands like PING, GET
+  and SET. Along the way, we'll learn about event loops, the Redis
+  Protocol and more.
+short_description_md: |
+  Learn about TCP servers, events loops, the Redis protocol and more
+completion_percentage: 30
+
+early_access_languages: ["crystal", "clojure", "csharp"]
+supported_languages: ["python", "ruby", "go", "rust", "c", "haskell", "elixir", "php", "javascript", "java"]
+
+starter_repos:
+  c: https://github.com/codecrafters-io/redis-starter-c
+  clojure: https://github.com/codecrafters-io/redis-starter-clojure
+  crystal: https://github.com/codecrafters-io/redis-starter-crystal
+  elixir: https://github.com/codecrafters-io/redis-starter-elixir
+  go: https://github.com/codecrafters-io/redis-starter-go
+  haskell: https://github.com/codecrafters-io/redis-starter-haskell
+  java: https://github.com/codecrafters-io/redis-starter-java
+  javascript: https://github.com/codecrafters-io/redis-starter-javascript
+  php: https://github.com/codecrafters-io/redis-starter-php
+  python: https://github.com/codecrafters-io/redis-starter-python
+  csharp: https://github.com/codecrafters-io/redis-starter-csharp
+  ruby: https://github.com/codecrafters-io/redis-starter-ruby
+  rust: https://github.com/codecrafters-io/redis-starter-rust
+  # swift: https://github.com/codecrafters-io/redis-starter-swift
+
+marketing:
+  description: Learn about TCP servers, event loops, the Redis protocol and more
+  difficulty: medium
+  introduction_md: |
+    In this challenge, you’ll build an application that can speak the Redis
+    protocol, and is capable of serving basic commands like PING, ECHO, SET and
+    GET. Along the way, you’ll learn about TCP servers, event loops and more.
+  testimonials:
+    - author_name: "Charles Guo"
+      author_description: "Software Engineer, Stripe"
+      author_avatar: "https://codecrafters.io/images/testimonials/charles_guo.jpeg"
+      link: "https://github.com/shaldengeki"
+      text: |
+        The Redis challenge was extremely fun. I ended up having to read the
+        Redis Protocol specification doc pretty carefully in its entirety! The result
+        felt like lightly-guided independent study, if that makes sense. (Which, again, was lots of fun)
+    - author_name: "Patrick Burris"
+      author_description: "Senior Software Developer, CenturyLink"
+      author_avatar: "https://codecrafters.io/images/testimonials/patrick_burris.jpeg"
+      link: "https://github.com/Jumballaya"
+      text: |
+        I think the instant feedback right there in the git push is really cool.
+        Didn't even know that was possible!
+stages:
+  - slug: "init"
+    name: "Bind to a port"
+    description_md: |
+      In this stage, your task is to start a TCP server on port 6379, the default port that Redis uses.
+    difficulty: very_easy
+    marketing_md: |
+      In this stage, you'll start a TCP server on port 6379, which is the
+      default port that Redis uses.
+  - slug: "ping-pong"
+    name: "Respond to PING"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll respond to the
+      [PING](https://redis.io/commands/ping) command.
+      Since the tester client _only_ sends `PING` at the moment, it's okay to
+      ignore what the client sends and hardcode a response. We'll get to parsing
+      client input in later stages.
+      Keep in mind that Redis clients & servers speak the Redis protocol, so
+      just sending "PONG" back won't suffice. You'll need to encode it as a
+      [RESP simple
+      string](https://redis.io/topics/protocol#resp-simple-strings).
+    marketing_md: |
+      In this stage, you'll respond to the
+      [PING](https://redis.io/commands/ping) command. You'll use [the Redis
+      protocol](https://redis.io/topics/protocol) to encode the reply.
+  - slug: "ping-pong-multiple"
+    name: "Respond to multiple PINGs"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll respond to multiple
+      [PING](https://redis.io/commands/ping) commands sent by the same client.
+      {{#lang_is_javascript}}
+      In most languages, you'd need to run a loop that reads input from a client and sends a
+      response back. In JavaScript however, if you're listening to the
+      [`data`](https://nodejs.org/api/net.html#net_event_data) event, this should be automatically handled for you. It
+      is very likely that the code you had for the previous stage will pass this stage without any changes!
+      {{/lang_is_javascript}}
+      {{^lang_is_javascript}}
+      You'll need to run a loop that reads input from a client and sends a
+      response back.
+      {{/lang_is_javascript}}
+    marketing_md: |
+      In this stage, you'll respond to multiple
+      [PING](https://redis.io/commands/ping) commands sent by the same client.
+  - slug: "concurrent-clients"
+    name: "Handle concurrent clients"
+    difficulty: medium
+    description_md: |
+      In this stage, your server will need to handle multiple concurrent
+      clients. Just like the previous stages, all clients will only send `PING`
+      commands for now.
+      {{#lang_is_javascript}}
+      In most languages, you'd need to either use threads or implement an
+      [Event Loop](https://en.wikipedia.org/wiki/Event_loop) to do this. In JavaScript however, since [the concurrency
+      model itself is based on an event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop), most
+      standard library functions are designed to support this kind of concurrent behaviour out of the box. It is very
+      likely that the code you had for the previous stage will pass this stage without any changes!
+      {{/lang_is_javascript}}
+      {{^lang_is_javascript}}
+      To achieve this, you'll need to either use threads, or, if you're feeling
+      adventurous, an [Event Loop](https://en.wikipedia.org/wiki/Event_loop) (like
+      the official Redis implementation does).
+      {{/lang_is_javascript}}
+    marketing_md: |
+      In this stage, you'll add support for multiple concurrent clients to your
+      Redis server. To achieve this you'll use an [Event
+      Loop](https://en.wikipedia.org/wiki/Event_loop),
+      like the official Redis implementation does.
+  - slug: "echo"
+    name: "Implement the ECHO command"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll respond to the
+      [ECHO](https://redis.io/commands/echo) command.
+      The client will send you the command as a RESP array, which looks
+      something like this:
+      ```
+      *2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n
+      ```
+      Seems confusing? Read up about [sending commands to a Redis
+      server](https://redis.io/topics/protocol#sending-commands-to-a-redis-server).
+    marketing_md: |
+      In this stage, you'll respond to the
+      [ECHO](https://redis.io/commands/echo) command. You'll parse user input
+      according to the [the Redis protocol
+      specification](https://redis.io/topics/protocol).
+  # TODO: Change this to use hyphens
+  - slug: "set_get"
+    name: "Implement the SET & GET commands"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll need to implement the [SET](https://redis.io/commands/set) &
+      [GET](https://redis.io/commands/get) commands. For now, you can ignore all extra
+      options for `SET` and just implement the simple form: `SET key value`. You'll add support
+      for expiry in the next stage.
+    marketing_md: |
+      In this stage, you'll need to implement the
+      [SET](https://redis.io/commands/set) &
+      [GET](https://redis.io/commands/get) commands.
+  - slug: "expiry"
+    name: "Expiry"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll need to support setting a key with an expiry. The
+      expiry is provided using the "PX" argument to the
+      [SET](https://redis.io/commands/set) command.
+      {{#lang_is_haskell}}
+      The [time](https://hackage.haskell.org/package/time) package is available
+      to use as a dependency.
+      {{/lang_is_haskell}}
+    marketing_md: |
+      In this stage, you'll add support for setting a key with an expiry. The
+      expiry is provided using the "PX" argument to the
+      [SET](https://redis.io/commands/set) command.

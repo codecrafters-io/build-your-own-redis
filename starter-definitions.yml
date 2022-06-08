@@ -1,0 +1,31 @@
+- language: clojure
+  file_mappings:
+    - source: starter_templates/clojure/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/clojure/.gitignore
+      target: .gitignore
+    - source: starter_templates/clojure/project.clj
+      target: project.clj
+    - source: starter_templates/clojure/src/redis/core.clj
+      target: src/redis/core.clj
+    - source: starter_templates/clojure/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributess:
+    required_executable: "lein"
+    user_editable_file: "src/redis/core.clj"
+
+- language: crystal
+  file_mappings:
+    - source: starter_templates/crystal/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/crystal/app/main.cr
+      target: app/main.cr
+    - source: starter_templates/crystal/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "crystal (1.1.0)"
+    user_editable_file: "app/main.cr"

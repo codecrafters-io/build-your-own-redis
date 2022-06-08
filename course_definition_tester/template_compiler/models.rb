@@ -25,12 +25,10 @@ end
 class FileMapping
   attr_reader :destination_path
   attr_reader :template_path
-  attr_reader :is_executable
 
-  def initialize(destination_path, template_path, is_executable=false)
+  def initialize(destination_path, template_path)
     @destination_path = destination_path
     @template_path = template_path
-    @is_executable = is_executable
   end
 end
 
@@ -57,7 +55,7 @@ class StarterRepoDefinition
       {
         path: mapping.destination_path,
         contents: Mustache.render(template_contents, template_context),
-        is_executable: mapping.is_executable,
+        is_executable: File.executable?(File.join(template_dir, mapping.template_path)),
       }
     end
   end

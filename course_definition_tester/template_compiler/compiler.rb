@@ -1,4 +1,5 @@
 require_relative 'models'
+require_relative 'languages'
 require_relative 'definitions'
 require "fileutils"
 require "pmap"
@@ -21,9 +22,10 @@ class TemplateCompiler
     end
   end
 
-  def compile_one(course_slug, language_slug)
+  def compile_one(language_slug)
     DEFINITIONS.each do |definition|
-      next unless definition.course.slug.eql?(course_slug) && definition.language.slug.eql?(language_slug)
+      next unless definition.language.slug.eql?(language_slug)
+
       puts "compiling #{definition.course.slug}-#{definition.language.slug}"
       compile_definition(definition)
     end
