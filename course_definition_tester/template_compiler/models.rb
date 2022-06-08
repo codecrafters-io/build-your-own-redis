@@ -1,4 +1,5 @@
 require "mustache"
+require "yaml"
 
 class Course
   attr_reader :slug
@@ -9,7 +10,7 @@ class Course
     @name = name
   end
 
-  def load_from_file(file_path)
+  def self.load_from_file(file_path)
     course_definition_yaml = YAML.load_file(file_path)
 
     self.new(
@@ -56,7 +57,7 @@ class StarterRepoDefinition
 
   def self.load_from_files(course_definition_file_path, starter_definitions_file_path)
     course = Course.load_from_file(course_definition_file_path)
-    starter_definitions_yaml = YAML.load_file(file_path)
+    starter_definitions_yaml = YAML.load_file(starter_definitions_file_path)
 
     starter_definitions_yaml.map do |starter_definition_yaml|
       StarterRepoDefinition.new(

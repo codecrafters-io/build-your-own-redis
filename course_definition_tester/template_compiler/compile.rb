@@ -4,7 +4,7 @@ language_filter = ARGV[0]
 
 template_compiler = TemplateCompiler.new(
   output_directory: "../compiled_starters",
-  templates_directory: "../starter_templates",
+  templates_directory: "../",
   definitions: StarterRepoDefinition.load_from_files("../course-definition.yml", "../starter-repository-definitions.yml")
 )
 

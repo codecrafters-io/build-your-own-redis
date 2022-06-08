@@ -1,8 +1,8 @@
-require_relative 'models'
-require_relative 'languages'
-require_relative 'definitions'
 require "fileutils"
 require "pmap"
+
+require_relative "models"
+require_relative "languages"
 
 class TemplateCompiler
   POSTPROCESSORS = {
