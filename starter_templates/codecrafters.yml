@@ -1,0 +1,73 @@
+# Set this to true if you want debug logs.
+#
+# These can be VERY verbose, so we suggest turning them off
+# unless you really need them.
+debug: false
+
+# Use this to change the {{ language_name }} version used to run your code
+# on Codecrafters.
+#
+{{# language_is_python }}
+# Available versions: python-3.7, python-3.8
+language_pack: python-3.8
+{{/ language_is_python }}
+{{# language_is_swift }}
+# Available versions: swift-5.1
+language_pack: swift-5.1
+{{/ language_is_swift }}
+{{# language_is_go }}
+# Available versions: go-1.16
+language_pack: go-1.16
+{{/ language_is_go }}
+{{# language_is_php }}
+# Available versions: php-7.4
+language_pack: php-7.4
+{{/ language_is_php }}
+{{# language_is_javascript }}
+# Available versions: nodejs-16
+language_pack: nodejs-16
+{{/ language_is_javascript }}
+{{# language_is_c }}
+# Available versions: c-9.2
+language_pack: c-9.2
+{{/ language_is_c }}
+{{# language_is_ruby }}
+# Available versions: ruby-2.7
+language_pack: ruby-2.7
+{{/ language_is_ruby }}
+{{# language_is_rust }}
+# Available versions: rust-1.54
+language_pack: rust-1.54
+{{/ language_is_rust }}
+{{# language_is_haskell }}
+# Available versions: haskell-9.0
+language_pack: haskell-9.0
+{{/ language_is_haskell }}
+{{# language_is_elixir}}
+# Available versions: elixir-1.10
+language_pack: elixir-1.10
+{{/ language_is_elixir }}
+{{# language_is_kotlin }}
+# Available versions: kotlin-1.4
+language_pack: kotlin-1.4
+{{/ language_is_kotlin }}
+{{# language_is_java }}
+# Available versions: java-1.8
+language_pack: java-1.8
+{{/ language_is_java }}
+{{# language_is_nim }}
+# Available versions: nim-1.0
+language_pack: nim-1.0
+{{/ language_is_nim }}
+{{# language_is_crystal }}
+# Available versions: crystal-1.1
+language_pack: crystal-1.1
+{{/ language_is_crystal }}
+{{#language_is_clojure}}
+# Available versions: clojure-1.10.3
+language_pack: clojure-1.10.3
+{{/language_is_clojure}}
+{{#language_is_csharp}}
+# Available versions: dotnet-6.0
+language_pack: dotnet-6.0
+{{/language_is_csharp}}
