@@ -1,0 +1,161 @@
+name: Test Course Definition
+
+on:
+  workflow_call:
+
+jobs:
+  verify_templates_compiled:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+
+      - uses: actions/checkout@v2
+      - run: gem install bundler
+      - run: bundle config set --local without 'development'
+      - run: bundle install
+      - run: make compile
+      - run: git diff --exit-code # Changes to existing files
+      - run: test -z "$(git ls-files compiled_starters/ --exclude-standard --others)" # Untracked files
+
+  markdown_lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - run: gem install mdl
+      - run: mdl --style relaxed compiled_starters
+
+  js_lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: npx prettier --check **/*.js
+
+  other_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - run: bundle install --verbose
+      - run: ruby tests/test_uncommenter.rb
+      - run: ruby tests/test_github_actions_matrix.rb
+
+  redis:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: ["c", "clojure", "crystal", "csharp", "elixir", "go", "haskell", "java", "javascript", "php", "python", "ruby", "rust"]
+
+    steps:
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.13.1'
+      - run: "echo ::remove-matcher owner=go::" # Messes with our output
+      - run: go install golang.org/x/tools/cmd/goimports@latest
+      - run: gem install bundler
+      - run: bundle config set --local without 'development'
+      - run: bundle install
+      - run: make download_starter_testers
+      - run: bundle exec ruby tests/test_course.rb redis ${{matrix.language}}
+
+  docker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: ["c", "go", "nim", "php", "rust"]
+
+    steps:
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.13.1'
+      - run: "echo ::remove-matcher owner=go::" # Messes with our output
+      - run: go install golang.org/x/tools/cmd/goimports@latest
+      - run: gem install bundler
+      - run: bundle config set --local without 'development'
+      - run: bundle install
+      - run: make download_starter_testers
+      - run: bundle exec ruby tests/test_course.rb docker ${{matrix.language}}
+
+  git:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: ["go", "kotlin", "python", "ruby", "rust"]
+
+    steps:
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.13.1'
+      - run: "echo ::remove-matcher owner=go::" # Messes with our output
+      - run: go install golang.org/x/tools/cmd/goimports@latest
+      - run: gem install bundler
+      - run: bundle config set --local without 'development'
+      - run: bundle install
+      - run: make download_starter_testers
+      - run: bundle exec ruby tests/test_course.rb git ${{matrix.language}}
+
+  sqlite:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: ["csharp", "go", "javascript", "python", "rust"]
+
+    steps:
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.13.1'
+      - run: "echo ::remove-matcher owner=go::" # Messes with our output
+      - run: go install golang.org/x/tools/cmd/goimports@latest
+      - run: gem install bundler
+      - run: bundle config set --local without 'development'
+      - run: bundle install
+      - run: make download_starter_testers
+      - run: bundle exec ruby tests/test_course.rb sqlite ${{matrix.language}}
+
+  react:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: ["javascript"]
+
+    steps:
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '^1.13.1'
+      - run: "echo ::remove-matcher owner=go::" # Messes with our output
+      - run: go install golang.org/x/tools/cmd/goimports@latest
+      - run: gem install bundler
+      - run: bundle config set --local without 'development'
+      - run: bundle install
+      - run: make download_starter_testers
+      - run: bundle exec ruby tests/test_course.rb react ${{matrix.language}}
