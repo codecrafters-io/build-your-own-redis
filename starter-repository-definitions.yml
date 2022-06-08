@@ -12,7 +12,7 @@
       target: src/redis/core.clj
     - source: starter_templates/clojure/spawn_redis_server.sh
       target: spawn_redis_server.sh
-  template_attributess:
+  template_attributes:
     required_executable: "lein"
     user_editable_file: "src/redis/core.clj"
 

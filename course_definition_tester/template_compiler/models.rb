@@ -8,6 +8,15 @@ class Course
     @slug = slug
     @name = name
   end
+
+  def load_from_file(file_path)
+    course_definition_yaml = YAML.load_file(file_path)
+
+    self.new(
+      name: course_definition_yaml.fetch("name"),
+      slug: course_definition_yaml.fetch("slug")
+    )
+  end
 end
 
 class Language
@@ -43,6 +52,20 @@ class StarterRepoDefinition
     @language = language
     @file_mappings = file_mappings
     @template_attrs = template_attrs
+  end
+
+  def self.load_from_files(course_definition_file_path, starter_definitions_file_path)
+    course = Course.load_from_file(course_definition_file_path)
+    starter_definitions_yaml = YAML.load_file(file_path)
+
+    starter_definitions_yaml.map do |starter_definition_yaml|
+      StarterRepoDefinition.new(
+        course: course,
+        file_mappings: starter_definition_yaml.fetch("file_mappings").map { |fm| FileMapping.new(fm.fetch("target"), fm.fetch("source")) },
+        language: LANGUAGES.detect { |language| language.slug == starter_definition_yaml.fetch("language") },
+        template_attrs: starter_definition_yaml.fetch("template_attributes")
+      )
+    end
   end
 
   def repo_name

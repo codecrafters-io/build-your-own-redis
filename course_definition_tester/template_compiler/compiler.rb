@@ -10,20 +10,21 @@ class TemplateCompiler
     "js" => Proc.new { |filepath| `npx prettier --write #{filepath}` }
   }
 
-  def initialize(templates_path, output_directory)
-    @templates_path = templates_path
+  def initialize(templates_directory:, output_directory:, definitions:)
+    @definitions = definitions
+    @templates_directory = templates_directory
     @output_directory = output_directory
   end
 
   def compile_all
-    DEFINITIONS.pmap do |definition|
+    @definitions.pmap do |definition|
       puts "compiling #{definition.course.slug}-#{definition.language.slug}"
       compile_definition(definition)
     end
   end
 
-  def compile_one(language_slug)
-    DEFINITIONS.each do |definition|
+  def compile_for_language(language_slug)
+    @definitions.each do |definition|
       next unless definition.language.slug.eql?(language_slug)
 
       puts "compiling #{definition.course.slug}-#{definition.language.slug}"
@@ -37,7 +38,7 @@ class TemplateCompiler
     directory = File.join(@output_directory, definition.repo_name)
     FileUtils.rmtree(directory)
 
-    definition.files(@templates_path).each do |file|
+    definition.files(@templates_directory).each do |file|
       path = File.join(directory, file[:path])
       FileUtils.mkdir_p(File.dirname(path))
       File.write(path, file[:contents])
