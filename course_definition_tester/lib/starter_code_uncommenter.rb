@@ -10,13 +10,13 @@ class UncommentMarkerNotFound < Exception
 end
 
 class StarterCodeUncommenter
-  attr_reader :dir, :language_slug
+  attr_reader :dir, :language
 
   UNCOMMENT_MARKER_PATTERN = /Uncomment this/
 
-  def initialize(dir, language_slug)
+  def initialize(dir, language)
     @dir = dir
-    @language_slug = language_slug
+    @language = language
   end
 
   def uncomment
@@ -26,7 +26,7 @@ class StarterCodeUncommenter
       old_contents = File.read(file_path)
 
       new_contents = Uncommenter.new(
-        language_slug,
+        language.slug,
         old_contents,
         UNCOMMENT_MARKER_PATTERN
       ).uncommented
@@ -57,30 +57,10 @@ class StarterCodeUncommenter
       #     end
       #   },
       # ]
-    }.fetch(language_slug, [])
+    }.fetch(@language.slug, [])
   end
 
   def code_files
-    Dir["#{dir}/**/*.#{code_file_extension}"]
-  end
-
-  def code_file_extension
-    {
-      "c" => "c",
-      "clojure" => "clj",
-      "crystal" => "cr",
-      "csharp" => "cs",
-      "elixir" => "ex",
-      "go" => "go",
-      "haskell" => "hs",
-      "java" => "java",
-      "javascript" => "js",
-      "kotlin" => "kt",
-      "nim" => "nim",
-      "php" => "php",
-      "python" => "py",
-      "ruby" => "rb",
-      "rust" => "rs"
-    }.fetch(language_slug)
+    Dir["#{dir}/**/*.#{@language.code_file_extension}"]
   end
 end

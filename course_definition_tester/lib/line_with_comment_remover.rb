@@ -39,12 +39,14 @@ class LineWithCommentRemover
   end
 
   def code_files
-    Dir["#{dir}/**/*.#{code_file_extension}"]
+    Dir["#{dir}/**/*.#{@language.code_file_extension}"]
   end
 
   def process_file_contents(old_contents)
     old_lines = old_contents.split("\n")
-    marker_index = old_lines.each_with_index.find { |line, _| line.match(LINE_MARKER_PATTERN) }.first
+    marker_index = old_lines.each_with_index.find { |line, _| line.match(LINE_MARKER_PATTERN) }&.last
+
+    return old_contents unless !!marker_index
 
     old_lines.delete_at(marker_index) # Delete marker line
     old_lines.delete_at(marker_index) # Delete line after
@@ -53,6 +55,6 @@ class LineWithCommentRemover
       old_lines.delete_at(marker_index) # Delete blank line after
     end
 
-    old_lines.join("\n")
+    old_lines.join("\n") + "\n"
   end
 end

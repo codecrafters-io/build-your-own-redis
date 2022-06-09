@@ -2,6 +2,7 @@ require "fileutils"
 
 require_relative "../lib/models"
 require_relative "../lib/starter_code_uncommenter"
+require_relative "../lib/line_with_comment_remover"
 
 class FirstStageSolutionsCompiler
   def initialize(course:, starters_directory:, solutions_directory:)
@@ -24,10 +25,10 @@ class FirstStageSolutionsCompiler
     FileUtils.mkdir_p(first_stage_solution_directory)
     FileUtils.cp_r("#{starter_repository_directory}/.", first_stage_solution_directory)
 
-    diffs = StarterCodeUncommenter.new(first_stage_solution_directory, language.slug).uncomment
+    diffs = LineWithCommentRemover.new(first_stage_solution_directory, language).process!
     ensure_diffs_exist!(diffs)
 
-    diffs = LineWithCommentRemover.new(first_stage_solution_directory, language.slug).process!
+    diffs = StarterCodeUncommenter.new(first_stage_solution_directory, language).uncomment
     ensure_diffs_exist!(diffs)
   end
 

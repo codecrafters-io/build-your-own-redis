@@ -30,13 +30,14 @@ class Uncommenter
   end
 
   def uncommented
-    code
+    uncommented_lines = code
       .lines
       .map { |line| line[0..-2] }
       .each_with_index
       .map { |line, index|
         within_uncomment_bounds(index) ? uncomment_line(line) : line
       }
+      .delete_if.with_index { |line, index| uncomment_line_indices.include?(index) || (uncomment_line_indices.include?(index - 1) && /^\s*$/.match?(line)) }
       .join("\n") + "\n"
   end
 
@@ -54,7 +55,7 @@ class Uncommenter
 
   def uncomment_bounds_pairs
     uncomment_line_indices.map do |uncomment_line_index|
-      start_index = uncomment_line_index
+      start_index = uncomment_line_index + 1
       end_index = start_index - 1
 
       code.lines.each_with_index do |line, index|
