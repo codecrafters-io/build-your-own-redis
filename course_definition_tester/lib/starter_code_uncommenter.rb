@@ -12,7 +12,7 @@ end
 class StarterCodeUncommenter
   attr_reader :dir, :language_slug
 
-  UNCOMMENT_MARKER_PATTERN = /(uncomment this)|(can use print statements)/i
+  UNCOMMENT_MARKER_PATTERN = /Uncomment this/
 
   def initialize(dir, language_slug)
     @dir = dir
