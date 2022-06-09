@@ -22,8 +22,9 @@ class FirstStageSolutionsCompiler
 
     FileUtils.rm_rf(first_stage_solution_directory) if File.exist?(first_stage_solution_directory)
     FileUtils.mkdir_p(first_stage_solution_directory)
+    FileUtils.cp_r(starter_repository_directory, first_stage_solution_directory)
 
-    diffs = StarterCodeUncommenter.new(starter_repository_directory, language.slug).uncomment
+    diffs = StarterCodeUncommenter.new(first_stage_solution_directory, language.slug).uncomment
 
     diffs.each do |diff|
       if diff.to_s.empty?
