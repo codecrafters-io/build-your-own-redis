@@ -36,13 +36,13 @@
       target: README.md
     - source: starter_templates/codecrafters.yml
       target: codecrafters.yml
-    - source: starter_templates/cssharp/gitinore
-      target: gitinore
+    - source: starter_templates/csharp/.gitignore
+      target: .gitignore
     - source: starter_templates/csharp/codecrafters-redis.sln
       target: codecrafters-redis.sln
     - source: starter_templates/csharp/codecrafters-redis.csproj
       target: codecrafters-redis.csproj
-    - source: starter_templates/csharp/src/Server.cscsharp/src/Server.cs
+    - source: starter_templates/csharp/src/Server.cs
       target: src/Server.cs
     - source: starter_templates/csharp/spawn_redis_server.sh
       target: spawn_redis_server.sh
