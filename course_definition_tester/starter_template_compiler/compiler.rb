@@ -4,7 +4,7 @@ require "pmap"
 require_relative "models"
 require_relative "languages"
 
-class TemplateCompiler
+class StarterTemplateCompiler
   POSTPROCESSORS = {
     "md" => Proc.new { |filepath| `npx prettier --prose-wrap="always" --write #{filepath}` },
     "js" => Proc.new { |filepath| `npx prettier --write #{filepath}` }
