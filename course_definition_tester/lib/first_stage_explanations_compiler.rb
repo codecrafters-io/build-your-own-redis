@@ -1,7 +1,9 @@
 require "fileutils"
+require "mustache"
 
 require_relative "../lib/models"
 require_relative "../lib/starter_code_uncommenter"
+require_relative "../lib/unindenter"
 
 class FirstStageExplanationsCompiler
   def initialize(course:, starters_directory:, solutions_directory:)
@@ -24,7 +26,20 @@ class FirstStageExplanationsCompiler
     FileUtils.mkdir_p(File.dirname(explanation_file_path))
 
     blocks = StarterCodeUncommenter.new(starter_repository_directory, language).uncommented_blocks_with_markers
-    File.write(explanation_file_path, blocks.join("\n\n"))
+    template_contents = File.read("lib/first_stage_explanation_template.md")
+
+    blocks = blocks.map do |block|
+      {
+        file_path: block[:file_path],
+        code: Unindenter.unindent(block[:code])
+      }
+    end
+
+    File.write(explanation_file_path, Mustache.render(template_contents, {
+      uncommented_code_blocks: blocks,
+      entry_point_file: blocks.first[:file_path],
+      language_syntax_highlighting_identifier: language.slug
+    }))
   end
 
   protected

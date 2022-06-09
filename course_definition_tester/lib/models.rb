@@ -69,4 +69,8 @@ class Language
       "rust" => "rs"
     }.fetch(@slug)
   end
+
+  def syntax_highlighting_identifier
+    @slug
+  end
 end

@@ -47,11 +47,12 @@ class StarterCodeUncommenter
 
   def uncommented_blocks_with_markers
     code_files.flat_map do |file_path|
-      Uncommenter.new(
-        language.slug,
-        File.read(file_path),
-        UNCOMMENT_MARKER_PATTERN
-      ).uncommented_blocks_with_marker
+      Uncommenter.new(language.slug, File.read(file_path), UNCOMMENT_MARKER_PATTERN).uncommented_blocks_with_marker.map do |block|
+        {
+          file_path: File.basename(file_path),
+          code: block
+        }
+      end
     end
   end
 
