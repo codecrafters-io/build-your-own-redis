@@ -24,6 +24,7 @@ class StarterCodeUncommenter
 
     diffs = code_files.map do |file_path|
       old_contents = File.read(file_path)
+
       new_contents = Uncommenter.new(
         language_slug,
         old_contents,

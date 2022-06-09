@@ -54,7 +54,7 @@ class Uncommenter
 
   def uncomment_bounds_pairs
     uncomment_line_indices.map do |uncomment_line_index|
-      start_index = uncomment_line_index + 1
+      start_index = uncomment_line_index
       end_index = start_index - 1
 
       code.lines.each_with_index do |line, index|
