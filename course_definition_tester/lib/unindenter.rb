@@ -1,7 +1,7 @@
 class Unindenter
   def self.unindent(string)
-    smallest_tab_indent = string.scan(/^\t*(?=\S)/).map(&:length).max
-    smallest_space_indent = string.scan(/^ *(?=\S)/).map(&:length).max
+    smallest_tab_indent = string.scan(/^\t*(?=\S)/).map(&:length).min
+    smallest_space_indent = string.scan(/^ *(?=\S)/).map(&:length).min
 
     string
       .lines
