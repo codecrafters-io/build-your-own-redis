@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `main.js`.
+The entry point for your Redis implementation is in `app/main.js`.
 
 Study and uncomment the relevant code: 
 

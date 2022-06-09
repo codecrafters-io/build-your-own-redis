@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `main.py`.
+The entry point for your Redis implementation is in `app/main.py`.
 
 Study and uncomment the relevant code: 
 

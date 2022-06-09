@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `server.ex`.
+The entry point for your Redis implementation is in `lib/server.ex`.
 
 Study and uncomment the relevant code: 
 

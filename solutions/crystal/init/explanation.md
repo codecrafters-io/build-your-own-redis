@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `main.cr`.
+The entry point for your Redis implementation is in `app/main.cr`.
 
 Study and uncomment the relevant code: 
 

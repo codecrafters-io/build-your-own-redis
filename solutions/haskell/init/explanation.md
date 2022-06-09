@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `Main.hs`.
+The entry point for your Redis implementation is in `app/Main.hs`.
 
 Study and uncomment the relevant code: 
 

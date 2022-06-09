@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `Main.java`.
+The entry point for your Redis implementation is in `src/main/java/Main.java`.
 
 Study and uncomment the relevant code: 
 

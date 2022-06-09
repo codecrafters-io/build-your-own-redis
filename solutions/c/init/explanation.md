@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `server.c`.
+The entry point for your Redis implementation is in `app/server.c`.
 
 Study and uncomment the relevant code: 
 

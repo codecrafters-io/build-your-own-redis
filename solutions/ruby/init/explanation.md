@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `server.rb`.
+The entry point for your Redis implementation is in `app/server.rb`.
 
 Study and uncomment the relevant code: 
 

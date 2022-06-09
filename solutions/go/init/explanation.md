@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `server.go`.
+The entry point for your Redis implementation is in `app/server.go`.
 
 Study and uncomment the relevant code: 
 

@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `main.php`.
+The entry point for your Redis implementation is in `app/main.php`.
 
 Study and uncomment the relevant code: 
 

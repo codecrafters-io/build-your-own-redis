@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `Server.cs`.
+The entry point for your Redis implementation is in `src/Server.cs`.
 
 Study and uncomment the relevant code: 
 

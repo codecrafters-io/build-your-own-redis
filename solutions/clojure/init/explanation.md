@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `core.clj`.
+The entry point for your Redis implementation is in `src/redis/core.clj`.
 
 Study and uncomment the relevant code: 
 

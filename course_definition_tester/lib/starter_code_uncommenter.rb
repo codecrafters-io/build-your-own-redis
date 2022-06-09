@@ -1,5 +1,6 @@
 require_relative "uncommenter"
 require "diffy"
+require "pathname"
 
 class UncommentMarkerNotFound < Exception
   def initialize(marker_pattern, files)
@@ -49,7 +50,7 @@ class StarterCodeUncommenter
     code_files.flat_map do |file_path|
       Uncommenter.new(language.slug, File.read(file_path), UNCOMMENT_MARKER_PATTERN).uncommented_blocks_with_marker.map do |block|
         {
-          file_path: File.basename(file_path),
+          file_path: Pathname.new(file_path).relative_path_from(@dir).to_s,
           code: block
         }
       end
