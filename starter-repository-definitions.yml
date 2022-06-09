@@ -29,3 +29,37 @@
   template_attributes:
     required_executable: "crystal (1.1.0)"
     user_editable_file: "app/main.cr"
+
+- language: csharp
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/cssharp/gitinore
+      target: gitinore
+    - source: starter_templates/csharp/codecrafters-redis.sln
+      target: codecrafters-redis.sln
+    - source: starter_templates/csharp/codecrafters-redis.csproj
+      target: codecrafters-redis.csproj
+    - source: starter_templates/csharp/src/Server.cscsharp/src/Server.cs
+      target: src/Server.cs
+    - source: starter_templates/csharp/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "dotnet (6.0)"
+    user_editable_file: "dotnet (6.0)"
+
+- language: python
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/python/app/main.py
+      target: app/main.py
+    - source: starter_templates/python/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "python (3.8)"
+    user_editable_file: "app/main.py"
