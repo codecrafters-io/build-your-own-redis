@@ -25,7 +25,15 @@ class FirstStageSolutionsCompiler
     FileUtils.cp_r("#{starter_repository_directory}/.", first_stage_solution_directory)
 
     diffs = StarterCodeUncommenter.new(first_stage_solution_directory, language.slug).uncomment
+    ensure_diffs_exist!(diffs)
 
+    diffs = LineWithCommentRemover.new(first_stage_solution_directory, language.slug).process!
+    ensure_diffs_exist!(diffs)
+  end
+
+  protected
+
+  def ensure_diffs_exist!(diffs)
     diffs.each do |diff|
       if diff.to_s.empty?
         log_error("Expected uncommenting code to return a diff")
@@ -39,8 +47,6 @@ class FirstStageSolutionsCompiler
       puts ""
     end
   end
-
-  protected
 
   def starter_repository_directories
     Dir.glob(File.join(@starters_directory, "#{@course.slug}-starter-*"))

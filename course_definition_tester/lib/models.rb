@@ -49,4 +49,24 @@ class Language
     require_relative "languages"
     LANGUAGES.detect(-> { raise "Language with slug #{slug} not found" }) { |language| language.slug.eql?(slug) }
   end
+
+  def code_file_extension
+    {
+      "c" => "c",
+      "clojure" => "clj",
+      "crystal" => "cr",
+      "csharp" => "cs",
+      "elixir" => "ex",
+      "go" => "go",
+      "haskell" => "hs",
+      "java" => "java",
+      "javascript" => "js",
+      "kotlin" => "kt",
+      "nim" => "nim",
+      "php" => "php",
+      "python" => "py",
+      "ruby" => "rb",
+      "rust" => "rs"
+    }.fetch(@slug)
+  end
 end
