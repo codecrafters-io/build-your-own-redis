@@ -18,11 +18,11 @@ class FirstStageSolutionsCompiler
 
   def compile_for_starter_repository_directory(starter_repository_directory)
     language = Language.find_by_slug!(File.basename(starter_repository_directory).split("-").last)
-    first_stage_solution_directory = File.join(@solutions_directory, @course.slug, @course.first_stage.slug, "code")
+    first_stage_solution_directory = File.join(@solutions_directory, language.slug, @course.first_stage.slug, "code")
 
     FileUtils.rm_rf(first_stage_solution_directory) if File.exist?(first_stage_solution_directory)
     FileUtils.mkdir_p(first_stage_solution_directory)
-    FileUtils.cp_r(starter_repository_directory, first_stage_solution_directory)
+    FileUtils.cp_r("#{starter_repository_directory}/.", first_stage_solution_directory)
 
     diffs = StarterCodeUncommenter.new(first_stage_solution_directory, language.slug).uncomment
 
