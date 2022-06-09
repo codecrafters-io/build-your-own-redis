@@ -1,4 +1,4 @@
-require_relative "compiler"
+require_relative "../lib/starter_template_compiler/compiler"
 
 language_filter = ARGV[0]
 
