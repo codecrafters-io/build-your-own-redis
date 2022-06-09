@@ -44,12 +44,13 @@ class Uncommenter
   def uncommented_blocks_with_marker
     uncomment_bounds_pairs.map do |uncomment_bound_pair|
       start_index, end_index = uncomment_bound_pair
+
       code
         .lines[(start_index - 1)..end_index]
         .map { |line| line[0..-2] }
         .each_with_index
         .map { |line, index|
-          within_uncomment_bounds(index) ? uncomment_line(line) : line
+          index.zero? ? line : uncomment_line(line)
         }
         .join("\n")
     end

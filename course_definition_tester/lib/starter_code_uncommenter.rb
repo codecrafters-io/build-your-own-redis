@@ -45,6 +45,16 @@ class StarterCodeUncommenter
     diffs
   end
 
+  def uncommented_blocks_with_markers
+    code_files.flat_map do |file_path|
+      Uncommenter.new(
+        language.slug,
+        File.read(file_path),
+        UNCOMMENT_MARKER_PATTERN
+      ).uncommented_blocks_with_marker
+    end
+  end
+
   def post_processors
     {
       # Imports are commented using the regular mechanism now.
