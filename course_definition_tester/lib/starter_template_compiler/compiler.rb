@@ -1,8 +1,9 @@
 require "fileutils"
 require "pmap"
 
-require_relative "models"
-require_relative "languages"
+require_relative "../models"
+require_relative "starter_repository_definition"
+require_relative "../languages"
 
 class StarterTemplateCompiler
   POSTPROCESSORS = {

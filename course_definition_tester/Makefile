@@ -2,7 +2,7 @@ compile: compile_starters
 
 compile_starters:
 	rm -rf ../compiled_starters/*
-	bundle exec ruby starter_template_compiler/compile.rb
+	bundle exec ruby scripts/compile_starters.rb
 
 compile_first_stage_solutions:
-	bundle exec ruby template_compiler/compile.rb
+	bundle exec ruby scripts/compile_first_stage_solutions.rb

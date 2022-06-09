@@ -1,37 +1,6 @@
 require "mustache"
 require "yaml"
 
-class Course
-  attr_reader :slug
-  attr_reader :name
-
-  def initialize(slug:, name:)
-    @slug = slug
-    @name = name
-  end
-
-  def self.load_from_file(file_path)
-    course_definition_yaml = YAML.load_file(file_path)
-
-    self.new(
-      name: course_definition_yaml.fetch("name"),
-      slug: course_definition_yaml.fetch("slug")
-    )
-  end
-end
-
-class Language
-  attr_reader :slug
-  attr_reader :name
-  attr_reader :repo_suffix
-
-  def initialize(slug:, name:, repo_suffix:)
-    @slug = slug
-    @name = name
-    @repo_suffix = repo_suffix
-  end
-end
-
 class FileMapping
   attr_reader :destination_path
   attr_reader :template_path
