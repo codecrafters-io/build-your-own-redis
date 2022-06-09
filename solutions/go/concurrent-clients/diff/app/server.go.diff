@@ -1,4 +1,4 @@
-@@ -1,20 +1,28 @@
+@@ -1,30 +1,36 @@
  package main
 
  import (
@@ -13,18 +13,29 @@
  		fmt.Println("Failed to bind to port 6379")
  		os.Exit(1)
  	}
--	_, err = l.Accept()
+
+-	conn, err = l.Accept()
+-	if err != nil {
+-		fmt.Println("Error accepting connection: ", err.Error())
+-		os.Exit(1)
++	for {
++		conn, err := l.Accept()
++		if err != nil {
++			fmt.Println("Error accepting connection: ", err.Error())
++			os.Exit(1)
++		}
 +
-+	conn, err = l.Accept()
- 	if err != nil {
- 		fmt.Println("Error accepting connection: ", err.Error())
- 		os.Exit(1)
++		go handleConnection(conn)
  	}
-+
-+	if _, err := conn.Read([]byte{}); err != nil {
-+		fmt.Println("error reading from client: ", err.Error())
-+		os.Exit(1)
-+	}
-+
-+	conn.Write([]byte("+PONG\r\n"))
++}
+
++func handleConnection(conn net.Conn) {
+ 	for {
+ 		if _, err := conn.Read([]byte{}); err != nil {
+ 			fmt.Println("Error reading from client: ", err.Error())
+ 			continue
+ 		}
+
+ 		conn.Write([]byte("+PONG\r\n"))
+ 	}
  }

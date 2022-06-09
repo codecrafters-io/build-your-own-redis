@@ -1,7 +1,8 @@
-@@ -1,20 +1,28 @@
+@@ -1,48 +1,55 @@
  package main
 
  import (
+ 	"bufio"
  	"fmt"
  	"net"
  	"os"
@@ -13,18 +14,45 @@
  		fmt.Println("Failed to bind to port 6379")
  		os.Exit(1)
  	}
--	_, err = l.Accept()
+
++	storage := NewStorage()
 +
-+	conn, err = l.Accept()
- 	if err != nil {
- 		fmt.Println("Error accepting connection: ", err.Error())
- 		os.Exit(1)
+ 	for {
+ 		conn, err := l.Accept()
+ 		if err != nil {
+ 			fmt.Println("Error accepting connection: ", err.Error())
+ 			os.Exit(1)
+ 		}
+
+-		go handleConnection(conn)
++		go handleConnection(conn, storage)
  	}
-+
-+	if _, err := conn.Read([]byte{}); err != nil {
-+		fmt.Println("error reading from client: ", err.Error())
-+		os.Exit(1)
-+	}
-+
-+	conn.Write([]byte("+PONG\r\n"))
+ }
+
+-func handleConnection(conn net.Conn) {
++func handleConnection(conn net.Conn, storage *Storage) {
+ 	for {
+ 		value, err := DecodeRESP(bufio.NewReader(conn))
+ 		if err != nil {
+ 			fmt.Println("Error decoding RESP: ", err.Error())
+ 			return // Ignore clients that we fail to read from
+ 		}
+
+ 		command := value.Array()[0].String()
+ 		args := value.Array()[1:]
+
+ 		switch command {
+ 		case "ping":
+ 			conn.Write([]byte("+PONG\r\n"))
+ 		case "echo":
+ 			conn.Write([]byte(fmt.Sprintf("$%d\r\n%s\r\n", len(args[0].String()), args[0].String())))
++		case "set":
++			storage.Set(args[0].String(), args[1].String())
++			conn.Write([]byte("+OK\r\n"))
++		case "get":
++			conn.Write([]byte(fmt.Sprintf("+%s\r\n", storage.Get(args[0].String()))))
+ 		default:
+ 			conn.Write([]byte("-ERR unknown command '" + command + "'\r\n"))
+ 		}
+ 	}
  }

@@ -1,7 +1,8 @@
-@@ -1,20 +1,28 @@
+@@ -1,36 +1,48 @@
  package main
 
  import (
++	"bufio"
  	"fmt"
  	"net"
  	"os"
@@ -13,18 +14,40 @@
  		fmt.Println("Failed to bind to port 6379")
  		os.Exit(1)
  	}
--	_, err = l.Accept()
-+
-+	conn, err = l.Accept()
- 	if err != nil {
- 		fmt.Println("Error accepting connection: ", err.Error())
- 		os.Exit(1)
+
+ 	for {
+ 		conn, err := l.Accept()
+ 		if err != nil {
+ 			fmt.Println("Error accepting connection: ", err.Error())
+ 			os.Exit(1)
+ 		}
+
+ 		go handleConnection(conn)
  	}
+ }
+
+ func handleConnection(conn net.Conn) {
+ 	for {
+-		if _, err := conn.Read([]byte{}); err != nil {
+-			fmt.Println("Error reading from client: ", err.Error())
+-			continue
++		value, err := DecodeRESP(bufio.NewReader(conn))
++		if err != nil {
++			fmt.Println("Error decoding RESP: ", err.Error())
++			return // Ignore clients that we fail to read from
+ 		}
+
+-		conn.Write([]byte("+PONG\r\n"))
++		command := value.Array()[0].String()
++		args := value.Array()[1:]
 +
-+	if _, err := conn.Read([]byte{}); err != nil {
-+		fmt.Println("error reading from client: ", err.Error())
-+		os.Exit(1)
-+	}
-+
-+	conn.Write([]byte("+PONG\r\n"))
++		switch command {
++		case "ping":
++			conn.Write([]byte("+PONG\r\n"))
++		case "echo":
++			conn.Write([]byte(fmt.Sprintf("$%d\r\n%s\r\n", len(args[0].String()), args[0].String())))
++		default:
++			conn.Write([]byte("-ERR unknown command '" + command + "'\r\n"))
++		}
+ 	}
  }
