@@ -5,7 +5,9 @@ class Unindenter
 
     string
       .lines
-      .map { |line| line[(largest_space_indent || largest_tab_indent || 0)..-2] }
+      .map { |line|
+        line[(largest_space_indent || largest_tab_indent || 0)..-1]&.strip || ""
+      }
       .join("\n")
   end
 end
