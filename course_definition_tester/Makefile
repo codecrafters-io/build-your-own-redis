@@ -1,4 +1,4 @@
-compile: compile_starters compile_first_stage_solutions
+compile: compile_starters compile_first_stage_solutions compile_solution_diffs
 
 compile_starters:
 	rm -rf ../compiled_starters/*
