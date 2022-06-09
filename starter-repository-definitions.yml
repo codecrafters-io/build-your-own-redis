@@ -48,7 +48,7 @@
       target: spawn_redis_server.sh
   template_attributes:
     required_executable: "dotnet (6.0)"
-    user_editable_file: "dotnet (6.0)"
+    user_editable_file: "src/Server.cs"
 
 - language: python
   file_mappings:
