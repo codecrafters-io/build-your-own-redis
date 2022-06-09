@@ -10,13 +10,13 @@ class UncommentMarkerNotFound < Exception
 end
 
 class StarterCodeUncommenter
-  attr_reader :dir, :language
+  attr_reader :dir, :language_slug
 
   UNCOMMENT_MARKER_PATTERN = /Uncomment this/
 
-  def initialize(dir, language)
+  def initialize(dir, language_slug)
     @dir = dir
-    @language = language
+    @language_slug = language_slug
   end
 
   def uncomment
@@ -25,7 +25,7 @@ class StarterCodeUncommenter
     diffs = code_files.map do |file_path|
       old_contents = File.read(file_path)
       new_contents = Uncommenter.new(
-        language,
+        language_slug,
         old_contents,
         UNCOMMENT_MARKER_PATTERN
       ).uncommented
@@ -56,7 +56,7 @@ class StarterCodeUncommenter
       #     end
       #   },
       # ]
-    }.fetch(language, [])
+    }.fetch(language_slug, [])
   end
 
   def code_files
@@ -79,7 +79,7 @@ class StarterCodeUncommenter
       "php" => "php",
       "python" => "py",
       "ruby" => "rb",
-      "rust" => "rs",
-    }.fetch(language)
+      "rust" => "rs"
+    }.fetch(language_slug)
   end
 end

@@ -13,7 +13,7 @@ end
 
 class StarterRepoDefinition
   attr_reader :course
-  attr_reader :language
+  attr_reader :language_slug
   attr_reader :file_mappings
   attr_reader :template_attrs
 
@@ -32,7 +32,7 @@ class StarterRepoDefinition
       StarterRepoDefinition.new(
         course: course,
         file_mappings: starter_definition_yaml.fetch("file_mappings").map { |fm| FileMapping.new(fm.fetch("target"), fm.fetch("source")) },
-        language: LANGUAGES.detect { |language| language.slug == starter_definition_yaml.fetch("language") },
+        language_slug: LANGUAGES.detect { |language| language.slug == starter_definition_yaml.fetch("language") },
         template_attrs: starter_definition_yaml.fetch("template_attributes")
       )
     end
@@ -48,7 +48,7 @@ class StarterRepoDefinition
       {
         path: mapping.destination_path,
         contents: Mustache.render(template_contents, template_context),
-        is_executable: File.executable?(File.join(template_dir, mapping.template_path)),
+        is_executable: File.executable?(File.join(template_dir, mapping.template_path))
       }
     end
   end
@@ -57,11 +57,11 @@ class StarterRepoDefinition
 
   def template_context
     {
-      "language_name": @language.name,
-      "language_slug": @language.slug,
-      "language_is_#{@language.slug}": true,
-      "course_name": @course.name,
-      "course_slug": @course.name,
+      language_name: @language.name,
+      language_slug: @language.slug,
+      language_slug: true,
+      course_name: @course.name,
+      course_slug: @course.name
     }.merge(@template_attrs)
   end
 end

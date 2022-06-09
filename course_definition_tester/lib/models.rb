@@ -46,6 +46,7 @@ class Language
   end
 
   def self.find_by_slug!(slug)
+    require_relative "languages"
     LANGUAGES.detect(-> { raise "Language with slug #{slug} not found" }) { |language| language.slug.eql?(slug) }
   end
 end

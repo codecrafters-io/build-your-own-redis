@@ -7,8 +7,8 @@ require_relative "../languages"
 
 class StarterTemplateCompiler
   POSTPROCESSORS = {
-    "md" => Proc.new { |filepath| `npx prettier --prose-wrap="always" --write #{filepath}` },
-    "js" => Proc.new { |filepath| `npx prettier --write #{filepath}` }
+    "md" => proc { |filepath| `npx prettier --prose-wrap="always" --write #{filepath}` },
+    "js" => proc { |filepath| `npx prettier --write #{filepath}` }
   }
 
   def initialize(templates_directory:, output_directory:, definitions:)
@@ -19,16 +19,16 @@ class StarterTemplateCompiler
 
   def compile_all
     @definitions.pmap do |definition|
-      puts "compiling #{definition.course.slug}-#{definition.language.slug}"
+      puts "compiling #{definition.course.slug}-#{definition.language_slug.slug}"
       compile_definition(definition)
     end
   end
 
   def compile_for_language(language_slug)
     @definitions.each do |definition|
-      next unless definition.language.slug.eql?(language_slug)
+      next unless definition.language_slug.slug.eql?(language_slug)
 
-      puts "compiling #{definition.course.slug}-#{definition.language.slug}"
+      puts "compiling #{definition.course.slug}-#{definition.language_slug.slug}"
       compile_definition(definition)
     end
   end
@@ -43,7 +43,7 @@ class StarterTemplateCompiler
       path = File.join(directory, file[:path])
       FileUtils.mkdir_p(File.dirname(path))
       File.write(path, file[:contents])
-      FileUtils.chmod(0755, path) if file[:is_executable]
+      FileUtils.chmod(0o755, path) if file[:is_executable]
       postprocess!(path)
     end
   end

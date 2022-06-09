@@ -1,11 +1,16 @@
+require "fileutils"
+
+require_relative "../lib/models"
+require_relative "../lib/starter_code_uncommenter"
+
 class FirstStageSolutionsCompiler
-  def initialize(course, compiled_solutions_directory, solutions_directory)
+  def initialize(course:, starters_directory:, solutions_directory:)
     @course = course
-    @compiled_starters_directory = compiled_solutions_directory
+    @starters_directory = starters_directory
     @solutions_directory = solutions_directory
   end
 
-  def compile
+  def compile_all
     starter_repository_directories.each do |starter_repository_directory|
       compile_for_starter_repository_directory(starter_repository_directory)
     end
@@ -18,7 +23,7 @@ class FirstStageSolutionsCompiler
     FileUtils.rm_rf(first_stage_solution_directory) if File.exist?(first_stage_solution_directory)
     FileUtils.mkdir_p(first_stage_solution_directory)
 
-    diffs = StarterCodeUncommenter.new(starter_repository_directory, language).uncomment
+    diffs = StarterCodeUncommenter.new(starter_repository_directory, language.slug).uncomment
 
     diffs.each do |diff|
       if diff.to_s.empty?
@@ -37,6 +42,6 @@ class FirstStageSolutionsCompiler
   protected
 
   def starter_repository_directories
-    Dir.glob(File.join(@compiled_starters_directory, "#{@course.slug}-starter-*"))
+    Dir.glob(File.join(@starters_directory, "#{@course.slug}-starter-*"))
   end
 end
