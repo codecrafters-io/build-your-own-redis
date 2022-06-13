@@ -89,7 +89,7 @@
     - source: starter_templates/c/spawn_redis_server.sh
       target: spawn_redis_server.sh
   template_attributes:
-    required_attibutes: "gcc"
+    required_executable: "gcc"
     user_editable_file: "app/server.c"
 
 - language: ruby
@@ -103,7 +103,7 @@
     - source: starter_templates/ruby/spawn_redis_server.sh
       target: spawn_redis_server.sh
   template_attributes:
-    required_attributes: "ruby (2.7)"
+    required_executable: "ruby (2.7)"
     user_editable_file: "app/server.rb"
 
 - language: haskell

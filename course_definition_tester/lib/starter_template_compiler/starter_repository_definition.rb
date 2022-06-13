@@ -59,6 +59,7 @@ class StarterRepoDefinition
     {
       language_name: @language.name,
       language_slug: @language.slug,
+      "language_is_#{@language.slug}": true,
       course_name: @course.name,
       course_slug: @course.name
     }.merge(@template_attrs)
