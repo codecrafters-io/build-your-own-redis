@@ -19,7 +19,7 @@ class StarterTemplateCompiler
 
   def compile_all
     @definitions.pmap do |definition|
-      puts "compiling #{definition.course.slug}-#{definition.language_slug.slug}"
+      puts "compiling #{definition.course.slug}-#{definition.language.slug}"
       compile_definition(definition)
     end
   end
