@@ -65,7 +65,7 @@
     user_editable_file: "app/main.py"
 
 - language: go
-  file_mapppings:
+  file_mappings:
     - source: starter_templates/README.md
       target: README.md
     - source: starter_templates/codecrafters.yml
@@ -160,7 +160,7 @@
     required_executable: "mix"
     user_editable_file: "lib/server.ex"
 
-- langauge: rust
+- language: rust
   file_mappings:
     - source: starter_templates/README.md
       target: README.md
@@ -172,7 +172,7 @@
       target: .gitignore
     - source: starter_templates/rust/Cargo.toml
       target: Cargo.toml
-    - soruce: starter_templates/rust/Cargo.lock
+    - source: starter_templates/rust/Cargo.lock
       target: Cargo.lock
     - source: starter_templates/rust/spawn_redis_server.sh
       target: spawn_redis_server.sh
