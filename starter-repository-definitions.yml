@@ -63,3 +63,147 @@
   template_attributes:
     required_executable: "python (3.8)"
     user_editable_file: "app/main.py"
+
+- language: go
+  file_mapppings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/go/app/server.go
+      target: app/server.go
+    - source: starter_templates/go/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "go (1.13)"
+    user_editable_file: "app/server.go"
+
+- language: c
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/c/app/server.c
+      target: app/server.c
+    - source: starter_templates/c/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_attibutes: "gcc"
+    user_editable_file: "app/server.c"
+
+- language: ruby
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/ruby/app/server.rb
+      target: app/server.rb
+    - source: starter_templates/ruby/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_attributes: "ruby (2.7)"
+    user_editable_file: "app/server.rb"
+
+- language: haskell
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/haskell/.gitignore
+      target: .gitignore
+    - source: starter_templates/haskell/package.yaml
+      target: package.yaml
+    - source: starter_templates/haskell/stack.yaml
+      target: stack.yaml
+    - source: starter_templates/haskell/stack.yaml.lock
+      target: stack.yaml.lock
+    - source: starter_templates/haskell/app/Main.hs
+      target: app/Main.hs
+    - source: starter_templates/haskell/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "stack"
+    user_editable_file: "Main.hs"
+
+- language: java
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/java/.gitignore
+      target: .gitignore
+    - source: starter_templates/java/src/main/java/Main.java
+      target: src/main/java/Main.java
+    - source: starter_templates/java/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "java (1.8)"
+    user_editable_file: "Main.java"
+
+- language: elixir
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/elixir/lib/server.ex
+      target: lib/server.ex
+    - source: starter_templates/elixir/mix.exs
+      target: mix.exs
+    - source: starter_templates/elixir/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "mix"
+    user_editable_file: "lib/server.ex"
+
+- langauge: rust
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/rust/src/main.rs
+      target: src/main.rs
+    - source: starter_templates/rust/.gitignore
+      target: .gitignore
+    - source: starter_templates/rust/Cargo.toml
+      target: Cargo.toml
+    - soruce: starter_templates/rust/Cargo.lock
+      target: Cargo.lock
+    - source: starter_templates/rust/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "cargo (1.54)"
+    user_editable_file: "src/main.rs"
+
+- language: php
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/php/app/main.php
+      target: app/main.php
+    - source: starter_templates/php/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "php (7.4)"
+    user_editable_file: "app/main.php"
+
+- language: javascript
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/javascript/app/main.js
+      target: app/main.js
+    - source: starter_templates/javascript/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "node (16)"
+    user_editable_file: "app/main.js"
