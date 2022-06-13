@@ -17,8 +17,15 @@ jobs:
           bundler-cache: true
           working-directory: course_definition_tester
 
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - run: npm install
+        working-directory: course_definition_tester
+
       - run: make compile
-        working-directory: ./course_definition_tester
+        working-directory: course_definition_tester
 
       - run: git diff --exit-code # Changes to existing files
       - run: test -z "$(git ls-files compiled_starters/ --exclude-standard --others)" # Untracked files
