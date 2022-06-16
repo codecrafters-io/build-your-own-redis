@@ -5,7 +5,7 @@ as `PONG`. Adding support for `ECHO` means that we first need to determine wheth
 or a `PING`. We also need to be able to read the argument provided to `ECHO`, in order to use it in the response.
 
 Since the entire communication follows RESP, we also need to build a decoder for parsing the incoming request, and 
-an encoder for delivering the response. You can review the complete implementation in the solution tab — in this 
+an encoder for delivering the response. You can review the complete implementation in the Diff tab — in this 
 guide we'll highlight the key areas to pay attention to.
 
 We'll decode and capture the request within `value`. The decoding will be handled by `DecodeRESP`, a utility 
@@ -39,7 +39,7 @@ switch command {
 }
 ```
 
-For `ECHO`, ____
+For `ECHO`, we send back the first argument as a RESP-encoded bulk string.
 
 ```go
 case "echo":
@@ -47,7 +47,8 @@ conn.Write([]byte(fmt.Sprintf("$%d\r\n%s\r\n", len(args[0].String()), args[0].St
 ```
 
 In the solution for this stage, you'll find that we've created a separate utility file for functions related to 
-RESP. The key function in it is `DecodeRESP`. What's happening is ____
+RESP. The key function in it is `DecodeRESP`. This function reads the first byte from the input and then calls other 
+functions as needed.
 
 ```go
 func DecodeRESP(byteStream *bufio.Reader) (Value, error) {
