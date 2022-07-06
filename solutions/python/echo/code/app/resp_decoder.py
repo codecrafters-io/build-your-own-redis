@@ -8,7 +8,7 @@ class ConnectionBuffer:
         while delimiter not in self.buffer:
             data = self.connection.recv(1024)
 
-            if not data: # socket closed
+            if not data:  # socket closed
                 return None
 
             self.buffer += data
@@ -20,7 +20,7 @@ class ConnectionBuffer:
         if len(self.buffer) < bufsize:
             data = self.connection.recv(1024)
 
-            if not data: # socket closed
+            if not data:  # socket closed
                 return None
 
             self.buffer += data
@@ -34,16 +34,16 @@ class RESPDecoder:
         self.connection = ConnectionBuffer(connection)
 
     def decode(self):
-        dataTypeByte = self.connection.read(1)
+        data_type_byte = self.connection.read(1)
 
-        if dataTypeByte == b"+":
+        if data_type_byte == b"+":
             return self.decode_simple_string()
-        elif dataTypeByte == b"$":
+        elif data_type_byte == b"$":
             return self.decode_bulk_string()
-        elif dataTypeByte == b"*":
+        elif data_type_byte == b"*":
             return self.decode_array()
         else:
-            raise Exception(f"Unknown data type byte: {dataTypeByte}")
+            raise Exception(f"Unknown data type byte: {data_type_byte}")
 
     def decode_simple_string(self):
         return self.connection.read_until_delimiter(b"\r\n")
