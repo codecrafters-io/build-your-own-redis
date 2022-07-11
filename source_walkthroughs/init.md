@@ -1,4 +1,4 @@
-In the official Redis implementation, the function responsible for binding to a port is [`listenToPort`](function-listenToPort): 
+In the official Redis implementation, the function responsible for binding to a port is [`listenToPort`][function-listenToPort]: 
 
 ^^ referenced_code
 link:https://github.com/redis/redis/blob/8203461120bf244e5c0576222c6aa5d986587bca/src/server.c#L2282-L2322
@@ -24,10 +24,10 @@ int listenToPort(int port, socketFds *sfd) {
 }
 ```
 
-This function is called inside the [`initServer`](function-initServer) routine which runs when a Redis server boots. 
+This function is called inside the [`initServer`][function-initServer] routine which runs when a Redis server boots. 
 
-The underlying functions that it calls, [`anetTcpServer`](function-anetTcpServer) and 
-[`anetTcp6Server`](function-anetTcp6Server), use [`listen`](unix-listen) from `sys/socket.h`.
+The underlying functions that it calls, [`anetTcpServer`][function-anetTcpServer] and 
+[`anetTcp6Server`][function-anetTcp6Server], use [`listen`][unix-listen] from `sys/socket.h`.
 
 ### Updating the port on a running Redis instance
 
@@ -53,7 +53,7 @@ int changeListenPort(int port, socketFds *sfd, aeFileProc *accept_handler) {
 }
 ```
 
-This can be invoked by running the [`CONFIG SET`](redis-config-set-command) command like this: `CONFIG SET port <new_port>`.
+This can be invoked by running the [`CONFIG SET`][redis-config-set-command] command like this: `CONFIG SET port <new_port>`.
 
 [redis-config-set-command]: https://redis.io/commands/config-set
 [unix-listen]: https://man7.org/linux/man-pages/man2/listen.2.html
