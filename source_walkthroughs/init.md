@@ -41,7 +41,9 @@ The underlying functions that it calls, [`anetTcpServer`][function-anetTcpServer
 
 Fun fact: you can update the port on a running Redis server without a restart!
 
-The function that handles this is `changeListenPort`: 
+The function that handles this is [`changeListenPort`][function-changeListenPort]:
+
+[function-changeListenPort]: https://github.com/redis/redis/blob/8203461120bf244e5c0576222c6aa5d986587bca/src/server.c#L6193-L6223 
 
 ^^ referenced_code
 link:https://github.com/redis/redis/blob/ef68deb3c2a4d6205ddc84141d4d84b6e53cbc1b/src/server.c#L6260-L6290
