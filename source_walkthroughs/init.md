@@ -1,5 +1,8 @@
 In the official Redis implementation, the function responsible for binding to a port is [`listenToPort`][function-listenToPort]: 
 
+[function-listenToPort]: https://github.com/redis/redis/blob/8203461120bf244e5c0576222c6aa5d986587bca/src/server.c#L2282
+
+
 ^^ referenced_code
 link:https://github.com/redis/redis/blob/8203461120bf244e5c0576222c6aa5d986587bca/src/server.c#L2282-L2322
 ```c
@@ -29,6 +32,11 @@ This function is called inside the [`initServer`][function-initServer] routine w
 The underlying functions that it calls, [`anetTcpServer`][function-anetTcpServer] and 
 [`anetTcp6Server`][function-anetTcp6Server], use [`listen`][unix-listen] from `sys/socket.h`.
 
+[unix-listen]: https://man7.org/linux/man-pages/man2/listen.2.html
+[function-anetTcp6Server]: https://github.com/redis/redis/blob/ef68deb3c2a4d6205ddc84141d4d84b6e53cbc1b/src/anet.c#L476
+[function-anetTcpServer]: https://github.com/redis/redis/blob/ef68deb3c2a4d6205ddc84141d4d84b6e53cbc1b/src/anet.c#L481
+[function-initServer]: https://github.com/redis/redis/blob/8203461120bf244e5c0576222c6aa5d986587bca/src/server.c#L2391
+
 ### Updating the port on a running Redis instance
 
 Fun fact: you can update the port on a running Redis server without a restart!
@@ -56,8 +64,3 @@ int changeListenPort(int port, socketFds *sfd, aeFileProc *accept_handler) {
 This can be invoked by running the [`CONFIG SET`][redis-config-set-command] command like this: `CONFIG SET port <new_port>`.
 
 [redis-config-set-command]: https://redis.io/commands/config-set
-[unix-listen]: https://man7.org/linux/man-pages/man2/listen.2.html
-[function-anetTcp6Server]: https://github.com/redis/redis/blob/ef68deb3c2a4d6205ddc84141d4d84b6e53cbc1b/src/anet.c#L476
-[function-anetTcpServer]: https://github.com/redis/redis/blob/ef68deb3c2a4d6205ddc84141d4d84b6e53cbc1b/src/anet.c#L481
-[function-listenToPort]: https://github.com/redis/redis/blob/8203461120bf244e5c0576222c6aa5d986587bca/src/server.c#L2282
-[function-initServer]: https://github.com/redis/redis/blob/8203461120bf244e5c0576222c6aa5d986587bca/src/server.c#L2391
