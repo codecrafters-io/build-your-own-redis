@@ -61,7 +61,7 @@ stages:
   - slug: "init"
     name: "Bind to a port"
     description_md: |
-      in this stage, your task is to start a tcp server on port 6379, the default port that redis uses.
+      In this stage, your task is to start a TCP server on port 6379, the default port that redis uses.
     difficulty: very_easy
     marketing_md: |
       In this stage, you'll start a TCP server on port 6379, which is the
