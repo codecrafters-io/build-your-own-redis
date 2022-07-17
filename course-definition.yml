@@ -87,6 +87,7 @@ stages:
       In this stage, you'll respond to the
       [PING](https://redis.io/commands/ping) command. You'll use [the Redis
       protocol](https://redis.io/topics/protocol) to encode the reply.
+    source_walkthrough_slug: "redis-ping-command"
 
   - slug: "ping-pong-multiple"
     name: "Respond to multiple PINGs"
