@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1700.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "codecrafters-redis", "codecrafters-redis.csproj", "{D133C1BC-18C6-4906-A04C-7104C5285736}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D133C1BC-18C6-4906-A04C-7104C5285736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D133C1BC-18C6-4906-A04C-7104C5285736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D133C1BC-18C6-4906-A04C-7104C5285736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D133C1BC-18C6-4906-A04C-7104C5285736}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FEE7CEA9-874B-4F36-8451-CC1F1F2EB241}
+	EndGlobalSection
+EndGlobal
