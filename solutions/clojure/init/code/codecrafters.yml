@@ -1,0 +1,11 @@
+# Set this to true if you want debug logs.
+#
+# These can be VERY verbose, so we suggest turning them off
+# unless you really need them.
+debug: false
+
+# Use this to change the Clojure version used to run your code
+# on Codecrafters.
+#
+# Available versions: clojure-1.10.3
+language_pack: clojure-1.10.3
