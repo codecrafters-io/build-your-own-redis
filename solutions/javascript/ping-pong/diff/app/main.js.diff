@@ -1,10 +1,10 @@
 @@ -1,7 +1,9 @@
  const net = require("net");
 
- const server = net.createServer((socket) => {
--  socket.pipe(socket);
-+  socket.on("data", () => {
-+    socket.write("+PONG\r\n");
+ const server = net.createServer((connection) => {
+-  // Handle connection
++  connection.on("data", () => {
++    connection.write("+PONG\r\n");
 +  });
  });
 
