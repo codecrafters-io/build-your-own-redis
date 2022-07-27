@@ -1,8 +1,8 @@
 const net = require("net");
 
-const server = net.createServer((socket) => {
-  socket.on("data", () => {
-    socket.write("+PONG\r\n");
+const server = net.createServer((connection) => {
+  connection.on("data", () => {
+    connection.write("+PONG\r\n");
   });
 });
 
