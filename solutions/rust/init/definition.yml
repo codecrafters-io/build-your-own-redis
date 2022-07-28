@@ -3,9 +3,9 @@ author_details:
   profile_url: https://github.com/rohitpaulk
   avatar_url: https://github.com/rohitpaulk.png
   headline: CTO, CodeCrafters
-#reviewers_details:
-#- name: Marcos Lilljedahl
-#  profile_url: https://www.docker.com/captains/marcos-lilljedahl/
-#  avatar_url: https://github.com/marcosnils.png
-#  headline: Docker Contributor
+reviewers_details:
+  name: Juan Campa
+  profile_url: https://twitter.com/juancampa
+  avatar_url: https://github.com/juancampa.png
+  headline: Chromium Hacker @ Mighty
 pull_request_url: https://github.com/codecrafters-io/build-your-own-redis/pull/31
