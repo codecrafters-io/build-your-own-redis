@@ -15,16 +15,7 @@ First, we store the connection into a variable so we can read its value.
 conn, err := l.Accept()
 ```
 
-Next, we read data from the connection. For this stage, we know that the tester _only_ sends us `PING`, so we don't have to 
-parse the incoming data. If reading from the connection fails, we log the error and exit.
-```go
-if _, err := conn.Read([]byte{}); err != nil {
-  fmt.Println("Error reading from client: ", err.Error())
-  os.Exit(1)
-}
-```
-
-If no error, we need to respond back with `PONG`. 
+For this stage, we know that the tester _only_ sends us `PING`, so we don't have to parse the incoming data.
 
 As mentioned in the stage instructions, we need to encode the response as a 
 [RESP Simple String](https://redis.io/docs/reference/protocol-spec/#resp-simple-strings). The ideal approach is to 

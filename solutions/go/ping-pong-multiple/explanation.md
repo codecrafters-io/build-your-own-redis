@@ -5,7 +5,6 @@ Earlier, we were anticipating a single `PING` request, and were accordingly resp
 As an improvement, we'll now monitor for more incoming requests — and each time we get one, we'll respond back with
 `PONG`, and go back to waiting for the next one. We can achieve this with a `for` loop.
 
-
 ```go
 for {
     if _, err := conn.Read([]byte{}); err != nil {
