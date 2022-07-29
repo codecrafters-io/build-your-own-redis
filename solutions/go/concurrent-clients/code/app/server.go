@@ -25,6 +25,8 @@ func main() {
 }
 
 func handleConnection(conn net.Conn) {
+	defer conn.Close()
+
 	for {
 		if _, err := conn.Read([]byte{}); err != nil {
 			fmt.Println("Error reading from client: ", err.Error())

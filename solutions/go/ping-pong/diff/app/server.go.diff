@@ -1,4 +1,4 @@
-@@ -1,20 +1,23 @@
+@@ -1,20 +1,25 @@
  package main
 
  import (
@@ -20,6 +20,8 @@
  		fmt.Println("Error accepting connection: ", err.Error())
  		os.Exit(1)
  	}
++
++	defer conn.Close()
 +
 +	conn.Write([]byte("+PONG\r\n"))
  }

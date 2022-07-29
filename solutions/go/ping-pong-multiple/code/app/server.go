@@ -19,6 +19,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	defer conn.Close()
+
 	for {
 		if _, err := conn.Read([]byte{}); err != nil {
 			fmt.Println("Error reading from client: ", err.Error())

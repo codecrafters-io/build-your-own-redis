@@ -28,6 +28,8 @@ func main() {
 }
 
 func handleConnection(conn net.Conn, storage *Storage) {
+	defer conn.Close()
+
 	for {
 		value, err := DecodeRESP(bufio.NewReader(conn))
 		if err != nil {
