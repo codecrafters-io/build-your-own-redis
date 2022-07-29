@@ -1,4 +1,4 @@
-@@ -1,48 +1,55 @@
+@@ -1,50 +1,57 @@
  package main
 
  import (
@@ -31,6 +31,8 @@
 
 -func handleConnection(conn net.Conn) {
 +func handleConnection(conn net.Conn, storage *Storage) {
+ 	defer conn.Close()
+
  	for {
  		value, err := DecodeRESP(bufio.NewReader(conn))
  		if err != nil {

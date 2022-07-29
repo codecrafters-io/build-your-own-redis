@@ -1,4 +1,4 @@
-@@ -1,36 +1,48 @@
+@@ -1,38 +1,50 @@
  package main
 
  import (
@@ -27,6 +27,8 @@
  }
 
  func handleConnection(conn net.Conn) {
+ 	defer conn.Close()
+
  	for {
 -		if _, err := conn.Read([]byte{}); err != nil {
 -			fmt.Println("Error reading from client: ", err.Error())
