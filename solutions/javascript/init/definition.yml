@@ -5,7 +5,7 @@ author_details:
   headline: CTO, CodeCrafters
 reviewers_details:
 - name: JJ Kasper
- profile_url: https://twitter.com/_ijjk
- avatar_url: https://github.com/ijjk.png
- headline: Next.js Maintainer
+  profile_url: https://twitter.com/_ijjk
+  avatar_url: https://github.com/ijjk.png
+  headline: Next.js Maintainer
 pull_request_url: https://github.com/codecrafters-io/build-your-own-redis/pull/21

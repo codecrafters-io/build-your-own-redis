@@ -5,7 +5,7 @@ author_details:
   headline: CTO, CodeCrafters
 reviewers_details:
 - name: Juan Campa
- profile_url: https://twitter.com/juancampa
- avatar_url: https://github.com/juancampa.png
- headline: Chromium Hacker @ Mighty
+  profile_url: https://twitter.com/juancampa
+  avatar_url: https://github.com/juancampa.png
+  headline: Chromium Hacker @ Mighty
 pull_request_url: https://github.com/codecrafters-io/build-your-own-redis/pull/31

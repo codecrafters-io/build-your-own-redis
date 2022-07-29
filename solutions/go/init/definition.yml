@@ -5,7 +5,7 @@ author_details:
   headline: CTO, CodeCrafters
 reviewers_details:
 - name: Marcos Lilljedahl
- profile_url: https://twitter.com/marcosnils
- avatar_url: https://github.com/marcosnils.png
- headline: Docker Contributor
+  profile_url: https://twitter.com/marcosnils
+  avatar_url: https://github.com/marcosnils.png
+  headline: Docker Contributor
 pull_request_url: https://github.com/codecrafters-io/build-your-own-redis/pull/14
