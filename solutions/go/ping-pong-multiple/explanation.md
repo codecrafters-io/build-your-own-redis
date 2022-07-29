@@ -19,3 +19,7 @@ for {
 While this approach gets us through the stage, notice how our program is now blocked on the for loop as it waits 
 for incoming requests. During this time, the program cannot do anything else (including accepting connections from 
 other clients). We'll get around that in the next stage when we tackle concurrent requests.
+
+Another thing to note here is that `conn.Read()` isn't guaranteed to process commands independently. `conn.Read()` 
+returns bytes as and when they're available, so it's possible that the function returns with a single byte. We'll 
+fix this when we implement a proper Redis protocol parser in stage 5.
