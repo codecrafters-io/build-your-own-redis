@@ -36,8 +36,8 @@ language_pack: c-9.2
 language_pack: ruby-2.7
 {{/ language_is_ruby }}
 {{# language_is_rust }}
-# Available versions: rust-1.54
-language_pack: rust-1.54
+# Available versions: rust-1.62
+language_pack: rust-1.62
 {{/ language_is_rust }}
 {{# language_is_haskell }}
 # Available versions: haskell-9.0
