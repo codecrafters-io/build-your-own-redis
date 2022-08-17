@@ -1,4 +1,4 @@
-FROM rust:1.54-buster
+FROM rust:1.62-buster
 
 COPY Cargo.toml /app/Cargo.toml
 COPY Cargo.lock /app/Cargo.lock
