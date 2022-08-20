@@ -75,7 +75,7 @@
     - source: starter_templates/go/spawn_redis_server.sh
       target: spawn_redis_server.sh
   template_attributes:
-    required_executable: "go (1.13)"
+    required_executable: "go (1.19)"
     user_editable_file: "app/server.go"
 
 - language: c
