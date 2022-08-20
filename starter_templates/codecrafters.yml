@@ -16,8 +16,8 @@ language_pack: python-3.8
 language_pack: swift-5.1
 {{/ language_is_swift }}
 {{# language_is_go }}
-# Available versions: go-1.16
-language_pack: go-1.16
+# Available versions: go-1.19
+language_pack: go-1.19
 {{/ language_is_go }}
 {{# language_is_php }}
 # Available versions: php-7.4
