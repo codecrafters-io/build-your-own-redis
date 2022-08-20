@@ -1,0 +1,15 @@
+name: Sync Starter Repositories
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync_repos:
+    uses: codecrafters-io/course-definition-tester/.github/workflows/sync-starter-repositories.yml@main
+    secrets:
+      REPOSITORY_SYNCER_GITHUB_TOKEN: ${{ secrets.STARTER_REPOSITORY_SYNCER_GITHUB_TOKEN }}
