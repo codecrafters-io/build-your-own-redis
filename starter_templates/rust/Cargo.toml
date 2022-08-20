@@ -19,5 +19,7 @@ edition = "2018"
 #
 # DON'T EDIT THIS!
 [dependencies]
-bytes = "0.5" # helps manage buffers
+anyhow = "1.0.59"                                # error handling
+bytes = "0.5"                                    # helps manage buffers
+thiserror = "1.0.32"                             # error handling
 tokio = { version = "0.2", features = ["full"] } # async networking
