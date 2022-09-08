@@ -1,5 +1,7 @@
 FROM haskell:9.0.2-buster
 
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
+
 WORKDIR /app
 
 RUN mkdir -p /etc/stack
