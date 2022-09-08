@@ -1,5 +1,7 @@
 FROM haskell:8.8.3-buster
 
+ENV DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
+
 WORKDIR /app
 
 RUN mkdir -p /etc/stack
