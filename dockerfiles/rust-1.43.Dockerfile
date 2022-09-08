@@ -1,6 +1,6 @@
 FROM rust:1.43-buster
 
-ENV DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
 
 COPY Cargo.toml /app/Cargo.toml
 COPY Cargo.lock /app/Cargo.lock

@@ -1,6 +1,6 @@
 FROM haskell:8.8.3-buster
 
-ENV DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
 
 WORKDIR /app
 
