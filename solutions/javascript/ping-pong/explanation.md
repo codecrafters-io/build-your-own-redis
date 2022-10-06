@@ -2,16 +2,12 @@ Stage 2 is an exercise in reading and responding to requests using [net.Socket o
 
 In the first stage, we were simply accepting a connection but weren't reading data from it.
 
-```javascript
-socket.pipe(socket); // This just echoes back any data received
-```
-
 As we go further, we want to actually parse the incoming request, and respond suitably.
 
 First, we'll add an event listener for the `data` event.
 
 ```javascript
-socket.on("data", () => {
+connection.on("data", () => {
   // Respond with PONG
 });
 ```
@@ -25,5 +21,5 @@ create a RESP encoder function — but for now, since we know that our response 
 the response. We will create the function in the upcoming stages.
 
 ```python
-socket.write("+PONG\r\n");
+connection.write("+PONG\r\n");
 ```
