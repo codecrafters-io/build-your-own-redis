@@ -1,7 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-redis.csproj,codecrafters-redis.sln"
-
 COPY codecrafters-redis.csproj /app/codecrafters-redis.csproj
 COPY codecrafters-redis.sln /app/codecrafters-redis.sln
 
@@ -18,3 +16,6 @@ RUN mv /app/bin /app-cached/bin
 
 RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && dotnet build --configuration Release ." > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
+
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-redis.csproj,codecrafters-redis.sln"
+

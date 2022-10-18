@@ -1,7 +1,5 @@
 FROM rust:1.43-buster
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
-
 COPY Cargo.toml /app/Cargo.toml
 COPY Cargo.lock /app/Cargo.lock
 
@@ -21,3 +19,6 @@ RUN rm -f /tmp/codecrafters-redis-target/release/.fingerprint/*redis_starter_rus
 RUN rm -f /tmp/codecrafters-redis-target/release/.fingerprint/redis_starter_rust*
 
 RUN rm -rf /app/src
+
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
+

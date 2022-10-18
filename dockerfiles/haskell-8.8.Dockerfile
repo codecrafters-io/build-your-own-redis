@@ -1,7 +1,5 @@
 FROM haskell:8.8.3-buster
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
-
 WORKDIR /app
 
 RUN mkdir -p /etc/stack
@@ -21,3 +19,6 @@ RUN echo 'main :: IO ()' >> /app/app/Main.hs
 RUN echo 'main = putStrLn "Hello, World!"' >> /app/app/Main.hs
 
 RUN stack build
+
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
+

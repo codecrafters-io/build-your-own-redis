@@ -1,7 +1,5 @@
 FROM rust:1.62-buster
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
-
 COPY Cargo.toml /app/Cargo.toml
 COPY Cargo.lock /app/Cargo.lock
 
@@ -24,3 +22,6 @@ RUN rm -rf /app/src
 
 RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && cargo build --release --target-dir=/tmp/codecrafters-redis-target --manifest-path Cargo.toml" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
+
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
+
