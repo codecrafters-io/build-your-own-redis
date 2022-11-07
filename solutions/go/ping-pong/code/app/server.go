@@ -29,6 +29,7 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Let's use a simple substring check for now. We'll implement a proper Redis Protocol parser in later stages.
 	if bytes.Contains(buf, []byte("ping")) {
 		conn.Write([]byte("+PONG\r\n"))
 	} else {

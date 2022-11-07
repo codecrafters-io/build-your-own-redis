@@ -1,4 +1,4 @@
-@@ -1,20 +1,38 @@
+@@ -1,20 +1,39 @@
  package main
 
  import (
@@ -31,6 +31,7 @@
 +		os.Exit(1)
 +	}
 +
++	// Let's use a simple substring check for now. We'll implement a proper Redis Protocol parser in later stages.
 +	if bytes.Contains(buf, []byte("ping")) {
 +		conn.Write([]byte("+PONG\r\n"))
 +	} else {

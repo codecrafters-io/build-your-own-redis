@@ -28,11 +28,23 @@ func handleConnection(conn net.Conn) {
 	defer conn.Close()
 
 	for {
-		if _, err := conn.Read([]byte{}); err != nil {
-			fmt.Println("Error reading from client: ", err.Error())
-			continue
+		buf := make([]byte, 1024)
+
+		if _, err := conn.Read(buf); err != nil {
+			if err == io.EOF {
+				continue
+			} else {
+				fmt.Println("error reading from client: ", err.Error())
+				os.Exit(1)
+			}
 		}
 
-		conn.Write([]byte("+PONG\r\n"))
+		// Let's use a simple substring check for now. We'll implement a proper Redis Protocol parser in later stages.
+		if bytes.Contains(buf, []byte("ping")) {
+			conn.Write([]byte("+PONG\r\n"))
+		} else {
+			fmt.Println("received unknown command:", string(buf))
+			os.Exit(1)
+		}
 	}
 }
