@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"net"
 	"os"
 )
@@ -21,12 +23,23 @@ func main() {
 
 	defer conn.Close()
 
-	for {
-		if _, err := conn.Read([]byte{}); err != nil {
-			fmt.Println("Error reading from client: ", err.Error())
-			continue
-		}
+    for {
+        buf := make([]byte, 1024)
 
-		conn.Write([]byte("+PONG\r\n"))
-	}
+        if _, err := conn.Read(buf); err != nil {
+            if err == io.EOF {
+                continue
+            } else {
+                fmt.Println("error reading from client: ", err.Error())
+                os.Exit(1)
+            }
+        }
+
+        if bytes.Contains(buf, []byte("ping")) {
+            conn.Write([]byte("+PONG\r\n"))
+        } else {
+            fmt.Println("received unknown command:", string(buf))
+            os.Exit(1)
+        }
+    }
 }
