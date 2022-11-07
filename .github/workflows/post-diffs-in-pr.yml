@@ -1,0 +1,14 @@
+name: Post diffs
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  post_diffs:
+    uses: codecrafters-io/course-sdk/.github/workflows/post-diffs-in-pr.yml@nikandfor/post_diffs_in_pr
+    with:
+      sdkRef: nikandfor/post_diffs_in_pr
