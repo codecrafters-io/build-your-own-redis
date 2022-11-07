@@ -23,23 +23,23 @@ func main() {
 
 	defer conn.Close()
 
-    for {
-        buf := make([]byte, 1024)
+	for {
+		buf := make([]byte, 1024)
 
-        if _, err := conn.Read(buf); err != nil {
-            if err == io.EOF {
-                continue
-            } else {
-                fmt.Println("error reading from client: ", err.Error())
-                os.Exit(1)
-            }
-        }
+		if _, err := conn.Read(buf); err != nil {
+			if err == io.EOF {
+				continue
+			} else {
+				fmt.Println("error reading from client: ", err.Error())
+				os.Exit(1)
+			}
+		}
 
-        if bytes.Contains(buf, []byte("ping")) {
-            conn.Write([]byte("+PONG\r\n"))
-        } else {
-            fmt.Println("received unknown command:", string(buf))
-            os.Exit(1)
-        }
-    }
+		if bytes.Contains(buf, []byte("ping")) {
+			conn.Write([]byte("+PONG\r\n"))
+		} else {
+			fmt.Println("received unknown command:", string(buf))
+			os.Exit(1)
+		}
+	}
 }
