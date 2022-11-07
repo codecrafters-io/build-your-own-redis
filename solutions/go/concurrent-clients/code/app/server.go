@@ -34,7 +34,7 @@ func handleConnection(conn net.Conn) {
 
 		if _, err := conn.Read(buf); err != nil {
 			if err == io.EOF {
-				continue
+				break
 			} else {
 				fmt.Println("error reading from client: ", err.Error())
 				os.Exit(1)
