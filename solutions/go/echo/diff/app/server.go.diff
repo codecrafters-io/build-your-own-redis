@@ -1,8 +1,7 @@
-@@ -1,48 +1,50 @@
+@@ -1,47 +1,50 @@
  package main
 
  import (
--	"bytes"
 +	"bufio"
  	"fmt"
 -	"io"
