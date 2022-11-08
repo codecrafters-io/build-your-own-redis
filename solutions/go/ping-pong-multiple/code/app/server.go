@@ -35,12 +35,8 @@ func main() {
 			}
 		}
 
-		// Let's use a simple substring check for now. We'll implement a proper Redis Protocol parser in later stages.
-		if bytes.Contains(buf, []byte("ping")) {
-			conn.Write([]byte("+PONG\r\n"))
-		} else {
-			fmt.Println("received unknown command:", string(buf))
-			os.Exit(1)
-		}
+		// Let's ignore the client's input for now and hardcode a response.
+		// We'll implement a proper Redis Protocol parser in later stages.
+		conn.Write([]byte("+PONG\r\n"))
 	}
 }

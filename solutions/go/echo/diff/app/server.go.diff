@@ -1,4 +1,4 @@
-@@ -1,52 +1,50 @@
+@@ -1,48 +1,50 @@
  package main
 
  import (
@@ -47,21 +47,19 @@
 +			return // Ignore clients that we fail to read from
  		}
 
--		// Let's use a simple substring check for now. We'll implement a proper Redis Protocol parser in later stages.
--		if bytes.Contains(buf, []byte("ping")) {
+-		// Let's ignore the client's input for now and hardcode a response.
+-		// We'll implement a proper Redis Protocol parser in later stages.
+-		conn.Write([]byte("+PONG\r\n"))
 +		command := value.Array()[0].String()
 +		args := value.Array()[1:]
 +
 +		switch command {
 +		case "ping":
- 			conn.Write([]byte("+PONG\r\n"))
--		} else {
--			fmt.Println("received unknown command:", string(buf))
--			os.Exit(1)
++			conn.Write([]byte("+PONG\r\n"))
 +		case "echo":
 +			conn.Write([]byte(fmt.Sprintf("$%d\r\n%s\r\n", len(args[0].String()), args[0].String())))
 +		default:
 +			conn.Write([]byte("-ERR unknown command '" + command + "'\r\n"))
- 		}
++		}
  	}
  }
