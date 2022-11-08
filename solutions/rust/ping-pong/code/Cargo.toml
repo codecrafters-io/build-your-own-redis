@@ -9,7 +9,7 @@
 name = "redis-starter-rust"
 version = "0.1.0"
 authors = ["Codecrafters <hello@codecrafters.io>"]
-edition = "2018"
+edition = "2021"
 
 # DON'T EDIT THIS!
 #
