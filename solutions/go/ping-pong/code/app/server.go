@@ -21,5 +21,14 @@ func main() {
 
 	defer conn.Close()
 
+	buf := make([]byte, 1024)
+
+	if _, err := conn.Read(buf); err != nil {
+		fmt.Println("error reading from client: ", err.Error())
+		os.Exit(1)
+	}
+
+	// Let's ignore the client's input for now and hardcode a response.
+	// We'll implement a proper Redis Protocol parser in later stages.
 	conn.Write([]byte("+PONG\r\n"))
 }

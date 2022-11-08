@@ -1,8 +1,9 @@
-@@ -1,25 +1,32 @@
+@@ -1,34 +1,41 @@
  package main
 
  import (
  	"fmt"
++	"io"
  	"net"
  	"os"
  )
@@ -22,13 +23,28 @@
 
  	defer conn.Close()
 
--	conn.Write([]byte("+PONG\r\n"))
+-	buf := make([]byte, 1024)
 +	for {
-+		if _, err := conn.Read([]byte{}); err != nil {
-+			fmt.Println("Error reading from client: ", err.Error())
-+			continue
++		buf := make([]byte, 1024)
+
+-	if _, err := conn.Read(buf); err != nil {
+-		fmt.Println("error reading from client: ", err.Error())
+-		os.Exit(1)
++		if _, err := conn.Read(buf); err != nil {
++			if err == io.EOF {
++				break
++			} else {
++				fmt.Println("error reading from client: ", err.Error())
++				os.Exit(1)
++			}
 +		}
 +
++		// Let's ignore the client's input for now and hardcode a response.
++		// We'll implement a proper Redis Protocol parser in later stages.
 +		conn.Write([]byte("+PONG\r\n"))
-+	}
+ 	}
+-
+-	// Let's ignore the client's input for now and hardcode a response.
+-	// We'll implement a proper Redis Protocol parser in later stages.
+-	conn.Write([]byte("+PONG\r\n"))
  }
