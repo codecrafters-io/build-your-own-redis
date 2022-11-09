@@ -6,14 +6,24 @@ Let's start by moving our responder into its own function. It needs a connection
 
 ```go
 func handleConnection(conn net.Conn) {
-    for {
-        if _, err := conn.Read([]byte{}); err != nil {
-            fmt.Println("Error reading from client: ", err.Error())
-            continue
-        }
-        
-        conn.Write([]byte("+PONG\r\n"))
-    }
+	defer conn.Close()
+
+	for {
+		buf := make([]byte, 1024)
+
+		if _, err := conn.Read(buf); err != nil {
+			if err == io.EOF {
+				break
+			} else {
+				fmt.Println("error reading from client: ", err.Error())
+				os.Exit(1)
+			}
+		}
+
+		// Let's ignore the client's input for now and hardcode a response.
+		// We'll implement a proper Redis Protocol parser in later stages.
+		conn.Write([]byte("+PONG\r\n"))
+	}
 }
 ```
 
@@ -27,7 +37,7 @@ blocking the program by sequentially handling one connection at a time.
 for {
     conn, err := l.Accept()
     if err != nil {
-        fmt.Println("Error reading from client: ", err.Error())
+        fmt.Println("Error accepting connection: ", err.Error())
         os.Exit(1)
     }
 
