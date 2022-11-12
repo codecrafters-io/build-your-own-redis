@@ -61,7 +61,7 @@
     - source: starter_templates/python/spawn_redis_server.sh
       target: spawn_redis_server.sh
   template_attributes:
-    required_executable: "python (3.8)"
+    required_executable: "python (3.8+)"
     user_editable_file: "app/main.py"
 
 - language: go
