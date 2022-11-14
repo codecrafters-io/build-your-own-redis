@@ -11,4 +11,4 @@ concurrency:
 
 jobs:
   test_course_definition:
-    uses: codecrafters-io/course-definition-tester/.github/workflows/test-course-definition.yml@main
+    uses: codecrafters-io/course-sdk/.github/workflows/test-course-definition.yml@main
