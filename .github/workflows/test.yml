@@ -11,6 +11,4 @@ concurrency:
 
 jobs:
   test_course_definition:
-    uses: codecrafters-io/course-sdk/.github/workflows/test-course-definition.yml@nikandfor/rename_stage_dirs
-    with:
-      sdkRef: nikandfor/rename_stage_dirs
+    uses: codecrafters-io/course-sdk/.github/workflows/test-course-definition.yml@main
