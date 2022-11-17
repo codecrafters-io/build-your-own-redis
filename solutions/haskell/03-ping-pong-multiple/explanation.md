@@ -1,9 +1,7 @@
-In stage 4 you need to handle concurrent clients, which means that the server has to accept more than one connection at a time.
+In stage 3 you need to continually respond to `PING` requests, rather than closing the connection after responding just once.
 
-The `network-simple` library already handles concurrency for us, so the only thing we need is a way to continually listen and accept new client connections.
-Something akin to `while(true)`, but for the `IO ()` type.
+You will want something akin to `while(true)`, but for the `IO ()` type. This can be achieved by the `forever` function, which is part of the `Control.Monad` package that is in the `base` library.
 
-This can be achieve by the `forever` function, which is part of the `Control.Monad` package that is in the `base` library.
 As the package name already implies, this is another monadic function, for which you can, of course, use the handy `do` expression.
 
 ```haskell
