@@ -9,10 +9,15 @@ _ <- forever $ do
 ```
 
 Since the `do` expression requires to finish with an expression itself, we cannot just pack the `recv` and `send` functions into the `forever` loop.
-Therefore, we simply remove the return value from the `send` function which we discarded anyway.
+
+You noticed, that with the arrow `<-` we assign a return value to a variable name (in our case we discard the value using the underscore `_`).
+However, the `send` function is an expression itself.
+Therefore, if we remove the assignment of the return value from the `send` function we get a valid expression with which we can terminate a do expression.
 
 ```haskell
 _ <- forever $ do
     _ <- recv socket 2048
     send socket "+PONG\r\n"
 ```
+
+[This explanation](https://en.wikibooks.org/wiki/Haskell/do_notation) on the do notation goes into more detail why an expression is required at the end (think lambda function).
