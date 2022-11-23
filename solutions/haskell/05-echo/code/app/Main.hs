@@ -17,19 +17,17 @@ import Text.Megaparsec
       (<|>),
       Parsec,
       MonadParsec(try),
-      ParsecT,
       Stream(Tokens) )
 import Text.Megaparsec.Byte ( crlf, printChar )
 import Text.Megaparsec.Byte.Lexer (decimal)
 import Data.Void ( Void )
-import Data.Functor.Identity (Identity)
 import Data.Either (fromRight)
 import Data.Text ( toLower, Text )
 import Data.Text.Encoding (decodeUtf8)
 
 type Request = ByteString
 type Response = ByteString
-type Parser = Parsec Void Response
+type Parser = Parsec Void Request
 type Command = IO Response
 
 main :: IO ()
@@ -47,14 +45,14 @@ main = do
 encodeRESP :: Response -> Response
 encodeRESP s = B.concat ["+", s, "\r\n"]
 
-parseInput :: Request -> Command
+parseInput :: Request -> IO Response
 parseInput req = fromRight err response
     where
         err = return "-ERR unknown command"
         response = parseRequest req
 
-parseRequest :: Response
-    -> Either (ParseErrorBundle Response Void) Command
+parseRequest :: Request
+    -> Either (ParseErrorBundle ByteString Void) Command
 parseRequest = parse parseInstruction ""
 
 parseInstruction :: Parser Command
@@ -64,12 +62,13 @@ parseInstruction = try parseEcho
 cmpIgnoreCase :: Text -> Text -> Bool
 cmpIgnoreCase a b = toLower a == toLower b
 
-crlfAlt :: ParsecT Void ByteString Identity (Tokens ByteString)
+-- some tools escape backslashes
+crlfAlt :: Parser (Tokens ByteString)
 crlfAlt = "\\r\\n" <|> crlf
 
 redisBulkString :: Parser Response
 redisBulkString = do
-    _ <- "$"
+    _ <- "$"  -- Redis Bulk Strings start with $
     n <- decimal
     guard $ n >= 0
     _ <- crlfAlt
@@ -78,7 +77,7 @@ redisBulkString = do
 
 commandCheck :: Text -> Parser (Integer, Response)
 commandCheck c = do
-    _ <- "*"
+    _ <- "*"  -- Redis Arrays start with *
     n <- decimal
     guard $ n > 0
     cmd <- crlfAlt *> redisBulkString
@@ -101,5 +100,6 @@ parsePing = do
 echo :: ByteString -> IO Response
 echo = return
 
+-- here, ping does the same as echo; added to clearly separate the two commands
 ping :: ByteString -> IO Response
 ping = return

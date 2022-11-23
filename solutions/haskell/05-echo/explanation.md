@@ -108,7 +108,7 @@ To define our parser we have to specify its type.
 `Parsec` is the type of the Megaparsec library which takes three more arguments.
 The first one is to handle errors, where `Void` is commonly used as an empty return type.
 The second one is the type we want the parser to process, in our case we want it to process the type `Request`, i.e. a `ByteString`.
-The third one is what we actually want `Parsec` to return, which are mainly of type `Request`, but are later defined for each parsing function.
+The third one is what we actually want `Parsec` to return, which are mainly of type `Response`, but are later defined for each parsing function.
 
 ```haskell
 type Parser = Parsec Void Request
@@ -236,6 +236,10 @@ Since the whole Redis implementation is an 'impure' interaction with the outside
 You may want to [read about IO](https://en.wikibooks.org/wiki/Haskell/Understanding_monads/IO) first to understand why it is relevant here.
 Our goal is to return a `Response` at the end to the client, therefore, each command is of type `IO Response`, hence this type association.
 
+We also want to note that parsing could also be implemented in a pure form, where no `IO` is returned.
+This would require an abstract data type (ADT) which would hold all commands.
+We decided against it, mainly since the ADT and the pattern matching of it could become quite large if many more functions in Redis were implemented.
+
 You may correctly wonder where `echo` in the last expression comes from.
 `echo` is actually a function and `parseEcho` in fact returns another function, `echo`, that takes `message` as an input. In the next section we will create the `echo` function itself.
 
@@ -299,7 +303,7 @@ This function accepts three inputs:
 3. The input to be parsed, i.e. the `Request`
 
 ```haskell
-parseRequest :: Response -> Either (ParseErrorBundle Response Void) Command
+parseRequest :: Request -> Either (ParseErrorBundle ByteString Void) Command
 parseRequest = parse parseInstruction ""
 ```
 
@@ -309,7 +313,7 @@ Otherwise, if the parsing fails, we can simply ignore what was parsed and return
 The `fromRight` function, available in the Haskell `Prelude` package, does exactly that.
 
 ```haskell
-parseInput :: Request -> Command
+parseInput :: Request -> IO Response
 parseInput req = fromRight err response
     where
         err = return "-ERR unknown command"
