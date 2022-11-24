@@ -11,7 +11,7 @@ fn main() {
                 println!("accepted new connection");
 
                 // Wait for the client to send us a message but ignore the content for now
-                let mut buf = BytesMut::with_capacity(512);
+                let mut buf = [0; 512];
                 stream.read(&mut buf).unwrap();
 
                 stream.write("+PONG\r\n".as_bytes()).unwrap();

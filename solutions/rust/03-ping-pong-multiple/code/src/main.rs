@@ -1,4 +1,3 @@
-use bytes::BytesMut;
 use std::io::{Read, Write};
 use std::net::TcpListener;
 
@@ -10,9 +9,10 @@ fn main() {
             Ok(mut stream) => {
                 println!("accepted new connection");
 
+                let mut buf = [0; 512];
+
                 loop {
-                    // Wait for the client to send us a message but ignore the content for now
-                    let mut buf = BytesMut::with_capacity(512);
+                    // Wait for the client to send us a message but ignore the content for now    
                     let bytes_read = stream.read(&mut buf).unwrap();
                     if bytes_read == 0 {
                         println!("client closed the connection");

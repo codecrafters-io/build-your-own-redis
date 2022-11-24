@@ -22,7 +22,7 @@ Ok(mut stream) => {
 For this stage, we know that the tester _only_ sends us `PING`, so we don't have to parse the incoming data. We should read it though, so that we wait for the client to send a message before we respond. To do that we create a buffer to hold the incoming message and read into it
 
 ```rust
-let mut buf = BytesMut::with_capacity(512);
+let mut buf = [0; 512];
 stream.read(&mut buf).unwrap();
 ```
 
