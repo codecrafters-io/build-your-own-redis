@@ -12,7 +12,7 @@ fn main() {
                 let mut buf = [0; 512];
 
                 loop {
-                    // Wait for the client to send us a message but ignore the content for now    
+                    // Wait for the client to send us a message but ignore the content for now
                     let bytes_read = stream.read(&mut buf).unwrap();
                     if bytes_read == 0 {
                         println!("client closed the connection");
