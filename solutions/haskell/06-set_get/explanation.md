@@ -64,9 +64,21 @@ main = do
 ```
 
 Within the main program we can now reference the database by `redisDB`.
+We also added a debugging aid which prints the content of the whole database to the server command line so that you can verify what is happening.
 
 # 2. Implementing set and get
 Now that we have the database in place, we can focus on implementing `set` and `get`.
+
+As a preparation, we can extend the `Command` type with two new constructors, `Set` and `Get`.
+They take as values a `Key` and `Set` an additional `Value`.
+```haskell
+data Command = Ping
+             | Echo Message
+             | Set Key Value
+             | Get Key
+             | Error ApplicationError
+```
+
 Let us start with `set` to get a feeling for how to add an element to the database.
 
 ## 2.1. set
@@ -75,7 +87,7 @@ Similar to the echo and ping functions, we start with the parsing to extract all
 We check also that the request contains `set` in its first element.
 Since set requires two additional inputs, a `key` and a `value`, we expect the number of elements of that array to be three.
 
-When both of these checks were successful, we extract a key and a value and return them as part of the `set` function.
+When both of these checks were successful, we extract a key and a value and return the type `Command` with its corresponding `Set key value`.
 This is similar to echo, just with an additional element.
 
 ```haskell
@@ -85,18 +97,18 @@ parseSet = do
     guard $ n == 3
     key <- crlfAlt *> redisBulkString
     value <- crlfAlt *> redisBulkString
-    return $ set key value
+    return $ Set key value
 ```
 
-Since we want to add a key-value pair to the database, we have to also take the database as an input parameter.
+The `set` command is a bit more complicated than the simple ping and echo commands, hence we decide carve the functionality out in a separate function called `set`.
+Since we want to add a key-value pair to the database, we have to also take the database as an input parameter to `set`.
 Therefore, we have to add the input of type `TVar DB` to the function's signature.
-As a consequence, we have to extend the `Command` type by the TVar as well, since each `Parser` returns a function that also takes a database (this also applies to echo and ping, see section 3).
 
 The implementation of the `set` functionality looks slim, however the writing to the database is somewhat involved.
 To modify an `STM` in general, the library provides the `atomically` function, which ensures either writing everything or nothing to prevent only partial updates.
 
 We then use `modifyTVar` to change the database by `insert`ing a new (or even existing) `key` and its `value`.
-The `insert` function is from the `Data.Map` library since we actually modify the map.
+The `insert` function is from the `Data.Map` library because we actually modify the map.
 As per the Redis definition, a successful set command simply returns "OK" to the client.
 
 ```haskell
@@ -117,43 +129,37 @@ You can look at the solution code to see our implementation of `parseGet`.
 Similar to set, we have to add the `TVar DB` type to get's signature so that we can read from the database.
 Reading from the database is now such an action as described earlier, where we access the database's current value through the impure `IO` "interface".
 The `readTVarIO` always returns the latest value of our `TVar` database, i.e. the keys and values stored in our map.
-By storing the current readout of the database in the `out` variable, we get the most recent state from which we can read the desired key and its corresponding value.
 
 Since we are reading from our map, we can use another map function, `findWithDefault`, also from the `Data.Map` package.
 The Redis standard defines that if no key is found, get should return `(nil)`.
 `findWithDefault` accepts a default value in such a case, which we happily use.
 The other two parameters are the `key` and the map, i.e. `out`.
 
+To end up with a concise implementation we can leverage an applicative functor, here.
+Basically, we can apply the `findWithDefault` function to the function that reads the database, `readTVarIO`.
+We could do this by either using `pure (findWithDefault "(nil)" key) <*> readTVarIO db`, or as an alternative, use `findWithDefault "(nil)" key <$> readTVarIO db`, the latter being the infix version of the former.
+
 ```haskell
 get :: Key -> TVar DB -> IO Response
-get key db = do
-    out <- readTVarIO db
-    return $ findWithDefault "(nil)" key out
-    -- see the section 3 for an improvement
+get key db = findWithDefault "(nil)" key <$> readTVarIO db
 ```
+
+Such an operation works because `findWithDefault` is an instance of `Functor` which provides the function `fmap` that lets you apply a function to another function.
+You can read more about [the Functor class](https://en.wikibooks.org/wiki/Haskell/The_Functor_class) and [the Applicative class (for applicative functors)](https://en.wikibooks.org/wiki/Haskell/Applicative_functors) following these two links.
 
 # 3. Other improvements
 
-The parser expects now a database to be present, so does each function it returns.
-Therefore, we need to add the `TVar DB` type to `echo` and `ping`, too, even if we do nothing with it.
-Otherwise, we would get a type mismatch error.
-
-Also, to be consistent with set and get, we improve the readability of `echo` and `ping` by defining yet another type synonym, `Message`.
-
-```haskell
-type Message = ByteString
-
-echo :: Message -> TVar DB -> IO Response
-echo x _ = return x
-```
+With the `exec` function expecting now a database to be consumed for `set` and `get`, each of the other pattern matches does so, too.
+Therefore, we need to add the `TVar DB` type to `Echo`, `Ping` and `Error`, too, even if we do nothing with it.
+Otherwise, we would get an error for having different number of arguments.
 
 By now we are using many constants in the program
-This could get confused, especially if they are used in multiple different functions.
-We can improve this situation by adding an abstract data structure (`ADT`).
+This could get confusing, especially if they are used in multiple different functions.
+We can improve this situation by adding an abstract data type (`ADT`) structure.
 The naming of such an `ADT` is up to our liking, so we simply call it `Configuration`.
 
 In there, we add the constants that we want to have in a single, central place.
-You may add more constants to it, but for now we chose the following ones.
+You may add more constants to it, but for now we choose the following ones.
 
 ```haskell
 data Configuration = Configuration {
@@ -165,7 +171,7 @@ data Configuration = Configuration {
 }
 ```
 
-Once you have a structure defined, you can create a function with type `Configuration` and add the values one by one.
+Once you have a structure defined, you can create a function of type `Configuration` and add the values one by one.
 
 ```haskell
 redisConfig :: Configuration
@@ -184,13 +190,10 @@ set key val db = do
     return $ setSuccess redisConfig
 
 get :: Key -> TVar DB -> IO Response
-get x db = do
-    let err = nilString redisConfig
-    out <- readTVarIO db
-    return $ findWithDefault err x out
+get key db = findWithDefault (nilString redisConfig) key <$> readTVarIO db
 ```
 
 This should be done for all other constants as well.
 The solution code contains the other replacements.
 
-With all this in place, you should now have a working database and be able to write and read to it by using the `set` and `get` functions.
+With all this in place, you should now have a working database and be able to write to and read from it by using the `set` and `get` commands.
