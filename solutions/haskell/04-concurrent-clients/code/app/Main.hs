@@ -18,4 +18,4 @@ main = do
         _ <- forever $ do
             _ <- recv socket 2048
             send socket "+PONG\r\n"
-        closeSock socket
+        putStrLn $ "disconnected client: " ++ show _address
