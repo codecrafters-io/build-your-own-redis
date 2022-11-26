@@ -4,7 +4,7 @@
 
 module Main (main) where
 
-import Network.Simple.TCP (serve, HostPreference(HostAny), closeSock)
+import Network.Simple.TCP (serve, HostPreference(HostAny))
 import Network.Socket.ByteString (recv, send)
 import Control.Monad (forever)
 
