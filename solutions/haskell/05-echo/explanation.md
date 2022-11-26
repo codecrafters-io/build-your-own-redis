@@ -96,7 +96,7 @@ In principle, this is:
 3. Processing information
 4. Returning a response
 
-(The enumeration corresponds to the relevant sub-section).
+(The enumeration corresponds to the sub-section headers).
 
 To parse the input we use another library.
 We decided to use [Megaparsec](https://hackage.haskell.org/package/megaparsec) since it can parse [ByteStrings](https://hackage.haskell.org/package/megaparsec/docs/Text-Megaparsec-Byte.html) and it has some high-level implementations that make our lives a bit easier.
@@ -220,7 +220,7 @@ parseEcho = do
     (n, _) <- commandCheck "echo"
     guard $ n == 2
     message <- crlfAlt *> redisBulkString
-    return $ echo message
+    return $ Echo message
 ```
 
 As you can see, we use the `commandCheck` to check if the Array contains the `echo` command.
@@ -230,82 +230,87 @@ To extract the second element (the message) from the Array, the `redisBulkString
 
 This function returns a type `Command` which we have not encountered yet:
 ```haskell
-type Command = IO Response
+data Command = Ping
+             | Echo Message
+             | Error ApplicationError
 ```
-Since the whole Redis implementation is an 'impure' interaction with the outside world, it is of type `IO`.
-You may want to [read about IO](https://en.wikibooks.org/wiki/Haskell/Understanding_monads/IO) first to understand why it is relevant here.
-Our goal is to return a `Response` at the end to the client, therefore, each command is of type `IO Response`, hence this type association.
 
-We also want to note that parsing could also be implemented in a pure form, where no `IO` is returned.
-This would require an abstract data type (ADT) which would hold all commands.
-We decided against it, mainly since the ADT and the pattern matching of it could become quite large if many more functions in Redis were implemented.
+To define a pure return from the parsing we can define a type where all possible return values are referenced.
+This allows us to better structure the parsing so that the implementation of what happens with the outcome of the parsing can be handled by each corresponding function.
+We will encounter in the section, where we return a response, how to deal with the different `Command` types.
 
-You may correctly wonder where `echo` in the last expression comes from.
-`echo` is actually a function and `parseEcho` in fact returns another function, `echo`, that takes `message` as an input. In the next section we will create the `echo` function itself.
+The `Command` type also explains where `Echo` in the last expression originates from.
+`Echo` is actually a constructor that takes a value, `Message`.
+We defined message as another type synonym `type Message = ByteString`.
+The same applies to `Ping` bar the value.
+
+For completeness, we also handle the `Error` that accepts a type `ApplicationError`, that is declared by `data ApplicationError = UnknownCommand`
+This error is returned if the parsing could not find a matching `Command`.
+
 
 ## 2.3. Processing information
 Until now, we have only extracted information from the request, but we have not done anything yet with it.
 
-The `parseEcho` function returns another function, `echo`, and a value along with it.
+The `parseEcho` function returns a value `Echo Message`
 Your goal is to get the server to return the message from the value.
 This also applies to `ping`, where the message in the value is simply `PONG`, rather than a user specified message.
 
-As a first step, we implement the `get` function that takes a value as an input an returns a response.
-The input value originates from the `parseEcho` function which returns a function of type `Command` along with a value of type `ByteString`.
-For that reason, the `get` function *has* to take a `ByteString` as an input and to return an `IO Response` to be type correct.
+It may be surprising, but we do not have to implement a specific function just for `echo` or for `ping`.
+Since they are rather simple and have no inherent logic, we can simplify our program from the start.
+
+However, we have to do something with the `Command` type that the two parsers, `parseEcho` and `parsePing` return.
+
+But first, a little detour on interactive interactions.
+Since the whole Redis implementation is an 'impure' interaction with the outside world, it is of type `IO`.
+You may want to [read about IO](https://en.wikibooks.org/wiki/Haskell/Understanding_monads/IO) first to understand why it is relevant here.
+
+Our goal is to return a `Response` at the end to the client.
+Therefore, each function that returns something to the main function has to be of type `IO`, and in our case of type `IO Response`.
+The function that takes the `Command` as an input should therefore produce the `IO Response`.
+For this we define a function `exec` which basically executes the command and produces a response.
 
 ```haskell
-echo :: ByteString -> IO Response
-echo = return
+exec :: Command -> IO Response
+exec Ping = return "PONG"
+exec (Echo msg) = return msg
+exec (Error UnknownCommand) = return "-ERR Unknown Command"
 ```
 
-You may wonder where the argument of type `ByteString` went.
-In Haskell, similar to algebraic functions, you can omit the argument if it is clear where it should go.
-You could also write `echo msg = return msg`, which is valid, but the compiler would strongly suggest to shorten the expression.
+It performs a pattern matching with the `Command` type and for each match we define an action.
+Since `ping` simply returns `PONG`, we can just let it do that without the need for a separate ping function.
+The same applies to `echo`, we just return the message that we extracted before.
+`Error` returns a default error message in case there is no matching command.
 
-In effect, `echo` has a type signature that requires it to take an input of type `ByteString`.
-This is also implied from our usage in `parseEcho` where we pass an argument `message` of type `ByteString`.
-This derivation is called `type inference`, about which you can [read more here](https://en.wikibooks.org/wiki/Haskell/Type_basics#Type_inference).
-
-What `echo` does, is, it simply returns that value (or message) as an `IO Response`.
-This is because `return` is defined as `pure` behind the scenes, and `pure` in the `IO` type instance is of type `a -> IO a`.
-In our case, `return` takes a type `Response` (or `ByteString`) and gives an 'impure' `IO Response` as a result.
-
-With the functions in place, you can now return the `Response` to the user.
+With `exec` in place, we have a function that returns a response and you can now return the `Response` to the user.
 
 ## 2.4. Returning a response
-In this section we want to implement the returning of a response to the user. But before we go back to our main function, we need to piece together the two new functions we just built, `ping` and `echo`.
+In this section we want to implement the returning of a response to the user. But before we go back to our main function, we need to piece together the two parsing functions we just built, `parsePing` and `parseEcho`.
 
 When we receive a request, we naturally do not know what it contains.
-Hence, it would be great to have something akin to `switch case` which you know from other programming languages.
+Hence, it would be great to have something akin to `switch case` to try different options, for example try `ping` first, then try `echo`, and so on.
 In Haskell there exists an elegant implementation in the `Alternative` type class which is the `<|>` operator.
-Because `Alternative` is of type `Applicative` (i.e. `Applicative Functor`), `Megaparsec` is a `Monad`ic parser, and all `Monad`s are based on `Applicative Functors`, we can use the `<|>` operator.
+Because `Alternative` is of type `Applicative` (i.e. `Applicative Functor`), `Megaparsec` is a `Monad`ic parser, and all `Monad`s are based on `Applicative Functor`s, we can use the `<|>` operator.
 
 `<|>` can be used between alternative options, where it starts to parse the first, and if it does not match continues with the second option, and so on.
-Unfortunately, when using `<|>`, the parser already consumes parts of the input for deciding if the first option is a match.
+Unfortunately, when using `<|>` alone, the parser already consumes parts of the input to decide if the first option is a match.
 If not, it moves on to the second option, where it would fail in our case if we do not get the full input back.
 To avoid this, we can use `try` which backtracks a failed attempt.
 You can [read about try](https://hackage.haskell.org/package/megaparsec/docs/Text-Megaparsec.html#v:try) in the Megaparsec documentation.
 
-With that, we can construct a function `parseInstruction` which can parse the different instructions for us and only then call the one contained in the input.
+With that, we can construct a function `parseToCommand` which can parse the different requests for us and only then call the appropriate `Command` that is contained in the input.
 
 ```haskell
-parseInstruction :: Parser Command
-parseInstruction = try parseEcho
+parseToCommand :: Parser Command
+parseToCommand = try parseEcho
                <|> try parsePing
 ```
 
 Until now, we have not really used the parsing functionality of Megaparsec.
 The library contains a `parse` function, which can be used to actually start the parsing.
 This function accepts three inputs:
-1. The function with the parsing logic, in our case `parseInstruction`
+1. The function with the parsing logic, in our case `parseToCommand`
 2. An identifier that is returned if there is a failed match - this is useful if multiple parsers are in place, but for us it can be an empty string, i.e. `""`
 3. The input to be parsed, i.e. the `Request`
-
-```haskell
-parseRequest :: Request -> Either (ParseErrorBundle ByteString Void) Command
-parseRequest = parse parseInstruction ""
-```
 
 Since the Megaparsec `parse` function returns the `Either` type, we have to handle the two outcomes.
 The only outcome we are really interested in is when the match was a success.
@@ -313,11 +318,11 @@ Otherwise, if the parsing fails, we can simply ignore what was parsed and return
 The `fromRight` function, available in the Haskell `Prelude` package, does exactly that.
 
 ```haskell
-parseInput :: Request -> IO Response
-parseInput req = fromRight err response
+parseRequest :: Request -> Command
+parseRequest req = fromRight err response
     where
-        err = return "-ERR unknown command"
-        response = parseRequest req
+        err = Error UnknownCommand
+        response = parse parseToCommand "" req
 ```
 
 Now that we have implemented the full parsing logic and we get a return value in any case, we can start putting everything together.
@@ -325,17 +330,18 @@ For this, we go back to our main function.
 
 Previously, we discarded the input from the user (or client) since we assumed only `ping` is sent.
 This assumption no longer holds as we also want to process the `echo` command.
-Therefore, we can exchange the underscore `_` with a variable name of our choice, `input` in our case.
+Therefore, we can exchange the underscore `_` with a variable name of our choice, `request` in our case.
 
-Since this variable contains all relevant information that is encoded in RESP, we want to parse it using our previously defined function `parseInput`.
-The result, i.e. the `Response` should then be sent back to the client, also in a RESP format.
+Since this variable contains all relevant information that is encoded in RESP, we want to parse it using our previously defined function `parseRequest`.
+The result from `parseRequest`, something of type `Command`, is then executed by the `exec` function, which ultimately returns a type `IO Response`
+This result, i.e. the `Response` should then be sent back to the client, also in a RESP format.
 
 ```haskell
 _ <- forever $ do
-    input <- recv socket 2048
-    response <- parseInput input
+    request <- recv socket 2048
+    response <- exec $ parseRequest request
     send socket (encodeRESP response)
-closeSock socket
+putStrLn $ "disconnected client: " ++ show _address
 ```
 
 This is done using the `send` function, but this time we add the response that was returned from either `ping` or `echo` (or an error message if neither of both).

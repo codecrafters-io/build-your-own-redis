@@ -4,15 +4,14 @@
 
 module Main (main) where
 
-import Network.Simple.TCP (serve, HostPreference(HostAny), closeSock)
+import Network.Simple.TCP (serve, HostPreference(HostAny))
 import Network.Socket.ByteString (recv, send)
 import Control.Monad (forever, guard)
 import Data.ByteString (ByteString, pack)
 import qualified Data.ByteString.Char8 as B
 import Prelude hiding (concat)
 import Text.Megaparsec
-    ( ParseErrorBundle,
-      parse,
+    ( parse,
       count,
       (<|>),
       Parsec,
@@ -28,7 +27,11 @@ import Data.Text.Encoding (decodeUtf8)
 type Request = ByteString
 type Response = ByteString
 type Parser = Parsec Void Request
-type Command = IO Response
+type Message = ByteString
+data Command = Ping
+             | Echo Message
+             | Error ApplicationError
+data ApplicationError = UnknownCommand
 
 main :: IO ()
 main = do
@@ -37,27 +40,28 @@ main = do
     serve HostAny port $ \(socket, _address) -> do
         putStrLn $ "successfully connected client: " ++ show _address
         _ <- forever $ do
-            input <- recv socket 2048
-            response <- parseInput input
+            request <- recv socket 2048
+            response <- exec $ parseRequest request
             send socket (encodeRESP response)
-        closeSock socket
+        putStrLn $ "disconnected client: " ++ show _address
 
 encodeRESP :: Response -> Response
 encodeRESP s = B.concat ["+", s, "\r\n"]
 
-parseInput :: Request -> IO Response
-parseInput req = fromRight err response
+exec :: Command -> IO Response
+exec Ping = return "PONG"
+exec (Echo msg) = return msg
+exec (Error UnknownCommand) = return "-ERR Unknown Command"
+
+parseRequest :: Request -> Command
+parseRequest req = fromRight err response
     where
-        err = return "-ERR unknown command"
-        response = parseRequest req
+        err = Error UnknownCommand
+        response = parse parseToCommand "" req
 
-parseRequest :: Request
-    -> Either (ParseErrorBundle ByteString Void) Command
-parseRequest = parse parseInstruction ""
-
-parseInstruction :: Parser Command
-parseInstruction = try parseEcho
-               <|> try parsePing
+parseToCommand :: Parser Command
+parseToCommand = try parseEcho
+             <|> try parsePing
 
 cmpIgnoreCase :: Text -> Text -> Bool
 cmpIgnoreCase a b = toLower a == toLower b
@@ -89,17 +93,10 @@ parseEcho = do
     (n, _) <- commandCheck "echo"
     guard $ n == 2
     message <- crlfAlt *> redisBulkString
-    return $ echo message
+    return $ Echo message
 
 parsePing :: Parser Command
 parsePing = do
     (n, _) <- commandCheck "ping"
     guard $ n == 1
-    return $ ping "PONG"
-
-echo :: ByteString -> IO Response
-echo = return
-
--- here, ping does the same as echo; added to clearly separate the two commands
-ping :: ByteString -> IO Response
-ping = return
+    return Ping
