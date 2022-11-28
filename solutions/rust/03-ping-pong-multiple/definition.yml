@@ -4,8 +4,8 @@ author_details:
   avatar_url: https://github.com/thetasinner.png
   headline: CTO, CodeCrafters
 reviewers_details:
-- name:
-  profile_url:
-  avatar_url:
-  headline:
-pull_request_url:
+- name: Paul Kuruvilla
+  profile_url: https://github.com/rohitpaulk
+  avatar_url: https://github.com/rohitpaulk.png
+  headline: CTO, CodeCrafters
+pull_request_url: https://github.com/codecrafters-io/build-your-own-redis/pull/53
