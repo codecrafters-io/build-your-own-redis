@@ -34,7 +34,7 @@ async fn handle_connection(stream: TcpStream) -> Result<()> {
             let response = match command.to_ascii_lowercase().as_ref() {
                 "ping" => resp::Value::String("PONG".to_string()),
                 "echo" => args.first().unwrap().clone(),
-                _ => resp::Value::Error(format!("command not implemented: {}", command))
+                _ => resp::Value::Error(format!("command not implemented: {}", command)),
             };
 
             conn.write_value(response).await?;

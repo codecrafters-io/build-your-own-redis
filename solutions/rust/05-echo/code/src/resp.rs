@@ -1,6 +1,6 @@
-use tokio::{net::TcpStream, io::AsyncReadExt, io::AsyncWriteExt};
+use anyhow::{Error, Result};
 use bytes::BytesMut;
-use anyhow::{Result, Error};
+use tokio::{io::AsyncReadExt, io::AsyncWriteExt, net::TcpStream};
 
 const CARRIAGE_RETURN: u8 = '\r' as u8;
 const NEWLINE: u8 = '\n' as u8;
@@ -21,16 +21,19 @@ impl Value {
     pub fn to_command(&self) -> Result<(String, Vec<Value>)> {
         match self {
             Value::Array(items) => {
-                return Ok((items.first().unwrap().unwrap_bulk(), items.clone().into_iter().skip(1).collect()));
+                return Ok((
+                    items.first().unwrap().unwrap_bulk(),
+                    items.clone().into_iter().skip(1).collect(),
+                ));
             }
-            _ => Err(Error::msg("not an array"))
+            _ => Err(Error::msg("not an array")),
         }
     }
 
     fn unwrap_bulk(&self) -> String {
         match self {
             Value::Bulk(str) => str.clone(),
-            _ => panic!("not a bulk string")
+            _ => panic!("not a bulk string"),
         }
     }
 
@@ -40,7 +43,7 @@ impl Value {
             Value::Error(msg) => format!("-{}\r\n", msg.as_str()),
             Value::Bulk(s) => format!("${}\r\n{}\r\n", s.chars().count(), s),
             // The other cases are not required
-            _ => panic!("value encode not implemented for: {:?}", self)
+            _ => panic!("value encode not implemented for: {:?}", self),
         }
     }
 }
@@ -52,8 +55,8 @@ pub struct RespConnection {
 
 impl RespConnection {
     pub fn new(stream: TcpStream) -> Self {
-        return RespConnection{
-            stream, 
+        return RespConnection {
+            stream,
             buffer: BytesMut::with_capacity(512),
         };
     }
@@ -139,7 +142,10 @@ fn decode_bulk_string(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
     let end_of_bulk_line = end_of_bulk + 2;
 
     return if end_of_bulk_line <= buffer.len() {
-        Ok(Some((Value::Bulk(parse_string(&buffer[bytes_consumed..end_of_bulk])?), end_of_bulk_line)))
+        Ok(Some((
+            Value::Bulk(parse_string(&buffer[bytes_consumed..end_of_bulk])?),
+            end_of_bulk_line,
+        )))
     } else {
         Ok(None)
     };
@@ -170,14 +176,20 @@ mod tests {
 
     #[test]
     fn parse_ping_message() {
-        let result = parse_message(BytesMut::from("+PING\r\n")).unwrap().map(|out| out.0).unwrap();
+        let result = parse_message(BytesMut::from("+PING\r\n"))
+            .unwrap()
+            .map(|out| out.0)
+            .unwrap();
 
         assert_eq!(Value::String("PING".to_string()), result);
     }
 
     #[test]
     fn parse_array_of_ping_message() {
-        let result = parse_message(BytesMut::from("*1\r\n$4\r\nping\r\n")).unwrap().map(|out| out.0).unwrap();
+        let result = parse_message(BytesMut::from("*1\r\n$4\r\nping\r\n"))
+            .unwrap()
+            .map(|out| out.0)
+            .unwrap();
 
         let command = Value::Bulk("ping".to_string());
         assert_eq!(Value::Array(vec![command]), result);
@@ -185,7 +197,10 @@ mod tests {
 
     #[test]
     fn parse_echo_message() {
-        let result = parse_message(BytesMut::from("*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n")).unwrap().map(|out| out.0).unwrap();
+        let result = parse_message(BytesMut::from("*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n"))
+            .unwrap()
+            .map(|out| out.0)
+            .unwrap();
 
         let command = Value::Bulk("ECHO".to_string());
         let arg = Value::Bulk("hey".to_string());
