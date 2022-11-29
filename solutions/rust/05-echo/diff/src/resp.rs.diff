@@ -1,4 +1,4 @@
-@@ -0,0 +1,207 @@
+@@ -0,0 +1,169 @@
 +use anyhow::{Error, Result};
 +use bytes::BytesMut;
 +use tokio::{io::AsyncReadExt, io::AsyncWriteExt, net::TcpStream};
@@ -167,42 +167,4 @@
 +fn parse_integer(bytes: &[u8]) -> Result<i64> {
 +    let str_integer = parse_string(bytes)?;
 +    (str_integer.parse::<i64>()).map_err(|_| Error::msg("Could not parse integer"))
-+}
-+
-+#[cfg(test)]
-+mod tests {
-+    use super::*;
-+
-+    #[test]
-+    fn parse_ping_message() {
-+        let result = parse_message(BytesMut::from("+PING\r\n"))
-+            .unwrap()
-+            .map(|out| out.0)
-+            .unwrap();
-+
-+        assert_eq!(Value::SimpleString("PING".to_string()), result);
-+    }
-+
-+    #[test]
-+    fn parse_array_of_ping_message() {
-+        let result = parse_message(BytesMut::from("*1\r\n$4\r\nping\r\n"))
-+            .unwrap()
-+            .map(|out| out.0)
-+            .unwrap();
-+
-+        let command = Value::BulkString("ping".to_string());
-+        assert_eq!(Value::Array(vec![command]), result);
-+    }
-+
-+    #[test]
-+    fn parse_echo_message() {
-+        let result = parse_message(BytesMut::from("*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n"))
-+            .unwrap()
-+            .map(|out| out.0)
-+            .unwrap();
-+
-+        let command = Value::BulkString("ECHO".to_string());
-+        let arg = Value::BulkString("hey".to_string());
-+        assert_eq!(Value::Array(vec![command, arg]), result);
-+    }
 +}
