@@ -73,7 +73,6 @@ When parsing a request, we can simply tell the parser that what follows is an `I
 However, instead of using the `redisBulkString` function, which only parses `ByteString`s, we define another parser that parses `Integer`.
 Instead of the counting the printable characters using `printChar` we simply process and return the decimals that follow using `decimal`.
 
-<!-- replace -->
 ```haskell
 redisInteger :: Parser Integer
 redisInteger = do
@@ -116,7 +115,6 @@ But first we have to expand the type signature to also accept `Time`, which is a
 To add the milliseconds from the input to the current system time, we extract them by using `getCurrentTime` and then add the seconds which we converted from the milliseconds.
 The `addUTCTime` function from the `time` library does this addition for us.
 
-<!-- adjust -->
 ```haskell
 set :: Key -> Value -> Time -> TVar DB -> IO Response
 set key val expiry db = do
