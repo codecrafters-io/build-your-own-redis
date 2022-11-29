@@ -37,14 +37,14 @@ Such a `TVar` can hold a single piece of data.
 When using a single list of tuples (remember, like the initial idea) we can construct that single piece of data with it, but we get the benefit of mutability and concurrency.
 
 ## 1.3. Database implementation
-Since we are interested in storing a `Key`-`Value` pair in this database, it is a good idea to use a mapping function, such as `Map` from the `containers` library.
+Since we are interested in storing a `Key`-`Value` pair in this database, it is a good idea to use a mapping function, such as the `Map` type from the `containers` library.
 This has the benefit that we can use abstract functions to insert and find elements without having to write our own implementations for it (but feel free to do so).
 
 We first define a `type` alias for the database to easily refer to it throughout the program.
 Additionally, we define two new type synonyms, `Key` and `Value` which are both a `ByteString`.
 
-Then, using the `newTVarIO` function from the `STM` package we create a new instance of the database.
-We add to it some initial values in a list of tuples of type `(Key, Value)`, which the `fromList` function transforms into the desired `Map Key Value` format.
+Then, using the `newTVarIO` function from the `STM` package we create a new, empty instance of the database.
+From the `Data.Map` package of the `containers` library we use the handy `empty` function for this.
 
 Finally, we can initialize the database in our main routine. 
 
@@ -54,7 +54,7 @@ type Value = ByteString
 type DB = Map Key Value
 
 setupDB :: IO (TVar DB)
-setupDB = newTVarIO $ fromList [("__version__", "1.0.0")]
+setupDB = newTVarIO empty
 
 main :: IO ()
 main = do
@@ -76,7 +76,6 @@ data Command = Ping
              | Echo Message
              | Set Key Value
              | Get Key
-             | Error ApplicationError
 ```
 
 Let us start with `set` to get a feeling for how to add an element to the database.
@@ -93,12 +92,14 @@ This is similar to echo, just with an additional element.
 ```haskell
 parseSet :: Parser Command
 parseSet = do
-    (n, _) <- commandCheck "set"
+    (n, _) <- commandCheck "set" -- see the section 3 for an improvement
     guard $ n == 3
     key <- crlfAlt *> redisBulkString
     value <- crlfAlt *> redisBulkString
     return $ Set key value
 ```
+
+In section 3 we discuss some improvements to avoid using hard-coded constants throughout our program.
 
 The `set` command is a bit more complicated than the simple ping and echo commands, hence we decide carve the functionality out in a separate function called `set`.
 Since we want to add a key-value pair to the database, we have to also take the database as an input parameter to `set`.
@@ -107,9 +108,9 @@ Therefore, we have to add the input of type `TVar DB` to the function's signatur
 The implementation of the `set` functionality looks slim, however the writing to the database is somewhat involved.
 To modify an `STM` in general, the library provides the `atomically` function, which ensures either writing everything or nothing to prevent only partial updates.
 
-We then use `modifyTVar` to change the database by `insert`ing a new (or even existing) `key` and its `value`.
-The `insert` function is from the `Data.Map` library because we actually modify the map.
-As per the Redis definition, a successful set command simply returns "OK" to the client.
+We then use `modifyTVar` to change the database by `insert`ing a new or existing `key` and add or replace its `value`, respectively.
+The `insert` function is from the `Data.Map` package because we actually modify the map.
+As per the Redis definition, a successful set command simply returns `"OK"` to the client.
 
 ```haskell
 type Command = TVar DB -> IO Response
@@ -119,8 +120,6 @@ set key val db = do
     _ <- atomically $ modifyTVar db $ insert key val
     return "OK"  -- see the section 3 for an improvement
 ```
-
-In section 3 we discuss a small improvement to avoid using hard-coded constants within functions.
 
 ## 2.2. get
 The parsing of `get` happens in the same way as all other functions.
@@ -150,36 +149,47 @@ You can read more about [the Functor class](https://en.wikibooks.org/wiki/Haskel
 # 3. Other improvements
 
 With the `exec` function expecting now a database to be consumed for `set` and `get`, each of the other pattern matches does so, too.
-Therefore, we need to add the `TVar DB` type to `Echo`, `Ping` and `Error`, too, even if we do nothing with it.
+Therefore, we need to add the `TVar DB` type to `Echo` and `Ping`, even if we do nothing with it.
 Otherwise, we would get an error for having different number of arguments.
 
 By now we are using many constants in the program
 This could get confusing, especially if they are used in multiple different functions.
-We can improve this situation by adding an abstract data type (`ADT`) structure.
-The naming of such an `ADT` is up to our liking, so we simply call it `Configuration`.
+We can improve this situation by adding a so-called named fields record in form of an abstract data type (`ADT`) structure.
+The naming of such an `ADT` is up to our liking.
+The example we show here replaces Redis-specific values, so we call it `RedisSpecs` (other named fields records are in the solution code).
 
 In there, we add the constants that we want to have in a single, central place.
 You may add more constants to it, but for now we choose the following ones.
 
 ```haskell
-data Configuration = Configuration {
+data RedisSpecs = RedisSpecs {
     port :: String,
-    recvBytes :: Int,
-    pingDefault :: ByteString,
-    setSuccess :: ByteString,
-    nilString :: ByteString
-}
+    pingDefault :: Response,
+    unknownCmd :: Response,
+    setSuccess :: Response,
+    nilString :: Response,
+    bulkStringId :: ByteString,
+    arrayId :: ByteString,
+    simpleStringId :: ByteString }
 ```
 
-Once you have a structure defined, you can create a function of type `Configuration` and add the values one by one.
+Once you have a structure defined, you can create a function of this type and add the values one by one.
 
 ```haskell
-redisConfig :: Configuration
-redisConfig = Configuration "6379" 2048 "PONG" "OK" "(nil)"
+redisSpecs :: RedisSpecs
+redisSpecs = RedisSpecs {
+                port           = "6379",
+                pingDefault    = "PONG",
+                unknownCmd     = "-ERR Unknown Command",
+                setSuccess     = "OK",
+                nilString      = "(nil)",
+                bulkStringId   = "$",
+                arrayId        = "*",
+                simpleStringId = "+" }
 ```
 
 Within the program, you can refer to a single constant by its name.
-You will notice that it is of type `Configuration -> 'constant type'`, for example: `Configuration -> String` in the case of `port`.
+You will notice that it is of type `RedisSpecs -> 'constant type'`, for example: `Configuration -> String` in the case of `port`.
 
 As mentioned previously, we can improve, amongst others, the `set` and `get` functions by calling the constants.
 
@@ -187,13 +197,14 @@ As mentioned previously, we can improve, amongst others, the `set` and `get` fun
 set :: Key -> Value -> TVar DB -> IO Response
 set key val db = do
     _ <- atomically $ modifyTVar db $ insert key val
-    return $ setSuccess redisConfig
+    return $ setSuccess redisSpecs
 
 get :: Key -> TVar DB -> IO Response
-get key db = findWithDefault (nilString redisConfig) key <$> readTVarIO db
+get key db = findWithDefault (nilString redisSpecs) key <$> readTVarIO db
 ```
 
 This should be done for all other constants as well.
 The solution code contains the other replacements.
+Note, that within `CommandCheck` and `redisBulkString`, the identification of the first element (i.e. "$" and "*") needs to be a `Token`, hence we use `string` from the `megaparsec` library that transforms a `ByteString` into a `Token`.
 
 With all this in place, you should now have a working database and be able to write to and read from it by using the `set` and `get` commands.
