@@ -20,7 +20,6 @@ import Text.Megaparsec
 import Text.Megaparsec.Byte ( crlf, printChar )
 import Text.Megaparsec.Byte.Lexer (decimal)
 import Data.Void ( Void )
-import Data.Either (fromRight)
 import Data.Text ( toLower, Text )
 import Data.Text.Encoding (decodeUtf8)
 
@@ -30,7 +29,6 @@ type Parser = Parsec Void Request
 type Message = ByteString
 data Command = Ping
              | Echo Message
-             | Error ApplicationError
 data ApplicationError = UnknownCommand
 
 main :: IO ()
@@ -41,7 +39,10 @@ main = do
         putStrLn $ "successfully connected client: " ++ show _address
         _ <- forever $ do
             request <- recv socket 2048
-            response <- exec $ parseRequest request
+            response <- do
+                case parseRequest request of
+                    Left _ -> return "-ERR Unknown Command"
+                    Right cmd -> exec cmd
             send socket (encodeRESP response)
         putStrLn $ "disconnected client: " ++ show _address
 
@@ -51,13 +52,12 @@ encodeRESP s = B.concat ["+", s, "\r\n"]
 exec :: Command -> IO Response
 exec Ping = return "PONG"
 exec (Echo msg) = return msg
-exec (Error UnknownCommand) = return "-ERR Unknown Command"
 
-parseRequest :: Request -> Command
-parseRequest req = fromRight err response
-    where
-        err = Error UnknownCommand
-        response = parse parseToCommand "" req
+parseRequest :: Request -> Either ApplicationError Command
+parseRequest req = case parseResult of
+                       Left _    -> Left UnknownCommand
+                       Right cmd -> Right cmd
+                   where parseResult = parse parseToCommand "" req
 
 parseToCommand :: Parser Command
 parseToCommand = try parseEcho
@@ -70,7 +70,7 @@ cmpIgnoreCase a b = toLower a == toLower b
 crlfAlt :: Parser (Tokens ByteString)
 crlfAlt = "\\r\\n" <|> crlf
 
-redisBulkString :: Parser Response
+redisBulkString :: Parser ByteString
 redisBulkString = do
     _ <- "$"  -- Redis Bulk Strings start with $
     n <- decimal
@@ -79,7 +79,7 @@ redisBulkString = do
     s <- count n printChar
     return $ pack s
 
-commandCheck :: Text -> Parser (Integer, Response)
+commandCheck :: Text -> Parser (Integer, ByteString)
 commandCheck c = do
     _ <- "*"  -- Redis Arrays start with *
     n <- decimal

@@ -51,12 +51,12 @@ type Request = ByteString
 type Response = ByteString
 ```
 
-This notation and usage is quite arbitrary and we could also use ByteString throughout the code, or use Request and Response interchangeably without it having an effect on the outcome.
+This notation and usage is quite arbitrary and we could also use `ByteString` throughout the code, or use Request and Response interchangeably without it having an effect on the outcome.
 Feel free to use your own naming.
 
 ## 1.4. ByteString
-The ByteString type is primarily used when sending data over a network.
-A single ByteString is 1 byte in size and represents a single character as a vector, which is not easily human-readable.
+The `ByteString` type is primarily used when sending data over a network.
+A single `ByteString` is 1 byte in size and represents a single character as a vector, which is not easily human-readable.
 However, there exists a Haskell library that does the transformation for you and it is recommended to read about the exposed functions in the [Data.ByteString](https://hackage.haskell.org/package/bytestring/docs/Data-ByteString.html) description.
 
 Since some functions may overlap with functions from other libraries, it is a common practice to name the import of such a package.
@@ -68,7 +68,7 @@ import qualified Data.ByteString.Char8 as B
 import Prelude hiding (concat)
 ```
 
-This allows us to refer to the ByteString concat function as `B.concat`.
+This allows us to refer to ByteString's concat function as `B.concat`.
 
 ## 1.5. Algebra Driven Design
 Until now, we did not have to write large and involved pieces of code.
@@ -114,7 +114,8 @@ The third one is what we actually want `Parsec` to return, which are mainly of t
 type Parser = Parsec Void Request
 ```
 
-Another benefit of Megaparsec is that it returns something of type `Either`, which can be `Right` if successful, or `Left` if nothing matched.
+Another benefit of Megaparsec is that it returns something of type `Either`.
+By convention, `Left` represents the error while `Right` indicates success (see the [Data.Either package description](https://hackage.haskell.org/package/base/docs/Data-Either.html)).
 This allows us to easily account for these two cases and implement appropriate actions.
 
 We now tackle the implementation using our new parser type.
@@ -137,11 +138,10 @@ While we ignore the Array dependency for simplicity, we can ensure that the Bulk
 To do this, we need `monadic parsing` where we can build different sections of input being parsed.
 As another benefit, we can use the `do` notation.
 
-We call the function `redisBulkString` and have it return the type `Parser Response`, where the `Response` is the third type that `Parsec` expects.
-`Response` is actually what we want the parser to return in the end, hence we define it here already.
+We call the function `redisBulkString` and have it return the type `Parser ByteString`, where `ByteString` is the third type that `Parsec` expects.
 
 ```haskell
-redisBulkString :: Parser Response
+redisBulkString :: Parser ByteString
 redisBulkString = do
     _ <- "$"
     n <- decimal
@@ -181,7 +181,7 @@ This is similar to the Bulk String, but we can modify this function to tell us a
 Therefore, we call this function `commandCheck`.
 
 ```haskell
-commandCheck :: Text -> Parser (Integer, Response)
+commandCheck :: Text -> Parser (Integer, ByteString)
 commandCheck c = do
     _ <- "*"
     n <- decimal
@@ -208,7 +208,7 @@ The details of this simple implementation are in the solution code.
 To compare actual `Text` rather than `ByteString`s, a conversion from ByteString to Text is necessary, which is achieved by using the library-provided `decodeUtf8` function.
 
 To return two values of different types, a `Tuple` is commonly used.
-The `commandCheck` function returns the number of elements in the Array (of type `Integer`) along with the identified command (of type `Response`) in such a tuple.
+The `commandCheck` function returns the number of elements in the Array (of type `Integer`) along with the identified command (of type `ByteString`) in such a tuple.
 
 ### 2.2.2. Extracting the rest
 We can now build another function on top that extracts and structures all information contained in an Array.
@@ -232,7 +232,6 @@ This function returns a type `Command` which we have not encountered yet:
 ```haskell
 data Command = Ping
              | Echo Message
-             | Error ApplicationError
 ```
 
 To define a pure return from the parsing we can define a type where all possible return values are referenced.
@@ -244,7 +243,11 @@ The `Command` type also explains where `Echo` in the last expression originates 
 We defined message as another type synonym `type Message = ByteString`.
 The same applies to `Ping` bar the value.
 
-For completeness, we also handle the `Error` that accepts a type `ApplicationError`, that is declared by `data ApplicationError = UnknownCommand`
+If the parsing fails, that means when a command other than `ping` or `echo` is requested, ideally an error should be thrown that informs the user.
+You can do this by defining another type that handles errors.
+```haskell
+data ApplicationError = UnknownCommand
+```
 This error is returned if the parsing could not find a matching `Command`.
 
 
@@ -271,15 +274,13 @@ For this we define a function `exec` which basically executes the command and pr
 
 ```haskell
 exec :: Command -> IO Response
-exec Ping = return "PONG"
+exec Ping       = return "PONG"
 exec (Echo msg) = return msg
-exec (Error UnknownCommand) = return "-ERR Unknown Command"
 ```
 
 It performs a pattern matching with the `Command` type and for each match we define an action.
 Since `ping` simply returns `PONG`, we can just let it do that without the need for a separate ping function.
 The same applies to `echo`, we just return the message that we extracted before.
-`Error` returns a default error message in case there is no matching command.
 
 With `exec` in place, we have a function that returns a response and you can now return the `Response` to the user.
 
@@ -302,7 +303,7 @@ With that, we can construct a function `parseToCommand` which can parse the diff
 ```haskell
 parseToCommand :: Parser Command
 parseToCommand = try parseEcho
-               <|> try parsePing
+             <|> try parsePing
 ```
 
 Until now, we have not really used the parsing functionality of Megaparsec.
@@ -313,16 +314,19 @@ This function accepts three inputs:
 3. The input to be parsed, i.e. the `Request`
 
 Since the Megaparsec `parse` function returns the `Either` type, we have to handle the two outcomes.
-The only outcome we are really interested in is when the match was a success.
-Otherwise, if the parsing fails, we can simply ignore what was parsed and return a default error message.
-The `fromRight` function, available in the Haskell `Prelude` package, does exactly that.
+The parser's task is to return either a command or, in case of failure, to indicate an error.
+The `Either` type is again useful here to distinguish two cases, especially since one means success and the other is an error.
+
+If the parsing was a success, we return the type `Command` that comprises the actual command and, if present, any keys, values, messages, etc.
+When a user sent a request that is not implemented, it is not recognized by the parser.
+In that case, it returns the type `ApplicationError`, specifically the `UnknownCommand` value.
 
 ```haskell
-parseRequest :: Request -> Command
-parseRequest req = fromRight err response
-    where
-        err = Error UnknownCommand
-        response = parse parseToCommand "" req
+parseRequest :: Request -> Either ApplicationError Command
+parseRequest req = case parseResult of
+                       Left _    -> Left UnknownCommand
+                       Right cmd -> Right cmd
+                   where parseResult = parse parseToCommand "" req
 ```
 
 Now that we have implemented the full parsing logic and we get a return value in any case, we can start putting everything together.
@@ -333,13 +337,18 @@ This assumption no longer holds as we also want to process the `echo` command.
 Therefore, we can exchange the underscore `_` with a variable name of our choice, `request` in our case.
 
 Since this variable contains all relevant information that is encoded in RESP, we want to parse it using our previously defined function `parseRequest`.
-The result from `parseRequest`, something of type `Command`, is then executed by the `exec` function, which ultimately returns a type `IO Response`
-This result, i.e. the `Response` should then be sent back to the client, also in a RESP format.
+The result from `parseRequest` is something of type `Either ApplicationError Command`.
+Therefore, we have to first distinguish between the error and the command, before we pass the actual `Command` to the `exec` function for execution.
+
+The result from the `exec` function, which ultimately returns a type `IO Response`, should then be sent back to the client, also in a RESP format.
 
 ```haskell
 _ <- forever $ do
     request <- recv socket 2048
-    response <- exec $ parseRequest request
+    response <- do
+        case parseRequest request of
+            Left _ -> return "-ERR Unknown Command"
+            Right cmd -> exec cmd
     send socket (encodeRESP response)
 putStrLn $ "disconnected client: " ++ show _address
 ```
