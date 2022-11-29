@@ -8,11 +8,11 @@ const NEWLINE: u8 = '\n' as u8;
 #[derive(Eq, PartialEq, Clone, Debug)]
 pub enum Value {
     /// For Simple Strings the first byte of the reply is "+".
-    String(String),
+    SimpleString(String),
     /// For Errors the first byte of the reply is "-".
     Error(String),
     /// For Bulk Strings the first byte of the reply is "$".
-    Bulk(String),
+    BulkString(String),
     /// For Arrays the first byte of the reply is "*".
     Array(Vec<Value>),
 }
@@ -32,16 +32,16 @@ impl Value {
 
     fn unwrap_bulk(&self) -> String {
         match self {
-            Value::Bulk(str) => str.clone(),
+            Value::BulkString(str) => str.clone(),
             _ => panic!("not a bulk string"),
         }
     }
 
     pub fn encode(self) -> String {
         match &self {
-            Value::String(s) => format!("+{}\r\n", s.as_str()),
+            Value::SimpleString(s) => format!("+{}\r\n", s.as_str()),
             Value::Error(msg) => format!("-{}\r\n", msg.as_str()),
-            Value::Bulk(s) => format!("${}\r\n{}\r\n", s.chars().count(), s),
+            Value::BulkString(s) => format!("${}\r\n{}\r\n", s.chars().count(), s),
             // The other cases are not required
             _ => panic!("value encode not implemented for: {:?}", self),
         }
@@ -65,12 +65,9 @@ impl RespConnection {
         loop {
             let bytes_read = self.stream.read_buf(&mut self.buffer).await?;
 
+            // Connection closed
             if bytes_read == 0 {
-                if self.buffer.is_empty() {
-                    return Ok(None);
-                } else {
-                    return Err(Error::msg("connection closed unexpectedly"));
-                }
+                return Ok(None);
             }
 
             if let Some((value, _)) = parse_message(self.buffer.split())? {
@@ -98,23 +95,24 @@ fn parse_message(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
 }
 
 fn decode_simple_string(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
-    if let Some((line, len)) = get_line(&buffer[1..]) {
+    if let Some((line, len)) = read_until_crlf(&buffer[1..]) {
         let str = parse_string(line)?;
 
-        Ok(Some((Value::String(str), len + 1)))
+        Ok(Some((Value::SimpleString(str), len + 1)))
     } else {
         Ok(None)
     }
 }
 
 fn decode_array(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
-    let (array_length, mut bytes_consumed) = if let Some((line, len)) = get_line(&buffer[1..]) {
-        let array_length = parse_integer(line)?;
+    let (array_length, mut bytes_consumed) =
+        if let Some((line, len)) = read_until_crlf(&buffer[1..]) {
+            let array_length = parse_integer(line)?;
 
-        (array_length, len + 1)
-    } else {
-        return Ok(None);
-    };
+            (array_length, len + 1)
+        } else {
+            return Ok(None);
+        };
 
     let mut items: Vec<Value> = Vec::new();
     for _ in 0..array_length {
@@ -130,7 +128,7 @@ fn decode_array(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
 }
 
 fn decode_bulk_string(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
-    let (bulk_length, bytes_consumed) = if let Some((line, len)) = get_line(&buffer[1..]) {
+    let (bulk_length, bytes_consumed) = if let Some((line, len)) = read_until_crlf(&buffer[1..]) {
         let bulk_length = parse_integer(line)?;
 
         (bulk_length, len + 1)
@@ -143,7 +141,7 @@ fn decode_bulk_string(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
 
     return if end_of_bulk_line <= buffer.len() {
         Ok(Some((
-            Value::Bulk(parse_string(&buffer[bytes_consumed..end_of_bulk])?),
+            Value::BulkString(parse_string(&buffer[bytes_consumed..end_of_bulk])?),
             end_of_bulk_line,
         )))
     } else {
@@ -151,7 +149,7 @@ fn decode_bulk_string(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
     };
 }
 
-fn get_line(buffer: &[u8]) -> Option<(&[u8], usize)> {
+fn read_until_crlf(buffer: &[u8]) -> Option<(&[u8], usize)> {
     for i in 1..buffer.len() {
         if buffer[i - 1] == CARRIAGE_RETURN && buffer[i] == NEWLINE {
             return Some((&buffer[0..(i - 1)], i + 1));
@@ -181,7 +179,7 @@ mod tests {
             .map(|out| out.0)
             .unwrap();
 
-        assert_eq!(Value::String("PING".to_string()), result);
+        assert_eq!(Value::SimpleString("PING".to_string()), result);
     }
 
     #[test]
@@ -191,7 +189,7 @@ mod tests {
             .map(|out| out.0)
             .unwrap();
 
-        let command = Value::Bulk("ping".to_string());
+        let command = Value::BulkString("ping".to_string());
         assert_eq!(Value::Array(vec![command]), result);
     }
 
@@ -202,8 +200,8 @@ mod tests {
             .map(|out| out.0)
             .unwrap();
 
-        let command = Value::Bulk("ECHO".to_string());
-        let arg = Value::Bulk("hey".to_string());
+        let command = Value::BulkString("ECHO".to_string());
+        let arg = Value::BulkString("hey".to_string());
         assert_eq!(Value::Array(vec![command, arg]), result);
     }
 }
