@@ -7,43 +7,30 @@ The syntax looks like: `set key value px 1000` to set the expiration of the key 
 # 1. Extend the database
 Since each key-value pair has its own expiration time, we need to add another entry to the database where the time of expiration is stored.
 Expanding the current database is only possible by adding another element to the value part.
-This is best done by adding another tuple which contains the value and the expiration time.
+This is best done by adding a tuple which contains the value and the expiration time.
+There is no need to do anything in the database initialization as the new type is simply applied to the `setupDB` function.
 
 ```haskell
 type Expiry = UTCTime
 type DB = Map Key (Value, Expiry)
 ```
+
 The type `UTCTime` is from the [time](https://hackage.haskell.org/package/time) library and is exposed through the `Data.Time` package.
 This package also comes with other helper functions to process `UTCTime`, which by default tracks time in seconds, but can also have precision of picoseconds.
 
 You should now extend the database to also contain the expiration time.
 By default, we expect a key to be valid "forever" if nothing is specified.
 In this case, "forever" is just a time very far in the future we call `noExpiry`.
-We can add this time as another constant to our existing `redisConfig`.
+We can add this time as another constant to our existing `progConfig` named fields record.
 
 However, the `UTCTime` type is tracking time in seconds and we want to avoid having to make the conversion from a human-readable format by hand.
-It is easier for us to define the time as a `ByteString`.
 The `time` library has a function which does this transformation, given that a time format is specified.
-The default format is again defined as a constant.
+We can add this transformation directly to `progConfig` and define its type as `UTCTime`.
+The default format is also defined as a constant.
 
 ```haskell
 toUTCTime :: ByteString -> UTCTime
-toUTCTime t = parseTimeOrError True defaultTimeLocale (timeFormat redisConfig) $ B.unpack t
-```
-
-Converting the `noExpiry` to `UTCTime` is a common operation which will happen a number of times during the program.
-We therefore define a function for it, `noExpiryUTC`.
-
-```haskell
-noExpiryUTC :: UTCTime
-noExpiryUTC = toUTCTime $ noExpiry redisConfig
-```
-
-We can now add the tuple of `(Value, UTCTime)` to the database.
-
-```haskell
-setupDB :: IO (TVar DB)
-setupDB = newTVarIO $ fromList [("__version__", ("1.0.0", noExpiryUTC))]
+toUTCTime t = parseTimeOrError True defaultTimeLocale (timeFormat progConfigs) $ B.unpack t
 ```
 
 # 2. Set expiry
@@ -86,55 +73,61 @@ When parsing a request, we can simply tell the parser that what follows is an `I
 However, instead of using the `redisBulkString` function, which only parses `ByteString`s, we define another parser that parses `Integer`.
 Instead of the counting the printable characters using `printChar` we simply process and return the decimals that follow using `decimal`.
 
+<!-- replace -->
 ```haskell
 redisInteger :: Parser Integer
 redisInteger = do
-    _ <- "$"  -- Redis Bulk Strings start with $
+    _ <- string $ bulkStringId redisSpecs
     n <- decimal
     guard $ (n::Integer) >= 0
     _ <- crlfAlt
     decimal
 ```
 
-We can now add these to parser to the `parseSet` function to process the milliseconds.
+You may recall from the previous stage that we actually do not pass `$` (to identify a Bulk String) directly, but again, we use a named fields record, `redisSpecs` to store and retrieve such a constant.
+In addition, since the parser requires a `Token`, a conversion from `ByteString` to `Token` is performed using the `string` function from the `megaparsec` library.
+
+We can now add these two parsers to the `parseSet` function to process the milliseconds.
 The milliseconds are stored in the `time` variable and are then added to the overall return.
 
 ```haskell
 parseSet :: Parser Command
 parseSet = do
-    (n, _) <- commandCheck "set"
+    (n, _) <- commandCheck $ setN cmdNames
     guard $ n >= 3
     key <- crlfAlt *> redisBulkString
     value <- crlfAlt *> redisBulkString
-    time <- if n >= 4 then do
-        _ <- crlfAlt *> redisOptionCheck "px" -- Redis: px for milliseconds
-        t <- crlfAlt *> redisInteger
-        return $ Just t
+    time <- if n >= 4
+        then do
+            _ <- crlfAlt *> redisOptionCheck (msOption redisSpecs)
+            t <- crlfAlt *> redisInteger
+            return $ Just t
         else return Nothing
     return $ Set key value time
 ```
 
-You noticed that we treat `time` as a `Maybe` type.
+As hinted before, we treat `time` as a `Maybe` type.
 If no option is specified, then no expiration should be set.
 This is best solved by returning `Just time`, or `Nothing` otherwise.
 
 We will distinguish these two cases in the `set` function.
-But first we have to expand the type signature to also accept `Time`, which is a type synonym for `type Time = Maybe Integer`.
+But first we have to expand the type signature to also accept `Time`, which is a type synonym from the declaration `type Time = Maybe Integer`.
 
-To add the milliseconds to the current system time, we extract them by using `getCurrentTime` and add the seconds which we converted from the milliseconds.
+To add the milliseconds from the input to the current system time, we extract them by using `getCurrentTime` and then add the seconds which we converted from the milliseconds.
 The `addUTCTime` function from the `time` library does this addition for us.
 
+<!-- adjust -->
 ```haskell
 set :: Key -> Value -> Time -> TVar DB -> IO Response
 set key val expiry db = do
     time <- case expiry of
                 Just ms -> addUTCTime (fromInteger ms/1000) <$> getCurrentTime
-                Nothing -> return noExpiryUTC
+                Nothing -> return $ noExpiry progConfigs
     _ <- atomically $ modifyTVar db $ insert key (val, time)
-    return $ setSuccess redisConfig
+    return $ setSuccess redisSpecs
 ```
 
-If no expiration was set, i.e. a simple `set key value` command was issued by the user, we want to treat the key-value pair as being valid "forever" by using `noExpiryUTC`.
+If no expiration was set, i.e. a simple `set key value` command was issued by the user, we want to treat the key-value pair as being valid "forever" by using `noExpiry`.
 
 Otherwise, the `set` function remains the same, and we can now focus on `get`.
 
@@ -162,8 +155,8 @@ This function, we call it `checkExpiry`, takes the output from the database, i.e
 ```haskell
 checkExpiry :: (Value, UTCTime) -> UTCTime -> ByteString
 checkExpiry (val, dbTime) sysTime =
-    if isExpired dbTime sysTime then
-        nilString redisConfig
+    if isExpired dbTime sysTime
+        then nilString redisSpecs
         else val
 ```
 
@@ -172,12 +165,12 @@ The `get` function requires a small adjustment in that we have to transform it t
 We also outsource the retrieving of the `Value` and `UTCTime` from the database into a separate function, `getValTime` that includes `findWithDefault`.
 Since the the database returns a tuple of `Value` and `UTCTime`, the error value for the `findWithDefault` function has to be in the same type now.
 The time component is merely a placeholder, since the relevant error is "(nil)" from the constant.
-To achieve this we can pass it the already existing `noExpiryUTC` time as a default error value.
+To achieve this we can pass it the already existing `noExpiry` time as a default error value.
 
 ```haskell
 getValTime :: Key -> DB -> (Value, UTCTime)
 getValTime key db = do
-    let err = (nilString redisConfig, noExpiryUTC)
+    let err = (nilString redisSpecs, noExpiry progConfigs)
     findWithDefault err key db
 ```
 
@@ -200,8 +193,8 @@ It is defined as `$-1\r\n` so we can do a simple conversion in the `encodeRESP` 
 
 ```haskell
 encodeRESP :: Response -> Response
-encodeRESP s | s == nilString redisConfig = B.concat ["$", "-1", "\r\n"]
-             | otherwise = B.concat ["+", s, "\r\n"]
+encodeRESP s | s == nilString redisSpecs = B.concat [bulkStringId redisSpecs, nullStringId redisSpecs, "\r\n"]
+             | otherwise                 = B.concat [simpleStringId redisSpecs, s, "\r\n"]
 ```
 
-With that in place the full functionality up to this stage is completed.
+With all that in place the full functionality up to this stage is completed.
