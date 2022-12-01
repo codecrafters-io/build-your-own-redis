@@ -1,5 +1,5 @@
-@@ -1,16 +1,18 @@
-+use std::io::Write;
+@@ -1,16 +1,23 @@
++use std::io::{Read, Write};
  use std::net::TcpListener;
 
  fn main() {
@@ -10,6 +10,11 @@
 -            Ok(_stream) => {
 +            Ok(mut stream) => {
                  println!("accepted new connection");
++
++                // Wait for the client to send us a message but ignore the content for now
++                let mut buf = [0; 512];
++                stream.read(&mut buf).unwrap();
++
 +                stream.write("+PONG\r\n".as_bytes()).unwrap();
              }
              Err(e) => {
