@@ -3,3 +3,9 @@ author_details:
   profile_url: https://github.com/beplay
   avatar_url: https://github.com/beplay.png
   headline: Student, Eastern Switzerland University of Applied Sciences (OST Rapperswil)
+reviewers_details:
+- name: Farhad Mehta
+  profile_url: https://github.com/fmehta
+  avatar_url: https://github.com/fmehta.png
+  headline: Professor,  Eastern Switzerland University of Applied Sciences (OST Rapperswil)
+pull_request_url:
