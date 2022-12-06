@@ -2,7 +2,9 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
+	"io"
 	"net"
 	"os"
 )
@@ -32,6 +34,9 @@ func handleConnection(conn net.Conn, storage *Storage) {
 
 	for {
 		value, err := DecodeRESP(bufio.NewReader(conn))
+		if errors.Is(err, io.EOF) {
+			break
+		}
 		if err != nil {
 			fmt.Println("Error decoding RESP: ", err.Error())
 			return // Ignore clients that we fail to read from

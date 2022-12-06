@@ -1,10 +1,11 @@
-@@ -1,47 +1,50 @@
+@@ -1,47 +1,55 @@
  package main
 
  import (
 +	"bufio"
++	"errors"
  	"fmt"
--	"io"
+ 	"io"
  	"net"
  	"os"
  )
@@ -33,15 +34,15 @@
  	for {
 -		buf := make([]byte, 1024)
 -
--		if _, err := conn.Read(buf); err != nil {
--			if err == io.EOF {
--				break
--			} else {
--				fmt.Println("error reading from client: ", err.Error())
--				os.Exit(1)
--			}
+-		_, err := conn.Read(buf)
+-		if err == io.EOF {
 +		value, err := DecodeRESP(bufio.NewReader(conn))
-+		if err != nil {
++		if errors.Is(err, io.EOF) {
+ 			break
+ 		}
+ 		if err != nil {
+-			fmt.Println("error reading from client: ", err.Error())
+-			os.Exit(1)
 +			fmt.Println("Error decoding RESP: ", err.Error())
 +			return // Ignore clients that we fail to read from
  		}
