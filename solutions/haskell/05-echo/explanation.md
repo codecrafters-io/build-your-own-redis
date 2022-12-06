@@ -1,9 +1,15 @@
 In stage 5 you implement a second command, `echo`.
-This stage requires the most work of all since you have to build the foundations for handling different commands.
-This solution should help you understand why each implementation is required.
-It is composed of two parts, `1. Overview` where some key concepts are introduced, and `2. Parsing` where the implementation of the parser function is described.
 
-# 1. Overview
+This stage requires the most work of all since you have to build the foundations for handling different commands.
+
+It is composed of three parts:
+1. **RESP and Concepts** - some key concepts are introduced
+2. **Parser** - the implementation of the parser function is described
+3. **Process Information** Information - execute a command and return a response to the client
+
+This solution should help you understand why each implementation is required.
+
+# 1. RESP and Concepts
 Let us start with a high-level view of what should happen with our Redis implementation.
 The course of events, after a client is connected to the server, is as following:
 1. The client sends a request
@@ -70,40 +76,45 @@ import Prelude hiding (concat)
 
 This allows us to refer to ByteString's concat function as `B.concat`.
 
-## 1.5. Algebra Driven Design
+## 1.5. Algebra-Driven Design
 Until now, we did not have to write large and involved pieces of code.
 As with every programming language, things can quickly become confusing if one just starts developing without having an idea how to structure the code.
 
 When we start building the functionality of this Redis implementation, wouldn't it be good if we can start with small, elementary pieces and use them to build more and more abstract levels?
 
-There exists a general concept of this approach, which is thinking in algebraic terms, aptly named `Algebra Driven Design`.
+There exists a general concept of this approach, which is thinking in algebraic terms, aptly named `Algebra-Driven Design`.
 No, we do not need any math for this, but the concept is akin to using simple functions and build more complex abstractions with it.
+This concepts exists also in a similar form under the name of `Denotational Design`.
 
 An example would be to use the `plus` function to construct `multiplication` with it.
 And then use `multiplication` to build the `power` function, and so on.
 Haskell is actually well suited to think in algebraic terms due to its lack of mutable variables and its static type system, but this goes beyond what we can cover here.
-If you are interested in learning more about Algebra Driven Design, you can search for it online as there are some good books and blogs on this topic.
+If you are interested in learning more about Algebra-Driven Design, you can search for it online as there are some good books and blogs on this topic.
 
 The following section on parsing is using this concept to build the parsing functionality for Redis.
 
-# 2. Parsing
+# 2. Parser
 Parsing an input, or `Request` in our case, is the key element for the server to understand what it should do.
 
-During the parsing we encounter different stages that we need to tackle.
-In principle, this is:
-1. Decoding the input
-2. Extracting information
-3. Processing information
-4. Returning a response
+Something that every `Request` has in common, is that the input arrives in the RESP format.
+We need a way to decode this format to extract the information from it.
+Hence, we can build the basic blocks to do this in a generic way, and then use these for every function that we implement on top of them.
 
-(The enumeration corresponds to the sub-section headers).
+In this context the requests are encoded in a `RESP Array` that contains `Bulk Strings`.
+Each Array starts with a `*` followed by a number indicating the number of *elements* this array contains.
+All Bulk Strings begin with a `$` followed by a number indicating the number of *bytes* each string has.
 
-To parse the input we use another library.
+Hence, it makes sense to distinguish these two cases and to write a function for each.
+But first, a short section on parser libraries in Haskell.
+
+## 2.1. Parser Libraries
+To parse the input we use a library.
 We decided to use [Megaparsec](https://hackage.haskell.org/package/megaparsec) since it can parse [ByteStrings](https://hackage.haskell.org/package/megaparsec/docs/Text-Megaparsec-Byte.html) and it has some high-level implementations that make our lives a bit easier.
 
 Another popular parsing library is `Attoparsec` which you are free to use as well.
 Their general functionality does not differ much, only the latter requires some more specifications and it is optimized for speed, which is not relevant in our case.
 
+### 2.1.1. `Parser` Type
 To define our parser we have to specify its type.
 `Parsec` is the type of the Megaparsec library which takes three more arguments.
 The first one is to handle errors, where `Void` is commonly used as an empty return type.
@@ -120,16 +131,7 @@ This allows us to easily account for these two cases and implement appropriate a
 
 We now tackle the implementation using our new parser type.
 
-## 2.1. Decoding the input
-Something that every `Request` has in common, is that the input arrives in the RESP format.
-We need a way to decode this format to extract the information from it.
-Hence, we can build the basic blocks to do this in a generic way, and then use these for every function that we implement on top of them.
-
-In this context the requests are encoded in a `RESP Array` that contains `Bulk Strings`.
-Each Array starts with a `*` followed by a number indicating the number of *elements* this array contains.
-All Bulk Strings begin with a `$` followed by a number indicating the number of *bytes* each string has.
-
-Hence, it makes sense to distinguish these two cases and to write a function for each.
+## 2.2. Parse Bulk Strings
 Let us start with the `Bulk String` first.
 Since an Array can contain more than one Bulk String we have some sort of dependency between these elements.
 Also, a Bulk String indicates the number of bytes the string has, which is another dependency.
@@ -172,11 +174,10 @@ Since we want a single string rather than individual elements, like this list `s
 
 With this basic function in place we can now build other functions that need to parse Bulk Strings.
 
+## 2.3. Parse Arrays
+With Bulk String parsing in place, we can move one abstraction level up and parse a whole Array.
 
-## 2.2. Extracting information
-Now that we have the Bulk String parsing in place, we can move one abstraction level up and parse the whole Array.
-
-### 2.2.1. Extracting the command
+### 2.3.1. Extract a Command
 This is similar to the Bulk String, but we can modify this function to tell us also which command is embedded in the Array.
 Therefore, we call this function `commandCheck`.
 
@@ -210,7 +211,7 @@ To compare actual `Text` rather than `ByteString`s, a conversion from ByteString
 To return two values of different types, a `Tuple` is commonly used.
 The `commandCheck` function returns the number of elements in the Array (of type `Integer`) along with the identified command (of type `ByteString`) in such a tuple.
 
-### 2.2.2. Extracting the rest
+### 2.3.2. Extract the Rest
 We can now build another function on top that extracts and structures all information contained in an Array.
 This stage is about the `echo` command, which we use an example here, but the `ping` command is even easier to implement and provided in the solution code.
 
@@ -228,6 +229,7 @@ Per the Redis specification, `echo` requires another parameter, which is the mes
 Therefore, another check is performed to ensure that the Array consists of exactly two elements.
 To extract the second element (the message) from the Array, the `redisBulkString` function is used and the message is stored in the `message` variable.
 
+### 2.3.3. `Command` Type
 This function returns a type `Command` which we have not encountered yet:
 ```haskell
 data Command = Ping
@@ -250,11 +252,60 @@ data ApplicationError = UnknownCommand
 ```
 This error is returned if the parsing could not find a matching `Command`.
 
+## 2.4. Combine Parsers
+Before we go back to our main function, we need to piece together the two parsing functions we just built, `parsePing` and `parseEcho`.
 
-## 2.3. Processing information
-Until now, we have only extracted information from the request, but we have not done anything yet with it.
+### 2.4.1. The `<|>` Operator
+When we receive a request, we naturally do not know what it contains.
+Hence, it would be great to have something akin to `switch case` to try different options, for example try `ping` first, then try `echo`, and so on.
+In Haskell there exists an elegant implementation in the `Alternative` type class which is the `<|>` operator.
+Because `Alternative` is of type `Applicative` (i.e. `Applicative Functor`), `Megaparsec` is a `Monad`ic parser, and all `Monad`s are based on `Applicative Functor`s, we can use the `<|>` operator.
 
-The `parseEcho` function returns a value `Echo Message`
+`<|>` can be used between alternative options, where it starts to parse the first, and if it does not match continues with the second option, and so on.
+
+### 2.4.2. Backtrack Failed Attempts
+Unfortunately, when using `<|>` alone, the parser already consumes parts of the input to decide if the first option is a match.
+If not, it moves on to the second option, where it would fail in our case if we do not get the full input back.
+To avoid this, we can use `try` which backtracks a failed attempt.
+You can [read about try](https://hackage.haskell.org/package/megaparsec/docs/Text-Megaparsec.html#v:try) in the Megaparsec documentation.
+
+With that, we can construct a function `parseToCommand` which can parse the different requests for us and only then call the appropriate `Command` that is contained in the input.
+
+```haskell
+parseToCommand :: Parser Command
+parseToCommand = try parseEcho
+             <|> try parsePing
+```
+
+### 2.4.3. Megaparsec's `parse` Function
+Until now, we have not really used the parsing functionality of Megaparsec.
+The library contains a `parse` function, which can be used to actually start the parsing.
+This function accepts three inputs:
+1. The function with the parsing logic, in our case `parseToCommand`
+2. An identifier that is returned if there is a failed match - this is useful if multiple parsers are in place, but for us it can be an empty string, i.e. `""`
+3. The input to be parsed, i.e. the `Request`
+
+Since the Megaparsec `parse` function returns the `Either` type, we have to handle the two outcomes.
+The parser's task is to return either a command or, in case of failure, to indicate an error.
+The `Either` type is again useful here to distinguish two cases, especially since one means success and the other is an error.
+
+```haskell
+parseRequest :: Request -> Either ApplicationError Command
+parseRequest req = case parseResult of
+                       Left _    -> Left UnknownCommand
+                       Right cmd -> Right cmd
+                   where parseResult = parse parseToCommand "" req
+```
+
+If the parsing was a success, we return the type `Command` that comprises the actual command and, if present, any keys, values, messages, etc.
+When a user sent a request that is not implemented, it is not recognized by the parser.
+In that case, it returns the type `ApplicationError`, specifically the `UnknownCommand` value.
+
+# 3. Process Information
+So far, we have only extracted information from the request, but we have not done anything yet with it.
+
+## 3.1. Execute Commands
+The `parseEcho` function returns a value `Echo Message`.
 Your goal is to get the server to return the message from the value.
 This also applies to `ping`, where the message in the value is simply `PONG`, rather than a user specified message.
 
@@ -263,13 +314,16 @@ Since they are rather simple and have no inherent logic, we can simplify our pro
 
 However, we have to do something with the `Command` type that the two parsers, `parseEcho` and `parsePing` return.
 
-But first, a little detour on interactive interactions.
+### 3.1.1. Interactive Interactions
+First, a little detour on interactive interactions.
 Since the whole Redis implementation is an 'impure' interaction with the outside world, it is of type `IO`.
 You may want to [read about IO](https://en.wikibooks.org/wiki/Haskell/Understanding_monads/IO) first to understand why it is relevant here.
 
 Our goal is to return a `Response` at the end to the client.
 Therefore, each function that returns something to the main function has to be of type `IO`, and in our case of type `IO Response`.
 The function that takes the `Command` as an input should therefore produce the `IO Response`.
+
+### 3.1.2. `exec` Function
 For this we define a function `exec` which basically executes the command and produces a response.
 
 ```haskell
@@ -284,54 +338,13 @@ The same applies to `echo`, we just return the message that we extracted before.
 
 With `exec` in place, we have a function that returns a response and you can now return the `Response` to the user.
 
-## 2.4. Returning a response
-In this section we want to implement the returning of a response to the user. But before we go back to our main function, we need to piece together the two parsing functions we just built, `parsePing` and `parseEcho`.
 
-When we receive a request, we naturally do not know what it contains.
-Hence, it would be great to have something akin to `switch case` to try different options, for example try `ping` first, then try `echo`, and so on.
-In Haskell there exists an elegant implementation in the `Alternative` type class which is the `<|>` operator.
-Because `Alternative` is of type `Applicative` (i.e. `Applicative Functor`), `Megaparsec` is a `Monad`ic parser, and all `Monad`s are based on `Applicative Functor`s, we can use the `<|>` operator.
 
-`<|>` can be used between alternative options, where it starts to parse the first, and if it does not match continues with the second option, and so on.
-Unfortunately, when using `<|>` alone, the parser already consumes parts of the input to decide if the first option is a match.
-If not, it moves on to the second option, where it would fail in our case if we do not get the full input back.
-To avoid this, we can use `try` which backtracks a failed attempt.
-You can [read about try](https://hackage.haskell.org/package/megaparsec/docs/Text-Megaparsec.html#v:try) in the Megaparsec documentation.
-
-With that, we can construct a function `parseToCommand` which can parse the different requests for us and only then call the appropriate `Command` that is contained in the input.
-
-```haskell
-parseToCommand :: Parser Command
-parseToCommand = try parseEcho
-             <|> try parsePing
-```
-
-Until now, we have not really used the parsing functionality of Megaparsec.
-The library contains a `parse` function, which can be used to actually start the parsing.
-This function accepts three inputs:
-1. The function with the parsing logic, in our case `parseToCommand`
-2. An identifier that is returned if there is a failed match - this is useful if multiple parsers are in place, but for us it can be an empty string, i.e. `""`
-3. The input to be parsed, i.e. the `Request`
-
-Since the Megaparsec `parse` function returns the `Either` type, we have to handle the two outcomes.
-The parser's task is to return either a command or, in case of failure, to indicate an error.
-The `Either` type is again useful here to distinguish two cases, especially since one means success and the other is an error.
-
-If the parsing was a success, we return the type `Command` that comprises the actual command and, if present, any keys, values, messages, etc.
-When a user sent a request that is not implemented, it is not recognized by the parser.
-In that case, it returns the type `ApplicationError`, specifically the `UnknownCommand` value.
-
-```haskell
-parseRequest :: Request -> Either ApplicationError Command
-parseRequest req = case parseResult of
-                       Left _    -> Left UnknownCommand
-                       Right cmd -> Right cmd
-                   where parseResult = parse parseToCommand "" req
-```
-
-Now that we have implemented the full parsing logic and we get a return value in any case, we can start putting everything together.
+## 3.2. Response
+Now, that we have implemented the full parsing logic and we get a return value in any case, we can start putting everything together.
 For this, we go back to our main function.
 
+### 3.2.1. Parse the Request
 Previously, we discarded the input from the user (or client) since we assumed only `ping` is sent.
 This assumption no longer holds as we also want to process the `echo` command.
 Therefore, we can exchange the underscore `_` with a variable name of our choice, `request` in our case.
@@ -340,7 +353,8 @@ Since this variable contains all relevant information that is encoded in RESP, w
 The result from `parseRequest` is something of type `Either ApplicationError Command`.
 Therefore, we have to first distinguish between the error and the command, before we pass the actual `Command` to the `exec` function for execution.
 
-The result from the `exec` function, which ultimately returns a type `IO Response`, should then be sent back to the client, also in a RESP format.
+### 3.2.2. Return a Response
+The result from the `exec` function, which ultimately returns a type `IO Response`, should be sent back to the client, also in a RESP format.
 
 ```haskell
 _ <- forever $ do
@@ -355,6 +369,7 @@ putStrLn $ "disconnected client: " ++ show _address
 
 This is done using the `send` function, but this time we add the response that was returned from either `ping` or `echo` (or an error message if neither of both).
 
+### 3.2.3. Encode Response
 Before sending the response we need to transform it back into the RESP format.
 One last function in this section, the `encodeRESP` function, will handle this for us.
 It takes the `Response` and transforms it to a RESP Simple String by putting it between `+` and `\r\n`.
