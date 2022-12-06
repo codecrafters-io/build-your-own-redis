@@ -12,7 +12,7 @@ serve HostAny port $ \(socket, _address) -> do
 ```
 
 We will encounter the topic of Monads in subsequent stages again, so it may be helpful to read up on this topic if you are not yet familiar with it.
-The Haskell Wiki provides an extensive description of Monads in their [All About Monads](https://wiki.haskell.org/All_About_Monads) section, but you may well just start with the [do notation](https://wiki.haskell.org/All_About_Monads#Do_notation).
+The Haskell Wiki provides an extensive description of Monads, but you may well just focus on the [do notation](https://wiki.haskell.org/All_About_Monads#Do_notation) for a start.
 
 The information about the connection is stored in the `socket` variable.
 Also, the connected IP address is preserved, but only for debugging purposes so you can check locally if a connection is successful.
