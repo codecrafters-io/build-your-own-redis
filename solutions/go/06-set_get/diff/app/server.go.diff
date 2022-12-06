@@ -1,9 +1,11 @@
-@@ -1,50 +1,57 @@
+@@ -1,55 +1,62 @@
  package main
 
  import (
  	"bufio"
+ 	"errors"
  	"fmt"
+ 	"io"
  	"net"
  	"os"
  )
@@ -35,6 +37,9 @@
 
  	for {
  		value, err := DecodeRESP(bufio.NewReader(conn))
+ 		if errors.Is(err, io.EOF) {
+ 			break
+ 		}
  		if err != nil {
  			fmt.Println("Error decoding RESP: ", err.Error())
  			return // Ignore clients that we fail to read from
