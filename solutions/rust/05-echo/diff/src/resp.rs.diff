@@ -1,4 +1,4 @@
-@@ -0,0 +1,169 @@
+@@ -0,0 +1,167 @@
 +use anyhow::{Error, Result};
 +use bytes::BytesMut;
 +use tokio::{io::AsyncReadExt, io::AsyncWriteExt, net::TcpStream};
@@ -89,9 +89,7 @@
 +        '+' => decode_simple_string(buffer),
 +        '*' => decode_array(buffer),
 +        '$' => decode_bulk_string(buffer),
-+        _ => {
-+            Err(Error::msg("unrecognised message type"))
-+        }
++        _ => Err(Error::msg("unrecognised message type")),
 +    }
 +}
 +
