@@ -89,7 +89,7 @@ fn parse_message(buffer: BytesMut) -> Result<Option<(Value, usize)>> {
         '*' => decode_array(buffer),
         '$' => decode_bulk_string(buffer),
         _ => {
-            return Err(Error::msg("unrecognised message type"));
+            Err(Error::msg("unrecognised message type"))
         }
     }
 }
