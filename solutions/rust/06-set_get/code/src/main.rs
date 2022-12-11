@@ -1,5 +1,5 @@
 use anyhow::Result;
-use resp::Value::{BulkString, Error, SimpleString, Null};
+use resp::Value::{BulkString, Error, Null, SimpleString};
 use std::sync::{Arc, Mutex};
 use store::Store;
 use tokio::net::{TcpListener, TcpStream};

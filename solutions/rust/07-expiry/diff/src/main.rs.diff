@@ -1,32 +1,3 @@
-@@ -1,27 +1,27 @@
- use anyhow::Result;
--use resp::Value::{BulkString, Error, SimpleString, Null};
-+use resp::Value::{BulkString, Error, Null, SimpleString};
- use std::sync::{Arc, Mutex};
- use store::Store;
- use tokio::net::{TcpListener, TcpStream};
-
- mod resp;
- mod store;
-
- #[tokio::main]
- async fn main() -> Result<()> {
-     let mut listener = TcpListener::bind("127.0.0.1:6379").await?;
-
-     let main_store = Arc::new(Mutex::new(Store::new()));
-
-     loop {
-         let incoming = listener.accept().await;
-         let client_store = main_store.clone();
-         match incoming {
-             Ok((stream, _)) => {
-                 println!("accepted new connection");
-                 tokio::spawn(async move {
-                     handle_connection(stream, client_store).await.unwrap();
-                 });
-             }
-             Err(e) => {
-                 println!("error: {}", e);
 @@ -34,42 +34,53 @@
      let mut conn = resp::RespConnection::new(stream);
 

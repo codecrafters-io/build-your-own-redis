@@ -1,6 +1,6 @@
 use anyhow::Result;
-use tokio::net::{TcpListener, TcpStream};
 use resp::Value::{Error, SimpleString};
+use tokio::net::{TcpListener, TcpStream};
 
 mod resp;
 
