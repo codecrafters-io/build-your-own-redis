@@ -1,8 +1,8 @@
-use std::sync::{Arc, Mutex};
 use anyhow::Result;
-use tokio::net::{TcpListener, TcpStream};
-use store::Store;
 use resp::Value::{BulkString, Error, SimpleString};
+use std::sync::{Arc, Mutex};
+use store::Store;
+use tokio::net::{TcpListener, TcpStream};
 
 mod resp;
 mod store;
@@ -53,7 +53,9 @@ async fn handle_connection(stream: TcpStream, client_store: Arc<Mutex<Store>>) -
                     }
                 }
                 "set" => {
-                    if let (Some(BulkString(key)), Some(BulkString(value))) = (args.get(0), args.get(1)) {
+                    if let (Some(BulkString(key)), Some(BulkString(value))) =
+                        (args.get(0), args.get(1))
+                    {
                         client_store.lock().unwrap().set(key.clone(), value.clone());
                         SimpleString("OK".to_string())
                     } else {

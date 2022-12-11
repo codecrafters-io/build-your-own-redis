@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 pub struct Store {
-    data: HashMap<String, String>
+    data: HashMap<String, String>,
 }
 
 impl Store {
