@@ -1,10 +1,10 @@
-@@ -1,48 +1,73 @@
-+use std::sync::{Arc, Mutex};
+@@ -1,48 +1,75 @@
  use anyhow::Result;
++use resp::Value::{BulkString, Error, SimpleString, Null};
++use std::sync::{Arc, Mutex};
++use store::Store;
  use tokio::net::{TcpListener, TcpStream};
 -use resp::Value::{Error, SimpleString};
-+use store::Store;
-+use resp::Value::{BulkString, Error, SimpleString};
 
  mod resp;
 +mod store;
@@ -50,14 +50,16 @@
 +                        if let Some(value) = client_store.lock().unwrap().get(key.clone()) {
 +                            SimpleString(value)
 +                        } else {
-+                            Error("Key is not set".to_string())
++                            Null
 +                        }
 +                    } else {
-+                        Error("Set requires one argument".to_string())
++                        Error("Get requires one argument".to_string())
 +                    }
 +                }
 +                "set" => {
-+                    if let (Some(BulkString(key)), Some(BulkString(value))) = (args.get(0), args.get(1)) {
++                    if let (Some(BulkString(key)), Some(BulkString(value))) =
++                        (args.get(0), args.get(1))
++                    {
 +                        client_store.lock().unwrap().set(key.clone(), value.clone());
 +                        SimpleString("OK".to_string())
 +                    } else {

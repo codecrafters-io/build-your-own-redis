@@ -1,5 +1,5 @@
 use anyhow::Result;
-use resp::Value::{BulkString, Error, SimpleString, Null};
+use resp::Value::{BulkString, Error, Null, SimpleString};
 use std::sync::{Arc, Mutex};
 use store::Store;
 use tokio::net::{TcpListener, TcpStream};
@@ -56,10 +56,21 @@ async fn handle_connection(stream: TcpStream, client_store: Arc<Mutex<Store>>) -
                     if let (Some(BulkString(key)), Some(BulkString(value))) =
                         (args.get(0), args.get(1))
                     {
-                        client_store.lock().unwrap().set(key.clone(), value.clone());
+                        if let (Some(BulkString(_)), Some(BulkString(amount))) =
+                            (args.get(2), args.get(3))
+                        {
+                            client_store.lock().unwrap().set_px(
+                                key.clone(),
+                                value.clone(),
+                                amount.parse::<u64>()?,
+                            );
+                        } else {
+                            client_store.lock().unwrap().set(key.clone(), value.clone());
+                        }
+
                         SimpleString("OK".to_string())
                     } else {
-                        Error("Set requires two arguments".to_string())
+                        Error("Set requires two or four arguments".to_string())
                     }
                 }
                 _ => Error(format!("command not implemented: {}", command)),
