@@ -1,5 +1,6 @@
 use anyhow::Result;
 use tokio::net::{TcpListener, TcpStream};
+use resp::Value::{Error, SimpleString};
 
 mod resp;
 
@@ -32,9 +33,9 @@ async fn handle_connection(stream: TcpStream) -> Result<()> {
         if let Some(value) = value {
             let (command, args) = value.to_command()?;
             let response = match command.to_ascii_lowercase().as_ref() {
-                "ping" => resp::Value::SimpleString("PONG".to_string()),
+                "ping" => SimpleString("PONG".to_string()),
                 "echo" => args.first().unwrap().clone(),
-                _ => resp::Value::Error(format!("command not implemented: {}", command)),
+                _ => Error(format!("command not implemented: {}", command)),
             };
 
             conn.write_value(response).await?;
