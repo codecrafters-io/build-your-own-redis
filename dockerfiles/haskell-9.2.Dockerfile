@@ -19,6 +19,13 @@ RUN echo 'main :: IO ()' >> /app/app/Main.hs
 RUN echo 'main = putStrLn "Hello, World!"' >> /app/app/Main.hs
 
 RUN stack build
+RUN stack clean hs-redis-clone
+RUN cp -r .stack-work /tmp/
+
+RUN rm -rf /app/app
+
+RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && cp -r /tmp/.stack-work . && stack build" > /codecrafters-precompile.sh
+RUN chmod +x /codecrafters-precompile.sh
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
 
