@@ -59,7 +59,7 @@ async fn handle_connection(stream: TcpStream, client_store: Arc<Mutex<Store>>) -
                         if let (Some(BulkString(_)), Some(BulkString(amount))) =
                             (args.get(2), args.get(3))
                         {
-                            client_store.lock().unwrap().set_px(
+                            client_store.lock().unwrap().set_with_expiry(
                                 key.clone(),
                                 value.clone(),
                                 amount.parse::<u64>()?,

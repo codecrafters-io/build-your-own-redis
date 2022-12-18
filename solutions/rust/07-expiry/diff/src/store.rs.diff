@@ -25,9 +25,9 @@
 +        self.data.insert(key, entry);
 +    }
 +
-+    pub fn set_px(&mut self, key: String, value: String, px: u64) {
++    pub fn set_with_expiry(&mut self, key: String, value: String, expiry_ms: u64) {
 +        let entry = Entry {
-+            t: Some(Instant::now() + Duration::from_millis(px)),
++            t: Some(Instant::now() + Duration::from_millis(expiry_ms)),
 +            value,
 +        };
 +        self.data.insert(key, entry);
