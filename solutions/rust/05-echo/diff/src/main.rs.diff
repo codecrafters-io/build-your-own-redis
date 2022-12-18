@@ -1,7 +1,8 @@
-@@ -1,41 +1,47 @@
+@@ -1,41 +1,48 @@
  use anyhow::Result;
 -use bytes::BytesMut;
 -use tokio::io::{AsyncReadExt, AsyncWriteExt};
++use resp::Value::{Error, SimpleString};
  use tokio::net::{TcpListener, TcpStream};
 
 +mod resp;
@@ -41,9 +42,9 @@
 +        if let Some(value) = value {
 +            let (command, args) = value.to_command()?;
 +            let response = match command.to_ascii_lowercase().as_ref() {
-+                "ping" => resp::Value::SimpleString("PONG".to_string()),
++                "ping" => SimpleString("PONG".to_string()),
 +                "echo" => args.first().unwrap().clone(),
-+                _ => resp::Value::Error(format!("command not implemented: {}", command)),
++                _ => Error(format!("command not implemented: {}", command)),
 +            };
 +
 +            conn.write_value(response).await?;
