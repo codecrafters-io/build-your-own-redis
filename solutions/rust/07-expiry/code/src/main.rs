@@ -9,7 +9,7 @@ mod store;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let mut listener = TcpListener::bind("127.0.0.1:6379").await?;
+    let listener = TcpListener::bind("127.0.0.1:6379").await?;
 
     let main_store = Arc::new(Mutex::new(Store::new()));
 
