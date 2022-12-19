@@ -10,7 +10,7 @@
 -    let listener = TcpListener::bind("127.0.0.1:6379").unwrap();
 +#[tokio::main]
 +async fn main() -> Result<()> {
-+    let mut listener = TcpListener::bind("127.0.0.1:6379").await?;
++    let listener = TcpListener::bind("127.0.0.1:6379").await?;
 
 -    for stream in listener.incoming() {
 -        match stream {
