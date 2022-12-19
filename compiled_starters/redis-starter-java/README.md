@@ -1,3 +1,5 @@
+![progress-banner](https://codecrafters.io/landing/images/default_progress_banners/redis.png)
+
 This is a starting point for Java solutions to the
 ["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
 
