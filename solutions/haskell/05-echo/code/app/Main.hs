@@ -34,9 +34,9 @@ data ApplicationError = UnknownCommand
 main :: IO ()
 main = do
     let port = "6379"
-    putStrLn $ "\r\n>>> Redis server listening on port " ++ port ++ " <<<"
-    serve HostAny port $ \(socket, _address) -> do
-        putStrLn $ "successfully connected client: " ++ show _address
+    putStrLn $ "Redis server listening on port " ++ port
+    serve HostAny port $ \(socket, address) -> do
+        putStrLn $ "successfully connected client: " ++ show address
         _ <- forever $ do
             request <- recv socket 2048
             response <- do
@@ -44,7 +44,7 @@ main = do
                     Left _ -> return "-ERR Unknown Command"
                     Right cmd -> exec cmd
             send socket (encodeRESP response)
-        putStrLn $ "disconnected client: " ++ show _address
+        putStrLn $ "disconnected client: " ++ show address
 
 encodeRESP :: Response -> Response
 encodeRESP s = B.concat ["+", s, "\r\n"]

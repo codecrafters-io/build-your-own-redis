@@ -364,7 +364,7 @@ _ <- forever $ do
             Left _ -> return "-ERR Unknown Command"
             Right cmd -> exec cmd
     send socket (encodeRESP response)
-putStrLn $ "disconnected client: " ++ show _address
+putStrLn $ "disconnected client: " ++ show address
 ```
 
 This is done using the `send` function, but this time we add the response that was returned from either `ping` or `echo` (or an error message if neither of both).

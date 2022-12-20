@@ -40,93 +40,49 @@ type Parser = Parsec Void Request
 type Message = ByteString
 type Key = ByteString
 type Value = ByteString
-type DB = Map Key (Value, Expiry)
-type Time = Maybe Integer
+type DB = Map Key (Value, Maybe Expiry)
 type Expiry = UTCTime
+type Time = Maybe Integer
 
 data Command = Ping
              | Echo Message
              | Set Key Value Time
              | Get Key
 data ApplicationError = UnknownCommand
-data ProgConfigs = ProgConfigs {
-    recvBytes :: Int,
-    noExpiry :: UTCTime,
-    timeFormat :: String }
-data CmdNames = CmdNames {
-    pingN :: Text,
-    echoN :: Text,
-    setN :: Text,
-    getN :: Text }
-data RedisSpecs = RedisSpecs {
-    port :: String,
-    pingDefault :: Response,
-    unknownCmd :: Response,
-    setSuccess :: Response,
-    nilString :: Response,
-    bulkStringId :: ByteString,
-    arrayId :: ByteString,
-    simpleStringId :: ByteString,
-    msOption :: Text,
-    nullStringId :: ByteString }
+
 
 main :: IO ()
 main = do
-    putStrLn $ "\r\n>>> Redis server listening on port " ++ port redisSpecs ++ " <<<"
+    let port = "6379"
+    putStrLn $ "Redis server listening on port " ++ port
     redisDB <- setupDB
-    serve HostAny (port redisSpecs) $ \(socket, _address) -> do
-        putStrLn $ "successfully connected client: " ++ show _address
+    serve HostAny port $ \(socket, address) -> do
+        putStrLn $ "successfully connected client: " ++ show address
         _ <- forever $ do
-            request <- recv socket $ recvBytes progConfigs
+            request <- recv socket 2048
             response <- do
                 case parseRequest request of
-                    Left _ -> return $ unknownCmd redisSpecs
+                    Left _ -> return "-ERR Unknown Command"
                     Right cmd -> exec cmd redisDB
             _ <- send socket (encodeRESP response)
 
             -- debug database
             out <- readTVarIO redisDB
             putStrLn $ "\r\n***\r\nRedis DB content:\r\n"++ showTree out ++ "***\r\n"
-        putStrLn $ "disconnected client: " ++ show _address
-
-progConfigs :: ProgConfigs
-progConfigs = ProgConfigs {
-                recvBytes  = 2048,
-                noExpiry   = toUTCTime "2222-12-31T23:59:59",
-                timeFormat = "%Y-%m-%dT%H:%M:%S%Q" }
-
-cmdNames :: CmdNames
-cmdNames = CmdNames {
-                pingN = "ping",
-                echoN = "echo",
-                setN  = "set",
-                getN  = "get" }
-
-redisSpecs :: RedisSpecs
-redisSpecs = RedisSpecs {
-                port           = "6379",
-                pingDefault    = "PONG",
-                unknownCmd     = "-ERR Unknown Command",
-                setSuccess     = "OK",
-                nilString      = "(nil)",
-                bulkStringId   = "$",
-                arrayId        = "*",
-                simpleStringId = "+",
-                msOption       = "px",
-                nullStringId   = "-1" }
+        putStrLn $ "disconnected client: " ++ show address
 
 toUTCTime :: ByteString -> UTCTime
-toUTCTime t = parseTimeOrError True defaultTimeLocale (timeFormat progConfigs) $ B.unpack t
+toUTCTime t = parseTimeOrError True defaultTimeLocale "%Y-%m-%dT%H:%M:%S%Q" $ B.unpack t
 
 setupDB :: IO (TVar DB)
 setupDB = newTVarIO empty
 
 encodeRESP :: Response -> Response
-encodeRESP s | s == nilString redisSpecs = B.concat [bulkStringId redisSpecs, nullStringId redisSpecs, "\r\n"]
-             | otherwise                 = B.concat [simpleStringId redisSpecs, s, "\r\n"]
+encodeRESP s | s == "(nil)" = "$-1\r\n"
+             | otherwise    = B.concat ["+", s, "\r\n"]
 
 exec :: Command -> TVar DB -> IO Response
-exec Ping _                   = return $ pingDefault redisSpecs
+exec Ping _                   = return "PONG"
 exec (Echo msg) _             = return msg
 exec (Set key value time) db  = set key value time db
 exec (Get key) db             = get key db
@@ -152,7 +108,7 @@ crlfAlt = "\\r\\n" <|> crlf
 
 redisBulkString :: Parser ByteString
 redisBulkString = do
-    _ <- string $ bulkStringId redisSpecs
+    _ <- "$"
     n <- decimal
     guard $ n >= 0
     _ <- crlfAlt
@@ -161,7 +117,7 @@ redisBulkString = do
 
 commandCheck :: Text -> Parser (Integer, ByteString)
 commandCheck c = do
-    _ <- string $ arrayId redisSpecs
+    _ <- "*"
     n <- decimal
     guard $ n > 0
     cmd <- crlfAlt *> redisBulkString
@@ -176,7 +132,7 @@ redisOptionCheck opt = do
 
 redisInteger :: Parser Integer
 redisInteger = do
-    _ <- string $ bulkStringId redisSpecs
+    _ <- "$"
     n <- decimal
     guard $ (n::Integer) >= 0
     _ <- crlfAlt
@@ -184,26 +140,26 @@ redisInteger = do
 
 parseEcho :: Parser Command
 parseEcho = do
-    (n, _) <- commandCheck $ echoN cmdNames
+    (n, _) <- commandCheck "echo"
     guard $ n == 2
     message <- crlfAlt *> redisBulkString
     return $ Echo message
 
 parsePing :: Parser Command
 parsePing = do
-    (n, _) <- commandCheck $ pingN cmdNames
+    (n, _) <- commandCheck "ping"
     guard $ n == 1
     return Ping
 
 parseSet :: Parser Command
 parseSet = do
-    (n, _) <- commandCheck $ setN cmdNames
+    (n, _) <- commandCheck "set"
     guard $ n >= 3
     key <- crlfAlt *> redisBulkString
     value <- crlfAlt *> redisBulkString
     time <- if n >= 4
         then do
-            _ <- crlfAlt *> redisOptionCheck (msOption redisSpecs)
+            _ <- crlfAlt *> redisOptionCheck "px"
             t <- crlfAlt *> redisInteger
             return $ Just t
         else return Nothing
@@ -211,33 +167,36 @@ parseSet = do
 
 parseGet :: Parser Command
 parseGet = do
-    (n, _) <- commandCheck $ getN cmdNames
+    (n, _) <- commandCheck "get"
     guard $ n == 2
     key <- crlfAlt *> redisBulkString
     return $ Get key
 
 set :: Key -> Value -> Time -> TVar DB -> IO Response
 set key val expiry db = do
-    time <- case expiry of
-                Just ms -> addUTCTime (fromInteger ms/1000) <$> getCurrentTime
-                Nothing -> return $ noExpiry progConfigs
+    sysTime <- getCurrentTime
+    let time = case expiry of
+                Just ms -> Just $ addUTCTime (fromInteger ms/1000) sysTime
+                Nothing -> Nothing
     _ <- atomically $ modifyTVar db $ insert key (val, time)
-    return $ setSuccess redisSpecs
+    return "OK"
 
 get :: Key -> TVar DB -> IO Response
 get key db = do
-    (val, t) <- getValTime key <$> readTVarIO db
-    checkExpiry (val, t) <$> getCurrentTime
+    (val, expiry) <- getValTime key <$> readTVarIO db
+    case expiry of
+            Just time -> checkExpiry val time <$> getCurrentTime
+            Nothing -> return val
 
-getValTime :: Key -> DB -> (Value, UTCTime)
+getValTime :: Key -> DB -> (Value, Maybe Expiry)
 getValTime key db = do
-    let err = (nilString redisSpecs, noExpiry progConfigs)
+    let err = ("(nil)", Nothing)
     findWithDefault err key db
 
-checkExpiry :: (Value, UTCTime) -> UTCTime -> ByteString
-checkExpiry (val, dbTime) sysTime =
+checkExpiry :: Value -> Expiry -> UTCTime -> ByteString
+checkExpiry val dbTime sysTime =
     if isExpired dbTime sysTime
-        then nilString redisSpecs
+        then "(nil)"
         else val
 
 -- diff: t1 - t2

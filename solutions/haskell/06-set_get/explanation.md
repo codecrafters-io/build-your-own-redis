@@ -92,14 +92,12 @@ This is similar to echo, just with an additional element.
 ```haskell
 parseSet :: Parser Command
 parseSet = do
-    (n, _) <- commandCheck "set" -- see the section 3 for an improvement
+    (n, _) <- commandCheck "set"
     guard $ n == 3
     key <- crlfAlt *> redisBulkString
     value <- crlfAlt *> redisBulkString
     return $ Set key value
 ```
-
-In section 3 we discuss some improvements to avoid using hard-coded constants throughout our program.
 
 The `set` command is a bit more complicated than the simple ping and echo commands, hence we decide carve the functionality out in a separate function called `set`.
 Since we want to add a key-value pair to the database, we have to also take the database as an input parameter to `set`.
@@ -118,7 +116,7 @@ type Command = TVar DB -> IO Response
 set :: Key -> Value -> TVar DB -> IO Response
 set key val db = do
     _ <- atomically $ modifyTVar db $ insert key val
-    return "OK"  -- see the section 3 for an improvement
+    return "OK"
 ```
 
 ## 2.2. get
@@ -146,65 +144,8 @@ get key db = findWithDefault "(nil)" key <$> readTVarIO db
 Such an operation works because `findWithDefault` is an instance of `Functor` which provides the function `fmap` that lets you apply a function to another function.
 You can read more about [the Functor class](https://en.wikibooks.org/wiki/Haskell/The_Functor_class) and [the Applicative class (for applicative functors)](https://en.wikibooks.org/wiki/Haskell/Applicative_functors) following these two links.
 
-# 3. Other improvements
-
 With the `exec` function expecting now a database to be consumed for `set` and `get`, each of the other pattern matches does so, too.
 Therefore, we need to add the `TVar DB` type to `Echo` and `Ping`, even if we do nothing with it.
 Otherwise, we would get an error for having different number of arguments.
 
-By now we are using many constants in the program
-This could get confusing, especially if they are used in multiple different functions.
-We can improve this situation by adding a so-called named fields record in form of an abstract data type (`ADT`) structure.
-The naming of such an `ADT` is up to our liking.
-The example we show here replaces Redis-specific values, so we call it `RedisSpecs` (other named fields records are in the solution code).
-
-In there, we add the constants that we want to have in a single, central place.
-You may add more constants to it, but for now we choose the following ones.
-
-```haskell
-data RedisSpecs = RedisSpecs {
-    port :: String,
-    pingDefault :: Response,
-    unknownCmd :: Response,
-    setSuccess :: Response,
-    nilString :: Response,
-    bulkStringId :: ByteString,
-    arrayId :: ByteString,
-    simpleStringId :: ByteString }
-```
-
-Once you have a structure defined, you can create a function of this type and add the values one by one.
-
-```haskell
-redisSpecs :: RedisSpecs
-redisSpecs = RedisSpecs {
-                port           = "6379",
-                pingDefault    = "PONG",
-                unknownCmd     = "-ERR Unknown Command",
-                setSuccess     = "OK",
-                nilString      = "(nil)",
-                bulkStringId   = "$",
-                arrayId        = "*",
-                simpleStringId = "+" }
-```
-
-Within the program, you can refer to a single constant by its name.
-You will notice that it is of type `RedisSpecs -> 'constant type'`, for example: `Configuration -> String` in the case of `port`.
-
-As mentioned previously, we can improve, amongst others, the `set` and `get` functions by calling the constants.
-
-```haskell
-set :: Key -> Value -> TVar DB -> IO Response
-set key val db = do
-    _ <- atomically $ modifyTVar db $ insert key val
-    return $ setSuccess redisSpecs
-
-get :: Key -> TVar DB -> IO Response
-get key db = findWithDefault (nilString redisSpecs) key <$> readTVarIO db
-```
-
-This should be done for all other constants as well.
-The solution code contains the other replacements.
-Note, that within `CommandCheck` and `redisBulkString`, the identification of the first element (i.e. "$" and "*") needs to be a `Token`, hence we use `string` from the `megaparsec` library that transforms a `ByteString` into a `Token`.
-
-With all this in place, you should now have a working database and be able to write to and read from it by using the `set` and `get` commands.
+You should now have a working database and be able to write to and read from it by using the `set` and `get` commands.

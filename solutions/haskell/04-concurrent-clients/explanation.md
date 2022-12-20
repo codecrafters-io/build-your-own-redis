@@ -5,7 +5,7 @@ The `serve` function closes a connection automatically and frees up resources, e
 However, as previously mentioned, the `do` notation requires an expression at the end, hence we add a `putStrLn` with a custom output at the end.
 
 ```haskell
-putStrLn $ "disconnected client: " ++ show _address
+putStrLn $ "disconnected client: " ++ show address
 ```
 
 You could do an alternative implementation if you do not want to use the `network-simple` library, but the more powerful `network` library.

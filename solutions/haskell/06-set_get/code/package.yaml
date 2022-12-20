@@ -7,7 +7,7 @@
 # DON'T EDIT THIS!
 
 name:                hs-redis-clone
-version:             1.0.0.0
+version:             0.1.0.0
 license:             BSD3
 
 dependencies:

@@ -40,63 +40,26 @@ data Command = Ping
              | Set Key Value
              | Get Key
 data ApplicationError = UnknownCommand
-data ProgConfigs = ProgConfigs {
-    recvBytes :: Int }
-data CmdNames = CmdNames {
-    pingN :: Text,
-    echoN :: Text,
-    setN :: Text,
-    getN :: Text }
-data RedisSpecs = RedisSpecs {
-    port :: String,
-    pingDefault :: Response,
-    unknownCmd :: Response,
-    setSuccess :: Response,
-    nilString :: Response,
-    bulkStringId :: ByteString,
-    arrayId :: ByteString,
-    simpleStringId :: ByteString }
 
 main :: IO ()
 main = do
-    putStrLn $ "\r\n>>> Redis server listening on port " ++ port redisSpecs ++ " <<<"
+    let port = "6379"
+    putStrLn $ "Redis server listening on port " ++ port
     redisDB <- setupDB
-    serve HostAny (port redisSpecs) $ \(socket, _address) -> do
-        putStrLn $ "successfully connected client: " ++ show _address
+    serve HostAny port $ \(socket, address) -> do
+        putStrLn $ "successfully connected client: " ++ show address
         _ <- forever $ do
-            request <- recv socket $ recvBytes progConfigs
+            request <- recv socket 2048
             response <- do
                 case parseRequest request of
-                    Left _ -> return $ unknownCmd redisSpecs
+                    Left _ -> return "-ERR Unknown Command"
                     Right cmd -> exec cmd redisDB
             _ <- send socket (encodeRESP response)
 
             -- debug database
             out <- readTVarIO redisDB
             putStrLn $ "\r\n***\r\nRedis DB content:\r\n"++ showTree out ++ "***\r\n"
-        putStrLn $ "disconnected client: " ++ show _address
-
-progConfigs :: ProgConfigs
-progConfigs = ProgConfigs {
-                recvBytes  = 2048 }
-
-cmdNames :: CmdNames
-cmdNames = CmdNames {
-                pingN = "ping",
-                echoN = "echo",
-                setN  = "set",
-                getN  = "get" }
-
-redisSpecs :: RedisSpecs
-redisSpecs = RedisSpecs {
-                port           = "6379",
-                pingDefault    = "PONG",
-                unknownCmd     = "-ERR Unknown Command",
-                setSuccess     = "OK",
-                nilString      = "(nil)",
-                bulkStringId   = "$",
-                arrayId        = "*",
-                simpleStringId = "+" }
+        putStrLn $ "disconnected client: " ++ show address
 
 setupDB :: IO (TVar DB)
 setupDB = newTVarIO empty
@@ -131,7 +94,7 @@ crlfAlt = "\\r\\n" <|> crlf
 
 redisBulkString :: Parser ByteString
 redisBulkString = do
-    _ <- string $ bulkStringId redisSpecs
+    _ <- "$"
     n <- decimal
     guard $ n >= 0
     _ <- crlfAlt
@@ -140,7 +103,7 @@ redisBulkString = do
 
 commandCheck :: Text -> Parser (Integer, ByteString)
 commandCheck c = do
-    _ <- string $ arrayId redisSpecs
+    _ <- "*"
     n <- decimal
     guard $ n > 0
     cmd <- crlfAlt *> redisBulkString
@@ -149,20 +112,20 @@ commandCheck c = do
 
 parseEcho :: Parser Command
 parseEcho = do
-    (n, _) <- commandCheck $ echoN cmdNames
+    (n, _) <- commandCheck "echo"
     guard $ n == 2
     message <- crlfAlt *> redisBulkString
     return $ Echo message
 
 parsePing :: Parser Command
 parsePing = do
-    (n, _) <- commandCheck $ pingN cmdNames
+    (n, _) <- commandCheck "ping"
     guard $ n == 1
     return Ping
 
 parseSet :: Parser Command
 parseSet = do
-    (n, _) <- commandCheck $ setN cmdNames
+    (n, _) <- commandCheck "set"
     guard $ n == 3
     key <- crlfAlt *> redisBulkString
     value <- crlfAlt *> redisBulkString
@@ -170,7 +133,7 @@ parseSet = do
 
 parseGet :: Parser Command
 parseGet = do
-    (n, _) <- commandCheck $ getN cmdNames
+    (n, _) <- commandCheck "get"
     guard $ n == 2
     key <- crlfAlt *> redisBulkString
     return $ Get key
@@ -178,7 +141,7 @@ parseGet = do
 set :: Key -> Value -> TVar DB -> IO Response
 set key val db = do
     _ <- atomically $ modifyTVar db $ insert key val
-    return $ setSuccess redisSpecs
+    return "OK"
 
 get :: Key -> TVar DB -> IO Response
-get key db = findWithDefault (nilString redisSpecs) key <$> readTVarIO db
+get key db = findWithDefault "(nil)" key <$> readTVarIO db

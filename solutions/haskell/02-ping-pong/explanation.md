@@ -8,7 +8,7 @@ The `serve` function from the `network-simple` library opens a connection on the
 By using a `lambda` function in combination with a monadic `do` expression you can accept a connection request.
 
 ```haskell
-serve HostAny port $ \(socket, _address) -> do
+serve HostAny port $ \(socket, address) -> do
 ```
 
 We will encounter the topic of Monads in subsequent stages again, so it may be helpful to read up on this topic if you are not yet familiar with it.

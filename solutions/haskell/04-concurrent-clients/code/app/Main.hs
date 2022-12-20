@@ -12,10 +12,10 @@ import Control.Monad (forever)
 main :: IO ()
 main = do
     let port = "6379"
-    putStrLn $ "\r\n>>> Redis server listening on port " ++ port ++ " <<<"
-    serve HostAny port $ \(socket, _address) -> do
-        putStrLn $ "successfully connected client: " ++ show _address
+    putStrLn $ "Redis server listening on port " ++ port
+    serve HostAny port $ \(socket, address) -> do
+        putStrLn $ "successfully connected client: " ++ show address
         _ <- forever $ do
             _ <- recv socket 2048
             send socket "+PONG\r\n"
-        putStrLn $ "disconnected client: " ++ show _address
+        putStrLn $ "disconnected client: " ++ show address
