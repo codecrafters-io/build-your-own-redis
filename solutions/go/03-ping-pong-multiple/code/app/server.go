@@ -25,13 +25,13 @@ func main() {
 	for {
 		buf := make([]byte, 1024)
 
-		if _, err := conn.Read(buf); err != nil {
-			if err == io.EOF {
-				break
-			} else {
-				fmt.Println("error reading from client: ", err.Error())
-				os.Exit(1)
-			}
+		_, err := conn.Read(buf)
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			fmt.Println("error reading from client: ", err.Error())
+			os.Exit(1)
 		}
 
 		// Let's ignore the client's input for now and hardcode a response.

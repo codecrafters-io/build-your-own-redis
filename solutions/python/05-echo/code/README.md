@@ -1,3 +1,5 @@
+![progress-banner](https://codecrafters.io/landing/images/default_progress_banners/redis.png)
+
 This is a starting point for Python solutions to the
 ["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
 
@@ -25,7 +27,7 @@ That's all!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `python (3.8)` installed locally
+1. Ensure you have `python (3.x)` installed locally
 1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented
    in `app/main.py`.
 1. Commit your changes and run `git push origin master` to submit your solution

@@ -1,0 +1,56 @@
+@@ -34,42 +34,53 @@
+     let mut conn = resp::RespConnection::new(stream);
+
+     loop {
+         let value = conn.read_value().await?;
+
+         if let Some(value) = value {
+             let (command, args) = value.to_command()?;
+             let response = match command.to_ascii_lowercase().as_ref() {
+                 "ping" => SimpleString("PONG".to_string()),
+                 "echo" => args.first().unwrap().clone(),
+                 "get" => {
+                     if let Some(BulkString(key)) = args.get(0) {
+                         if let Some(value) = client_store.lock().unwrap().get(key.clone()) {
+                             SimpleString(value)
+                         } else {
+                             Null
+                         }
+                     } else {
+                         Error("Get requires one argument".to_string())
+                     }
+                 }
+                 "set" => {
+                     if let (Some(BulkString(key)), Some(BulkString(value))) =
+                         (args.get(0), args.get(1))
+                     {
+-                        client_store.lock().unwrap().set(key.clone(), value.clone());
++                        if let (Some(BulkString(_)), Some(BulkString(amount))) =
++                            (args.get(2), args.get(3))
++                        {
++                            client_store.lock().unwrap().set_with_expiry(
++                                key.clone(),
++                                value.clone(),
++                                amount.parse::<u64>()?,
++                            );
++                        } else {
++                            client_store.lock().unwrap().set(key.clone(), value.clone());
++                        }
++
+                         SimpleString("OK".to_string())
+                     } else {
+-                        Error("Set requires two arguments".to_string())
++                        Error("Set requires two or four arguments".to_string())
+                     }
+                 }
+                 _ => Error(format!("command not implemented: {}", command)),
+             };
+
+             conn.write_value(response).await?;
+         } else {
+             break;
+         }
+     }
+
+     Ok(())
+ }
