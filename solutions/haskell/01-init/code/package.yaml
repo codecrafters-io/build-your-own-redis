@@ -12,10 +12,15 @@ license:             BSD3
 
 dependencies:
 - base >= 4.7 && < 5
-- network
-- bytestring
-- attoparsec # can help when implementing the RESP parser
-- time # useful in the expiry stage
+- network-simple  # establish a simple TCP network
+- bytestring  # useful to send bytes over the network
+- network  # required when using bytestring
+- megaparsec  # may be useful for parsing the input
+- parser-combinators  # contains a helpful count function
+- text  # use Text rather than String
+- stm  # may help with a concurrent database
+- containers  # may help with the database structure and debugging
+- time  # may help with the expiry function
 
 executables:
   hs-redis-clone-exe:

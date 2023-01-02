@@ -3,13 +3,12 @@ The entry point for your Redis implementation is in `app/Main.hs`.
 Study and uncomment the relevant code: 
 
 ```haskell
--- Uncomment this to pass stage 1
-sock <- socket AF_INET Stream defaultProtocol
-setSocketOption sock ReuseAddr 1
-bind sock (SockAddrInet 6379 0)
-listen sock 5
-_ <- accept sock
-return ()
+-- Uncomment this block to pass stage 1
+let port = "6379"
+putStrLn $ "Redis server listening on port " ++ port
+serve HostAny port $ \(socket, address) -> do
+    putStrLn $ "successfully connected client: " ++ show address
+    closeSock socket
 ```
 
 Push your changes to pass the first stage:
