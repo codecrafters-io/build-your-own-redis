@@ -12,3 +12,5 @@ concurrency:
 jobs:
   test_course_definition:
     uses: codecrafters-io/course-sdk/.github/workflows/test-course-definition.yml@rohitpaulk/use-lambda-compatible-execution
+    with:
+      sdkRef: rohitpaulk/use-lambda-compatible-execution
