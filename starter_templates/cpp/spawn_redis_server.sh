@@ -6,6 +6,6 @@
 #
 # DON'T EDIT THIS!
 set -e
-tmpFile=$(mktemp)
-g++ src/*.cpp -o $tmpFile
-exec $tmpFile
+cmake . > /dev/null
+make > /dev/null
+exec ./server
