@@ -32,7 +32,7 @@
       target: spawn_redis_server.sh
   template_attributes:
     required_executable: "cmake"
-    user_editable_file: "app/Server.cpp"
+    user_editable_file: "src/Server.cpp"
 
 - language: crystal
   file_mappings:
