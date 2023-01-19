@@ -16,6 +16,24 @@
     required_executable: "lein"
     user_editable_file: "src/redis/core.clj"
 
+- language: cpp
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/cpp/.gitignore
+      target: .gitignore
+    - source: starter_templates/cpp/src/Server.cpp
+      target: src/Server.cpp
+    - source: starter_templates/cpp/CMakeLists.txt
+      target: CMakeLists.txt
+    - source: starter_templates/cpp/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+  template_attributes:
+    required_executable: "cmake"
+    user_editable_file: "src/Server.cpp"
+
 - language: crystal
   file_mappings:
     - source: starter_templates/README.md
@@ -126,7 +144,7 @@
       target: spawn_redis_server.sh
   template_attributes:
     required_executable: "stack"
-    user_editable_file: "Main.hs"
+    user_editable_file: "app/Main.hs"
 
 - language: java
   file_mappings:
@@ -142,7 +160,7 @@
       target: spawn_redis_server.sh
   template_attributes:
     required_executable: "java (1.8)"
-    user_editable_file: "Main.java"
+    user_editable_file: "src/main/java/Main.java"
 
 - language: elixir
   file_mappings:

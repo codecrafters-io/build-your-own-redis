@@ -1,6 +1,6 @@
 ![progress-banner](https://codecrafters.io/landing/images/default_progress_banners/redis.png)
 
-This is a starting point for Haskell solutions to the
+This is a starting point for C++ solutions to the
 ["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
 
 In this challenge, you'll build a toy Redis clone that's capable of handling
@@ -12,7 +12,7 @@ event loops, the Redis protocol and more.
 
 # Passing the first stage
 
-The entry point for your Redis implementation is in `app/Main.hs`. Study and
+The entry point for your Redis implementation is in `src/Server.cpp`. Study and
 uncomment the relevant code, and push your changes to pass the first stage:
 
 ```sh
@@ -27,8 +27,8 @@ That's all!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `stack` installed locally
+1. Ensure you have `cmake` installed locally
 1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented
-   in `app/Main.hs`.
+   in `src/Server.cpp`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.

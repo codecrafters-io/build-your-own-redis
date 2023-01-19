@@ -71,3 +71,7 @@ language_pack: clojure-1.10.3
 # Available versions: dotnet-6.0
 language_pack: dotnet-6.0
 {{/language_is_csharp}}
+{{#language_is_cpp}}
+# Available versions: cpp-20
+language_pack: cpp-20
+{{/language_is_cpp}}
