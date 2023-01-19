@@ -144,7 +144,7 @@
       target: spawn_redis_server.sh
   template_attributes:
     required_executable: "stack"
-    user_editable_file: "Main.hs"
+    user_editable_file: "app/Main.hs"
 
 - language: java
   file_mappings:
@@ -160,7 +160,7 @@
       target: spawn_redis_server.sh
   template_attributes:
     required_executable: "java (1.8)"
-    user_editable_file: "Main.java"
+    user_editable_file: "src/main/java/Main.java"
 
 - language: elixir
   file_mappings:

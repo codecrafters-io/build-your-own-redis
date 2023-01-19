@@ -12,7 +12,7 @@ event loops, the Redis protocol and more.
 
 # Passing the first stage
 
-The entry point for your Redis implementation is in `Main.hs`. Study and
+The entry point for your Redis implementation is in `app/Main.hs`. Study and
 uncomment the relevant code, and push your changes to pass the first stage:
 
 ```sh
@@ -29,6 +29,6 @@ Note: This section is for stages 2 and beyond.
 
 1. Ensure you have `stack` installed locally
 1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented
-   in `Main.hs`.
+   in `app/Main.hs`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
