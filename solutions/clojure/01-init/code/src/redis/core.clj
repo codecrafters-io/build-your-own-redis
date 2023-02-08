@@ -26,7 +26,7 @@
 
 (defn handler
   [& args]
-  "+PONG\r\n")
+  "TODO: <respond-with-output>")
 
 (defn -main
   "I don't do a whole lot ... yet."
