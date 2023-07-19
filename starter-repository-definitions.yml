@@ -12,6 +12,8 @@
       target: src/redis/core.clj
     - source: starter_templates/clojure/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "lein"
     user_editable_file: "src/redis/core.clj"
@@ -30,6 +32,8 @@
       target: CMakeLists.txt
     - source: starter_templates/cpp/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "cmake"
     user_editable_file: "src/Server.cpp"
@@ -44,6 +48,8 @@
       target: app/main.cr
     - source: starter_templates/crystal/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "crystal (1.1.0)"
     user_editable_file: "app/main.cr"
@@ -64,6 +70,8 @@
       target: src/Server.cs
     - source: starter_templates/csharp/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "dotnet (6.0)"
     user_editable_file: "src/Server.cs"
@@ -78,6 +86,8 @@
       target: app/main.py
     - source: starter_templates/python/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "python (3.x)"
     user_editable_file: "app/main.py"
@@ -92,6 +102,8 @@
       target: app/server.go
     - source: starter_templates/go/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "go (1.19)"
     user_editable_file: "app/server.go"
@@ -106,6 +118,8 @@
       target: app/server.c
     - source: starter_templates/c/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "gcc"
     user_editable_file: "app/server.c"
@@ -120,6 +134,8 @@
       target: app/server.rb
     - source: starter_templates/ruby/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "ruby (2.7)"
     user_editable_file: "app/server.rb"
@@ -142,6 +158,8 @@
       target: app/Main.hs
     - source: starter_templates/haskell/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "stack"
     user_editable_file: "app/Main.hs"
@@ -158,6 +176,8 @@
       target: src/main/java/Main.java
     - source: starter_templates/java/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "java (1.8)"
     user_editable_file: "src/main/java/Main.java"
@@ -174,6 +194,8 @@
       target: mix.exs
     - source: starter_templates/elixir/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "mix"
     user_editable_file: "lib/server.ex"
@@ -194,6 +216,8 @@
       target: Cargo.lock
     - source: starter_templates/rust/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "cargo (1.54)"
     user_editable_file: "src/main.rs"
@@ -208,6 +232,8 @@
       target: app/main.php
     - source: starter_templates/php/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "php (7.4)"
     user_editable_file: "app/main.php"
@@ -222,6 +248,8 @@
       target: app/main.js
     - source: starter_templates/javascript/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
   template_attributes:
     required_executable: "node (16)"
     user_editable_file: "app/main.js"
