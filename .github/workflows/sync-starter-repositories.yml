@@ -10,6 +10,6 @@ concurrency:
 
 jobs:
   sync_repos:
-    uses: codecrafters-io/course-definition-tester/.github/workflows/sync-starter-repositories.yml@main
+    uses: codecrafters-io/course-sdk/.github/workflows/sync-starter-repositories.yml@main
     secrets:
       REPOSITORY_SYNCER_GITHUB_TOKEN: ${{ secrets.STARTER_REPOSITORY_SYNCER_GITHUB_TOKEN }}
