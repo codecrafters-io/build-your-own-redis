@@ -16,43 +16,17 @@ completion_percentage: 30
 
 languages:
   - slug: "c"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-c"
-
   - slug: "clojure"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-clojure"
-
-  - slug: "crystal"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-crystal"
-
   - slug: "csharp"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-csharp"
-
   - slug: "elixir"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-elixir"
-
   - slug: "go"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-go"
-
   - slug: "haskell"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-haskell"
-
   - slug: "java"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-java"
-
   - slug: "javascript"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-javascript"
-
   - slug: "php"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-php"
-
   - slug: "python"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-python"
-
   - slug: "ruby"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-ruby"
-
   - slug: "rust"
-    starter_repository_url: "https://github.com/codecrafters-io/redis-starter-rust"
 
 marketing:
   difficulty: medium
