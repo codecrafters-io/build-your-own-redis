@@ -86,9 +86,9 @@ stages:
       In this stage, you'll respond to multiple
       [PING](https://redis.io/commands/ping) commands sent by the same connection.
 
-      To test your implementation using the [official Redis CLI](https://redis.io/docs/ui/cli/), you can start your server using 
+      To test your implementation using the [official Redis CLI](https://redis.io/docs/ui/cli/), you can start your server using
       `./spawn_redis_server.sh` and then run `echo -e "ping\nping" | redis-cli` from your terminal. This will send two PING commands
-      using the same connection. 
+      using the same connection.
 
       {{#lang_is_javascript}}
       In most languages, you'd need to run a loop that reads input from a connection and sends a
@@ -101,6 +101,10 @@ stages:
       You'll need to run a loop that reads input from a connection and sends a
       response back.
       {{/lang_is_javascript}}
+
+      Since the tester client _only_ sends the PING command at the moment, it's okay to
+      ignore what the client sends and hardcode a response. We'll get to parsing
+      client input in later stages.
     marketing_md: |
       In this stage, you'll respond to multiple
       [PING](https://redis.io/commands/ping) commands sent by the same client.
@@ -127,6 +131,10 @@ stages:
       adventurous, an [Event Loop](https://en.wikipedia.org/wiki/Event_loop) (like
       the official Redis implementation does).
       {{/lang_is_javascript}}
+
+      Since the tester client _only_ sends the PING command at the moment, it's okay to
+      ignore what the client sends and hardcode a response. We'll get to parsing
+      client input in later stages.
     marketing_md: |
       In this stage, you'll add support for multiple concurrent clients to your
       Redis server. To achieve this you'll use an [Event
@@ -181,8 +189,8 @@ stages:
       [SET](https://redis.io/commands/set) command.
 
       The tester will first send a `SET` command with an expiry, like this: `SET <key> <value> PX <expiry>`.
-      Then, it will send a `GET` command to retrieve the value, like this: `GET <key>`. If the key has expired, the 
-      tester will expect a Null value as the response. Read about "Null Bulk Strings" 
+      Then, it will send a `GET` command to retrieve the value, like this: `GET <key>`. If the key has expired, the
+      tester will expect a Null value as the response. Read about "Null Bulk Strings"
       [here](https://redis.io/docs/reference/protocol-spec/#resp-bulk-strings) to know how to send a Null value.
 
       {{#lang_is_haskell}}
