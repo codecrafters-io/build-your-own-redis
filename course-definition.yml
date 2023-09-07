@@ -13,6 +13,7 @@ short_description_md: |
   Learn about TCP servers, the Redis protocol and more
 
 completion_percentage: 30
+concept_slugs: ["network-protocols", "tcp-overview"]
 
 languages:
   - slug: "c"
@@ -52,6 +53,7 @@ marketing:
 
 stages:
   - slug: "init"
+    concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Bind to a port"
     description_md: |
       In this stage, your task is to start a TCP server on port 6379, the default port that redis uses.
@@ -62,6 +64,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_bind.go#L11"
 
   - slug: "ping-pong"
+    concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Respond to PING"
     difficulty: easy
     description_md: |
@@ -80,6 +83,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L9"
 
   - slug: "ping-pong-multiple"
+    concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Respond to multiple PINGs"
     difficulty: easy
     description_md: |
@@ -111,6 +115,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L35"
 
   - slug: "concurrent-clients"
+    concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Handle concurrent clients"
     difficulty: medium
     description_md: |
