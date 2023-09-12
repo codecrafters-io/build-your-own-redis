@@ -18,8 +18,6 @@ concept_slugs: ["network-protocols", "tcp-overview"]
 languages:
   - slug: "c"
   - slug: "clojure"
-  - slug: "cpp"
-    release_status: "beta"
   - slug: "crystal"
   - slug: "csharp"
   - slug: "elixir"
@@ -56,7 +54,7 @@ marketing:
 extensions:
   - slug: "persistence"
     name: "Persistence"
-    description_markdown:
+    description_markdown: |
       In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
 
       Along the way you'll learn about Redis's [RDB file format][rdb-file-format], the [SAVE][save-command] command, and more.
@@ -67,7 +65,7 @@ extensions:
 
   - slug: "streams"
     name: "Streams"
-    description_markdown:
+    description_markdown: |
       In this challenge extension you'll add support for the [Stream][redis-streams-data-type] data type to your Redis implementation.
 
       Along the way you'll learn about commands like [XADD][xadd-command], [XRANGE][xrange-command] and more.
