@@ -15,12 +15,15 @@ dependencies:
 - network-simple  # establish a simple TCP network
 - bytestring  # useful to send bytes over the network
 - network  # required when using bytestring
-- megaparsec  # may be useful for parsing the input
-- parser-combinators  # contains a helpful count function
 - text  # use Text rather than String
 - stm  # may help with a concurrent database
 - containers  # may help with the database structure and debugging
 - time  # may help with the expiry function
+# Parsing libs: Trying to keep everyone happy
+- megaparsec  # may be useful for parsing the input
+- parser-combinators  # contains a helpful count function
+- parsec
+- attoparsec
 
 executables:
   hs-redis-clone-exe:
