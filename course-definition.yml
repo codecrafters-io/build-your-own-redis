@@ -19,7 +19,6 @@ languages:
   - slug: "c"
   - slug: "clojure"
   - slug: "cpp"
-    release_status: "beta"
   - slug: "crystal"
   - slug: "csharp"
   - slug: "elixir"
