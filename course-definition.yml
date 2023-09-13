@@ -18,6 +18,7 @@ concept_slugs: ["network-protocols", "tcp-overview"]
 languages:
   - slug: "c"
   - slug: "clojure"
+  - slug: "cpp"
   - slug: "crystal"
   - slug: "csharp"
   - slug: "elixir"
