@@ -5,7 +5,7 @@
 # failures.
 #
 # DON'T EDIT THIS!
-resolver: lts-20.4
+resolver: lts-21.11
 
 packages:
-- .
+  - .

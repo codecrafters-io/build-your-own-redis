@@ -52,6 +52,29 @@ marketing:
         I think the instant feedback right there in the git push is really cool.
         Didn't even know that was possible!
 
+extensions:
+  - slug: "persistence"
+    name: "Persistence"
+    description_markdown: |
+      In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
+
+      Along the way you'll learn about Redis's [RDB file format][rdb-file-format], the [SAVE][save-command] command, and more.
+
+      [redis-persistence]: https://redis.io/docs/manual/persistence/
+      [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
+      [save-command]: https://redis.io/commands/save/
+
+  - slug: "streams"
+    name: "Streams"
+    description_markdown: |
+      In this challenge extension you'll add support for the [Stream][redis-streams-data-type] data type to your Redis implementation.
+
+      Along the way you'll learn about commands like [XADD][xadd-command], [XRANGE][xrange-command] and more.
+
+      [redis-streams-data-type]: https://redis.io/docs/data-types/streams/
+      [xadd-command]: https://redis.io/commands/xadd/
+      [xrange-command]: https://redis.io/commands/xrange/
+
 stages:
   - slug: "init"
     concept_slugs: ["network-protocols", "tcp-overview"]

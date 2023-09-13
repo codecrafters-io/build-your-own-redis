@@ -1,4 +1,4 @@
-FROM haskell:8.8.3-buster
+FROM haskell:9.4.6-buster
 
 WORKDIR /app
 
@@ -18,7 +18,17 @@ RUN mkdir /app/app
 RUN echo 'main :: IO ()' >> /app/app/Main.hs
 RUN echo 'main = putStrLn "Hello, World!"' >> /app/app/Main.hs
 
+ENV STACK_ROOT=/app/.stack
+
 RUN stack build
+RUN stack clean hs-redis-clone
+RUN mkdir /app-cached
+RUN mv .stack-work /app-cached/.stack-work
+RUN mv .stack /app-cached/.stack
+
+RUN rm -rf /app/app
+
+RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && stack build" > /codecrafters-precompile.sh
+RUN chmod +x /codecrafters-precompile.sh
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
-
