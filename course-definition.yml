@@ -3,13 +3,13 @@ name: "Build your own Redis"
 short_name: "Redis"
 release_status: "live"
 
-description_md: |
+description_md: |-
   In this challenge, you'll build a toy Redis clone
   that's capable of handling basic commands like PING, GET
   and SET. Along the way, we'll learn about event loops, the Redis
   Protocol and more.
 
-short_description_md: |
+short_description_md: |-
   Learn about TCP servers, the Redis protocol and more
 
 completion_percentage: 30
@@ -40,7 +40,7 @@ marketing:
       author_description: "Software Engineer, Stripe"
       author_avatar: "https://codecrafters.io/images/external/testimonials/charles-guo.png"
       link: "https://github.com/shaldengeki"
-      text: |
+      text: |-
         The Redis challenge was extremely fun. I ended up having to read the
         Redis Protocol specification doc pretty carefully in its entirety! The result
         felt like lightly-guided independent study, if that makes sense. (Which, again, was lots of fun)
@@ -48,14 +48,14 @@ marketing:
       author_description: "Senior Software Developer, CenturyLink"
       author_avatar: "https://codecrafters.io/images/external/testimonials/patrick-burris.jpeg"
       link: "https://github.com/Jumballaya"
-      text: |
+      text: |-
         I think the instant feedback right there in the git push is really cool.
         Didn't even know that was possible!
 
 # extensions:
 #   - slug: "persistence"
 #     name: "Persistence"
-#     description_markdown: |
+#     description_markdown: |-
 #       In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
 
 #       Along the way you'll learn about Redis's [RDB file format][rdb-file-format], the [SAVE][save-command] command, and more.
@@ -66,7 +66,7 @@ marketing:
 
 #   - slug: "streams"
 #     name: "Streams"
-#     description_markdown: |
+#     description_markdown: |-
 #       In this challenge extension you'll add support for the [Stream][redis-streams-data-type] data type to your Redis implementation.
 
 #       Along the way you'll learn about commands like [XADD][xadd-command], [XRANGE][xrange-command] and more.
@@ -79,10 +79,10 @@ stages:
   - slug: "init"
     concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Bind to a port"
-    description_md: |
+    description_md: |-
       In this stage, your task is to start a TCP server on port 6379, the default port that redis uses.
     difficulty: very_easy
-    marketing_md: |
+    marketing_md: |-
       In this stage, you'll start a TCP server on port 6379, which is the
       default port that Redis uses.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_bind.go#L11"
@@ -91,7 +91,7 @@ stages:
     concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Respond to PING"
     difficulty: easy
-    description_md: |
+    description_md: |-
       In this stage, you'll respond to the
       [PING](https://redis.io/commands/ping) command.
 
@@ -100,7 +100,7 @@ stages:
       Since the tester client _only_ sends the PING command at the moment, it's okay to
       ignore what the client sends and hardcode a response. We'll get to parsing
       client input in later stages.
-    marketing_md: |
+    marketing_md: |-
       In this stage, you'll respond to the
       [PING](https://redis.io/commands/ping) command. You'll use [the Redis
       protocol](https://redis.io/topics/protocol) to encode the reply.
@@ -110,7 +110,7 @@ stages:
     concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Respond to multiple PINGs"
     difficulty: easy
-    description_md: |
+    description_md: |-
       In this stage, you'll respond to multiple
       [PING](https://redis.io/commands/ping) commands sent by the same connection.
 
@@ -133,7 +133,7 @@ stages:
       Since the tester client _only_ sends the PING command at the moment, it's okay to
       ignore what the client sends and hardcode a response. We'll get to parsing
       client input in later stages.
-    marketing_md: |
+    marketing_md: |-
       In this stage, you'll respond to multiple
       [PING](https://redis.io/commands/ping) commands sent by the same client.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L35"
@@ -142,7 +142,7 @@ stages:
     concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Handle concurrent clients"
     difficulty: medium
-    description_md: |
+    description_md: |-
       In this stage, your server will need to handle multiple concurrent
       clients. Just like the previous stages, all clients will only send `PING`
       commands for now.
@@ -164,7 +164,7 @@ stages:
       Since the tester client _only_ sends the PING command at the moment, it's okay to
       ignore what the client sends and hardcode a response. We'll get to parsing
       client input in later stages.
-    marketing_md: |
+    marketing_md: |-
       In this stage, you'll add support for multiple concurrent clients to your
       Redis server. To achieve this you'll use an [Event
       Loop](https://en.wikipedia.org/wiki/Event_loop),
@@ -174,7 +174,7 @@ stages:
   - slug: "echo"
     name: "Implement the ECHO command"
     difficulty: medium
-    description_md: |
+    description_md: |-
       In this stage, you'll respond to the
       [ECHO](https://redis.io/commands/echo) command.
 
@@ -187,7 +187,7 @@ stages:
 
       Seems confusing? Read up about [sending commands to a Redis
       server](https://redis.io/docs/reference/protocol-spec/#send-commands-to-a-redis-server).
-    marketing_md: |
+    marketing_md: |-
       In this stage, you'll respond to the
       [ECHO](https://redis.io/commands/echo) command. You'll parse user input
       according to the [the Redis protocol
@@ -198,12 +198,12 @@ stages:
   - slug: "set_get"
     name: "Implement the SET & GET commands"
     difficulty: medium
-    description_md: |
+    description_md: |-
       In this stage, you'll need to implement the [SET](https://redis.io/commands/set) &
       [GET](https://redis.io/commands/get) commands. For now, you can ignore all extra
       options for `SET` and just implement the simple form: `SET key value`. You'll add support
       for expiry in the next stage.
-    marketing_md: |
+    marketing_md: |-
       In this stage, you'll need to implement the
       [SET](https://redis.io/commands/set) &
       [GET](https://redis.io/commands/get) commands.
@@ -212,7 +212,7 @@ stages:
   - slug: "expiry"
     name: "Expiry"
     difficulty: medium
-    description_md: |
+    description_md: |-
       In this stage, you'll need to support setting a key with an expiry. The
       expiry is provided using the "PX" argument to the
       [SET](https://redis.io/commands/set) command.
@@ -226,7 +226,7 @@ stages:
       The [time](https://hackage.haskell.org/package/time) package is available
       to use as a dependency.
       {{/lang_is_haskell}}
-    marketing_md: |
+    marketing_md: |-
       In this stage, you'll add support for setting a key with an expiry. The
       expiry is provided using the "PX" argument to the
       [SET](https://redis.io/commands/set) command.
