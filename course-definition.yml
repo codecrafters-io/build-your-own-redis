@@ -52,17 +52,17 @@ marketing:
         I think the instant feedback right there in the git push is really cool.
         Didn't even know that was possible!
 
-# extensions:
-#   - slug: "persistence"
-#     name: "Persistence"
-#     description_markdown: |
-#       In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
+extensions:
+  - slug: "persistence"
+    name: "Persistence"
+    description_markdown: |
+      In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
 
-#       Along the way you'll learn about Redis's [RDB file format][rdb-file-format], the [SAVE][save-command] command, and more.
+      Along the way you'll learn about Redis's [RDB file format][rdb-file-format], the [SAVE][save-command] command, and more.
 
-#       [redis-persistence]: https://redis.io/docs/manual/persistence/
-#       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
-#       [save-command]: https://redis.io/commands/save/
+      [redis-persistence]: https://redis.io/docs/manual/persistence/
+      [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
+      [save-command]: https://redis.io/commands/save/
 
 #   - slug: "streams"
 #     name: "Streams"
@@ -231,3 +231,89 @@ stages:
       expiry is provided using the "PX" argument to the
       [SET](https://redis.io/commands/set) command.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/master/internal/test_expiry.go"
+
+
+  # RDB Config
+  - slug: "rdb-config"
+    primary_extension_slug: "persistence"
+    name: "RDB file config"
+    difficulty: easy
+    description_md: |
+      Redis uses `.rdb` files for persistence. In this stage, you'll add support for reading the config values related to where RDB files are stored.
+
+      There are two config values that determine where RDB files are stored:
+
+      - `dir`: The directory where RDB files are stored
+      - `dbfilename`: The name of the RDB file
+
+      These values will be passed into your program like this:
+
+      ```
+      ./your_server.sh --dir /tmp/redisfiles --dbfilename dump.rdb
+      ```
+
+      To verify whether your program is reading config values correctly, the tester will send you two commands:
+
+      ```bash
+      redis-cli CONFIG GET dir
+      redis-cli CONFIG GET dbfilename
+      ```
+
+      The response to `CONFIG GET <key>` should be a RESP array with two elements: the key and the value.
+
+      For example, let's say the `dir` value is `/tmp/redis-files`. The expected response will be:
+
+      ```
+      *2\r\n$3\r\ndir\r\n$16\r\n/tmp/redis-files\r\n
+      ```
+
+      - `*2\r\n` indicates that the array has two elements
+      - `$3\r\ndir\r\n` indicates that the first element is a bulk string with the value `dir`
+      - `$16\r\n/tmp/redis-files\r\n` indicates that the second element is a bulk string with the value `/tmp/redis-files`
+    marketing_md: |
+      In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
+
+  - slug: "rdb-read-key"
+    primary_extension_slug: "persistence"
+    name: "Read a key"
+    difficulty: medium
+    description_md: |
+      **TODO**: This stage doesn't have instructions yet.
+    marketing_md: |
+      In this stage, you'll add support for reading a key from an RDB file that contains a single key-value pair. You'll do this by implementing the `KEYS *` command.
+
+  - slug: "rdb-read-string-value"
+    primary_extension_slug: "persistence"
+    name: "Read a string value"
+    difficulty: medium
+    description_md: |
+      **TODO**: This stage doesn't have instructions yet.
+    marketing_md: |
+      In this stage, you'll add support for reading the value of a key from an RDB file that contains a single key-value pair.
+
+  - slug: "rdb-read-multiple-keys"
+    primary_extension_slug: "persistence"
+    name: "Read multiple keys"
+    difficulty: medium
+    description_md: |
+      **TODO**: This stage doesn't have instructions yet.
+    marketing_md: |
+      In this stage, you'll add support for reading multiple keys from an RDB file. You'll do this by extending the `KEYS *` command to support multiple keys.
+
+  - slug: "rdb-read-multiple-string-values"
+    primary_extension_slug: "persistence"
+    name: "Read multiple string values"
+    difficulty: medium
+    description_md: |
+      **TODO**: This stage doesn't have instructions yet.
+    marketing_md: |
+      In this stage, you'll add support for reading multiple string values from an RDB file.
+
+  - slug: "rdb-read-value-with-expiry"
+    primary_extension_slug: "persistence"
+    name: "Read value with expiry"
+    difficulty: medium
+    description_md: |
+      **TODO**: This stage doesn't have instructions yet.
+    marketing_md: |
+      In this stage, you'll add support for reading values that have an expiry set.
