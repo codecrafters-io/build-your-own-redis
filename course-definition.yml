@@ -53,8 +53,8 @@ marketing:
         Didn't even know that was possible!
 
 extensions:
-  - slug: "persistence"
-    name: "Persistence"
+  - slug: "persistence-rdb"
+    name: "RDB Persistence"
     description_markdown: |
       In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
 
@@ -232,10 +232,10 @@ stages:
       [SET](https://redis.io/commands/set) command.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/master/internal/test_expiry.go"
 
+  # Persistence
 
-  # RDB Config
   - slug: "rdb-config"
-    primary_extension_slug: "persistence"
+    primary_extension_slug: "persistence-rdb"
     name: "RDB file config"
     difficulty: easy
     description_md: |
@@ -274,7 +274,7 @@ stages:
       In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
 
   - slug: "rdb-read-key"
-    primary_extension_slug: "persistence"
+    primary_extension_slug: "persistence-rdb"
     name: "Read a key"
     difficulty: medium
     description_md: |
@@ -283,7 +283,7 @@ stages:
       In this stage, you'll add support for reading a key from an RDB file that contains a single key-value pair. You'll do this by implementing the `KEYS *` command.
 
   - slug: "rdb-read-string-value"
-    primary_extension_slug: "persistence"
+    primary_extension_slug: "persistence-rdb"
     name: "Read a string value"
     difficulty: medium
     description_md: |
@@ -292,7 +292,7 @@ stages:
       In this stage, you'll add support for reading the value of a key from an RDB file that contains a single key-value pair.
 
   - slug: "rdb-read-multiple-keys"
-    primary_extension_slug: "persistence"
+    primary_extension_slug: "persistence-rdb"
     name: "Read multiple keys"
     difficulty: medium
     description_md: |
@@ -301,7 +301,7 @@ stages:
       In this stage, you'll add support for reading multiple keys from an RDB file. You'll do this by extending the `KEYS *` command to support multiple keys.
 
   - slug: "rdb-read-multiple-string-values"
-    primary_extension_slug: "persistence"
+    primary_extension_slug: "persistence-rdb"
     name: "Read multiple string values"
     difficulty: medium
     description_md: |
@@ -310,7 +310,7 @@ stages:
       In this stage, you'll add support for reading multiple string values from an RDB file.
 
   - slug: "rdb-read-value-with-expiry"
-    primary_extension_slug: "persistence"
+    primary_extension_slug: "persistence-rdb"
     name: "Read value with expiry"
     difficulty: medium
     description_md: |
