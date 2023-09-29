@@ -52,17 +52,16 @@ marketing:
         I think the instant feedback right there in the git push is really cool.
         Didn't even know that was possible!
 
-# extensions:
-#   - slug: "persistence"
-#     name: "Persistence"
-#     description_markdown: |-
-#       In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
+extensions:
+  - slug: "persistence-rdb"
+    name: "RDB Persistence"
+    description_markdown: |
+      In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
 
-#       Along the way you'll learn about Redis's [RDB file format][rdb-file-format], the [SAVE][save-command] command, and more.
+      Along the way you'll learn about Redis's [RDB file format][rdb-file-format] and more.
 
-#       [redis-persistence]: https://redis.io/docs/manual/persistence/
-#       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
-#       [save-command]: https://redis.io/commands/save/
+      [redis-persistence]: https://redis.io/docs/manual/persistence/
+      [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
 #   - slug: "streams"
 #     name: "Streams"
@@ -95,12 +94,26 @@ stages:
       In this stage, you'll respond to the
       [PING](https://redis.io/commands/ping) command.
 
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then send a `PING` command to your server and expect a `+PONG\r\n` response.
+
+      ```bash
+      $ redis-cli PING
+      ```
+
       Your server should respond with `+PONG\r\n`, which is "PONG" encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#resp-simple-strings).
 
-      Since the tester client _only_ sends the PING command at the moment, it's okay to
-      ignore what the client sends and hardcode a response. We'll get to parsing
-      client input in later stages.
-    marketing_md: |-
+      You can ignore the data that the tester sends you for this stage. We'll get to parsing
+      client input in later stages. For now, you can just hardcode `+PONG\r\n` as the response.
+
+      **Note**: The exact bytes your program will receive won't be just `ping`, you'll receive something like this: `*1\r\n$4\r\nping\r\n`,
+      which is the Redis protocol encoding of the `PING` command. We'll learn more about this in later stages.
+    marketing_md: |
       In this stage, you'll respond to the
       [PING](https://redis.io/commands/ping) command. You'll use [the Redis
       protocol](https://redis.io/topics/protocol) to encode the reply.
@@ -114,9 +127,19 @@ stages:
       In this stage, you'll respond to multiple
       [PING](https://redis.io/commands/ping) commands sent by the same connection.
 
-      To test your implementation using the [official Redis CLI](https://redis.io/docs/ui/cli/), you can start your server using
-      `./spawn_redis_server.sh` and then run `echo -e "ping\nping" | redis-cli` from your terminal. This will send two PING commands
-      using the same connection.
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then send two PING commands using the same connection:
+
+      ```bash
+      $ echo -e "ping\nping" | redis-cli
+      ```
+
+      The tester will expect to receive two `+PONG\r\n` responses.
 
       {{#lang_is_javascript}}
       In most languages, you'd need to run a loop that reads input from a connection and sends a
@@ -130,8 +153,7 @@ stages:
       response back.
       {{/lang_is_javascript}}
 
-      Since the tester client _only_ sends the PING command at the moment, it's okay to
-      ignore what the client sends and hardcode a response. We'll get to parsing
+      Just like the previous stage, you can hardcode `+PONG\r\n` as the response for this stage. We'll get to parsing
       client input in later stages.
     marketing_md: |-
       In this stage, you'll respond to multiple
@@ -231,3 +253,207 @@ stages:
       expiry is provided using the "PX" argument to the
       [SET](https://redis.io/commands/set) command.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/master/internal/test_expiry.go"
+
+  # Persistence
+
+  - slug: "rdb-config"
+    primary_extension_slug: "persistence-rdb"
+    name: "RDB file config"
+    difficulty: easy
+    description_md: |
+      Redis uses `.rdb` files for persistence. In this stage, you'll add support for reading the config values related to where RDB files are stored.
+
+      There are two config values that determine where RDB files are stored:
+
+      - `dir`: The directory where RDB files are stored
+      - `dbfilename`: The name of the RDB file
+
+      These values will be passed into your program like this:
+
+      ```
+      ./spawn_redis_server.sh --dir /tmp/redisfiles --dbfilename dump.rdb
+      ```
+
+      To verify whether your program is reading config values correctly, the tester will send you two commands:
+
+      ```bash
+      redis-cli CONFIG GET dir
+      redis-cli CONFIG GET dbfilename
+      ```
+
+      The response to `CONFIG GET <key>` should be a RESP array with two elements: the key and the value.
+
+      For example, let's say the `dir` value is `/tmp/redis-files`. The expected response will be:
+
+      ```
+      *2\r\n$3\r\ndir\r\n$16\r\n/tmp/redis-files\r\n
+      ```
+
+      - `*2\r\n` indicates that the array has two elements
+      - `$3\r\ndir\r\n` indicates that the first element is a bulk string with the value `dir`
+      - `$16\r\n/tmp/redis-files\r\n` indicates that the second element is a bulk string with the value `/tmp/redis-files`
+    marketing_md: |
+      In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
+
+  - slug: "rdb-read-key"
+    primary_extension_slug: "persistence-rdb"
+    name: "Read a key"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add support for reading a key from an RDB file.
+
+      To keep things simple, we'll start out by supporting RDB files that contain a single key.
+
+      Jan-Erik Rediger (author of [rdb-rs](https://rdb.fnordig.de/)) has a great [blog post](https://jan-erik.red/blog/2019/12/30/redis-rdb-file-format/)
+      that explains the RDB file format in detail. We recommended using it as a reference when working on this stage.
+
+      The tester will create an RDB file with a single key and execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      ```
+
+      It'll then send a `keys *` command to your server.
+
+      ```bash
+      $ redis-cli keys "*"
+      ```
+
+      The response to `keys *` should be a RESP array with one element: the key.
+
+      For example, let's say the RDB file contains a key called `foo`. The expected response will be:
+
+      ```
+      *1\r\n$3\r\nfoo\r\n
+      ```
+
+      - `*1\r\n` indicates that the array has one element
+      - `$3\r\nfoo\r\n` indicates that the first element is a bulk string with the value `foo`
+
+      **Note**: Remember, in this stage you only need to support RDB files that contain a single key, and you can ignore the value of the key. We'll
+      get to handling multiple keys and reading values in later stages.
+    marketing_md: |
+      In this stage, you'll add support for reading a key from an RDB file that contains a single key-value pair. You'll do this by implementing the `KEYS *` command.
+
+  - slug: "rdb-read-string-value"
+    primary_extension_slug: "persistence-rdb"
+    name: "Read a string value"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add support for reading the value corresponding to a key from an RDB file.
+
+      Just like with the previous stage, we'll stick to supporting RDB files that contain a single key for now.
+
+      The tester will create an RDB file with a single key and execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      ```
+
+      It'll then send a `get <key>` command to your server.
+
+      ```bash
+      $ redis-cli get "foo"
+      ```
+
+      The response to `get <key>` should be a RESP bulk string with the value of the key.
+
+      For example, let's say the RDB file contains a key called `foo` with the value `bar`. The expected response will be `$3\r\nbar\r\n`.
+
+      Strings can be encoded in three different ways in the RDB file format:
+
+      - Length-prefixed strings
+      - Integers as strings
+      - Compressed strings
+
+      In this stage, you only need to support length-prefixed strings. We won't cover the other two types in this challenge.
+
+      We recommend using [this blog post](https://jan-erik.red/blog/2019/12/30/redis-rdb-file-format/) as a reference when working on this stage.
+    marketing_md: |
+      In this stage, you'll add support for reading the value of a key from an RDB file that contains a single key-value pair.
+
+  - slug: "rdb-read-multiple-keys"
+    primary_extension_slug: "persistence-rdb"
+    name: "Read multiple keys"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add support for reading multiple keys from an RDB file.
+
+      The tester will create an RDB file with multiple keys and execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      ```
+
+      It'll then send a `keys *` command to your server.
+
+      ```bash
+      $ redis-cli keys "*"
+      ```
+
+      The response to `keys *` should be a RESP array with the keys as elements.
+
+      For example, let's say the RDB file contains two keys: `foo` and `bar`. The expected response will be:
+
+      ```
+      *2\r\n$3\r\nfoo\r\n$3\r\nbar\r\n
+      ```
+
+      - `*2\r\n` indicates that the array has two elements
+      - `$3\r\nfoo\r\n` indicates that the first element is a bulk string with the value `foo`
+      - `$3\r\nbar\r\n` indicates that the second element is a bulk string with the value `bar`
+    marketing_md: |
+      In this stage, you'll add support for reading multiple keys from an RDB file. You'll do this by extending the `KEYS *` command to support multiple keys.
+
+  - slug: "rdb-read-multiple-string-values"
+    primary_extension_slug: "persistence-rdb"
+    name: "Read multiple string values"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add support for reading multiple string values from an RDB file.
+
+      The tester will create an RDB file with multiple keys and execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      ```
+
+      It'll then send multiple `get <key>` commands to your server.
+
+      ```bash
+      $ redis-cli get "foo"
+      $ redis-cli get "bar"
+      ```
+
+      The response to each `get <key>` command should be a RESP bulk string with the value corresponding to the key.
+    marketing_md: |
+      In this stage, you'll add support for reading multiple string values from an RDB file.
+
+  - slug: "rdb-read-value-with-expiry"
+    primary_extension_slug: "persistence-rdb"
+    name: "Read value with expiry"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add support for reading values that have an expiry set.
+
+      The tester will create an RDB file with multiple keys. Some of these keys will have an expiry set, and some won't. The expiry timestamps
+      will also be random, some will be in the past and some will be in the future.
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      ```
+
+      It'll then send multiple `get <key>` commands to your server.
+
+      ```bash
+      $ redis-cli get "foo"
+      $ redis-cli get "bar"
+      ```
+
+      When a key has expired, the expected response is `$-1\r\n` (a "null bulk string").
+
+      When a key hasn't expired, the expected response is a RESP bulk string with the value corresponding to the key.
+    marketing_md: |
+      In this stage, you'll add support for reading values that have an expiry set.
