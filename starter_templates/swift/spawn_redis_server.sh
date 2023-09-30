@@ -8,4 +8,4 @@
 #
 # DON'T EDIT THIS!
 echo "Spawning Redis server..."
-swift app/main.swift
+swift app/main.swift "$@"

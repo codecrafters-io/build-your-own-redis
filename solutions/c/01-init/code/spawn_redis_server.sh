@@ -8,4 +8,4 @@
 set -e
 tmpFile=$(mktemp)
 gcc app/*.c -o $tmpFile
-exec $tmpFile
+exec $tmpFile "$@"

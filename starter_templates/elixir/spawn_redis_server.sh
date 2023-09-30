@@ -6,4 +6,4 @@
 #
 # DON'T EDIT THIS!
 set -e
-exec mix run --no-halt
+exec mix run --no-halt -- "$@"
