@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Ruby version used to run your code
 # on Codecrafters.
 #
-# Available versions: ruby-2.7
-language_pack: ruby-2.7
+# Available versions: ruby-3.2
+language_pack: ruby-3.2
