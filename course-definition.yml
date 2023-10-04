@@ -236,13 +236,23 @@ stages:
     difficulty: medium
     description_md: |-
       In this stage, you'll need to support setting a key with an expiry. The
-      expiry is provided using the "PX" argument to the
+      expiry is provided in milliseconds using the "PX" argument to the
       [SET](https://redis.io/commands/set) command.
 
-      The tester will first send a `SET` command with an expiry, like this: `SET <key> <value> PX <expiry>`.
-      Then, it will send a `GET` command to retrieve the value, like this: `GET <key>`. If the key has expired, the
-      tester will expect a Null value as the response. Read about "Null Bulk Strings"
-      [here](https://redis.io/docs/reference/protocol-spec/#resp-bulk-strings) to know how to send a Null value.
+      The tester will do the following:
+
+      ```
+      # First, it'll set a key with an expiry (100 milliseconds in this example)
+      $ redis-cli set random_key random_value px 100
+
+      # Immediately after, it'll send a GET command to retrieve the value
+      # The response to this should be "random_value" (encoded as a RESP bulk string)
+      $ redis-cli get random_key
+
+      # Then, it'll wait for the key to expire and send another GET command
+      # The response to this should be `-1\r\n` (a "null bulk string")
+      $ sleep 0.2 && redis-cli get random_key
+      ```
 
       {{#lang_is_haskell}}
       The [time](https://hackage.haskell.org/package/time) package is available
