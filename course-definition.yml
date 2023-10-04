@@ -241,7 +241,7 @@ stages:
 
       The tester will do the following:
 
-      ```
+      ```bash
       # First, it'll set a key with an expiry (100 milliseconds in this example)
       $ redis-cli set random_key random_value px 100
 
