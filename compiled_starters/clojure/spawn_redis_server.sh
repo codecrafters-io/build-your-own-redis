@@ -6,4 +6,4 @@
 #
 # DON'T EDIT THIS!
 set -e
-exec lein run
+exec lein run "$@"

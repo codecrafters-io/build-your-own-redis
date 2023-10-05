@@ -8,4 +8,4 @@
 set -e
 tmpfile=$(mktemp)
 crystal build -o "$tmpfile" app/main.cr
-exec "$tmpfile"
+exec "$tmpfile" "$@"
