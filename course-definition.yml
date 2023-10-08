@@ -302,6 +302,10 @@ stages:
       - `*2\r\n` indicates that the array has two elements
       - `$3\r\ndir\r\n` indicates that the first element is a bulk string with the value `dir`
       - `$16\r\n/tmp/redis-files\r\n` indicates that the second element is a bulk string with the value `/tmp/redis-files`
+
+      **Note**: If your repository was created before 5th Oct 2023, it's possible that your `./spawn_redis_server.sh` script
+      might not be passing arguments on to your program. You'll need to edit `./spawn_redis_server.sh` to fix this, check
+      [this PR](https://github.com/codecrafters-io/build-your-own-redis/pull/89/files) for details.
     marketing_md: |
       In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
 
