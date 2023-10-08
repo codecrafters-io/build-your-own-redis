@@ -314,7 +314,7 @@ stages:
 
       To keep things simple, we'll start out by supporting RDB files that contain a single key.
 
-      Jan-Erik Rediger (author of [rdb-rs](https://rdb.fnordig.de/)) has a great [blog post](https://jan-erik.red/blog/2019/12/30/redis-rdb-file-format/)
+      Jan-Erik Rediger (author of [rdb-rs](https://rdb.fnordig.de/)) has a great [write-up](https://rdb.fnordig.de/file_format.html)
       that explains the RDB file format in detail. We recommended using it as a reference when working on this stage.
 
       The tester will create an RDB file with a single key and execute your program like this:
