@@ -382,7 +382,7 @@ stages:
 
       In this stage, you only need to support length-prefixed strings. We won't cover the other two types in this challenge.
 
-      We recommend using [this blog post](https://jan-erik.red/blog/2019/12/30/redis-rdb-file-format/) as a reference when working on this stage.
+      We recommend using [this blog post](https://rdb.fnordig.de/file_format.html) as a reference when working on this stage.
     marketing_md: |
       In this stage, you'll add support for reading the value of a key from an RDB file that contains a single key-value pair.
 
