@@ -281,7 +281,7 @@ stages:
       These values will be passed into your program like this:
 
       ```
-      ./spawn_redis_server.sh --dir /tmp/redisfiles --dbfilename dump.rdb
+      ./spawn_redis_server.sh --dir /tmp/redis-files --dbfilename dump.rdb
       ```
 
       To verify whether your program is reading config values correctly, the tester will send you two commands:
