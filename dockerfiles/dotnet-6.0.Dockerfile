@@ -12,9 +12,8 @@ RUN dotnet run --project . --configuration Release "$@" # This saves nuget packa
 RUN rm /app/src/Program.cs
 
 # This seems to cause a caching issue with the dotnet build command, where contents from the removed /src/Program.cs are used
-# RUN mkdir /app-cached
-# RUN mv /app/obj /app-cached/obj
-# RUN mv /app/bin /app-cached/bin
+RUN rm -rf /app/obj
+RUN rm -rf /app/bin
 
 RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && dotnet build --configuration Release ." > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
