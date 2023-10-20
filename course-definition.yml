@@ -236,13 +236,23 @@ stages:
     difficulty: medium
     description_md: |-
       In this stage, you'll need to support setting a key with an expiry. The
-      expiry is provided using the "PX" argument to the
+      expiry is provided in milliseconds using the "PX" argument to the
       [SET](https://redis.io/commands/set) command.
 
-      The tester will first send a `SET` command with an expiry, like this: `SET <key> <value> PX <expiry>`.
-      Then, it will send a `GET` command to retrieve the value, like this: `GET <key>`. If the key has expired, the
-      tester will expect a Null value as the response. Read about "Null Bulk Strings"
-      [here](https://redis.io/docs/reference/protocol-spec/#resp-bulk-strings) to know how to send a Null value.
+      The tester will do the following:
+
+      ```bash
+      # First, it'll set a key with an expiry (100 milliseconds in this example)
+      $ redis-cli set random_key random_value px 100
+
+      # Immediately after, it'll send a GET command to retrieve the value
+      # The response to this should be "random_value" (encoded as a RESP bulk string)
+      $ redis-cli get random_key
+
+      # Then, it'll wait for the key to expire and send another GET command
+      # The response to this should be `-1\r\n` (a "null bulk string")
+      $ sleep 0.2 && redis-cli get random_key
+      ```
 
       {{#lang_is_haskell}}
       The [time](https://hackage.haskell.org/package/time) package is available
@@ -271,7 +281,7 @@ stages:
       These values will be passed into your program like this:
 
       ```
-      ./spawn_redis_server.sh --dir /tmp/redisfiles --dbfilename dump.rdb
+      ./spawn_redis_server.sh --dir /tmp/redis-files --dbfilename dump.rdb
       ```
 
       To verify whether your program is reading config values correctly, the tester will send you two commands:
@@ -292,6 +302,10 @@ stages:
       - `*2\r\n` indicates that the array has two elements
       - `$3\r\ndir\r\n` indicates that the first element is a bulk string with the value `dir`
       - `$16\r\n/tmp/redis-files\r\n` indicates that the second element is a bulk string with the value `/tmp/redis-files`
+
+      **Note**: If your repository was created before 5th Oct 2023, it's possible that your `./spawn_redis_server.sh` script
+      might not be passing arguments on to your program. You'll need to edit `./spawn_redis_server.sh` to fix this, check
+      [this PR](https://github.com/codecrafters-io/build-your-own-redis/pull/89/files) for details.
     marketing_md: |
       In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
 
@@ -304,7 +318,7 @@ stages:
 
       To keep things simple, we'll start out by supporting RDB files that contain a single key.
 
-      Jan-Erik Rediger (author of [rdb-rs](https://rdb.fnordig.de/)) has a great [blog post](https://jan-erik.red/blog/2019/12/30/redis-rdb-file-format/)
+      Jan-Erik Rediger (author of [rdb-rs](https://rdb.fnordig.de/)) has a great [write-up](https://rdb.fnordig.de/file_format.html)
       that explains the RDB file format in detail. We recommended using it as a reference when working on this stage.
 
       The tester will create an RDB file with a single key and execute your program like this:
@@ -368,7 +382,7 @@ stages:
 
       In this stage, you only need to support length-prefixed strings. We won't cover the other two types in this challenge.
 
-      We recommend using [this blog post](https://jan-erik.red/blog/2019/12/30/redis-rdb-file-format/) as a reference when working on this stage.
+      We recommend using [this blog post](https://rdb.fnordig.de/file_format.html) as a reference when working on this stage.
     marketing_md: |
       In this stage, you'll add support for reading the value of a key from an RDB file that contains a single key-value pair.
 

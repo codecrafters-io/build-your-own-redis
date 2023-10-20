@@ -7,3 +7,4 @@
 # DON'T EDIT THIS!
 echo "test new node script"
 exec ruby app/server.rb
+
