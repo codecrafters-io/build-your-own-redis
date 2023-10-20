@@ -9,7 +9,7 @@ RUN (echo 'System.Console.WriteLine("If you are seeing this, there is something 
 WORKDIR /app
 
 # This saves nuget packages to ~/.nuget
-RUN dotnet run --project . --configuration Release "$@" | grep -v "hello@codecrafters.io"
+RUN dotnet build --configuration Release .
 
 RUN rm /app/src/Program.cs
 
