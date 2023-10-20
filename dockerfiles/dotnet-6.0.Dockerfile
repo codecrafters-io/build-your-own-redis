@@ -4,11 +4,13 @@ COPY codecrafters-redis.csproj /app/codecrafters-redis.csproj
 COPY codecrafters-redis.sln /app/codecrafters-redis.sln
 
 RUN mkdir /app/src
-RUN echo 'System.Console.WriteLine("If you are seeing this, there is something wrong with our caching mechanism! Please contact us at hello@codecrafters.io.");' > /app/src/Program.cs
+RUN (echo 'System.Console.WriteLine("If you are seeing this, there is something wrong with our caching mechanism! Please contact us at hello@codecrafters.io.");' > /app/src/Program.cs) > /dev/null
 
 WORKDIR /app
 
-RUN dotnet run --project . --configuration Release "$@" # This saves nuget packages to ~/.nuget
+# This saves nuget packages to ~/.nuget
+RUN dotnet run --project . --configuration Release "$@" | grep -v "hello@codecrafters.io"
+
 RUN rm /app/src/Program.cs
 
 # This seems to cause a caching issue with the dotnet build command, where contents from the removed /src/Program.cs are used
