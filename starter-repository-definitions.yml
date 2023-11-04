@@ -178,6 +178,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/java/pom.xml
+      target: pom.xml
   template_attributes:
     required_executable: "java (1.8)"
     user_editable_file: "src/main/java/Main.java"
