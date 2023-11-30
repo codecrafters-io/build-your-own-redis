@@ -8,7 +8,7 @@ fun main(args: Array<String>) {
 
     // Uncomment this block to pass the first stage
     // val serverSocket: ServerSocket
-    // val clientSocket: Socket
+    // var clientSocket: Socket? = null
     // val port = 6379
     // try {
     //     serverSocket = ServerSocket(port)

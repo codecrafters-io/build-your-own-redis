@@ -4,7 +4,7 @@ import java.net.Socket
 
 fun main(args: Array<String>) {
     val serverSocket: ServerSocket
-    val clientSocket: Socket
+    var clientSocket: Socket? = null
     val port = 6379
     try {
         serverSocket = ServerSocket(port)
