@@ -1,7 +1,13 @@
-@@ -3,26 +3,23 @@
+@@ -1,29 +1,25 @@
+ import java.io.IOException
+ import java.net.ServerSocket
  import java.net.Socket
 
  fun main(args: Array<String>) {
+-    // You can use print statements as follows for debugging, they'll be visible when running tests.
+-    println("Logs from your program will appear here!")
+-
+-    // Uncomment this block to pass the first stage
 -    // val serverSocket: ServerSocket
 -    // val clientSocket: Socket
 -    // val port = 6379
@@ -21,9 +27,6 @@
 -    //         println("IOException: " + e.message)
 -    //     }
 -    // }
-+    // You can use print statements as follows for debugging, they'll be visible when running tests.
-+    println("Logs from your program will appear here!")
-+
 +    val serverSocket: ServerSocket
 +    val clientSocket: Socket
 +    val port = 6379

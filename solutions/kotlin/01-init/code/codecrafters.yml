@@ -4,8 +4,8 @@
 # unless you really need them.
 debug: false
 
-# Use this to change the Java version used to run your code
+# Use this to change the Kotlin version used to run your code
 # on Codecrafters.
 #
-# Available versions: java-21
+# Available versions: kotlin-1.9
 language_pack: kotlin-1.9
