@@ -252,7 +252,7 @@ stages:
       $ redis-cli get random_key
 
       # Then, it'll wait for the key to expire and send another GET command
-      # The response to this should be `-1\r\n` (a "null bulk string")
+      # The response to this should be `$-1\r\n` (a "null bulk string")
       $ sleep 0.2 && redis-cli get random_key
       ```
 
