@@ -86,6 +86,8 @@
       target: app/main.py
     - source: starter_templates/python/spawn_redis_server.sh
       target: spawn_redis_server.sh
+    - source: starter_templates/python/.gitignore
+      target: .gitignore
     - source: starter_templates/.gitattributes
       target: .gitattributes
   template_attributes:
