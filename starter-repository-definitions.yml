@@ -100,6 +100,10 @@
       target: codecrafters.yml
     - source: starter_templates/go/app/server.go
       target: app/server.go
+    - source: starter_templates/go/go.mod
+      target: go.mod
+    - source: starter_templates/go/go.sum
+      target: go.sum
     - source: starter_templates/go/spawn_redis_server.sh
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
