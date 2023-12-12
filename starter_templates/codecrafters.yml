@@ -48,8 +48,8 @@ language_pack: haskell-9.4
 language_pack: elixir-1.10
 {{/ language_is_elixir }}
 {{# language_is_kotlin }}
-# Available versions: kotlin-1.4
-language_pack: kotlin-1.4
+# Available versions: kotlin-1.9
+language_pack: kotlin-1.9
 {{/ language_is_kotlin }}
 {{# language_is_java }}
 # Available versions: java-21
