@@ -210,7 +210,7 @@ stages:
       ```
 
       Seems confusing? Read up about [sending commands to a Redis
-      server](https://redis.io/docs/reference/protocol-spec/#send-commands-to-a-redis-server).
+      server](https://redis.io/docs/reference/protocol-spec/#sending-commands-to-a-redis-server).
     marketing_md: |-
       In this stage, you'll respond to the
       [ECHO](https://redis.io/commands/echo) command. You'll parse user input
