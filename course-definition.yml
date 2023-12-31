@@ -348,6 +348,9 @@ stages:
 
       **Note**: Remember, in this stage you only need to support RDB files that contain a single key, and you can ignore the value of the key. We'll
       get to handling multiple keys and reading values in later stages.
+
+      **Note**: The `.rdb` file provided via `--dir`/`--dbfilename` might not exist. If the file doesn't exist, your program must treat it as if the database
+      is currently empty.
     marketing_md: |
       In this stage, you'll add support for reading a key from an RDB file that contains a single key-value pair. You'll do this by implementing the `KEYS *` command.
 
