@@ -44,8 +44,8 @@ language_pack: rust-1.70
 language_pack: haskell-9.4
 {{/ language_is_haskell }}
 {{# language_is_elixir}}
-# Available versions: elixir-1.10
-language_pack: elixir-1.10
+# Available versions: elixir-1.16
+language_pack: elixir-1.16
 {{/ language_is_elixir }}
 {{# language_is_kotlin }}
 # Available versions: kotlin-1.4
