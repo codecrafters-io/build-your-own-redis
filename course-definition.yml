@@ -1,7 +1,7 @@
 slug: "redis"
 name: "Build your own Redis"
 short_name: "Redis"
-release_status: "live"
+release_status: "beta"
 
 description_md: |-
   In this challenge, you'll build a toy Redis clone
