@@ -79,7 +79,15 @@ stages:
     concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Bind to a port"
     description_md: |-
-      In this stage, your task is to start a TCP server on port 6379, the default port that redis uses.
+      Welcome to the Build your own Redis challenge! Now that you've got your repository setup, it's time to start building your Redis server.
+
+      Redis clients use the [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) protocol to communicate with a Redis
+      server.
+
+      To implement a Redis server, we'll start with implementing a TCP server. Don't worry if you're unfamiliar with the TCP protocol, or what Redis
+      clients & servers are. You'll learn more about this in the next stages.
+
+      Your task in this stage is to start a TCP server on port 6379, the default port that Redis uses.
     difficulty: very_easy
     marketing_md: |-
       In this stage, you'll start a TCP server on port 6379, which is the
