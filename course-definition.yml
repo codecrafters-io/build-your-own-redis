@@ -99,7 +99,7 @@ stages:
     name: "Respond to PING"
     difficulty: easy
     description_md: |-
-      We now have a TCP server running on port 6379! It doesn't do anything useful yet though, let's change that.
+      You now have a TCP server running on port 6379! It doesn't do anything useful yet though, let's change that.
 
       As mentioned in the previous stage, Redis clients use the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) to communicate with a Redis server. They
       do this by sending "commands" to the server. The server then sends a "response" back to the client.
