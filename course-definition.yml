@@ -99,8 +99,19 @@ stages:
     name: "Respond to PING"
     difficulty: easy
     description_md: |-
-      In this stage, you'll respond to the
-      [PING](https://redis.io/commands/ping) command.
+      We now have a TCP server running on port 6379! It doesn't do anything useful yet though, let's change that.
+
+      As mentioned in the previous stage, Redis clients use the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) to communicate with a Redis server. They
+      do this by sending "commands" to the server. The server then sends a "response" back to the client.
+
+      In this stage, you'll implement support for one of the simplest Redis commands: the [PING](https://redis.io/commands/ping) command.
+
+      When a Redis server receives a `PING` command, it responds with the bytes `+PONG\r\n`. This is the string "PONG" encoded using the Redis protocol.
+
+      Since the PING command doesn't take any arguments, we can implement it without having to worry about parsing client input (i.e. we can just hardcode a response). In later stages,
+      we'll learn how to parse client input.
+
+      ---
 
       The tester will execute your program like this:
 
