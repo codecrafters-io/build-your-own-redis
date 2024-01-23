@@ -88,14 +88,6 @@ stages:
       clients & servers are. You'll learn more about this in the next stages.
 
       Your task in this stage is to start a TCP server on port 6379, the default port that Redis uses.
-
-      The tester will execute your program like this:
-
-      ```bash
-      ./spawn_redis_server.sh # This script is provided in your repository
-      ```
-
-      It'll then try to connect to your server using TCP on port 6379.
     difficulty: very_easy
     marketing_md: |-
       In this stage, you'll start a TCP server on port 6379, which is the
