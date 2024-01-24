@@ -101,17 +101,18 @@ stages:
     description_md: |-
       You now have a TCP server running on port 6379! It doesn't do anything useful yet though, let's change that.
 
-      As mentioned in the previous stage, Redis clients use the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) to communicate with a Redis server. They
-      do this by sending "commands" to the server. The server then sends a "response" back to the client.
-
       In this stage, you'll implement support for one of the simplest Redis commands: the [PING](https://redis.io/commands/ping) command.
 
-      When a Redis server receives a `PING` command, it responds with the bytes `+PONG\r\n`. This is the string "PONG" encoded using the Redis protocol.
+      As mentioned in the previous stage, Redis clients use the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) to communicate with a Redis server. They
+      do this by sending "[commands](https://redis.io/commands/)" to the server. The server then sends a "response" back to the client.
 
-      Since the PING command doesn't take any arguments, we can implement it without having to worry about parsing client input (i.e. we can just hardcode a response). In later stages,
-      we'll learn how to parse client input.
+      [PING](https://redis.io/commands/ping/) is one of the simplest Redis commands. It's used to check whether a Redis server is healthy.
 
-      ---
+      When a Redis server receives the `PING` command, it responds with the bytes `+PONG\r\n`. This is the string "PONG" encoded using the [Redis protocol](https://redis.io/docs/reference/protocol-spec/).
+
+      In this stage, we won't worry about parsing client input (i.e. we can just hardcode `+PONG\r\n` as the response). We'll learn to parse client input in later stages.
+
+      ### Tests
 
       The tester will execute your program like this:
 
@@ -127,12 +128,12 @@ stages:
 
       Your server should respond with `+PONG\r\n`, which is "PONG" encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#resp-simple-strings).
 
-      You can ignore the data that the tester sends you for this stage. We'll get to parsing
+      ### Notes
+
+      - You can ignore the data that the tester sends you for this stage. We'll get to parsing
       client input in later stages. For now, you can just hardcode `+PONG\r\n` as the response.
-
-      You can also ignore handling multiple clients and handling multiple PING commands in the stage, we'll get to that in later stages.
-
-      **Note**: The exact bytes your program will receive won't be just `ping`, you'll receive something like this: `*1\r\n$4\r\nping\r\n`,
+      - You can also ignore handling multiple clients and handling multiple PING commands in the stage, we'll get to that in later stages.
+      - The exact bytes your program will receive won't be just `ping`, you'll receive something like this: `*1\r\n$4\r\nping\r\n`,
       which is the Redis protocol encoding of the `PING` command. We'll learn more about this in later stages.
     marketing_md: |
       In this stage, you'll respond to the
