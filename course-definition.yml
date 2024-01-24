@@ -136,7 +136,7 @@ stages:
       It'll then send a `PING` command to your server and expect a `+PONG\r\n` response.
 
       ```bash
-      $ redis-cli PING
+      $ redis-cli ping
       ```
 
       Your server should respond with `+PONG\r\n`, which is "PONG" encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#resp-simple-strings).
