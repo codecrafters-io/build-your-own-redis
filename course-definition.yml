@@ -87,7 +87,20 @@ stages:
       To implement a Redis server, we'll start with implementing a TCP server. Don't worry if you're unfamiliar with the TCP protocol, or what Redis
       clients & servers are. You'll learn more about this in the next stages.
 
-      Your task in this stage is to start a TCP server on port 6379, the default port that Redis uses.
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then try to connect to your server on port 6379. If the connection succeeds, you'll pass this stage.
+
+      ### Notes
+
+      - 6379 is the default port that Redis uses.
+      - If you already have a Redis server running on your machine and listening on port 6379, you'll see a "port already in use" error when running your code. Try stopping the existing Redis server and running your code again.
     difficulty: very_easy
     marketing_md: |-
       In this stage, you'll start a TCP server on port 6379, which is the
