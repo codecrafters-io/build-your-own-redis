@@ -79,7 +79,7 @@ stages:
     concept_slugs: ["network-protocols", "tcp-overview"]
     name: "Bind to a port"
     description_md: |-
-      Welcome to the Build your own Redis challenge! Now that you've got your repository setup, it's time to start building your Redis server.
+      Welcome to the Build your own Redis challenge! Now that you've got your repository set up, it's time to start building your Redis server.
 
       Redis clients use the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) to communicate with a Redis
       server. TCP is the same underlying protocol that's used by HTTP, SSH and many other protocols that you're probably familiar with.
