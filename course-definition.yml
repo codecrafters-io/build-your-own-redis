@@ -101,7 +101,7 @@ stages:
     description_md: |-
       🎉 You now have a TCP server running on port 6379! It doesn't do anything useful yet though, let's change that.
 
-      In this stage, you'll implement support for one of the simplest Redis commands: the [PING](https://redis.io/commands/ping) command.
+      In this stage, you'll implement support for the [PING](https://redis.io/commands/ping) command.
 
       As mentioned in the previous stage, Redis clients use the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) to communicate with a Redis server. They
       do this by sending "[commands](https://redis.io/commands/)" to the server. The server then sends a "response" back to the client.
