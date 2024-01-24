@@ -99,7 +99,7 @@ stages:
     name: "Respond to PING"
     difficulty: easy
     description_md: |-
-      You now have a TCP server running on port 6379! It doesn't do anything useful yet though, let's change that.
+      🎉 You now have a TCP server running on port 6379! It doesn't do anything useful yet though, let's change that.
 
       In this stage, you'll implement support for one of the simplest Redis commands: the [PING](https://redis.io/commands/ping) command.
 
