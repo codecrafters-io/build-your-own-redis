@@ -95,7 +95,7 @@ stages:
       $ ./spawn_redis_server.sh
       ```
 
-      It'll then try to connect to your server on port 6379. If the connection succeeds, you'll pass this stage.
+      It'll then try to connect to your TCP server on port 6379. If the connection succeeds, you'll pass this stage.
 
       ### Notes
 
