@@ -81,11 +81,13 @@ stages:
     description_md: |-
       Welcome to the Build your own Redis challenge! Now that you've got your repository set up, it's time to start building your Redis server.
 
-      Redis clients use the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) to communicate with a Redis
-      server. Don't worry if you're unfamiliar with the TCP protocol, or what Redis clients & servers are. You'll learn more about this in the
-      next stages.
+      In this stage, you'll implement a TCP server that listens on port 6379.
 
-      To implement a Redis server, we'll start with implementing a TCP server.
+      [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) is the underlying protocol used by protocols like HTTP, SSH and others
+      you're probably familiar with. Redis clients & servers use TCP to communicate with each other.
+
+      Don't worry if you're unfamiliar with the TCP protocol, or what Redis clients & servers are. You'll learn more about this in the
+      next stages.
 
       ### Tests
 
