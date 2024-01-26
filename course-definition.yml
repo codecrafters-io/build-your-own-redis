@@ -119,7 +119,7 @@ stages:
       In this stage, you'll implement support for the [PING](https://redis.io/commands/ping) command.
 
       Redis clients communicate with Redis servers by sending "[commands](https://redis.io/commands/)". For each command, a Redis server sends a response back to the client.
-      Commands and responses are both encoded using the [Redis protocol](https://redis.io/topics/protocol), we'll learn more about this in later stages.
+      Commands and responses are both encoded using the [Redis protocol](https://redis.io/topics/protocol) (we'll learn more about this in later stages).
 
       [PING](https://redis.io/commands/ping/) is one of the simplest Redis commands. It's used to check whether a Redis server is healthy.
 
