@@ -118,14 +118,14 @@ stages:
 
       In this stage, you'll implement support for the [PING](https://redis.io/commands/ping) command.
 
-      As mentioned in the previous stage, Redis clients use the [TCP protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) to communicate with a Redis server. They
-      do this by sending "[commands](https://redis.io/commands/)" to the server. The server then sends a "response" back to the client.
+      Redis clients communicate with Redis servers by sending "[commands](https://redis.io/commands/)". For each command, a Redis server sends a response back to the client.
+      Commands and responses are both encoded using the [Redis protocol](https://redis.io/topics/protocol), we'll learn more about this in later stages.
 
       [PING](https://redis.io/commands/ping/) is one of the simplest Redis commands. It's used to check whether a Redis server is healthy.
 
-      When a Redis server receives the `PING` command, it responds with the bytes `+PONG\r\n`. This is the string "PONG" encoded using the [Redis protocol](https://redis.io/docs/reference/protocol-spec/).
+      The response for the `PING` command is `+PONG\r\n`. This is the string "PONG" encoded using the [Redis protocol](https://redis.io/docs/reference/protocol-spec/).
 
-      In this stage, we won't worry about parsing client input (i.e. we can just hardcode `+PONG\r\n` as the response). We'll learn to parse client input in later stages.
+      In this stage, we'll cut corners by ignoring client input and hardcoding `+PONG\r\n` as a response. We'll learn to parse client input in later stages.
 
       ### Tests
 
