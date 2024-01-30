@@ -76,7 +76,7 @@ extensions:
 
 stages:
   - slug: "init"
-    concept_slugs: ["network-protocols", "tcp-overview", "go-tcp-server"]
+    concept_slugs: ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
     name: "Bind to a port"
     description_md: |-
       Welcome to the Build your own Redis challenge! Now that you've got your repository set up, it's time to start building your Redis server.
@@ -110,7 +110,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_bind.go#L11"
 
   - slug: "ping-pong"
-    concept_slugs: ["network-protocols", "tcp-overview", "go-tcp-server"]
+    concept_slugs: ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
     name: "Respond to PING"
     difficulty: easy
     description_md: |-
@@ -157,7 +157,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L9"
 
   - slug: "ping-pong-multiple"
-    concept_slugs: ["network-protocols", "tcp-overview", "go-tcp-server"]
+    concept_slugs: ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
     name: "Respond to multiple PINGs"
     difficulty: easy
     description_md: |-
@@ -198,7 +198,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L35"
 
   - slug: "concurrent-clients"
-    concept_slugs: ["network-protocols", "tcp-overview", "go-tcp-server"]
+    concept_slugs: ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
     name: "Handle concurrent clients"
     difficulty: medium
     description_md: |-
