@@ -630,11 +630,23 @@ stages:
     name: "The INFO command on a replica"
     difficulty: medium
     description_md: |
-      In this stage, you'll add support for the [INFO](https://redis.io/commands/info/) command on the Replica redis server.
+      In this stage, you'll extend your [INFO](https://redis.io/commands/info/) command to run on a replica.
 
-      But, before that you'll need to start the Redis server in Replica mode, and for that you'll need to add support for the `--replicaof` command line argument.
-      To keep things simple, right now you don't need to do anything different, apart from changing the output of the `INFO` command.
-      For the Replica the `INFO` command should return `role: slave`.
+      ### The `--replicaof` flag
+
+      By default, a Redis server assumes the "master" role. When the `--replicaof` flag is passed, the server assumes the "slave" role instead.
+
+      Here's an example usage of the `--replicaof` flag:
+
+      ```
+      ./spawn_redis_server.sh --port 6380 --replicaof localhost:6379
+      ```
+
+      In this example, we're starting a Redis server in replica mode. The server itself will listen for connections on port 6380, but it'll
+      also connect to a master (another Redis server) running on port 6379 and replicate all changes from the master.
+
+      We'll learn more about how this replication works in later stages. For now, we'll focus on adding support for the `--replicaof` flag, and
+      extending the `INFO` command to support returning `role: slave` when the server is a replica.
 
       ### Tests
 
@@ -650,10 +662,8 @@ stages:
       $ redis-cli info replication
       ```
 
-      The response to `info replication` should be a Bulk string, where each line is a key value pair, seperated by ":".
-      We will only look for the `role` key, expecting a value of `slave`.
-      You can ignore the `# Replication` heading.
-
+      Your program should respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line
+      is a key value pair separated by `:`. The tester will only look for the `role` key, and assert that the value is `master`.
     marketing_md: |
       In this stage, you'll add support for the --replicaof arg and INFO command on the replica.
 
