@@ -667,7 +667,7 @@ stages:
 
       ### Notes
 
-      - Your program still needs to pass the previous stages, so if `--replicaof` isn't specified, you should default to the `master` role.
+      - Your program still needs to pass the previous stage tests, so if `--replicaof` isn't specified, you should default to the `master` role.
       - Just like the last stage, you only need to support the `role` key in the response for this stage. We'll add support for the other keys in later stages.
       - You don't need to actually connect to the master server specified via `--replicaof` in this stage. We'll get to that in later stages.
     marketing_md: |
