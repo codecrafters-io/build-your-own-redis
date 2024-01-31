@@ -568,7 +568,7 @@ stages:
       The `INFO` command returns information and statistics about a Redis server. In this stage, we'll add support for the
       `replication` section of the `INFO` command.
 
-      ## The replication section
+      ### The replication section
 
       When you run the `INFO` command against a Redis server, you'll see something like this:
 
@@ -614,7 +614,7 @@ stages:
       Your program should respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line
       is a key value pair separated by `:`. The tester will only look for the `role` key, and assert that the value is `master`.
 
-      ## Notes
+      ### Notes
 
       - In the response for the `INFO` command, you only need to support the `role` key for this stage. We'll add support for the other keys in later stages.
       - The `# Replication` heading in the response is optional, you can ignore it.
