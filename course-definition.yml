@@ -63,6 +63,16 @@ extensions:
       [redis-persistence]: https://redis.io/docs/manual/persistence/
       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
+  - slug: "replication"
+    name: "Replication"
+    description_markdown: |
+      In this challenge extension you'll add support for [Replication][redis-replication] to your Redis implementation.
+
+      Along the way you'll learn about how Redis's leader-follower replication works, the [PSYNC][redis-psync-command] command and more.
+
+      [redis-replication]: https://redis.io/docs/management/replication/
+      [redis-psync-command]: https://redis.io/commands/psync/
+
 #   - slug: "streams"
 #     name: "Streams"
 #     description_markdown: |-
@@ -511,3 +521,439 @@ stages:
       When a key hasn't expired, the expected response is a RESP bulk string with the value corresponding to the key.
     marketing_md: |
       In this stage, you'll add support for reading values that have an expiry set.
+
+  # Replication
+
+  - slug: "repl-custom-port"
+    primary_extension_slug: "replication"
+    name: "Configure listening port"
+    difficulty: easy
+    description_md: |
+      Welcome to the Replication extension!
+      In this extension, we will need to run multiple redis servers concurrently, across Masters and Replicas. So, in this stage you'll add support for starting the Redis server on custom ports. 
+      The port number will be passed as a command line argument, with the --port flag.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ```
+       
+      To verify whether your program is reading the port flag correctly, and binding to the correct port, the tester will try to connect to the `PORT` number sent earlier.
+      If the connection succeeds, you'll pass this stage.
+
+      ### Notes
+
+      - We will use ports from 6379 to 6390 (inclusive of both).
+    marketing_md: |
+      In this stage, you'll add support for parsing the port flag, and starting Redis on a custom port.
+
+  - slug: "repl-info"
+    primary_extension_slug: "replication"
+    name: "Implement `INFO` on master"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll add support for the [INFO](https://redis.io/commands/info/) command on the Master redis server.
+
+      The client will send you the command as a RESP array, which looks something like this:
+
+      ```
+      *2\r\n$4\r\nINFO\r\n$11\r\nreplication\r\n
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ```
+
+      It'll then send the `INFO` command with `replication` as an argument to your server.
+
+      ```bash
+      $ redis-cli info replication
+      ```
+
+      The response to `info replication` should be a Bulk string, where each line is a key value pair, seperated by ":".
+      We will only look for the `role` key, expecting a value of `master`.
+      You can ignore the `# Replication` heading.
+
+    marketing_md: |
+      In this stage, you'll add support for the INFO command on the master. 
+
+  - slug: "repl-info-replica"
+    primary_extension_slug: "replication"
+    name: "Implement `INFO` on replica"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add support for the [INFO](https://redis.io/commands/info/) command on the Replica redis server.
+
+      But, before that you'll need to start the Redis server in Replica mode, and for that you'll need to add support for the `--replicaof` command line argument.
+      To keep things simple, right now you don't need to do anything different, apart from changing the output of the `INFO` command.
+      For the Replica the `INFO` command should return `role: slave`.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST>:<MASTER_PORT>
+      ```
+
+      It'll then send the `INFO` command with `replication` as an argument to your server.
+
+      ```bash
+      $ redis-cli info replication
+      ```
+
+      The response to `info replication` should be a Bulk string, where each line is a key value pair, seperated by ":".
+      We will only look for the `role` key, expecting a value of `slave`.
+      You can ignore the `# Replication` heading. 
+
+    marketing_md: |
+      In this stage, you'll add support for the --replicaof arg and INFO command on the replica. 
+
+  - slug: "repl-id"
+    primary_extension_slug: "replication"
+    name: "Initial Replication ID and Offset"
+    difficulty: easy
+    description_md: |
+      Every Redis master has a replication ID: it is a large pseudo random string that marks a given story of the dataset. Each master also takes an offset that increments for every byte of replication stream that it is produced to be sent to replicas, to update the state of the replicas with the new changes modifying the dataset. The replication offset is incremented even if no replica is actually connected, so basically every given pair of:
+
+      `Replication ID, offset`
+
+      Identifies an exact version of the dataset of a master.
+
+      In this stage, you'll initialize a replication ID and offset for your master. The ID can be any pseudo random alphanumeric string of 40 characters, and the offset is to be 0.
+      Then add these 2 key value pairs to the INFO command output. The keys should be `master_replid` and `master_repl_offset`.
+      
+      ### Tests
+      
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ```
+
+      It'll then send the `INFO` command with `replication` as an argument to your server.
+
+      ```bash
+      $ redis-cli info replication
+      ```
+
+      The response to `info replication` should be a Bulk string, where each line is a key value pair, seperated by ":".
+      We will look for the `master_replid` key expecting a pseudorandom string and `master_repl_offset` key, expecting a value of `0`.
+      You can ignore the `# Replication` heading. 
+
+    marketing_md: |
+      In this stage, you'll add support for reading a key from an RDB file that contains a single key-value pair. You'll do this by implementing the `KEYS *` command.
+
+  - slug: "repl-replica-ping"
+    primary_extension_slug: "replication"
+    name: "Send handshake 1/3"
+    difficulty: easy
+    description_md: |
+      When replicas connect to masters, they begin a SYNC handshake, where in the first step the replica sends `PING` to the master.  
+  
+      In this stage, you'll need to implement starting a handshake from the replica. The replica would be sending an `PING` to the master to start the handshake.
+  
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST>:<MASTER_PORT>
+      ```
+
+      It'll expect to receive `PING` as the first command on the Master side. 
+      The command should be sent as a RESP Array, like this : 
+      `*1\r\n$4\r\nPING\r\n`
+ 
+    marketing_md: |
+      In this stage, you'll add support for starting the handshake from the Replica side.
+
+  - slug: "repl-replica-replconf"
+    primary_extension_slug: "replication"
+    name: "Send handshake 2/3"
+    difficulty: easy
+    description_md: |
+      After sending `PING` to the master, the replica will receive a `PONG` back.
+      `PONG` would be sent as a RESP simple string, like this : `+PONG\r\n`
+
+      After `PING`, the replica needs to send [REPLCONF](https://redis.io/commands/replconf/) to the master next. 
+      Send REPLCONF with the `listening-port` argument and your replica's port as the value.
+      The command would look like this : 
+      `REPLCONF listening-port <REPLICA_PORT>`
+      Send it as a RESP array.
+
+      In this stage, you'll add support for accepting `PONG` after the sent `PING`, and then send the `REPLCONF` message.
+    
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST>:<MASTER_PORT>
+      ```
+
+      It'll expect to receive `PING` as the first command on the Master side. It will send `PONG` back. It'll then expect to receive `REPLCONF` as the second command on the Master side.
+ 
+    marketing_md: |
+      In this stage, you'll add support for continuing the handshake from the Replica side, by sending REPLCONF.
+
+  - slug: "repl-replica-psync"
+    primary_extension_slug: "replication"
+    name: "Send handshake 3/3 (Initiate PSYNC)"
+    difficulty: medium
+    description_md: |
+      After sending `REPLCONF` to the master, the replica will receive a `OK` back. 
+      `OK` would be sent as a RESP simple string, like this : `+OK\r\n`
+
+      After `REPLCONF`, the replica needs to send another [REPLCONF](https://redis.io/commands/replconf/) to the master next. (The official Redis implementation sends REPLCONF with its capabilities as the arguments, we are keeping this for compatibility with official Redis)
+
+      Send REPLCONF with four strings as argument.
+      The command would look like this : 
+      `REPLCONF capa eof capa psync2`
+      Send it as a RESP array.
+      The tester will not check for the exact strings, send any 4 strings.
+
+      After sending this `REPLCONF` to the master, the replica will receive another `OK` back. 
+      `OK` would be sent as a RESP simple string, like this : `+OK\r\n`
+
+      After `REPLCONF`, the replica needs to send PSYNC to the master next. You will learn about this more in a later stage.
+
+      In this stage, you'll add support for accepting `OK` after the first `REPLCONF` message, then sent another `REPLCONF` with 4 string arguments, accept another `OK` and then send the `PSYNC` message.
+        
+      PSYNC should be sent with ? and -1 as arguments.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST>:<MASTER_PORT>
+      ```
+
+      It'll expect to receive `PING` as the first command on the Master side. It will send `PONG` back. It'll then expect to receive `REPLCONF` as the second command on the Master side. It will send `OK` back. It'll then expect to receive another `REPLCONF` as the thirs command on the Master side. It will send `OK` again.
+      Finally it will expect to receive `PSYNC ? -1` as the next command. The command should be sent as a RESP Array, like this : 
+      `*3\r\n$5\r\nPSYNC\r\n$1\r\n?\r\n$2\r\n-1\r\n`
+
+    marketing_md: |
+      In this stage, you'll add support for finishing the handshake from the Replica side, by sending PSYNC.
+
+  - slug: "repl-master-replconf"
+    primary_extension_slug: "replication"
+    name: "Receive handshake 1/3 (Accept REPLCONF)"
+    difficulty: easy
+    description_md: |
+      Now we will start implementing the handshake from the master side. (Till now we were acting as replicas and sending commands to the master, now we receive them as master).
+
+      In this stage you'll add support for the [REPLCONF](https://redis.io/commands/replconf/) command on the Master redis server. 
+      You will receive the `REPLCONF` command with `listening-port` and `<PORT>` arguments.
+      The client will send you the command as a RESP array, which looks something like this :
+        
+      ```
+      *3\r\n$8\r\nREPLCONF\r\n$14\r\nlistening-port\r\n$4\r\n6380\r\n
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ```
+
+      It'll then send the `PING`, expecting a `PONG` back.
+
+      ```bash
+      $ redis-cli ping
+      ```
+
+      It'll then send the `REPLCONF` command with listening-port and <PORT> as arguments.
+
+      ```bash
+      $ redis-cli replconf listening-port <PORT>
+      ```
+
+      It'll expect to receive `OK` back. The command should be sent as a simple string, like this : 
+      `+OK\r\n`
+
+    marketing_md: |
+      In this stage, you'll add support for starting the handshake from the master side, by accepting REPLCONF.
+
+  - slug: "repl-master-psync"
+    primary_extension_slug: "replication"
+    name: "Receive handshake 2/3 (Accept PSYNC)"
+    difficulty: easy
+    description_md: |
+      When replicas connect to masters, they use the `PSYNC` command to send their old master replication ID and the offsets they processed so far. This way the master can send just the incremental part needed. However if there is not enough backlog in the master buffers, or if the replica is referring to an history (replication ID) which is no longer known, then a full resynchronization happens: in this case the replica will get a full copy of the dataset, from scratch.
+
+      In this stage you'll add support for the [PSYNC](https://redis.io/commands/psync/) command on the Master redis server. 
+      You will receive the `PSYNC` command with `?` and `-1` arguments. (Which correspond to a Nil replication ID because the replica just started, and a 0 offset)
+      The master would then need to do a fullsync, because based on the ID and offset, it will not be possible to send the incremental changes required. 
+      So, the Master will return `FULLRESYNC <REPL_ID> 0`       
+
+      The client will send you the PSYNC command as a RESP array, which looks something like this :
+        
+      ```
+      *3,$5,PSYNC,$1,?,$2,-1,
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ```
+
+      It'll then send the `PING`, expecting a `PONG` back.
+
+      ```bash
+      $ redis-cli ping
+      ```
+
+      It'll then send the `REPLCONF` command with listening-port and <PORT> as arguments.
+
+      ```bash
+      $ redis-cli replconf listening-port <PORT>
+      ```
+
+      It'll expect to receive `OK` back. The command should be sent as a simple string, like this : 
+      `+OK\r\n`
+
+      It'll then send the `PSYNC` command with ? and -1 as arguments.
+
+      ```bash
+      $ redis-cli psync ? -1
+      ```
+
+      It'll expect to receive `FULLRESYNC <REPL_ID> 0` back. The command should be sent as a simple string, like this : 
+      `+FULLRESYNC <ID> 0\r\n`
+      Note : The ID will not be checked, you can send your master's replication ID.
+
+    marketing_md: |
+      In this stage, you'll add support for accepting PSYNC, and starting a FULLRESYNC.
+
+  - slug: "repl-master-psync-rdb"
+    primary_extension_slug: "replication"
+    name: "Receive handshake 3/3 (Sending RDB file)"
+    difficulty: easy
+    description_md: |
+      This is how a full synchronization works in more details:
+      The master starts a background saving process to produce an RDB file. At the same time it starts to buffer all new write commands received from the clients. When the background saving is complete, the master transfers the database file to the replica, which saves it on disk, and then loads it into memory. The master will then send all buffered commands to the replica. This is done as a stream of commands and is in the same format of the Redis protocol itself.
+
+      In this stage you'll add support for sending a RDB file to the replica, which it will load into its memory. (As RDB serialization is out of scope for this current extension, we will provide the file as a hex string to you.) 
+
+      The client will send you the PSYNC command as a RESP array, which looks something like this :
+        
+      ```
+      *3,$5,PSYNC,$1,?,$2,-1,
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ```
+
+      It'll then send the `PING`, expecting a `PONG` back.
+
+      ```bash
+      $ redis-cli ping
+      ```
+
+      It'll then send the `REPLCONF` command with listening-port and <PORT> as arguments.
+
+      ```bash
+      $ redis-cli replconf listening-port <PORT>
+      ```
+
+      It'll expect to receive `OK` back. The command should be sent as a simple string, like this : 
+      `+OK\r\n`
+
+      It'll then send the `PSYNC` command with ? and -1 as arguments.
+
+      ```bash
+      $ redis-cli psync ? -1
+      ```
+
+      It'll expect to receive `FULLRESYNC <REPL_ID> 0` back. The command should be sent as a simple string, like this : 
+      `+FULLRESYNC <ID> 0\r\n`
+      Note : The ID will not be checked, you can send your master's replication ID.
+      
+      Subsequently it will expect a RDB file sent to it from the master. 
+
+      ### Notes
+      - DO NOT send us the hex string provided to you. 
+      - Decode it, and send it as a RESP Bulk String. (Append the length of the file at the beginning) 
+
+    marketing_md: |
+      In this stage, you'll add support for finishing the sync handshake from the master side, by sending a RDB file.
+
+  - slug: "repl-master-cmd-prop"
+    primary_extension_slug: "replication"
+    name: "Command Propagation"
+    difficulty: medium
+    description_md: |
+      The master keeps on buffering all write commands sent to it, while the replica processes the RDB file, and loads it into memory. 
+      And then when its ready it sends all the buffered commands as a stream to the replica. 
+
+      In this stage you'll add support for propagating write commands received by the Master server. 
+      You can relay the commands to the replica, as soon as you receive them without buffering. 
+        
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ```
+
+      It'll then send the `PING`, expecting a `PONG` back.
+
+      ```bash
+      $ redis-cli ping
+      ```
+
+      It'll then send the `REPLCONF` command with listening-port and <PORT> as arguments.
+
+      ```bash
+      $ redis-cli replconf listening-port <PORT>
+      ```
+
+      It'll expect to receive `OK` back. The command should be sent as a simple string, like this : 
+      `+OK\r\n`
+
+      It'll then send the `PSYNC` command with ? and -1 as arguments.
+
+      ```bash
+      $ redis-cli psync ? -1
+      ```
+
+      It'll expect to receive `FULLRESYNC <REPL_ID> 0` back. The command should be sent as a simple string, like this : 
+      `+FULLRESYNC <ID> 0\r\n`
+      Note : The ID will not be checked, you can send your master's replication ID.
+      
+      Subsequently it will expect a RDB file sent to it from the master. 
+
+      It'll then send write commands to the master.
+
+      ```bash
+      $ redis-cli SET foo 1
+      $ redis-cli SET bar 2
+      $ redis-cli SET baz 3
+      ```
+
+      It'll then expect to receive the same commands propagated to the replica server. 
+      (The commands need to be sent as RESP messages)
+
+    marketing_md: |
+      In this stage, you'll add support for finishing the sync handshake from the master side, by sending a RDB file.
+
