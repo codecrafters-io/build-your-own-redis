@@ -640,11 +640,11 @@ stages:
       Here's an example usage of the `--replicaof` flag:
 
       ```
-      ./spawn_redis_server.sh --port 6380 --replicaof localhost:6379
+      ./spawn_redis_server.sh --port 6380 --replicaof localhost 6379
       ```
 
       In this example, we're starting a Redis server in replica mode. The server itself will listen for connections on port 6380, but it'll
-      also connect to a master (another Redis server) running on port 6379 and replicate all changes from the master.
+      also connect to a master (another Redis server) running on localhost port 6379 and replicate all changes from the master.
 
       We'll learn more about how this replication works in later stages. For now, we'll focus on adding support for the `--replicaof` flag, and
       extending the `INFO` command to support returning `role: slave` when the server is a replica.
@@ -654,7 +654,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST>:<MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
       ```
 
       It'll then send the `INFO` command with `replication` as an argument to your server.
@@ -679,14 +679,28 @@ stages:
     name: "Initial Replication ID and Offset"
     difficulty: easy
     description_md: |
-      Every Redis master has a replication ID: it is a large pseudo random string that marks a given story of the dataset. Each master also takes an offset that increments for every byte of replication stream that it is produced to be sent to replicas, to update the state of the replicas with the new changes modifying the dataset. The replication offset is incremented even if no replica is actually connected, so basically every given pair of:
+      In this stage, you'll extend your `INFO` command to return two additional values: `master_replid` and `master_repl_offset`.
+
+      ### The replication ID and offset
+
+      Every Redis master has a replication ID: it is a large pseudo random string, used as an identifier for a dataset.
+
+      Each master also takes an offset that increments for every byte of replication stream that it is produced to be sent to replicas,
+      to update the state of the replicas with the new changes modifying the dataset.
+
+      The replication offset is incremented even if no replica is actually connected. It's just a counter of the amount of bytes that
+      would've been sent to replicas if they were connected.
 
       `Replication ID, offset`
 
       Identifies an exact version of the dataset of a master.
 
-      In this stage, you'll initialize a replication ID and offset for your master. The ID can be any pseudo random alphanumeric string of 40 characters, and the offset is to be 0.
-      Then add these 2 key value pairs to the INFO command output. The keys should be `master_replid` and `master_repl_offset`.
+      In this stage, you'll initialize a replication ID and offset for your master:
+
+      - The ID can be any pseudo random alphanumeric string of 40 characters
+      - The offset is to be 0.
+
+      These two values should be returned as part of the INFO command output, under the `master_replid` and `master_repl_offset` keys respectively.
 
       ### Tests
 
@@ -723,7 +737,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST>:<MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
       ```
 
       It'll expect to receive `PING` as the first command on the Master side.
@@ -754,7 +768,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST>:<MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
       ```
 
       It'll expect to receive `PING` as the first command on the Master side. It will send `PONG` back. It'll then expect to receive `REPLCONF` as the second command on the Master side.
@@ -792,7 +806,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST>:<MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
       ```
 
       It'll expect to receive `PING` as the first command on the Master side. It will send `PONG` back. It'll then expect to receive `REPLCONF` as the second command on the Master side. It will send `OK` back. It'll then expect to receive another `REPLCONF` as the thirs command on the Master side. It will send `OK` again.
