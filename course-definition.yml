@@ -576,13 +576,13 @@ stages:
       # Replication
       role:master
       connected_slaves:0
-      master_replid:<REPLID>
+      master_replid:8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb
       master_repl_offset:0
       second_repl_offset:-1
       repl_backlog_active:0
       repl_backlog_size:1048576
       repl_backlog_first_byte_offset:0
-      repl_backlog_histlen:0
+      repl_backlog_histlen:
       ```
 
       The reply to this command is a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line is a key value pair, seperated by ":".
