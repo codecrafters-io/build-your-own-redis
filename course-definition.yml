@@ -560,16 +560,39 @@ stages:
 
   - slug: "repl-info"
     primary_extension_slug: "replication"
-    name: "Implement `INFO` on master"
+    name: "The INFO command"
     difficulty: easy
     description_md: |
-      In this stage, you'll add support for the [INFO](https://redis.io/commands/info/) command on the Master redis server.
+      In this stage, you'll add support for the [INFO](https://redis.io/commands/info/) command.
 
-      The client will send you the command as a RESP array, which looks something like this:
+      The `INFO` command returns information and statistics about a Redis server. In this stage, we'll add support for the
+      `replication` section of the `INFO` command.
+
+      ## The replication section
+
+      When you run `redis-cli info replication` against a Redis server, you'll see something like this:
 
       ```
-      *2\r\n$4\r\nINFO\r\n$11\r\nreplication\r\n
+      # Replication
+      role:master
+      connected_slaves:0
+      master_replid:<REPLID>
+      master_repl_offset:0
+      second_repl_offset:-1
+      repl_backlog_active:0
+      repl_backlog_size:1048576
+      repl_backlog_first_byte_offset:0
+      repl_backlog_histlen:0
       ```
+
+      The reply to this command is a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line is a key value pair, seperated by ":".
+
+      Here are what some of the important fields mean:
+
+      - `role`: The role of the server (`master` or `slave`)
+      - `connected_slaves`: The number of connected replicas
+      - `master_replid`: The replication ID of the master (we'll get to this in later stages)
+      - `master_repl_offset`: The replication offset of the master (we'll get to this in later stages)
 
       ### Tests
 
@@ -579,7 +602,9 @@ stages:
       ./spawn_redis_server.sh --port <PORT>
       ```
 
-      It'll then send the `INFO` command with `replication` as an argument to your server.
+      The client will send you the command as a RESP array, which looks something like this:
+
+      It'll then send the `INFO` command with `replication` as an argument.
 
       ```bash
       $ redis-cli info replication
@@ -589,12 +614,22 @@ stages:
       We will only look for the `role` key, expecting a value of `master`.
       You can ignore the `# Replication` heading.
 
+      ## Notes
+
+      - In the response for the `INFO` command, you only need to support the `role` key for this stage. We'll add support for the other keys in later stages.
+      - The `# Replication` heading in the response is optional, you can ignore it.
+      - The response to `INFO` needs to be encoded as a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
+        - An example valid response would be `$11\r\nrole:master\r\n` (the string `role:master` encoded as a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings))
+      - The `INFO` command can be used without any arguments, in which case it returns all sections available. In this stage, we'll
+        always send `replication` as an argument to the `INFO` command, so you only need to support the `replication` section.
+      ```
+
     marketing_md: |
       In this stage, you'll add support for the INFO command on the master.
 
   - slug: "repl-info-replica"
     primary_extension_slug: "replication"
-    name: "Implement `INFO` on replica"
+    name: "The INFO command on a replica"
     difficulty: medium
     description_md: |
       In this stage, you'll add support for the [INFO](https://redis.io/commands/info/) command on the Replica redis server.
