@@ -547,14 +547,15 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT>
+      ./spawn_redis_server.sh --port 6380
       ```
 
-      It'll then try to connect to your TCP server on the specified port number (`<PORT>`). If the connection succeeds, you'll pass this stage.
+      It'll then try to connect to your TCP server on the specified port number (`6380` in the example above). If the connection succeeds, you'll pass this stage.
 
       ### Notes
 
       - Your program still needs to pass the previous stages, so if `--port` isn't specified, you should default to port 6379.
+      - The tester will pass a random port number to your program, so you can't hardcode the port number from the example above.
     marketing_md: |
       In this stage, you'll add support for parsing the `--port` flag and starting Redis on a custom port.
 
