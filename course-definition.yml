@@ -540,7 +540,7 @@ stages:
 
       Since we'll need to run multiple instances of your Redis server at once, we can't run all of them on port 6379.
 
-      In this stage, you'll add support for starting the Redis server on a custom port. The port number will be passed to your  the --port flag.
+      In this stage, you'll add support for starting the Redis server on a custom port. The port number will be passed to your program via the `--port` flag.
 
       ### Tests
 
