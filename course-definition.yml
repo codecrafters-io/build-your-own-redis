@@ -663,7 +663,13 @@ stages:
       ```
 
       Your program should respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line
-      is a key value pair separated by `:`. The tester will only look for the `role` key, and assert that the value is `master`.
+      is a key value pair separated by `:`. The tester will only look for the `role` key, and assert that the value is `slave`.
+
+      ### Notes
+
+      - Your program still needs to pass the previous stages, so if `--replicaof` isn't specified, you should default to the `master` role.
+      - Just like the last stage, you only need to support the `role` key in the response for this stage. We'll add support for the other keys in later stages.
+      - You don't need to actually connect to the master server specified via `--replicaof` in this stage. We'll get to that in later stages.
     marketing_md: |
       In this stage, you'll add support for the --replicaof arg and INFO command on the replica.
 
