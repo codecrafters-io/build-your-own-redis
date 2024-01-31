@@ -570,9 +570,10 @@ stages:
 
       ## The replication section
 
-      When you run `redis-cli info replication` against a Redis server, you'll see something like this:
+      When you run the `INFO` command against a Redis server, you'll see something like this:
 
       ```
+      $ redis-cli info replication
       # Replication
       role:master
       connected_slaves:0
