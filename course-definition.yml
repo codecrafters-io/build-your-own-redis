@@ -594,6 +594,8 @@ stages:
       - `master_replid`: The replication ID of the master (we'll get to this in later stages)
       - `master_repl_offset`: The replication offset of the master (we'll get to this in later stages)
 
+      In this stage, you'll only need to support the `role` key. We'll add support for other keys in later stages.
+
       ### Tests
 
       The tester will execute your program like this:
@@ -601,8 +603,6 @@ stages:
       ```
       ./spawn_redis_server.sh --port <PORT>
       ```
-
-      The client will send you the command as a RESP array, which looks something like this:
 
       It'll then send the `INFO` command with `replication` as an argument.
 
