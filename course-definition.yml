@@ -610,9 +610,8 @@ stages:
       $ redis-cli info replication
       ```
 
-      The response to `info replication` should be a Bulk string, where each line is a key value pair, seperated by ":".
-      We will only look for the `role` key, expecting a value of `master`.
-      You can ignore the `# Replication` heading.
+      Your program should respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line
+      is a key value pair separated by ":". The tester will only look for the `role` key, and assert that the value is `master`.
 
       ## Notes
 
