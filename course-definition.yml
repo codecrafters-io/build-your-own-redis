@@ -722,11 +722,6 @@ stages:
       ### Notes
 
       - Your code should still pass the previous stage tests, so the `role` key still needs to be returned
-      - We won't test this explicitly, but replicas will return `master_replid` and `master_repl_offset` too. This is because
-
-      The response to `info replication` should be a Bulk string, where each line is a key value pair, seperated by ":".
-      We will look for the `master_replid` key expecting a pseudorandom string and `master_repl_offset` key, expecting a value of `0`.
-      You can ignore the `# Replication` heading.
     marketing_md: |
       In this stage, you'll add support for reading a key from an RDB file that contains a single key-value pair. You'll do this by implementing the `KEYS *` command.
 
