@@ -961,7 +961,7 @@ stages:
       ./spawn_redis_server.sh --port <PORT>
       ```
 
-      It'll then send the following commands:
+      It'll then connect to your TCP server as a replica and execute the following commands:
 
       1. `PING` (expecting `+PONG\r\n` back)
       2. `REPLCONF listening-port <PORT>` (expecting `+OK\r\n` back)
@@ -979,20 +979,35 @@ stages:
     name: "Empty RDB Transfer"
     difficulty: easy
     description_md: |
-      In this stage, you'll add support for sending a RDB file to the replica. This is part of the "full" resynchronization process.
+      In this stage, you'll add support for sending an empty RDB file to the replica. This is part of the "full resynchronization" process.
 
       ### Full resynchronization
 
-      When a replica connects to a master for the first time, it'll send a `PSYNC` command with `?` and `-1` as arguments. This is the replica's way of
+      When a replica connects to a master for the first time, it sends a `PSYNC ? -1` command. This is the replica's way of
       telling the master that it doesn't have any data yet, and needs to be fully resynchronized.
 
-      The master will acknowledge this by sending a `FULLRESYNC` response to the replica.
+      The master acknowledges this by sending a `FULLRESYNC` response to the replica.
 
-      Once the handshake is complete, the master will send a RDB file of its current state to the replica. The file is sent as a RESP Bulk String, and the
-      replica will load the file into memory, replacing its current state.
+      After sending the `FULLRESYNC` response, the master will then send a RDB file of its current state to the replica. The file
+      is sent as a RESP Bulk String. The replica is expected to load the file into memory, replacing its current state.
 
       For the purposes of this challenge, you don't have to actually construct an RDB file. We'll assume that the master's database is always empty,
-      and thus hardcode an empty RDB file to send to the replica.
+      and just hardcode an empty RDB file to send to the replica.
+
+      Here's the hex string of an empty RDB file: `524544495330303131fa0972656469732d76657205372e322e30fa0a72656469732d62697473c040fa056374696d65c26d08bc65fa08757365642d6d656dc2b0c41000fa08616f662d62617365c000fff06e3bfec0ff5aa2`
+
+      Here's a more readable [hexdump](https://opensource.com/article/19/8/dig-binary-files-hexdump) representation of the same file:
+
+      ```
+      52 45 44 49 53 30 30 31  31 fa 09 72 65 64 69 73  |REDIS0011..redis|
+      2d 76 65 72 05 37 2e 32  2e 30 fa 0a 72 65 64 69  |-ver.7.2.0..redi|
+      73 2d 62 69 74 73 c0 40  fa 05 63 74 69 6d 65 c2  |s-bits.@..ctime.|
+      6d 08 bc 65 fa 08 75 73  65 64 2d 6d 65 6d c2 b0  |m..e..used-mem..|
+      c4 10 00 fa 08 61 6f 66  2d 62 61 73 65 c0 00 ff  |.....aof-base...|
+      f0 6e 3b fe c0 ff 5a a2                           |.n;...Z.|
+      ```
+
+      The tester will accept any valid RDB file that is empty, you don't need to send the exact file above.
 
       ### Tests
 
@@ -1002,39 +1017,27 @@ stages:
       ./spawn_redis_server.sh --port <PORT>
       ```
 
-      It'll then send the `PING`, expecting a `PONG` back.
+      It'll then connect to your TCP server as a replica and execute the following commands:
 
-      ```bash
-      $ redis-cli ping
-      ```
+      1. `PING` (expecting `+PONG\r\n` back)
+      2. `REPLCONF listening-port <PORT>` (expecting `+OK\r\n` back)
+      3. `REPLCONF capa eof capa psync2` (expecting `+OK\r\n` back)
+      4. `PSYNC ? -1` (expecting `+FULLRESYNC <REPL_ID> 0\r\n` back)
 
-      It'll then send the `REPLCONF` command with listening-port and <PORT> as arguments.
-
-      ```bash
-      $ redis-cli replconf listening-port <PORT>
-      ```
-
-      It'll expect to receive `OK` back. The command should be sent as a simple string, like this :
-      `+OK\r\n`
-
-      It'll then send the `PSYNC` command with ? and -1 as arguments.
-
-      ```bash
-      $ redis-cli psync ? -1
-      ```
-
-      It'll expect to receive `FULLRESYNC <REPL_ID> 0` back. The command should be sent as a simple string, like this :
-      `+FULLRESYNC <ID> 0\r\n`
-      Note : The ID will not be checked, you can send your master's replication ID.
+      After receiving a response to the last command, the tester will expect to receive an RDB file from your server.
 
       Subsequently it will expect a RDB file sent to it from the master.
 
       ### Notes
 
-      - DO NOT send us the hex string provided to you.
-      - Decode it, and send it as a RESP Bulk String. (Append the length of the file at the beginning)
+      - The hex string provided is not the actual contents of the RDB file, it's a hex representation of the file. You'll need to decode it before sending it to the replica.
+      - The RDB file should be sent as a RESP Bulk String, like this: `$<length>\r\n<contents>\r\n`
+        - `<length>` is the length of the file in bytes
+        - `<contents>` is the contents of the file
+      - If you want to learn more about the RDB file format, read [this blog post](https://rdb.fnordig.de/file_format.html). This challenge
+        has a separate extension dedicated to reading RDB files.
     marketing_md: |
-      In this stage, you'll add support for finishing the sync handshake from the master side, by sending a RDB file.
+      In this stage, you'll add support for sending an empty RDB file to the replica. This is part of the "full resynchronization" process.
 
   - slug: "repl-master-cmd-prop"
     primary_extension_slug: "replication"
