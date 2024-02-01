@@ -704,7 +704,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT>
+      ./spawn_redis_server.sh
       ```
 
       It'll then send the `INFO` command with `replication` as an argument to your server.
