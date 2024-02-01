@@ -727,7 +727,7 @@ stages:
 
   - slug: "repl-replica-ping"
     primary_extension_slug: "replication"
-    name: "Send handshake 1/3"
+    name: "Send handshake (1/3)"
     difficulty: easy
     description_md: |
       In this stage, you'll implement part 1 of the handshake that happens when a replica connects to master.
@@ -762,7 +762,7 @@ stages:
 
   - slug: "repl-replica-replconf"
     primary_extension_slug: "replication"
-    name: "Send handshake 2/3"
+    name: "Send handshake (2/3)"
     difficulty: easy
     description_md: |
       After sending `PING` to the master, the replica will receive a `PONG` back.
@@ -791,7 +791,7 @@ stages:
 
   - slug: "repl-replica-psync"
     primary_extension_slug: "replication"
-    name: "Send handshake 3/3 (Initiate PSYNC)"
+    name: "Send handshake (3/3)"
     difficulty: medium
     description_md: |
       After sending `REPLCONF` to the master, the replica will receive a `OK` back.
