@@ -794,8 +794,8 @@ stages:
 
       It'll then assert that the replica connects to the master and:
 
-      **(a)** sends the `PING` command
-      **(b)** sends the `REPLCONF` command with `listening-port` and `<PORT>` as arguments
+      - **(a)** sends the `PING` command
+      - **(b)** sends the `REPLCONF` command with `listening-port` and `<PORT>` as arguments
 
       **Notes**
 
