@@ -739,7 +739,7 @@ stages:
       There are three parts to this handshake:
 
       - The replica sends a `PING` to the master (**This stage**)
-      - The replica sends `REPLCONF` to the master (Next stages)
+      - The replica sends `REPLCONF` twice to the master (Next stages)
       - The replica sends `PSYNC` to the master (Next stages)
 
       We'll learn more about `REPLCONF` and `PSYNC` in later stages. For now, we'll focus on the first part of the handshake: sending `PING` to the master.
@@ -772,17 +772,30 @@ stages:
       As a recap, there are three parts to the handshake:
 
       - The replica sends a `PING` to the master (Previous stage)
-      - The replica sends `REPLCONF` to the master (**This stage**)
+      - The replica sends `REPLCONF` twice to the master (**This stage**)
       - The replica sends `PSYNC` to the master (Next stage)
 
-      After receiving a response to `PING`, the replica then sends a [REPLCONF](https://redis.io/commands/replconf/) command to the master.
+      After receiving a response to `PING`, the replica then sends 2 [REPLCONF](https://redis.io/commands/replconf/) commands to the master.
 
-      This command is used to configure replication. Redis clients actually send `REPLCONF` twice: once to configure the listening port, and
-      once to configure the capabilities. In this stage, we'll only focus on the first part: configuring the listening port.
+      The `REPLCONF` command is used to configure replication. Replicas will send this command to the master twice:
 
-      To configure the listening port using `REPLCONF`, the replica sends `REPLCONF listening-port <PORT>` to the master. Th
+      - The first time, it'll be sent like this: `REPLCONF listening-port <PORT>`
+        - This is the replica notifying the master of the port it's listening on
+      - The second time, it'll be sent like this: `REPLCONF capa eof capa psync2`
+        - This is the replica notifying the master of its capabilities ("capa" is short for "capabilities")
+        - You can safely hardcode these capabilities for now. We won't be using them in this challenge, we'll assume that the replica supports all capabilities.
 
-      The command should be sent as a RESP Array, so the exact bytes will look something like this: `*3\r\n$8\r\nREPLCONF\r\n$14\r\nlistening-port\r\n$4\r\n6380\r\n`.
+      These commands should be sent as RESP Arrays, so the exact bytes will look something like this:
+
+      ```
+      # REPLCONF listening-port <PORT>
+      *3\r\n$8\r\nREPLCONF\r\n$14\r\nlistening-port\r\n$4\r\n6380\r\n
+
+      # REPLCONF capa eof capa psync2
+      *5\r\n$8\r\nREPLCONF\r\n$4\r\ncapa\r\n$3\r\neof\r\n$4\r\ncapa\r\n$6\r\npsync2\r\n
+      ```
+
+      For both commands, the master will respond with `+OK\r\n` ("OK" encoded as a RESP Simple String).
 
       ### Tests
 
@@ -796,10 +809,11 @@ stages:
 
       - **(a)** sends the `PING` command
       - **(b)** sends the `REPLCONF` command with `listening-port` and `<PORT>` as arguments
+      - **(c)** sends the `REPLCONF` command with `capa eof capa psync2` as arguments
 
       **Notes**
 
-      - The response to `REPLCONF` will be `+OK\r\n` ("OK" encoded as a RESP Simple String)
+      - The response to `REPLCONF` will always be `+OK\r\n` ("OK" encoded as a RESP Simple String)
     marketing_md: |
       In this stage, you'll add support for continuing the handshake from the Replica side, by sending REPLCONF.
 
