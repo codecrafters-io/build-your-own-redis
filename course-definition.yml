@@ -1031,6 +1031,7 @@ stages:
       Subsequently it will expect a RDB file sent to it from the master.
 
       ### Notes
+
       - DO NOT send us the hex string provided to you.
       - Decode it, and send it as a RESP Bulk String. (Append the length of the file at the beginning)
     marketing_md: |
