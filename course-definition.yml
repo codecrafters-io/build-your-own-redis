@@ -920,19 +920,17 @@ stages:
     name: "Receive handshake (2/2)"
     difficulty: easy
     description_md: |
-      In this stage, you'll add support for receiving the `PSYNC` command from the replica.
+      In this stage, you'll add support for receiving the [`PSYNC`](https://redis.io/commands/psync/) command from the replica.
 
       ### Handshake (continued from previous stage)
 
       As a recap, there are three parts to the handshake:
 
-      - The master receives a `PING` from the replica (Previous stages)
-      - The master receives `REPLCONF` twice from the replica (Previous stage)
+      - The master receives a `PING` from the replica (You've already implemented this)
+      - The master receives `REPLCONF` twice from the replica (You've already implemented this)
       - The master receives `PSYNC` from the replica (**This stage**)
 
-      In this stage, you'll add support for receiving the `PSYNC` command from the replica.
-
-      The replica will send you the `PSYNC` command with two arguments:
+      After the replica sends `REPLCONF` twice, it'll send a `PSYNC ? -1` command to the master.
 
       - The first argument is `?`
         - This is replication ID of the master, it is `?` because this is the first time the replica is connecting to the master.
@@ -947,7 +945,8 @@ stages:
 
       (That's `["PSYNC", "?", "-1"]` encoded as a RESP Array)
 
-      The master will respond with `+FULLRESYNC <REPL_ID> 0\r\n` ("FULLRESYNC <REPL_ID> 0" encoded as a RESP Simple String).
+      The master needs to respond with `+FULLRESYNC <REPL_ID> 0\r\n` ("FULLRESYNC <REPL_ID> 0" encoded as a RESP Simple String). Here's what
+      the response means:
 
       - `FULLRESYNC` means that the master cannot perform incremental replication with the replica, and will thus start a "full" resynchronization.
       - `<REPL_ID>` is the replication ID of the master. You've already set this in the "Replication ID & Offset" stage.
