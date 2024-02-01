@@ -730,9 +730,19 @@ stages:
     name: "Send handshake 1/3"
     difficulty: easy
     description_md: |
-      When replicas connect to masters, they begin a SYNC handshake, where in the first step the replica sends `PING` to the master.
+      In this stage, you'll implement part 1 of the handshake that happens when a replica connects to master.
 
-      In this stage, you'll need to implement starting a handshake from the replica. The replica would be sending an `PING` to the master to start the handshake.
+      ### Handshake
+
+      When a replica connects to a master, it needs to go through a handshake process before receiving updates from the master.
+
+      There are three parts to this handshake:
+
+      - The replica sends a `PING` to the master (**This stage**)
+      - The replica sends `REPLCONF` to the master (Next stages)
+      - The replica sends `PSYNC` to the master (Next stages)
+
+      We'll learn more about `REPLCONF` and `PSYNC` in later stages. For now, we'll focus on the first part of the handshake: sending `PING` to the master.
 
       ### Tests
 
@@ -742,10 +752,11 @@ stages:
       ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
       ```
 
-      It'll expect to receive `PING` as the first command on the Master side.
-      The command should be sent as a RESP Array, like this :
-      `*1\r\n$4\r\nPING\r\n`
+      It'll then assert that the replica connects to the master and sends the `PING` command.
 
+      ### Notes
+
+      - The `PING` command should be sent as a RESP Array, like this : `*1\r\n$4\r\nping\r\n`
     marketing_md: |
       In this stage, you'll add support for starting the handshake from the Replica side.
 
