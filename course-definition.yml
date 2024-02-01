@@ -765,16 +765,24 @@ stages:
     name: "Send handshake (2/3)"
     difficulty: easy
     description_md: |
-      After sending `PING` to the master, the replica will receive a `PONG` back.
-      `PONG` would be sent as a RESP simple string, like this : `+PONG\r\n`
+      In this stage, you'll implement part 2 of the handshake that happens when a replica connects to master.
 
-      After `PING`, the replica needs to send [REPLCONF](https://redis.io/commands/replconf/) to the master next.
-      Send REPLCONF with the `listening-port` argument and your replica's port as the value.
-      The command would look like this :
-      `REPLCONF listening-port <REPLICA_PORT>`
-      Send it as a RESP array.
+      ### Handshake (continued from previous stage)
 
-      In this stage, you'll add support for accepting `PONG` after the sent `PING`, and then send the `REPLCONF` message.
+      As a recap, there are three parts to the handshake:
+
+      - The replica sends a `PING` to the master (Previous stage)
+      - The replica sends `REPLCONF` to the master (**This stage**)
+      - The replica sends `PSYNC` to the master (Next stage)
+
+      After receiving a response to `PING`, the replica then sends a [REPLCONF](https://redis.io/commands/replconf/) command to the master.
+
+      This command is used to configure replication. Redis clients actually send `REPLCONF` twice: once to configure the listening port, and
+      once to configure the capabilities. In this stage, we'll only focus on the first part: configuring the listening port.
+
+      To configure the listening port using `REPLCONF`, the replica sends `REPLCONF listening-port <PORT>` to the master. Th
+
+      The command should be sent as a RESP Array, so the exact bytes will look something like this: `*3\r\n$8\r\nREPLCONF\r\n$14\r\nlistening-port\r\n$4\r\n6380\r\n`.
 
       ### Tests
 
@@ -784,8 +792,14 @@ stages:
       ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
       ```
 
-      It'll expect to receive `PING` as the first command on the Master side. It will send `PONG` back. It'll then expect to receive `REPLCONF` as the second command on the Master side.
+      It'll then assert that the replica connects to the master and:
 
+      **(a)** sends the `PING` command
+      **(b)** sends the `REPLCONF` command with `listening-port` and `<PORT>` as arguments
+
+      **Notes**
+
+      - The response to `REPLCONF` will be `+OK\r\n` ("OK" encoded as a RESP Simple String)
     marketing_md: |
       In this stage, you'll add support for continuing the handshake from the Replica side, by sending REPLCONF.
 
