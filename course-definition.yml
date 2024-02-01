@@ -878,7 +878,7 @@ stages:
 
   - slug: "repl-master-replconf"
     primary_extension_slug: "replication"
-    name: "Receive handshake 1/3 (Accept REPLCONF)"
+    name: "Receive handshake (1/3)"
     difficulty: easy
     description_md: |
       In this stage, we'll start implementing support for receiving a replication handshake as a master.
@@ -916,7 +916,7 @@ stages:
 
   - slug: "repl-master-psync"
     primary_extension_slug: "replication"
-    name: "Receive handshake 2/3 (Accept PSYNC)"
+    name: "Receive handshake (2/3)"
     difficulty: easy
     description_md: |
       When replicas connect to masters, they use the `PSYNC` command to send their old master replication ID and the offsets they processed so far. This way the master can send just the incremental part needed. However if there is not enough backlog in the master buffers, or if the replica is referring to an history (replication ID) which is no longer known, then a full resynchronization happens: in this case the replica will get a full copy of the dataset, from scratch.
@@ -970,7 +970,7 @@ stages:
 
   - slug: "repl-master-psync-rdb"
     primary_extension_slug: "replication"
-    name: "Receive handshake 3/3 (Sending RDB file)"
+    name: "Receive handshake 3/3"
     difficulty: easy
     description_md: |
       This is how a full synchronization works in more details:
