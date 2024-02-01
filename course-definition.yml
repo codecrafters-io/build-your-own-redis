@@ -1072,7 +1072,7 @@ stages:
 
       Subsequently it will expect a RDB file sent to it from the master.
 
-      It'll then send write commands to the master.
+      It'll then send write commands to the master, from another client. 
 
       ```bash
       $ redis-cli SET foo 1
@@ -1085,3 +1085,79 @@ stages:
 
     marketing_md: |
       In this stage, you'll add support for finishing the sync handshake from the master side, by sending a RDB file.
+
+  - slug: "repl-cmd-processing"
+    primary_extension_slug: "replication"
+    name: "Command Processing"
+    difficulty: hard
+    description_md: |
+      In this stage you'll add support for receiving commands sent by the Master server, asynchronously.
+      The Master will send only commands that alter the database, everything will be RESP encoded.
+
+      ### Tests
+
+      The tester will execute your program like this:
+      (Note 2 servers are started, one as master, one as replica).
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof <HOST> <PORT>
+      ```
+
+      The servers should finish the handshake between them. (PING, REPLCONF, PSYNC)
+      It'll then send `SET` commands to the master from a client.
+
+      ```bash
+      $ redis-cli SET myKey "Hello"
+      ```
+
+      It'll then expect the commands to be propagated to the replica, and the replica to parse them, and apply them against its DB. 
+      It will send `GET` requests to the replica from another client.
+
+      ```bash
+      $ redis-cli GET myKey
+      ```
+
+      It'll expect to receive the correct values as sent to the Master.
+
+    marketing_md: |
+      In this stage, you'll add support for processing commands received by the replica from the master.
+
+  - slug: "repl-final-boss"
+    primary_extension_slug: "replication"
+    name: "Support multiple Replicas"
+    difficulty: hard
+    description_md: |
+      Congratulations on reaching the final stage of the Redis replication challenge! By now, you should have a Redis master instance and at least one replica configured.
+      In this stage you'll aim to ensure your replication setup is robust, data between the master and replicas remain consistent, and your system can handle multiple replicas.
+
+      ### Tests
+
+      The tester will execute your program like this:
+      (The spawn_redis.sh is not your implementation of Redis.)
+
+      ```
+      ./spawn_redis_server.sh --port <PORT>
+      ./spawn_redis.sh --replicaof localhost:6379 --port 6380
+      ./spawn_redis.sh --replicaof localhost:6379 --port 6381
+      ./spawn_redis.sh --replicaof localhost:6379 --port 6382
+      ```
+
+      The master should finish the handshake with all the replicas. (PING, REPLCONF, PSYNC)
+      It'll then send `SET` commands to the master from a client.
+
+      ```bash
+      $ redis-cli SET mykey "Hello"
+      ```
+
+      It'll then expect the commands to be propagated to all the replicas, and the replicas to parse them, and apply them against its DB. 
+      It will send `GET` requests to the replicas from another client.
+
+      ```bash
+      $ redis-cli GET myKey
+      ```
+
+      It'll expect to receive the correct values as sent to the Master.
+
+    marketing_md: |
+      In this stage, you'll complete your implementation of Redis replication.
