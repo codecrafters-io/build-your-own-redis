@@ -822,25 +822,42 @@ stages:
     name: "Send handshake (3/3)"
     difficulty: medium
     description_md: |
-      After sending `REPLCONF` to the master, the replica will receive a `OK` back.
-      `OK` would be sent as a RESP simple string, like this : `+OK\r\n`
+      In this stage, you'll implement part 3 of the handshake that happens when a replica connects to master.
 
-      After `REPLCONF`, the replica needs to send another [REPLCONF](https://redis.io/commands/replconf/) to the master next. (The official Redis implementation sends REPLCONF with its capabilities as the arguments, we are keeping this for compatibility with official Redis)
+      ### Handshake (continued from previous stage)
 
-      Send REPLCONF with four strings as argument.
-      The command would look like this :
-      `REPLCONF capa eof capa psync2`
-      Send it as a RESP array.
-      The tester will not check for the exact strings, send any 4 strings.
+      As a recap, there are three parts to the handshake:
 
-      After sending this `REPLCONF` to the master, the replica will receive another `OK` back.
-      `OK` would be sent as a RESP simple string, like this : `+OK\r\n`
+      - The replica sends a `PING` to the master (Previous stages)
+      - The replica sends `REPLCONF` twice to the master (Previous stages)
+      - The replica sends `PSYNC` to the master (**This stage**)
 
-      After `REPLCONF`, the replica needs to send PSYNC to the master next. You will learn about this more in a later stage.
+      After receiving response to the second `REPLCONF`, the replica then sends a [PSYNC](https://redis.io/commands/psync/) command to the master.
 
-      In this stage, you'll add support for accepting `OK` after the first `REPLCONF` message, then sent another `REPLCONF` with 4 string arguments, accept another `OK` and then send the `PSYNC` message.
+      The `PSYNC` command is used to synchronize the state of the replica with the master. The replica will send this command to the master with two arguments:
 
-      PSYNC should be sent with ? and -1 as arguments.
+      - The first argument is the replication ID of the master
+        - Since this is the first time the replica is connecting to the master, the replication ID will be `?` (a question mark)
+      - The second argument is the offset of the master
+        - Since this is the first time the replica is connecting to the master, the offset will be `-1`
+
+      So the final command sent will be `PSYNC ? -1`.
+
+      This should be sent as a RESP Array, so the exact bytes will look something like this:
+
+      <!-- TODO: Confirm whether 2nd arg is integer or string? -->
+
+      ```
+      *3\r\n$5\r\nPSYNC\r\n$1\r\n?\r\n$2\r\n-1\r\n
+      ```
+
+      The master will respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) that looks like this:
+
+      ```
+      +FULLRESYNC <REPL_ID> 0\r\n
+      ```
+
+      You can ignore the response for now, we'll get to handling it in later stages.
 
       ### Tests
 
@@ -850,10 +867,12 @@ stages:
       ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
       ```
 
-      It'll expect to receive `PING` as the first command on the Master side. It will send `PONG` back. It'll then expect to receive `REPLCONF` as the second command on the Master side. It will send `OK` back. It'll then expect to receive another `REPLCONF` as the thirs command on the Master side. It will send `OK` again.
-      Finally it will expect to receive `PSYNC ? -1` as the next command. The command should be sent as a RESP Array, like this :
-      `*3\r\n$5\r\nPSYNC\r\n$1\r\n?\r\n$2\r\n-1\r\n`
+      It'll then assert that the replica connects to the master and:
 
+      - **(a)** sends `PING` command
+      - **(b)** sends `REPLCONF listening-port <PORT>`
+      - **(c)** sends `REPLCONF capa eof capa psync2`
+      - **(d)** sends `PSYNC ? -1`
     marketing_md: |
       In this stage, you'll add support for finishing the handshake from the Replica side, by sending PSYNC.
 
