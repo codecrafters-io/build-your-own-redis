@@ -1017,7 +1017,8 @@ stages:
 
       ### Notes
 
-      - The hex string provided is not the actual contents of the RDB file, it's a hex representation of the file. You'll need to decode it before sending it to the replica.
+      - The [RDB file link](https://github.com/codecrafters-io/redis-tester/blob/main/internal/assets/empty_rdb_hex.md) contains hex & base64 representations
+        of the file. You need to decode these into binary contents before sending it to the replica.
       - The RDB file should be sent as a RESP Bulk String, like this: `$<length>\r\n<contents>\r\n`
         - `<length>` is the length of the file in bytes
         - `<contents>` is the contents of the file
@@ -1031,11 +1032,21 @@ stages:
     name: "Command Propagation"
     difficulty: medium
     description_md: |
-      The master keeps on buffering all write commands sent to it, while the replica processes the RDB file, and loads it into memory.
-      And then when its ready it sends all the buffered commands as a stream to the replica.
+      In this stage, you'll add support for propagating write commands from a master to a replica.
 
-      In this stage you'll add support for propagating write commands received by the Master server.
-      You can relay the commands to the replica, as soon as you receive them without buffering.
+      ### Command propagation
+
+      A master takes all write commands sent to it and propagates them to all connected replicas. The replicas
+      process these commands and apply them to their own state.
+
+      This propagation starts after the handshake is complete and the master has sent the RDB file to the replica. Every
+      write command is sent to the replica as a RESP array, and the replica processes it as if it were a command sent by a client. Unlike
+      regular commands, in this case no response is sent from the replica. The master just keeps sending commands as they come in without stopping
+      to read responses from the replica.
+
+      Commands like `PING`, `ECHO` etc. are not considered "write" commands, so they aren't propagated. Commands like `SET`, `DEL` etc. are
+      considered "write" commands, so they are propagated.
+
 
       ### Tests
 
@@ -1045,34 +1056,16 @@ stages:
       ./spawn_redis_server.sh --port <PORT>
       ```
 
-      It'll then send the `PING`, expecting a `PONG` back.
+      It'll then connect to your TCP server as a replica and execute the following commands:
 
-      ```bash
-      $ redis-cli ping
-      ```
+      1. `PING` (expecting `+PONG\r\n` back)
+      2. `REPLCONF listening-port <PORT>` (expecting `+OK\r\n` back)
+      3. `REPLCONF capa eof capa psync2` (expecting `+OK\r\n` back)
+      4. `PSYNC ? -1` (expecting `+FULLRESYNC <REPL_ID> 0\r\n` back)
 
-      It'll then send the `REPLCONF` command with listening-port and <PORT> as arguments.
+      The tester will then wait for your server to send an RDB file.
 
-      ```bash
-      $ redis-cli replconf listening-port <PORT>
-      ```
-
-      It'll expect to receive `OK` back. The command should be sent as a simple string, like this :
-      `+OK\r\n`
-
-      It'll then send the `PSYNC` command with ? and -1 as arguments.
-
-      ```bash
-      $ redis-cli psync ? -1
-      ```
-
-      It'll expect to receive `FULLRESYNC <REPL_ID> 0` back. The command should be sent as a simple string, like this :
-      `+FULLRESYNC <ID> 0\r\n`
-      Note : The ID will not be checked, you can send your master's replication ID.
-
-      Subsequently it will expect a RDB file sent to it from the master.
-
-      It'll then send write commands to the master, from another client.
+      Once the RDB file is received, the tester will send series of write commands to your program (as a separate Redis client, not the replica).
 
       ```bash
       $ redis-cli SET foo 1
@@ -1080,9 +1073,15 @@ stages:
       $ redis-cli SET baz 3
       ```
 
-      It'll then expect to receive the same commands propagated to the replica server.
-      (The commands need to be sent as RESP messages)
+      The tester will then assert that these commands were propagated to the replica server.
 
+      ### Notes
+
+      - In the official Redis implementation, replicas send periodic acknowledgements to the master letting it know how much of the replication stream they've
+        processed. We won't implement this in this challenge, we'll just assume that replicas process all commands sent to them in a timely manner.
+
+      - A true implementation would buffer the commands so that they can be sent to the replica after it loads the RDB file. For the
+        purposes of this challenge, you can assume that the replica is ready to receive commands immediately after receiving the RDB file.
     marketing_md: |
       In this stage, you'll add support for finishing the sync handshake from the master side, by sending a RDB file.
 
