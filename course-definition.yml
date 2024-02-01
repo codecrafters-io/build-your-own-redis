@@ -992,8 +992,8 @@ stages:
       Once the handshake is complete, the master will send a RDB file of its current state to the replica. The file is sent as a RESP Bulk String, and the
       replica will load the file into memory, replacing its current state.
 
-      For the purposes of this challenge, we won't support actually constructing an RDB file. We'll assume that the master's database is always empty,
-      and thus we can hardcode an empty RDB file to send to the replica.
+      For the purposes of this challenge, you don't have to actually construct an RDB file. We'll assume that the master's database is always empty,
+      and thus hardcode an empty RDB file to send to the replica.
 
       ### Tests
 
