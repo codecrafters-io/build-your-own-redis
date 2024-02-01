@@ -4,4 +4,4 @@ ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Gemfile,Gemfile.lock"
 WORKDIR /app
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle install
+RUN bundle install --verbose
