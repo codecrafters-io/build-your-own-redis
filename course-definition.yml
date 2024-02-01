@@ -881,15 +881,22 @@ stages:
     name: "Receive handshake 1/3 (Accept REPLCONF)"
     difficulty: easy
     description_md: |
-      Now we will start implementing the handshake from the master side. (Till now we were acting as replicas and sending commands to the master, now we receive them as master).
+      In this stage, we'll start implementing support for receiving a replication handshake as a master.
 
-      In this stage you'll add support for the [REPLCONF](https://redis.io/commands/replconf/) command on the Master redis server.
-      You will receive the `REPLCONF` command with `listening-port` and `<PORT>` arguments.
-      The client will send you the command as a RESP array, which looks something like this :
+      ### Handshake (continued from previous stage)
 
-      ```
-      *3\r\n$8\r\nREPLCONF\r\n$14\r\nlistening-port\r\n$4\r\n6380\r\n
-      ```
+      We'll now implement the same handshake we did in the previous stages, but on the master instead of the replica.
+
+      As a recap, there are three parts to the handshake:
+
+      - The master receives a `PING` from the replica (Your Redis server already supports the `PING` command, so there's no additional work to do here)
+      - The master receives `REPLCONF` twice from the replica (**This stage**)
+      - The master receives `PSYNC` from the replica (Next stage)
+
+      In this stage, you'll add support for receiving the `REPLCONF` command from the replica.
+
+      You'll receive `REPLCONF` twice from the replica. For the purposes of this challenge, you can safely ignore the arguments for both commands and just
+      respond with `+OK\r\n` ("OK" encoded as a RESP Simple String).
 
       ### Tests
 
@@ -899,21 +906,11 @@ stages:
       ./spawn_redis_server.sh --port <PORT>
       ```
 
-      It'll then send the `PING`, expecting a `PONG` back.
+      It'll then send the following commands:
 
-      ```bash
-      $ redis-cli ping
-      ```
-
-      It'll then send the `REPLCONF` command with listening-port and <PORT> as arguments.
-
-      ```bash
-      $ redis-cli replconf listening-port <PORT>
-      ```
-
-      It'll expect to receive `OK` back. The command should be sent as a simple string, like this :
-      `+OK\r\n`
-
+      - **(a)** `PING` (expecting `+PONG\r\n` back)
+      - **(b)** `REPLCONF listening-port <PORT>` (expecting `+OK\r\n` back)
+      - **(c)** `REPLCONF capa eof capa psync2` (expecting `+OK\r\n` back)
     marketing_md: |
       In this stage, you'll add support for starting the handshake from the master side, by accepting REPLCONF.
 
