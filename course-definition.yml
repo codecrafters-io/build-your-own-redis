@@ -878,7 +878,7 @@ stages:
 
   - slug: "repl-master-replconf"
     primary_extension_slug: "replication"
-    name: "Receive handshake (1/3)"
+    name: "Receive handshake (1/2)"
     difficulty: easy
     description_md: |
       In this stage, we'll start implementing support for receiving a replication handshake as a master.
@@ -889,7 +889,8 @@ stages:
 
       As a recap, there are three parts to the handshake:
 
-      - The master receives a `PING` from the replica (Your Redis server already supports the `PING` command, so there's no additional work to do here)
+      - The master receives a `PING` from the replica
+        - Your Redis server already supports the `PING` command, so there's no additional work to do here
       - The master receives `REPLCONF` twice from the replica (**This stage**)
       - The master receives `PSYNC` from the replica (Next stage)
 
@@ -916,7 +917,7 @@ stages:
 
   - slug: "repl-master-psync"
     primary_extension_slug: "replication"
-    name: "Receive handshake (2/3)"
+    name: "Receive handshake (2/2)"
     difficulty: easy
     description_md: |
       In this stage, you'll add support for receiving the `PSYNC` command from the replica.
@@ -976,19 +977,23 @@ stages:
 
   - slug: "repl-master-psync-rdb"
     primary_extension_slug: "replication"
-    name: "Receive handshake 3/3"
+    name: "Empty RDB Transfer"
     difficulty: easy
     description_md: |
-      This is how a full synchronization works in more details:
-      The master starts a background saving process to produce an RDB file. At the same time it starts to buffer all new write commands received from the clients. When the background saving is complete, the master transfers the database file to the replica, which saves it on disk, and then loads it into memory. The master will then send all buffered commands to the replica. This is done as a stream of commands and is in the same format of the Redis protocol itself.
+      In this stage, you'll add support for sending a RDB file to the replica. This is part of the "full" resynchronization process.
 
-      In this stage you'll add support for sending a RDB file to the replica, which it will load into its memory. (As RDB serialization is out of scope for this current extension, we will provide the file as a hex string to you.)
+      ### Full resynchronization
 
-      The client will send you the PSYNC command as a RESP array, which looks something like this :
+      When a replica connects to a master for the first time, it'll send a `PSYNC` command with `?` and `-1` as arguments. This is the replica's way of
+      telling the master that it doesn't have any data yet, and needs to be fully resynchronized.
 
-      ```
-      *3,$5,PSYNC,$1,?,$2,-1,
-      ```
+      The master will acknowledge this by sending a `FULLRESYNC` response to the replica.
+
+      Once the handshake is complete, the master will send a RDB file of its current state to the replica. The file is sent as a RESP Bulk String, and the
+      replica will load the file into memory, replacing its current state.
+
+      For the purposes of this challenge, we won't support actually constructing an RDB file. We'll assume that the master's database is always empty,
+      and thus we can hardcode an empty RDB file to send to the replica.
 
       ### Tests
 
@@ -1028,7 +1033,6 @@ stages:
       ### Notes
       - DO NOT send us the hex string provided to you.
       - Decode it, and send it as a RESP Bulk String. (Append the length of the file at the beginning)
-
     marketing_md: |
       In this stage, you'll add support for finishing the sync handshake from the master side, by sending a RDB file.
 
