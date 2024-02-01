@@ -5,4 +5,4 @@
 # CodeCrafters uses this file to test your code. Don't make any changes here!
 #
 # DON'T EDIT THIS!
-exec ruby app/server.rb "$@"
+exec bundle exec ruby app/server.rb "$@"
