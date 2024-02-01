@@ -994,8 +994,6 @@ stages:
       For the purposes of this challenge, you don't have to actually construct an RDB file. We'll assume that the master's database is always empty,
       and just hardcode an empty RDB file to send to the replica.
 
-      Here's the hex string of an empty RDB file: `524544495330303131fa0972656469732d76657205372e322e30fa0a72656469732d62697473c040fa056374696d65c26d08bc65fa08757365642d6d656dc2b0c41000fa08616f662d62617365c000fff06e3bfec0ff5aa2`
-
       You can find the hex representation of an empty RDB file [here](https://github.com/codecrafters-io/redis-tester/blob/main/internal/assets/empty_rdb_hex.md).
 
       The tester will accept any valid RDB file that is empty, you don't need to send the exact file above.
