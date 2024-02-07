@@ -4,10 +4,10 @@ short_name: "Redis"
 release_status: "live"
 
 description_md: |-
-  In this challenge, you'll build a toy Redis clone
-  that's capable of handling basic commands like PING, GET
-  and SET. Along the way, we'll learn about event loops, the Redis
-  Protocol and more.
+  Redis is an in-memory data structure store often used as a database, cache, message broken and streaming engine. In this challenge
+  you'll build your own Redis server that is capable of serving basic commands, reading RDB files and more.
+
+  Along the way, you'll learn about TCP servers, the Redis Protocol and more.
 
 short_description_md: |-
   Learn about TCP servers, the Redis protocol and more
