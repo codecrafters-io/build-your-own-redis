@@ -1233,3 +1233,114 @@ stages:
 
     marketing_md: |
       In this stage, you'll add support for returning an ACK back to master as a response to GETACK.
+
+  - slug: "repl-wait-zero-replicas"
+    primary_extension_slug: "replication"
+    name: "WAIT with no replicas"
+    difficulty: medium
+    description_md: |
+      In the next 3 stages, you will implement the WAIT command on your master. 
+      The WAIT command is used to find out how many replicas a write command was propagated to, with the replica ACKing it back. This way we can know how durable the write was. As we haven't implemented periodic ACKs from the replica, in this stage, for WAIT, the master has to send a GETACK to the replica, if the replica replies back with the proper offset, before the WAIT expires, the master can count that replica's write to be a success. 
+      
+      In this stage you will implement WAIT, when exactly 0 replicas are connected to Master. The Master can just return 0 asap. This way we will gently dive into the implementation. 
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      Then, a client will connect to your master, and send 
+
+      ```bash
+      $ redis-cli WAIT 0 60000
+      ```
+
+      You can just return 0 ASAP, encoded as a RESP integer : `:0`.
+      this is only possible because there are no replicas connected.
+
+    marketing_md: |
+      In this stage, you'll start implementing the WAIT command on your master.
+
+  - slug: "repl-wait-zero-offset"
+    primary_extension_slug: "replication"
+    name: "WAIT with no commands"
+    difficulty: medium
+    description_md: |
+      In this stage you will implement WAIT, when some replicas are connected to Master, but there have been NO commands propagated from master to replica. So offset is essentially 0. In this case, the Master can just return the count of `connected_slaves` asap.  (The replicas will finish the sync handshake with Master, so they are actually connnected.)
+      (The master will return the count of `connected_slaves` no matter how many replicas we pass in the WAIT command parameter. As the offset is 0, it knows all replicas are in sync.)
+
+      ### Tests
+
+      The tester will execute your program like this: (Your server will be the master)
+      The number of replicas will be random (3-9).
+
+      ```
+      ./spawn redis_server.sh
+      ./spawn redis.sh --replicaof localhost:6379 --port 6380
+      ./spawn redis.sh --replicaof localhost:6379 --port 6382
+      ...
+      ./spawn redis.sh --replicaof localhost:6379 --port 638X
+      ```
+
+      Then, a client will connect to your master, and send WAIT commands.
+      For example if number of replicas was 7.
+
+      ```bash
+      $ redis-cli WAIT 3 500 (expecting 7 back) 
+      $ redis-cli WAIT 7 500 (expecting 7 back)
+      $ redis-cli WAIT 9 500 (expecting 7 back)
+      ```
+
+      You can just return the number of replicas ASAP, encoded as a RESP integer : `:7`.
+      this is only possible because the master knows all the replicas are in sync. 
+
+    marketing_md: |
+      In this stage, you'll continue implementing the WAIT command on your master.
+
+  - slug: "repl-wait"
+    primary_extension_slug: "replication"
+    name: "WAIT with multiple commands"
+    difficulty: hard
+    description_md: |
+      In this stage you will implement WAIT, when some replicas are connected to Master, and there have been commands propagated from master to replica. So the offset is NOT 0. In this case, the Master has to figure out how many replicas the previous write command has been successfully propagated to.
+      (The replicas will finish the sync handshake with Master, and process any commands you send it, but they WON'T send periodic ACKs, so you need to basically send a REPLCONF GETACK to get their current offset. )
+
+      ### Tests
+
+      The tester will execute your program like this: (Your server will be the master)
+      The number of replicas will be random (3-5).
+
+      ```
+      ./spawn redis_server.sh
+      ./spawn redis.sh --replicaof localhost:6379 --port 6380
+      ./spawn redis.sh --replicaof localhost:6379 --port 6382
+      ...
+      ./spawn redis.sh --replicaof localhost:6379 --port 638X
+      ```
+
+      Then, a client will connect to your master, and send WRITE commands.
+      The master will need to propagate those commands to all the replicas.
+      The client will also send a WAIT command to the Master, the master will have to handle this. It will need to send GETACK commands to all the replicas.
+      And then wait for them to ACK back, with the proper offset. 
+      If offset was correct, then the write can be counted as a success. 
+
+      ```bash
+      $ redis-cli SET foo 123 
+      $ redis-cli WAIT 1 500
+      ```
+      
+      This test will again be repeated.
+      
+      ```bash
+      $ redis-cli SET bar 456 
+      $ redis-cli WAIT (replicaCount + N) 2000
+      ```
+      
+      In the last test, you will need to additional handle the timeout, because there won't be that many replicas available. So, you need to gather ACKs and then send the count of successful propagations, exactly when the timeout expires.
+      We will test for the time taken for the command to return, so if timeout is 2000 ms, tester would expect the command to return within [1500, 2500] ms.
+
+    marketing_md: |
+      In this stage, you'll finish implementing the WAIT command on your master.
