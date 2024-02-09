@@ -1152,3 +1152,84 @@ stages:
 
     marketing_md: |
       In this stage, you'll add support for processing commands received by the replica from the master.
+
+  - slug: "repl-replica-getack"
+    primary_extension_slug: "replication"
+    name: "ACKs with no commands"
+    difficulty: easy
+    description_md: |
+      In this stage you'll implement the REPLCONF GETACK command on your replica server. Once the master sends this command, return a REPLCONF ACK <offset> back to the master. Offset is the number of bytes of commands processed by the replica. It starts at 0. And for every RESP command processed from the server, increase it by that many bytes.
+
+      When a MASTER sends `REPLCONF GETACK`, replica has to send back an `ACK` ASAP, with the offset processed upto before receiving the GETACK command. (GETACK command is also counted against the offset). 
+
+      The exact command that will be sent is : 
+      `*3\r\n$8\r\nREPLCONF\r\n$6\r\nGETACK\r\n$1\r\n*\r\n`
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis.sh --port <PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof <HOST> <PORT>
+      ```
+
+      The servers should finish the handshake between them. (PING, REPLCONF, PSYNC)
+      Master will then send :
+
+      ```bash
+      $ redis-master REPLCONF GETACK *
+      ```
+
+      It'll then expect back an ACK from the replica, as an Array of Bulk strings.
+      The exact command should be `*3\r\n$8\r\nREPLCONF\r\n$3\r\nACK\r\n$1\r\n0\r\n`.
+      As this would be the first command processed by replica, it would return offset as 0.
+
+    marketing_md: |
+      In this stage, you'll add support for returning an ACK back to master as a response to GETACK.
+
+  - slug: "repl-replica-getack-nonzero"
+    primary_extension_slug: "replication"
+    name: "ACKs with commands"
+    difficulty: medium
+    description_md: |
+      In this stage, you will implement tracking of the number of bytes of commands processed by the replica. (Only for commands propagated from Master).
+      The correct offset value needs to be returned to master, after a GETACK command.
+
+      When a MASTER sends `REPLCONF GETACK`, replica has to send back an `ACK` ASAP, with the offset processed upto before receiving the GETACK command. 
+
+      The exact command that will be sent is : 
+      `*3\r\n$8\r\nREPLCONF\r\n$6\r\nGETACK\r\n$1\r\n*\r\n`
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```
+      ./spawn_redis.sh --port <PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof <HOST> <PORT>
+      ```
+
+      The servers should finish the handshake between them. (PING, REPLCONF, PSYNC)
+      Master will then send :
+
+      ```bash
+      $ redis-master PING
+      $ redis-master REPLCONF GETACK *
+      ```
+
+      It'll then expect back an ACK from the replica, as an Array of Bulk strings.
+      The exact command should be `*3\r\n$8\r\nREPLCONF\r\n$3\r\nACK\r\n$2\r\n14\r\n`.
+      As this is not the first command processed by replica, it should return the proper offset, for example here the offset would be 14. (`*1\r\n$4\r\nPING\r\n`)
+
+      Then the master will send a few more commands, before sending a GETACK.
+
+      ```bash
+      $ redis-master SET <KEY> <VALUE>
+      $ redis-master SET <KEY> <VALUE>
+      $ redis-master REPLCONF GETACK *
+      ```
+      Expecting an ACK back, with the proper offset.
+
+    marketing_md: |
+      In this stage, you'll add support for returning an ACK back to master as a response to GETACK.
