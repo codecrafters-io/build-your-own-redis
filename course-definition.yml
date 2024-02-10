@@ -1305,19 +1305,15 @@ stages:
 
       ### Tests
 
-      The tester will execute your program like this: (Your server will be the master)
-      The number of replicas will be random (3-9).
+      The tester will execute your program as a master like this:
 
       ```
       ./spawn redis_server.sh
-      ./spawn redis.sh --replicaof localhost:6379 --port 6380
-      ./spawn redis.sh --replicaof localhost:6379 --port 6382
-      ...
-      ./spawn redis.sh --replicaof localhost:6379 --port 638X
       ```
 
-      Then, a client will connect to your master, and send WAIT commands.
-      For example if number of replicas was 7.
+      It'll then start **multiple** replicas that connect to your server. Each will complete the handshake and expect to receive an empty RDB file.
+
+      It'll then connect to your master as a Redis client (not one of the replicas) and send commands like this:
 
       ```bash
       $ redis-cli WAIT 3 500 (expecting 7 back)
@@ -1325,9 +1321,12 @@ stages:
       $ redis-cli WAIT 9 500 (expecting 7 back)
       ```
 
-      You can just return the number of replicas ASAP, encoded as a RESP integer : `:7`.
-      this is only possible because the master knows all the replicas are in sync.
+      The response to each of these commands should be encoded as a RESP integer (i.e. `:7\r\n`).
 
+      ### Notes
+
+      - Even if WAIT is called with a number lesser than the number of connected replicas, the master should return the count of connected replicas.
+      - The number of replicas created in this stage will be random, so you can't hardcode `7` as the response like in the example above.
     marketing_md: |
       In this stage, you'll continue implementing the WAIT command on your master.
 
