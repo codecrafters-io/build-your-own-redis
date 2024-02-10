@@ -1035,24 +1035,24 @@ stages:
 
   - slug: "repl-master-cmd-prop"
     primary_extension_slug: "replication"
-    name: "Single Replica Command Propagation"
+    name: "Single-replica propagation"
     difficulty: medium
     description_md: |
-      In this stage, you'll add support for propagating write commands from a master to a replica.
+      In this stage, you'll add support for propagating write commands from a master to a single replica.
 
       ### Command propagation
 
       A master takes all write commands sent to it and propagates them to all connected replicas. The replicas
       process these commands and apply them to their own state.
 
-      This propagation starts after the handshake is complete and the master has sent the RDB file to the replica. Every
-      write command is sent to the replica as a RESP array, and the replica processes it as if it were a command sent by a client. Unlike
-      regular commands, in this case no response is sent from the replica. The master just keeps sending commands as they come in without stopping
+      This propagation starts after the handshake is complete and the master has sent the RDB file to the replica.
+
+      Every "write" command is sent to the replica as a RESP array, and the replica processes it as if it were a command sent by a client. Unlike
+      regular commands, the replica doesn't send a response to these commands. The master keeps propagating commands as they come in without stopping
       to read responses from the replica.
 
       Commands like `PING`, `ECHO` etc. are not considered "write" commands, so they aren't propagated. Commands like `SET`, `DEL` etc. are
       considered "write" commands, so they are propagated.
-
 
       ### Tests
 
@@ -1079,12 +1079,9 @@ stages:
       $ redis-cli SET baz 3
       ```
 
-      The tester will then assert that these commands were propagated to the replica server.
+      The tester will then assert that these commands were propagated to the replica server, in order.
 
       ### Notes
-
-      - In the official Redis implementation, replicas send periodic acknowledgements to the master letting it know how much of the replication stream they've
-        processed. We won't implement this in this challenge, we'll just assume that replicas process all commands sent to them in a timely manner.
 
       - A true implementation would buffer the commands so that they can be sent to the replica after it loads the RDB file. For the
         purposes of this challenge, you can assume that the replica is ready to receive commands immediately after receiving the RDB file.
