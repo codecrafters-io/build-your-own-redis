@@ -1238,10 +1238,10 @@ stages:
       replconf getack * # expecting REPLCONF ACK 37 (0 + 37 for the replconf command)
 
       ping # master checking whether replica is alive
-      replconf getack * # expecting REPLCONF ACK 51 (37 + 14 for the ping command)
+      replconf getack * # expecting REPLCONF ACK 88 (37 + 37 for the replconf command + 14 for the ping command)
 
       set foo 1 # propagated from master to replica
-      replconf getack * # expecting REPLCONF ACK 117 (51 + 37 for the replconf command + 29 for the set command)
+      replconf getack * # expecting REPLCONF ACK 154 (88 + 37 for the replconf command + 29 for the set command)
       ```
 
       ### Notes
