@@ -1093,29 +1093,38 @@ stages:
     name: "Multi Replica Command Propagation"
     difficulty: hard
     description_md: |
-      In this stage you'll aim to ensure your system can handle multiple replicas. You will need to connect,perform the SYNC handshake and propagate commands to all of them, simultaneously.
+      In this stage, you'll extend your implementation to support propagating commands to multiple replicas.
 
       ### Tests
 
       The tester will execute your program like this:
-      (The spawn_redis.sh is not your implementation of Redis.)
 
       ```
       ./spawn_redis_server.sh --port <PORT>
-      ./spawn_redis.sh --replicaof localhost:6379 --port 6380
-      ./spawn_redis.sh --replicaof localhost:6379 --port 6381
-      ./spawn_redis.sh --replicaof localhost:6379 --port 6382
       ```
 
-      The master should finish the handshake with all the replicas. (PING, REPLCONF, PSYNC)
+      It'll then start **multiple** replicas that connect to your server and execute the following commands:
+
+      1. `PING` (expecting `+PONG\r\n` back)
+      2. `REPLCONF listening-port <PORT>` (expecting `+OK\r\n` back)
+      3. `REPLCONF capa psync2` (expecting `+OK\r\n` back)
+      4. `PSYNC ? -1` (expecting `+FULLRESYNC <REPL_ID> 0\r\n` back)
+
+      Each replica will expect to receive an RDB file from the master after the handshake is complete.
+
+      The tester will send series of write commands to your program (as a separate Redis client, not the replica):
+
+      ```bash
+
       It'll then send `SET` commands to the master from a client.
 
       ```bash
-      $ redis-cli SET mykey "Hello"
+      $ redis-cli SET foo 1
+      $ redis-cli SET bar 2
+      $ redis-cli SET baz 3
       ```
 
-      It'll then expect the commands to be propagated to all the replicas.
-
+      It'll then assert that each replica received those commands, in order.
     marketing_md: |
       In this stage, you'll complete your implementation of Redis replication.
 
