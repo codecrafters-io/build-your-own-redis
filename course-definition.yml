@@ -686,9 +686,9 @@ stages:
       Every Redis master has a replication ID: it is a large pseudo random string. This is set when the master is booted. Every time
       a master instance restarts from scratch, its replication ID is reset.
 
-      Each master also takes an offset that increments for every byte of replication stream that it is produced to be sent to replicas,
-      to update the state of the replicas with the new changes modifying the dataset. We won't get into the details of how this offset
-      is updated in this challenge. Just know that the value starts from `0` when a master is booted and no replicas have connected yet.
+      Each master also maintains a "replication offset" corresponding to how many bytes of commands have been added to the replication
+      stream. We'll learn more about this offset in later stages. For now, just know that the value starts from `0` when a master is
+      booted and no replicas have connected yet.
 
       In this stage, you'll initialize a replication ID and offset for your master:
 
