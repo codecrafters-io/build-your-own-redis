@@ -1133,35 +1133,42 @@ stages:
     name: "Command Processing"
     difficulty: hard
     description_md: |
-      In this stage you'll add support for receiving commands sent by the Master server, asynchronously.
-      The Master will send only commands that alter the database, everything will be RESP encoded.
+      In this stage you'll implement the processing of commands propagated to the replica from the master.
+
+      ### Command processing
+
+      After the replica receives a command from the master, it processes it and apply it to its own state. This
+      will work exactly like a regular command sent by a client, except that the replica doesn't send a response
+      back to the master.
+
+      For example, if the command `set foo 1` is propagated to the replica by a master, the replica must update
+      its database to set the value of `foo` to `1`. Unlike commands from a regular client though, it must not reply with `+OK\r\n`.
 
       ### Tests
 
-      The tester will execute your program like this:
-      (Note 2 servers are started, your server will be the replica, ours will be the master).
+      THe tester will spawn a Redis master, and it'll then execute your program like this:
 
       ```
-      ./spawn_redis.sh --port <PORT>
-      ./spawn_redis_server.sh --port <PORT> --replicaof <HOST> <PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
       ```
 
-      The servers should finish the handshake between them. (PING, REPLCONF, PSYNC)
-      A client will then connect to Master, and send `SET` commands to the master. Master will propagate the commands to your replica.
+      Just like in the previous stages, your replica should complete the handshake with the master and receive an empty RDB file.
+
+      Once the RDB file is received, the master will propagate a series of write commands to your program.
 
       ```bash
-      $ redis-cli SET myKey "Hello"
+      set foo 1 # propagated from master to replica
+      set bar 2 # propagated from master to replica
+      set baz 3 # propagated from master to replica
       ```
 
-      It'll then expect the replica to parse them, and apply them against its own DB.
-      It will send `GET` requests to the replica from another client.
+      The tester will then issue `get` commands to your program to check if the commands were processed correctly.
 
       ```bash
-      $ redis-cli GET myKey
+      $ redis-cli GET foo # expecting `1` back
+      $ redis-cli GET bar # expecting `2` back
+      # ... and so on
       ```
-
-      It'll expect to receive the correct values as sent to the Master.
-
     marketing_md: |
       In this stage, you'll add support for processing commands received by the replica from the master.
 
