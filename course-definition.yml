@@ -1274,15 +1274,18 @@ stages:
       ./spawn_redis_server.sh
       ```
 
-      Then, a client will connect to your master, and send
+      A redis client will then connect to your master and send `wait 0 60000`:
 
       ```bash
-      $ redis-cli WAIT 0 60000
+      $ redis-cli wait 0 60000
       ```
 
-      You can just return 0 ASAP, encoded as a RESP integer : `:0`.
-      this is only possible because there are no replicas connected.
+      It'll expect to receive `0` back immediately, since no replicas are connected.
 
+      ### Notes
+
+      - You can hardcode `0` as the response for the wait command in this stage. We'll get to tracking the number of replicas and responding
+        accordingly in the next stages.
     marketing_md: |
       In this stage, you'll start implementing the WAIT command on your master.
 
@@ -1291,8 +1294,14 @@ stages:
     name: "WAIT with no commands"
     difficulty: medium
     description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      <!--
+
       In this stage you will implement WAIT, when some replicas are connected to Master, but there have been NO commands propagated from master to replica. So offset is essentially 0. In this case, the Master can just return the count of `connected_slaves` asap.  (The replicas will finish the sync handshake with Master, so they are actually connnected.)
       (The master will return the count of `connected_slaves` no matter how many replicas we pass in the WAIT command parameter. As the offset is 0, it knows all replicas are in sync.)
+
+      -->
 
       ### Tests
 
