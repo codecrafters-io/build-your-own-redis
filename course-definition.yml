@@ -1173,33 +1173,34 @@ stages:
     name: "ACKs with no commands"
     difficulty: easy
     description_md: |
+      <!--
       In this stage you'll implement the REPLCONF GETACK command on your replica server. Once the master sends this command, return a REPLCONF ACK <offset> back to the master. Offset is the number of bytes of commands processed by the replica. It starts at 0. And for every RESP command processed from the server, increase it by that many bytes.
 
       When a MASTER sends `REPLCONF GETACK`, replica has to send back an `ACK` ASAP, with the offset processed upto before receiving the GETACK command. (GETACK command is also counted against the offset).
 
       The exact command that will be sent is :
       `*3\r\n$8\r\nREPLCONF\r\n$6\r\nGETACK\r\n$1\r\n*\r\n`
+      -->
+
+      **We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
       ### Tests
 
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis.sh --port <PORT>
       ./spawn_redis_server.sh --port <PORT> --replicaof <HOST> <PORT>
       ```
 
-      The servers should finish the handshake between them. (PING, REPLCONF, PSYNC)
-      Master will then send :
+      Just like in the previous stages, your replica should complete the handshake with the master and receive an empty RDB file.
 
-      ```bash
-      $ redis-master REPLCONF GETACK *
-      ```
+      The master will then send `REPLCONF GETACK *` to your replica. It'll expect to receive `REPLCONF ACK 0` as a reply.
 
-      It'll then expect back an ACK from the replica, as an Array of Bulk strings.
-      The exact command should be `*3\r\n$8\r\nREPLCONF\r\n$3\r\nACK\r\n$1\r\n0\r\n`.
-      As this would be the first command processed by replica, it would return offset as 0.
+      ### Notes
 
+      - The response should be encoded as a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays), like
+        this: `*3\r\n$8\r\nREPLCONF\r\n$3\r\nACK\r\n$1\r\n0\r\n`.
+      - We'll implement proper offset tracking in the next stage, for now you can hardcode the offset to 0.
     marketing_md: |
       In this stage, you'll add support for returning an ACK back to master as a response to GETACK.
 
