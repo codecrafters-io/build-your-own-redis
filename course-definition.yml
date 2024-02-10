@@ -781,9 +781,9 @@ stages:
 
       - The first time, it'll be sent like this: `REPLCONF listening-port <PORT>`
         - This is the replica notifying the master of the port it's listening on
-      - The second time, it'll be sent like this: `REPLCONF capa eof capa psync2`
+      - The second time, it'll be sent like this: `REPLCONF capa psync2`
         - This is the replica notifying the master of its capabilities ("capa" is short for "capabilities")
-        - You can safely hardcode these capabilities for now. We won't be using them in this challenge, we'll assume that the replica supports all capabilities.
+        - You can safely hardcode these capabilities for now, we won't need to use them in this challenge.
 
       These commands should be sent as RESP Arrays, so the exact bytes will look something like this:
 
@@ -791,8 +791,8 @@ stages:
       # REPLCONF listening-port <PORT>
       *3\r\n$8\r\nREPLCONF\r\n$14\r\nlistening-port\r\n$4\r\n6380\r\n
 
-      # REPLCONF capa eof capa psync2
-      *5\r\n$8\r\nREPLCONF\r\n$4\r\ncapa\r\n$3\r\neof\r\n$4\r\ncapa\r\n$6\r\npsync2\r\n
+      # REPLCONF capa psync2
+      *3\r\n$8\r\nREPLCONF\r\n$4\r\ncapa\r\n$6\r\npsync2\r\n
       ```
 
       For both commands, the master will respond with `+OK\r\n` ("OK" encoded as a RESP Simple String).
@@ -809,7 +809,7 @@ stages:
 
       - **(a)** sends the `PING` command
       - **(b)** sends the `REPLCONF` command with `listening-port` and `<PORT>` as arguments
-      - **(c)** sends the `REPLCONF` command with `capa eof capa psync2` as arguments
+      - **(c)** sends the `REPLCONF` command with `capa psync2` as arguments
 
       **Notes**
 
@@ -832,7 +832,7 @@ stages:
       - The replica sends `REPLCONF` twice to the master (Previous stages)
       - The replica sends `PSYNC` to the master (**This stage**)
 
-      After receiving response to the second `REPLCONF`, the replica then sends a [PSYNC](https://redis.io/commands/psync/) command to the master.
+      After receiving a response to the second `REPLCONF`, the replica then sends a [PSYNC](https://redis.io/commands/psync/) command to the master.
 
       The `PSYNC` command is used to synchronize the state of the replica with the master. The replica will send this command to the master with two arguments:
 
@@ -845,13 +845,11 @@ stages:
 
       This should be sent as a RESP Array, so the exact bytes will look something like this:
 
-      <!-- TODO: Confirm whether 2nd arg is integer or string? -->
-
       ```
       *3\r\n$5\r\nPSYNC\r\n$1\r\n?\r\n$2\r\n-1\r\n
       ```
 
-      The master will respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) that looks like this:
+      The master will respond with a [Simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings) that looks like this:
 
       ```
       +FULLRESYNC <REPL_ID> 0\r\n
