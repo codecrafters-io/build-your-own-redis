@@ -1112,11 +1112,7 @@ stages:
 
       Each replica will expect to receive an RDB file from the master after the handshake is complete.
 
-      The tester will send series of write commands to your program (as a separate Redis client, not the replica):
-
-      ```bash
-
-      It'll then send `SET` commands to the master from a client.
+      It'll then send `SET` commands to the master from a client (a separate Redis client, not the replicas).
 
       ```bash
       $ redis-cli SET foo 1
