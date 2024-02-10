@@ -536,7 +536,7 @@ stages:
       Welcome to the Replication extension!
 
       In this extension, you'll extend your Redis server to support [leader-follower replication](https://redis.io/docs/management/replication/). You'll be able to run
-      multiple Redis servers with one acting as the "master" and the others as "replicas". Changes made to the master will be automatically replicated to the replicas.
+      multiple Redis servers with one acting as the "master" and the others as "replicas". Changes made to the master will be automatically replicated to replicas.
 
       Since we'll need to run multiple instances of your Redis server at once, we can't run all of them on port 6379.
 
@@ -1160,9 +1160,9 @@ stages:
     description_md: |
       In this stage you'll implement the REPLCONF GETACK command on your replica server. Once the master sends this command, return a REPLCONF ACK <offset> back to the master. Offset is the number of bytes of commands processed by the replica. It starts at 0. And for every RESP command processed from the server, increase it by that many bytes.
 
-      When a MASTER sends `REPLCONF GETACK`, replica has to send back an `ACK` ASAP, with the offset processed upto before receiving the GETACK command. (GETACK command is also counted against the offset). 
+      When a MASTER sends `REPLCONF GETACK`, replica has to send back an `ACK` ASAP, with the offset processed upto before receiving the GETACK command. (GETACK command is also counted against the offset).
 
-      The exact command that will be sent is : 
+      The exact command that will be sent is :
       `*3\r\n$8\r\nREPLCONF\r\n$6\r\nGETACK\r\n$1\r\n*\r\n`
 
       ### Tests
@@ -1196,9 +1196,9 @@ stages:
       In this stage, you will implement tracking of the number of bytes of commands processed by the replica. (Only for commands propagated from Master).
       The correct offset value needs to be returned to master, after a GETACK command.
 
-      When a MASTER sends `REPLCONF GETACK`, replica has to send back an `ACK` ASAP, with the offset processed upto before receiving the GETACK command. 
+      When a MASTER sends `REPLCONF GETACK`, replica has to send back an `ACK` ASAP, with the offset processed upto before receiving the GETACK command.
 
-      The exact command that will be sent is : 
+      The exact command that will be sent is :
       `*3\r\n$8\r\nREPLCONF\r\n$6\r\nGETACK\r\n$1\r\n*\r\n`
 
       ### Tests
@@ -1239,10 +1239,10 @@ stages:
     name: "WAIT with no replicas"
     difficulty: medium
     description_md: |
-      In the next 3 stages, you will implement the WAIT command on your master. 
-      The WAIT command is used to find out how many replicas a write command was propagated to, with the replica ACKing it back. This way we can know how durable the write was. As we haven't implemented periodic ACKs from the replica, in this stage, for WAIT, the master has to send a GETACK to the replica, if the replica replies back with the proper offset, before the WAIT expires, the master can count that replica's write to be a success. 
-      
-      In this stage you will implement WAIT, when exactly 0 replicas are connected to Master. The Master can just return 0 asap. This way we will gently dive into the implementation. 
+      In the next 3 stages, you will implement the WAIT command on your master.
+      The WAIT command is used to find out how many replicas a write command was propagated to, with the replica ACKing it back. This way we can know how durable the write was. As we haven't implemented periodic ACKs from the replica, in this stage, for WAIT, the master has to send a GETACK to the replica, if the replica replies back with the proper offset, before the WAIT expires, the master can count that replica's write to be a success.
+
+      In this stage you will implement WAIT, when exactly 0 replicas are connected to Master. The Master can just return 0 asap. This way we will gently dive into the implementation.
 
       ### Tests
 
@@ -1252,7 +1252,7 @@ stages:
       ./spawn_redis_server.sh
       ```
 
-      Then, a client will connect to your master, and send 
+      Then, a client will connect to your master, and send
 
       ```bash
       $ redis-cli WAIT 0 60000
@@ -1289,13 +1289,13 @@ stages:
       For example if number of replicas was 7.
 
       ```bash
-      $ redis-cli WAIT 3 500 (expecting 7 back) 
+      $ redis-cli WAIT 3 500 (expecting 7 back)
       $ redis-cli WAIT 7 500 (expecting 7 back)
       $ redis-cli WAIT 9 500 (expecting 7 back)
       ```
 
       You can just return the number of replicas ASAP, encoded as a RESP integer : `:7`.
-      this is only possible because the master knows all the replicas are in sync. 
+      this is only possible because the master knows all the replicas are in sync.
 
     marketing_md: |
       In this stage, you'll continue implementing the WAIT command on your master.
@@ -1324,21 +1324,21 @@ stages:
       Then, a client will connect to your master, and send WRITE commands.
       The master will need to propagate those commands to all the replicas.
       The client will also send a WAIT command to the Master, the master will have to handle this. It will need to send GETACK commands to all the replicas.
-      And then wait for them to ACK back, with the proper offset. 
-      If offset was correct, then the write can be counted as a success. 
+      And then wait for them to ACK back, with the proper offset.
+      If offset was correct, then the write can be counted as a success.
 
       ```bash
-      $ redis-cli SET foo 123 
+      $ redis-cli SET foo 123
       $ redis-cli WAIT 1 500
       ```
-      
+
       This test will again be repeated.
-      
+
       ```bash
-      $ redis-cli SET bar 456 
+      $ redis-cli SET bar 456
       $ redis-cli WAIT (replicaCount + N) 2000
       ```
-      
+
       In the last test, you will need to additional handle the timeout, because there won't be that many replicas available. So, you need to gather ACKs and then send the count of successful propagations, exactly when the timeout expires.
       We will test for the time taken for the command to return, so if timeout is 2000 ms, tester would expect the command to return within [1500, 2500] ms.
 
