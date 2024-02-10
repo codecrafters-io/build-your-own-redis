@@ -1335,42 +1335,38 @@ stages:
     name: "WAIT with multiple commands"
     difficulty: hard
     description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      <!--
       In this stage you will implement WAIT, when some replicas are connected to Master, and there have been commands propagated from master to replica. So the offset is NOT 0. In this case, the Master has to figure out how many replicas the previous write command has been successfully propagated to.
       (The replicas will finish the sync handshake with Master, and process any commands you send it, but they WON'T send periodic ACKs, so you need to basically send a REPLCONF GETACK to get their current offset. )
+      -->
 
       ### Tests
 
-      The tester will execute your program like this: (Your server will be the master)
-      The number of replicas will be random (3-5).
+      The tester will execute your program as a master like this:
 
       ```
-      ./spawn redis_server.sh
-      ./spawn redis.sh --replicaof localhost:6379 --port 6380
-      ./spawn redis.sh --replicaof localhost:6379 --port 6382
-      ...
-      ./spawn redis.sh --replicaof localhost:6379 --port 638X
+      ./spawn_redis_server.sh
       ```
 
-      Then, a client will connect to your master, and send WRITE commands.
-      The master will need to propagate those commands to all the replicas.
-      The client will also send a WAIT command to the Master, the master will have to handle this. It will need to send GETACK commands to all the replicas.
-      And then wait for them to ACK back, with the proper offset.
-      If offset was correct, then the write can be counted as a success.
+      It'll then start **multiple** replicas that connect to your server. Each will complete the handshake and expect to receive an empty RDB file.
+
+      The tester will then connect to your master as a Redis client (not one of the replicas) and send multiple write commands interleaved
+      with `wait` commands:
 
       ```bash
-      $ redis-cli SET foo 123
-      $ redis-cli WAIT 1 500
+      $ redis-cli set foo 123
+      $ redis-cli wait 1 500 (must wait until either 1 replica has acknowledged the command or 500ms have passed)
+
+      $ redis-cli set bar 456
+      $ redis-cli wait 2 500 (must wait until either 2 replicas have acknowledged the command or 500ms have passed)
       ```
 
-      This test will again be repeated.
+      ### Notes
 
-      ```bash
-      $ redis-cli SET bar 456
-      $ redis-cli WAIT (replicaCount + N) 2000
-      ```
-
-      In the last test, you will need to additional handle the timeout, because there won't be that many replicas available. So, you need to gather ACKs and then send the count of successful propagations, exactly when the timeout expires.
-      We will test for the time taken for the command to return, so if timeout is 2000 ms, tester would expect the command to return within [1500, 2500] ms.
-
+      - The `wait` command should return when either (a) the specified number of replicas have acknowledged the command, or (b) the timeout expires.
+      - The `wait` command should always return the number of replicas that have acknowledged the command, even if the timeout expires.
+      - The returned number of replicas might be lesser than or greater than the expected number of replicas specified in the `wait` command.
     marketing_md: |
       In this stage, you'll finish implementing the WAIT command on your master.
