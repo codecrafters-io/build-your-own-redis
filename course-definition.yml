@@ -1357,10 +1357,10 @@ stages:
 
       ```bash
       $ redis-cli set foo 123
-      $ redis-cli wait 1 500 (must wait until either 1 replica has acknowledged the command or 500ms have passed)
+      $ redis-cli wait 1 500 # (must wait until either 1 replica have processed previous commands or 500ms have passed)
 
       $ redis-cli set bar 456
-      $ redis-cli wait 2 500 (must wait until either 2 replicas have acknowledged the command or 500ms have passed)
+      $ redis-cli wait 2 500 # (must wait until either 2 replicas have processed previous commands or 500ms have passed)
       ```
 
       ### Notes
