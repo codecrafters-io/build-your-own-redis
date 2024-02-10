@@ -1182,7 +1182,7 @@ stages:
       `*3\r\n$8\r\nREPLCONF\r\n$6\r\nGETACK\r\n$1\r\n*\r\n`
       -->
 
-      **We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
       ### Tests
 
