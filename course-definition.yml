@@ -1308,7 +1308,7 @@ stages:
       The tester will execute your program as a master like this:
 
       ```
-      ./spawn redis_server.sh
+      ./spawn_redis_server.sh
       ```
 
       It'll then start **multiple** replicas that connect to your server. Each will complete the handshake and expect to receive an empty RDB file.
@@ -1316,9 +1316,9 @@ stages:
       It'll then connect to your master as a Redis client (not one of the replicas) and send commands like this:
 
       ```bash
-      $ redis-cli WAIT 3 500 (expecting 7 back)
-      $ redis-cli WAIT 7 500 (expecting 7 back)
-      $ redis-cli WAIT 9 500 (expecting 7 back)
+      $ redis-cli WAIT 3 500 # (expecting 7 back)
+      $ redis-cli WAIT 7 500 # (expecting 7 back)
+      $ redis-cli WAIT 9 500 # (expecting 7 back)
       ```
 
       The response to each of these commands should be encoded as a RESP integer (i.e. `:7\r\n`).
