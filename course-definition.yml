@@ -587,7 +587,7 @@ stages:
       repl_backlog_histlen:
       ```
 
-      The reply to this command is a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line is a key value pair, seperated by ":".
+      The reply to this command is a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line is a key value pair, separated by ":".
 
       Here are what some of the important fields mean:
 
