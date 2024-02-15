@@ -90,8 +90,6 @@ stages:
       ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
     name: "Bind to a port"
     description_md: |-
-      Welcome to the Build your own Redis challenge! Now that you've got your repository set up, it's time to start building your Redis server.
-
       In this stage, you'll implement a TCP server that listens on port 6379.
 
       [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) is the underlying protocol used by protocols like HTTP, SSH and others
@@ -126,8 +124,6 @@ stages:
     name: "Respond to PING"
     difficulty: easy
     description_md: |-
-      🎉 You now have a TCP server running on port 6379! It doesn't do anything useful yet though, let's change that.
-
       In this stage, you'll implement support for the [PING](https://redis.io/commands/ping) command.
 
       Redis clients communicate with Redis servers by sending "[commands](https://redis.io/commands/)". For each command, a Redis server sends a response back to the client.
