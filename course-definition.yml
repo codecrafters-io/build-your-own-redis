@@ -173,6 +173,11 @@ stages:
       In this stage, you'll respond to multiple
       [PING](https://redis.io/commands/ping) commands sent by the same connection.
 
+      A Redis server starts to listen for the next command as soon as it's done responding to the previous one. This allows
+      Redis clients to send multiple commands using the same connection.
+
+      ### Tests
+
       The tester will execute your program like this:
 
       ```bash
@@ -199,8 +204,11 @@ stages:
       response back.
       {{/lang_is_javascript}}
 
-      Just like the previous stage, you can hardcode `+PONG\r\n` as the response for this stage. We'll get to parsing
-      client input in later stages.
+      ### Notes
+
+      - Just like the previous stage, you can hardcode `+PONG\r\n` as the response for this stage. We'll get to parsing
+       client input in later stages.
+      - The two PING commands will be sent using the same connection. We'll get to handling multiple connections in later stages.
     marketing_md: |-
       In this stage, you'll respond to multiple
       [PING](https://redis.io/commands/ping) commands sent by the same client.
