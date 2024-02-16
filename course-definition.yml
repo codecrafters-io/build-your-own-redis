@@ -374,29 +374,56 @@ stages:
     name: "Expiry"
     difficulty: medium
     description_md: |-
-      In this stage, you'll need to support setting a key with an expiry. The
-      expiry is provided in milliseconds using the "PX" argument to the
-      [SET](https://redis.io/commands/set) command.
+      In this stage, you'll add support for setting a key with an expiry.
 
-      The tester will do the following:
+      The expiry for a key can be provided using the "PX" argument to the [SET](https://redis.io/commands/set) command. The expiry is provided in milliseconds.
 
       ```bash
-      # First, it'll set a key with an expiry (100 milliseconds in this example)
-      $ redis-cli set random_key random_value px 100
-
-      # Immediately after, it'll send a GET command to retrieve the value
-      # The response to this should be "random_value" (encoded as a RESP bulk string)
-      $ redis-cli get random_key
-
-      # Then, it'll wait for the key to expire and send another GET command
-      # The response to this should be `$-1\r\n` (a "null bulk string")
-      $ sleep 0.2 && redis-cli get random_key
+      $ redis-cli set foo bar px 100 # Sets the key "foo" to "bar" with an expiry of 100 milliseconds
+      OK
       ```
+
+      After the key has expired, a `GET` command for that key should return a "null bulk string" (`$-1\r\n`).
 
       {{#lang_is_haskell}}
       The [time](https://hackage.haskell.org/package/time) package is available
       to use as a dependency.
       {{/lang_is_haskell}}
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then send a `SET` command to your server to set a key with an expiry:
+
+      ```bash
+      $ redis-cli set foo bar px 100
+      ```
+
+      It'll then immediately send a `GET` command to retrieve the value:
+
+      ```bash
+      $ redis-cli get foo
+      ```
+
+      It'll expect the response to be `bar` (encoded as a RESP bulk string).
+
+      It'll then wait for the key to expire and send another `GET` command:
+
+      ```bash
+      $ sleep 0.2 && redis-cli get foo
+      ```
+
+      It'll expect the response to be `$-1\r\n` (a "null bulk string").
+
+      ### Notes
+
+      - Just like command names, command arguments are also case-insensitive. So `PX`, `px` and `pX` are all valid.
+      - The keys, values and expiry times used in the tests will be random, so you won't be able to hardcode a response to pass this stage.
     marketing_md: |-
       In this stage, you'll add support for setting a key with an expiry. The
       expiry is provided using the "PX" argument to the
