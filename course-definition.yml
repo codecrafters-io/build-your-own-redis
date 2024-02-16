@@ -220,9 +220,9 @@ stages:
     name: "Handle concurrent clients"
     difficulty: medium
     description_md: |-
-      In this stage, your server will need to handle multiple concurrent
-      clients. Just like the previous stages, all clients will only send `PING`
-      commands for now.
+      In this stage, you'll add support for multiple concurrent clients.
+
+      In addition to handling multiple commands from the same client, Redis servers are also designed to handle multiple clients at once.
 
       {{#lang_is_javascript}}
       In most languages, you'd need to either use threads or implement an
@@ -233,14 +233,34 @@ stages:
       {{/lang_is_javascript}}
 
       {{^lang_is_javascript}}
-      To achieve this, you'll need to either use threads, or, if you're feeling
+      To implement this, you'll need to either use threads, or, if you're feeling
       adventurous, an [Event Loop](https://en.wikipedia.org/wiki/Event_loop) (like
       the official Redis implementation does).
       {{/lang_is_javascript}}
 
-      Since the tester client _only_ sends the PING command at the moment, it's okay to
-      ignore what the client sends and hardcode a response. We'll get to parsing
-      client input in later stages.
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then send two PING commands concurrently using two different connections:
+
+      ```bash
+      # These two will be sent concurrently so that we test your server's ability to handle concurrent clients.
+      $ redis-cli ping
+      $ redis-cli ping
+      ```
+
+      The tester will expect to receive two `+PONG\r\n` responses.
+
+      ### Notes
+
+      - Since the tester client _only_ sends the PING command at the moment, it's okay to
+        ignore what the client sends and hardcode a response. We'll get to parsing
+        client input in later stages.
     marketing_md: |-
       In this stage, you'll add support for multiple concurrent clients to your
       Redis server. To achieve this you'll use an [Event
