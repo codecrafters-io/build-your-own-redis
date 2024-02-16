@@ -303,6 +303,7 @@ stages:
       ### Notes
 
       - We suggest that you implement a proper Redis protocol parser in this stage. It'll come in handy in later stages.
+      - Redis command names are case-insensitive, so `ECHO`, `echo` and `EcHo` are all valid commands.
       - The tester will send a random string as an argument to the `ECHO` command, so you won't be able to hardcode the response to pass this stage.
       - The exact bytes your program will receive won't be just `echo hey`, you'll receive something like this: `*2\r\n$4\r\necho\r\n$3\r\nhey\r\n`. That's
         `["echo", "hey"]` encoded using the [Redis protocol](https://redis.io/docs/reference/protocol-spec/).
