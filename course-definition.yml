@@ -1488,3 +1488,66 @@ stages:
       - The returned number of replicas might be lesser than or greater than the expected number of replicas specified in the `wait` command.
     marketing_md: |
       In this stage, you'll finish implementing the WAIT command on your master.
+
+  # Streams
+  - slug: "streams-type"
+    primary_extension_slug: "streams"
+    name: "The TYPE command"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll add support for the `TYPE` command.
+
+      ### The TYPE command
+
+      [TYPE](https://redis.io/commands/type/) is the command used in order to get the type of a value stored at a given key. The different types that can be returned are: string, list, set, zset, hash, and stream.
+
+      Here's how it works:
+
+      ```bash
+      $ redis-cli set some_key foo
+      "OK"
+      $ redis-cli type some_key
+      "string"
+      ```
+
+      If a key doesn't exist, the return value will be "none".
+
+      ```bash
+      $ redis-cli type missing_key
+      "none"
+      ```
+
+      The return value of the type command is encoded as a [simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
+
+      ### Tests
+      
+      The tester will execute your program like this:
+
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then send a `SET` command to your server.
+
+
+      ```bash
+      $ redis-cli set some_key foo
+      ```
+
+      It'll then send a `TYPE` command to your server.
+
+      ```bash
+      $ redis-cli type some_key
+      ```
+
+      Your server should respond with `+string\r\n`, which is `string` encoded as a RESP simple string. It'll then send another `TYPE` command with a missing key.
+
+
+      ```bash
+      $ redis-cli type missing_key
+      ```
+
+      Your server should respond with `+none\r\n`, which is `none` encoded as a RESP simple string.
+    marketing_md: |
+      In this stage, you'll add support for the `TYPE` command.
