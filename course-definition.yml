@@ -1621,4 +1621,5 @@ stages:
 
       ### Notes
       - You can ignore the ability to parse multiple key value pairs.
-
+    marketing_md: |
+      In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
