@@ -1949,3 +1949,94 @@ stages:
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
     marketing_md: |
       In this stage, you'll add support for querying data from a stream using the `XRANGE` command.
+
+  - slug: "streams-xrange-min-id"
+    primary_extension_slug: "streams"
+    name: "Query with -"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll extend support for `XRANGE` to allow querying using -.
+
+      ### Using XRANGE with -
+      
+      In the previous stage, we saw that `XRANGE` takes `start` and `end` as arguments.
+
+      In addition to accepting an explicit entry ID, `start` can also be specified as `-`. When `-` is used, `XRANGE` retrieves entries from the beginning of the stream.
+
+      Here's an example of how that works:
+      We'll use our previous example for entries existing in a stream.
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      $ redis-cli xrange some_key - 1526985054079
+      1) 1) 1526985054069-0
+        2) 1) temperature
+            2) 36
+            3) humidity
+            4) 95
+      2) 1) 1526985054079-0
+        2) 1) temperature
+            2) 37
+            3) humidity
+            4) 94
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then create a few entries.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-3 baz foo
+      ```
+
+      It'll then send a few `XRANGE` commands to your server.
+
+      ```bash
+      $ redis-cli xrange stream_key - 0-2
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      *2\r\n
+      *2\r\n
+      $3\r\n0-1\r\n
+      *2\r\n
+      $3\r\nfoo\r\n
+      $3\r\nbar\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\nbar\r\n
+      $3\r\nbaz\r\n
+      ```
+
+      This is the RESP encoded representation of `[["0-1", ["foo", "bar"]], ["0-2", ["bar", "baz"]]]`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll extend support for `XRANGE` to allow querying using -.
