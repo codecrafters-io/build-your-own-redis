@@ -1772,3 +1772,41 @@ stages:
       Your server should respond with `$3\r\n1-1\r\n`, which is `1-1` encoded as a RESP bulk string.
     marketing_md: |
       In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
+
+  - slug: "streams-xadd-full-autoid"
+    primary_extension_slug: "streams"
+    name: "Full auto-generated IDs"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the entry ID.
+
+      ### Specifying entry IDs in `XADD` (Continued)
+
+      As a recap, there are multiple formats in which the ID can be specified in the `XADD` command:
+      - Explicit ("1526919030474-0") (Previous stages)
+      - Auto-generate only sequence number ("1526919030473-*") (Previous stages)
+      - Auto-generate time part and sequence number ("*") (This stage)
+
+      We'll now handle the third case.
+
+      When `*` is used with the `XADD` command, Redis takes care of generating a unique incrementing ID for the message being appended to the stream.
+
+      Redis defaults to using the current unix time in milliseconds and 0 for the sequence number. If the time already exists in the stream, the sequence number for that record incremented by one will be used.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll create an entry with `*` as the ID.
+
+      ```bash
+      $ redis-cli xadd stream_key * foo bar
+      ```
+
+      Your server should respond with `$13\r\n<milliseconds>-0\r\n`, which is `<milliseconds>-0` encoded as a RESP bulk string.
+    marketing_md: |
+      In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the entry ID.
