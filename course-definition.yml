@@ -1722,3 +1722,53 @@ stages:
       Your server should respond with `-ERR The ID specified in XADD must be greater than 0-0\r\n`, which is the error message in the example also encoded as a RESP simple error.
     marketing_md: |
       In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
+
+  - slug: "streams-xadd-partial-autoid"
+    primary_extension_slug: "streams"
+    name: "Partially auto-generated IDs"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
+
+      ### Specifying entry IDs in `XADD`
+
+      As a recap, there are multiple formats in which the ID can be specified in the `XADD` command:
+      - Explicit ("1526919030473-0") (Previous stage)
+      - Auto-generate only sequence number ("1526919030474-*") (**This stage**)
+      - Auto-generate time part and sequence number ("*") (Next stage)
+
+      We dealt with explicit IDs in the last stage. Now, we'll handle the second case.
+
+      When * is used  for the sequence number with the `XADD` command, Redis auto-generates a unique incrementing ID for the entry being appended to the stream.
+
+      The default sequence number is 0. The only exception is when the time is also 0. In that case, the default sequence number is 1.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll send an `XADD` command with * as the sequence number.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-* foo bar
+      ```
+
+      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string. It'll then send another `XADD` command with `*` as the sequence number, but this time with 1 as the time.
+
+      ```bash
+      $ redis-cli xadd stream_key 1-* foo bar
+      ```
+
+      Your server should respond with `$3\r\n1-0\r\n`, which is `1-0` encoded as a RESP bulk string. It'll send the same command again.
+
+      ```bash
+      $ redis-cli xadd stream_key 1-* bar baz
+      ```
+
+      Your server should respond with `$3\r\n1-1\r\n`, which is `1-1` encoded as a RESP bulk string.
+    marketing_md: |
+      In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
