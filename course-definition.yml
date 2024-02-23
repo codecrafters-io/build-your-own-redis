@@ -1822,7 +1822,6 @@ stages:
       Here's how it works:
       We'll use our previous example for entries existing in a stream.
 
-
       ```bash
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
@@ -1904,6 +1903,7 @@ stages:
       $8\r\nhumidity\r\n
       $2\r\n94\r\n
       ```
+
       The lines are separated into new lines for readability. The return value is just one value.
 
       ### Tests
