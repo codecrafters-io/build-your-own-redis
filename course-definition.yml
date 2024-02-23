@@ -1575,6 +1575,7 @@ stages:
 
       # ... (and so on)
       ```
+
       The entry IDs will be looked at more closely in the upcoming stages.
 
       ### The XADD command
@@ -1623,3 +1624,101 @@ stages:
       - You can ignore the ability to parse multiple key value pairs.
     marketing_md: |
       In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
+
+  - slug: "streams-xadd-validate-id"
+    primary_extension_slug: "streams"
+    name: "Validating entry IDs"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
+
+      ### Entry IDs
+      
+      Here's an example of stream entries in the previous stage:
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      Entry IDs are always composed of two integers: `<millisecondsTime>-<sequenceNumber>`. 
+
+      There are multiple formats in which the ID can be specified in the XADD command:
+      - Explicit ("1526919030474-0") (**This stage**)
+      - Auto-generate only sequence number ("1526919030474-*") (Next stages)
+      - Auto-generate time part and sequence number ("*") (Next stages)
+
+      IDs are guaranteed to be incremental within a stream - i.e. an entry added later will always have an ID greater than an entry added in the past.
+
+      `millisecondsTime` should be equal to or greater than the `millisecondsTime` of the last entry. If they're equal, the `sequenceNumber` should be greater than the `sequenceNumber` of the last entry.
+
+      Otherwise, the response would be an error.
+
+      Here's an example of that:
+
+      ```bash
+      $ redis-cli xadd some_key 1-1 foo bar
+      "1-1"
+      $ redis-cli xadd some_key 1-1 bar baz
+      "(error) ERR The ID specified in XADD is equal or smaller than the target stream top item"
+      ```
+
+      Here's another example:
+
+      ```bash
+      $ redis-cli xadd some_key 1-1 foo bar
+      "1-1"
+      $ redis-cli xadd some_key 0-2 bar baz
+      "(error) ERR The ID specified in XADD is equal or smaller than the target stream top item"
+      ```
+
+      The minimum explicit id that Redis supports is 0-1. Passing in an ID lower than that would result to an error.
+
+      ```bash
+      $ redis-cli xadd some_key 0-0 bar baz
+      "(error) ERR The ID specified in XADD must be greater than 0-0"
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll create a few entries usind `XADD`.
+
+      ```bash
+      $ redis-cli xadd stream_key 1-1 foo bar
+      $ redis-cli xadd stream_key 1-2 bar baz
+      ```
+
+      It'll send another `XADD` command with the same time and sequence number as the last entry.
+
+      ```bash
+      $ redis-cli xadd stream_key 1-2 baz foo
+      ```
+
+      Your server should respond with `-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n`, which is the error message in the example encoded as a [simple error](https://redis.io/docs/reference/protocol-spec/#simple-errors). It'll then send another `XADD` command with a smaller value for the time and a larger value for the sequence number.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-3 baz foo
+      ```
+
+      Your server should also respond with the same error message encoded as a RESP simple error. It'll then send another `XADD` command with `0-0` as the ID.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-0 baz foo
+      ```
+
+      Your server should respond with `-ERR The ID specified in XADD must be greater than 0-0\r\n`, which is the error message in the example also encoded as a RESP simple error.
+    marketing_md: |
+      In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
