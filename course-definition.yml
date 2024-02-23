@@ -1582,10 +1582,7 @@ stages:
 
       [XADD](https://redis.io/commands/xadd/) is the command used to append an entry to the stream. If a stream doesn't exist already, it is created.
 
-      Another term for anything using `XADD` to add data to a stream is called a producer.
-
       Here's how it works:
-
 
       ```bash
       $ redis-cli xadd some_key 1526919030474-0 temperature 36 humidity 95
