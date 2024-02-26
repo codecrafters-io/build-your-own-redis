@@ -2266,7 +2266,7 @@ stages:
       It'll then send an `XREAD` command to your server with multiple streams.
 
       ```bash
-      $ redis-cli xread streams stream_key other_stream_ky 0-0 0-1
+      $ redis-cli xread streams stream_key other_stream_key 0-0 0-1
       ```
 
       Your server should respond with the following:
@@ -2288,6 +2288,124 @@ stages:
       ```
 
       This is the RESP encoded representation of `{ "stream_key": [["0-1", ["foo", "bar"]]], "other_stream_key": [["0-2", ["bar", "baz"]]] }`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll add extend support to `XREAD` to allow querying multiple streams.
+
+  - slug: "streams-xread-block"
+    primary_extension_slug: "streams"
+    name: "Support blocking reads"
+    difficulty: hard
+    description_md: |
+      In this stage, you'll add extend support to `XREAD` to allow for turning it into a blocking command.
+
+      ### Understanding blocking
+      
+      `BLOCK` is one of the optional parameters that could be passed in to the `XREAD` command.
+
+      Without blocking, the current implementation of our command is synchronous. This means that the command can get new data as long as there are items available. 
+
+      If we want to wait for new data coming in, we need blocking.
+
+      Here's how it works. Let's use the entries previously shown as an example.
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      On one instance of the redis-cli, we'd add an entry and send  a blocking `XREAD` command.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      ```
+
+      Then, on another instance of the redis-cli, we add another entry.
+
+      ```bash
+      $ other-redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      ```
+
+      If the command was sent within 1000 milliseconds, the redis-cli will respond with the added entry.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      1) 1) "some_key"
+        2) 1) 1) 1526985054079-0
+              2) 1) temperature
+                  2) 37
+                  3) humidity
+                  4) 94
+      ```
+
+      If not, the return type would be a RESP encoded [null](https://redis.io/docs/reference/protocol-spec/#nulls).
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      (nil)
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      First, an entry will be added to a stream.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 foo bar
+      ```
+
+      It'll then send an `XREAD` command to your server with the `BLOCK` command.
+
+      ```bash
+      $ redis-cli xread block 1000 streams stream_key 0-0
+      ```
+
+      On another instance of the redis-cli, another entry will be added in 500 milliseconds after sending the `XREAD` command.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-2 bar baz
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      %1\r\n
+      $9\r\stream_key\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\nbar\r\n
+      $3\r\nbaz\r\n
+      ```
+
+      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["bar", "baz"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+
+      ```bash
+      $ redis-cli xread block 1000 streams stream_key 0-2
+      ```
+
+      Your server should respond with `_\r\n` which is a RESP encoded `null`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
