@@ -2240,3 +2240,56 @@ stages:
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
     marketing_md: |
       In this stage, you'll add support to querying a stream using the `XREAD` command.
+
+  - slug: "streams-xread-multiple"
+    primary_extension_slug: "streams"
+    name: "Query multiple streams using XREAD"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add extend support to `XREAD` to allow querying multiple streams.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      First, an entry will be added to a couple of streams.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd other_stream_key 0-2 bar baz
+      ```
+
+      It'll then send an `XREAD` command to your server with multiple streams.
+
+      ```bash
+      $ redis-cli xread streams stream_key other_stream_ky 0-0 0-1
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      %2\r\n
+      $9\r\nstream_key\r\n
+      *2\r\n
+      $3\r\n0-1\r\n
+      *2\r\n
+      $3\r\nfoo\r\n
+      $3\r\nbar\r\n
+      $14\r\nother_stream_key\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\nbar\r\n
+      $3\r\nbaz\r\n
+      ```
+
+      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["foo", "bar"]]], "other_stream_key": [["0-2", ["bar", "baz"]]] }`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll add extend support to `XREAD` to allow querying multiple streams.
