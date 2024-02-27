@@ -1305,7 +1305,7 @@ stages:
 
       Each ACK contains an "offset", which is the number of bytes of commands processed by the replica.
 
-      We'll learn about how this offset is calculated and used in later stages. In this stage, we'll focs on implementing the
+      We'll learn about how this offset is calculated and used in later stages. In this stage, we'll focus on implementing the
       mechanism through which a master asks for an ACK from a replica: the `REPLCONF GETACK` command.
 
       ### The `REPLCONF GETACK` command
