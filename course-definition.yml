@@ -1919,12 +1919,13 @@ stages:
       ```bash
       $ redis-cli xadd stream_key 0-1 foo bar
       $ redis-cli xadd stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-3 baz foo
       ```
 
       Then, it'll send an `XRANGE` command to your server.
 
       ```bash
-      $ redis-cli xrange stream_key 0-1 0-2
+      $ redis-cli xrange stream_key 0-2 0-3
       ```
 
       Your server should respond with the following:
@@ -1932,18 +1933,18 @@ stages:
       ```bash
       *2\r\n
       *2\r\n
-      $3\r\n0-1\r\n
-      *2\r\n
-      $3\r\nfoo\r\n
-      $3\r\nbar\r\n
-      *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
       $3\r\nbar\r\n
       $3\r\nbaz\r\n
+      *2\r\n
+      $3\r\n0-3\r\n
+      *2\r\n
+      $3\r\nbaz\r\n
+      $3\r\nfoo\r\n
       ```
 
-      This is the RESP encoded representation of `[["0-1", ["foo", "bar"]], ["0-2", ["bar", "baz"]]]`. 
+      This is the RESP encoded representation of `[["0-2", ["bar", "baz"]], ["0-3", ["baz", "foo"]]]`. 
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
