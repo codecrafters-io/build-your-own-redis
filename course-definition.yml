@@ -73,16 +73,16 @@ extensions:
       [redis-replication]: https://redis.io/docs/management/replication/
       [redis-psync-command]: https://redis.io/commands/psync/
 
-#   - slug: "streams"
-#     name: "Streams"
-#     description_markdown: |-
-#       In this challenge extension you'll add support for the [Stream][redis-streams-data-type] data type to your Redis implementation.
+  - slug: "streams"
+    name: "Streams"
+    description_markdown: |-
+      In this challenge extension you'll add support for the [Stream][redis-streams-data-type] data type to your Redis implementation.
 
-#       Along the way you'll learn about commands like [XADD][xadd-command], [XRANGE][xrange-command] and more.
+      Along the way you'll learn about commands like [XADD][xadd-command], [XRANGE][xrange-command] and more.
 
-#       [redis-streams-data-type]: https://redis.io/docs/data-types/streams/
-#       [xadd-command]: https://redis.io/commands/xadd/
-#       [xrange-command]: https://redis.io/commands/xrange/
+      [redis-streams-data-type]: https://redis.io/docs/data-types/streams/
+      [xadd-command]: https://redis.io/commands/xadd/
+      [xrange-command]: https://redis.io/commands/xrange/
 
 stages:
   - slug: "init"
@@ -1511,3 +1511,1138 @@ stages:
       - The returned number of replicas might be lesser than or greater than the expected number of replicas specified in the `wait` command.
     marketing_md: |
       In this stage, you'll finish implementing the WAIT command on your master.
+
+  # Streams
+  - slug: "streams-type"
+    primary_extension_slug: "streams"
+    name: "The TYPE command"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll add support for the `TYPE` command.
+
+      ### The TYPE command
+
+      [TYPE](https://redis.io/commands/type/) is the command used in order to get the type of a value stored at a given key. The different types that can be returned are: string, list, set, zset, hash, and stream.
+
+      Here's how it works:
+
+      ```bash
+      $ redis-cli set some_key foo
+      "OK"
+      $ redis-cli type some_key
+      "string"
+      ```
+
+      If a key doesn't exist, the return value will be "none".
+
+      ```bash
+      $ redis-cli type missing_key
+      "none"
+      ```
+
+      The return value of the type command is encoded as a [simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
+
+      ### Tests
+      
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then send a `SET` command to your server.
+
+      ```bash
+      $ redis-cli set some_key foo
+      ```
+
+      It'll then send a `TYPE` command to your server.
+
+      ```bash
+      $ redis-cli type some_key
+      ```
+
+      Your server should respond with `+string\r\n`, which is `string` encoded as a RESP simple string. It'll then send another `TYPE` command with a missing key.
+
+      ```bash
+      $ redis-cli type missing_key
+      ```
+
+      Your server should respond with `+none\r\n`, which is `none` encoded as a RESP simple string.
+    marketing_md: |
+      In this stage, you'll add support for the `TYPE` command.
+
+  - slug: "streams-xadd"
+    primary_extension_slug: "streams"
+    name: "Create a stream"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
+
+      ### Redis Streams & Entries
+
+      Streams are one of the data types that Redis supports. A stream is identified by a key, and it contains multiple entries.
+
+      Each entry consists of one or more key-value pairs, and is assigned a unique ID.
+
+      For example, if you were using a Redis stream to store real-time data from a temperature & humidity monitor, the contents of the stream might look like this:
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      The entry IDs will be looked at more closely in the upcoming stages.
+
+      ### The XADD command
+
+      [XADD](https://redis.io/commands/xadd/) is the command used to append an entry to the stream. If a stream doesn't exist already, it is created.
+
+      Here's how it works:
+
+      ```bash
+      $ redis-cli xadd some_key 1526919030474-0 temperature 36 humidity 95
+      "1526919030474-0"
+      ```
+
+      The return value is the ID of the entry created, encoded as a [bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
+
+      `XADD` supports other optional arguments, but we won't deal with them in this challenge.
+
+      In this stage, we'll focus on adding support for explicit IDs and at least one key value pair.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then send an `XADD` command to your server and expect the ID as a response.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 foo bar
+      ```
+
+      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string. The tester will then send a `TYPE` command to your server.
+
+      ```bash
+      $ redis-cli type stream_key
+      ```
+
+      Your server should respond with `+stream\r\n`, which is `stream` encoded as a RESP simple string.
+
+      ### Notes
+      - You can ignore the ability to parse multiple key value pairs.
+    marketing_md: |
+      In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
+
+  - slug: "streams-xadd-validate-id"
+    primary_extension_slug: "streams"
+    name: "Validating entry IDs"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
+
+      ### Entry IDs
+      
+      Here's an example of stream entries in the previous stage:
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      Entry IDs are always composed of two integers: `<millisecondsTime>-<sequenceNumber>`. 
+
+      There are multiple formats in which the ID can be specified in the XADD command:
+      - Explicit ("1526919030474-0") (**This stage**)
+      - Auto-generate only sequence number ("1526919030474-*") (Next stages)
+      - Auto-generate time part and sequence number ("*") (Next stages)
+
+      IDs are guaranteed to be incremental within a stream - i.e. an entry added later will always have an ID greater than an entry added in the past.
+
+      `millisecondsTime` should be equal to or greater than the `millisecondsTime` of the last entry. If they're equal, the `sequenceNumber` should be greater than the `sequenceNumber` of the last entry.
+
+      Otherwise, the response would be an error.
+
+      Here's an example of that:
+
+      ```bash
+      $ redis-cli xadd some_key 1-1 foo bar
+      "1-1"
+      $ redis-cli xadd some_key 1-1 bar baz
+      "(error) ERR The ID specified in XADD is equal or smaller than the target stream top item"
+      ```
+
+      Here's another example:
+
+      ```bash
+      $ redis-cli xadd some_key 1-1 foo bar
+      "1-1"
+      $ redis-cli xadd some_key 0-2 bar baz
+      "(error) ERR The ID specified in XADD is equal or smaller than the target stream top item"
+      ```
+
+      The minimum explicit id that Redis supports is 0-1. Passing in an ID lower than that would result to an error.
+
+      ```bash
+      $ redis-cli xadd some_key 0-0 bar baz
+      "(error) ERR The ID specified in XADD must be greater than 0-0"
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll create a few entries usind `XADD`.
+
+      ```bash
+      $ redis-cli xadd stream_key 1-1 foo bar
+      $ redis-cli xadd stream_key 1-2 bar baz
+      ```
+
+      It'll send another `XADD` command with the same time and sequence number as the last entry.
+
+      ```bash
+      $ redis-cli xadd stream_key 1-2 baz foo
+      ```
+
+      Your server should respond with `-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n`, which is the error message in the example encoded as a [simple error](https://redis.io/docs/reference/protocol-spec/#simple-errors). It'll then send another `XADD` command with a smaller value for the time and a larger value for the sequence number.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-3 baz foo
+      ```
+
+      Your server should also respond with the same error message encoded as a RESP simple error. It'll then send another `XADD` command with `0-0` as the ID.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-0 baz foo
+      ```
+
+      Your server should respond with `-ERR The ID specified in XADD must be greater than 0-0\r\n`, which is the error message in the example also encoded as a RESP simple error.
+    marketing_md: |
+      In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
+
+  - slug: "streams-xadd-partial-autoid"
+    primary_extension_slug: "streams"
+    name: "Partially auto-generated IDs"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
+
+      ### Specifying entry IDs in `XADD`
+
+      As a recap, there are multiple formats in which the ID can be specified in the `XADD` command:
+      - Explicit ("1526919030473-0") (Previous stage)
+      - Auto-generate only sequence number ("1526919030474-*") (**This stage**)
+      - Auto-generate time part and sequence number ("*") (Next stage)
+
+      We dealt with explicit IDs in the last stage. Now, we'll handle the second case.
+
+      When * is used  for the sequence number with the `XADD` command, Redis auto-generates a unique incrementing ID for the entry being appended to the stream.
+
+      The default sequence number is 0. The only exception is when the time is also 0. In that case, the default sequence number is 1.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll send an `XADD` command with * as the sequence number.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-* foo bar
+      ```
+
+      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string. It'll then send another `XADD` command with `*` as the sequence number, but this time with 1 as the time.
+
+      ```bash
+      $ redis-cli xadd stream_key 1-* foo bar
+      ```
+
+      Your server should respond with `$3\r\n1-0\r\n`, which is `1-0` encoded as a RESP bulk string. It'll send the same command again.
+
+      ```bash
+      $ redis-cli xadd stream_key 1-* bar baz
+      ```
+
+      Your server should respond with `$3\r\n1-1\r\n`, which is `1-1` encoded as a RESP bulk string.
+    marketing_md: |
+      In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
+
+  - slug: "streams-xadd-full-autoid"
+    primary_extension_slug: "streams"
+    name: "Full auto-generated IDs"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the entry ID.
+
+      ### Specifying entry IDs in `XADD` (Continued)
+
+      As a recap, there are multiple formats in which the ID can be specified in the `XADD` command:
+      - Explicit ("1526919030474-0") (Previous stages)
+      - Auto-generate only sequence number ("1526919030473-*") (Previous stages)
+      - Auto-generate time part and sequence number ("*") (This stage)
+
+      We'll now handle the third case.
+
+      When `*` is used with the `XADD` command, Redis takes care of generating a unique incrementing ID for the message being appended to the stream.
+
+      Redis defaults to using the current unix time in milliseconds and 0 for the sequence number. If the time already exists in the stream, the sequence number for that record incremented by one will be used.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll create an entry with `*` as the ID.
+
+      ```bash
+      $ redis-cli xadd stream_key * foo bar
+      ```
+
+      Your server should respond with `$13\r\n<milliseconds>-0\r\n`, which is `<milliseconds>-0` encoded as a RESP bulk string.
+    marketing_md: |
+      In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the entry ID.
+
+  - slug: "streams-xrange"
+    primary_extension_slug: "streams"
+    name: "Query entries from stream"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add support for querying data from a stream using the `XRANGE` command.
+
+      ### The XRANGE command
+
+      `XRANGE` is the command is used for retrieving a range of entries from a stream within defined start and end IDs.
+
+      Here's how it works:
+      We'll use our previous example for entries existing in a stream.
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      This is what the command looks like:
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      $ redis-cli xrange some_key 1526985054069 1526985054079
+      1) 1) 1526985054069-0
+        2) 1) temperature
+            2) 36
+            3) humidity
+            4) 95
+      2) 1) 1526985054079-0
+        2) 1) temperature
+            2) 37
+            3) humidity
+            4) 94
+      ```
+
+      The sequence number doesn't need to be included in the start and end IDs provided to the command. If not provided, the it defaults to a sequence number of 0 for the start and the maximum sequence number for the end.
+
+      The start and end IDs are inclusive, which means that the response includes entries with IDs matching both the start and end. The only way to get a single value from a stream is through the `XRANGE` command with the same value for the start and end IDs.
+
+      The return value of the command is not exactly what is shown in the example above. This is already formatted by the CLI. What is instead returned is actually a [list](https://redis.io/docs/reference/protocol-spec/#arrays) of an array of two items. The items being the ID and a list of key value pairs.
+
+      The return value of the example above is actually something like this:
+
+      ```bash
+      [
+        [
+          "1526985054069-0",
+          [
+            "temperature",
+            "36",
+            "humidity",
+            "95"
+          ]
+        ],
+        [
+          "1526985054079-0",
+          [
+            "temperature",
+            "37",
+            "humidity",
+            "94"
+          ]
+        ],
+      ]
+      ```
+
+      When encoded as a RESP list, it looks like this:
+
+      ```bash
+      *2\r\n
+      *2\r\n
+      $15\r\n1526985054069-0\r\n
+      *4\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n36\r\n
+      $8\r\nhumidity\r\n
+      $2\r\n95\r\n
+      $15\r\n1526985054079-0\r\n
+      *4\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n37\r\n
+      $8\r\nhumidity\r\n
+      $2\r\n94\r\n
+      ```
+
+      The lines are separated into new lines for readability. The return value is just one value.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      First, it'll add a few entries.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-3 baz foo
+      ```
+
+      Then, it'll send an `XRANGE` command to your server.
+
+      ```bash
+      $ redis-cli xrange stream_key 0-2 0-3
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      *2\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\nbar\r\n
+      $3\r\nbaz\r\n
+      *2\r\n
+      $3\r\n0-3\r\n
+      *2\r\n
+      $3\r\nbaz\r\n
+      $3\r\nfoo\r\n
+      ```
+
+      This is the RESP encoded representation of `[["0-2", ["bar", "baz"]], ["0-3", ["baz", "foo"]]]`. 
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll add support for querying data from a stream using the `XRANGE` command.
+
+  - slug: "streams-xrange-min-id"
+    primary_extension_slug: "streams"
+    name: "Query with -"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll extend support for `XRANGE` to allow querying using `-`.
+
+      ### Using XRANGE with -
+      
+      In the previous stage, we saw that `XRANGE` takes `start` and `end` as arguments.
+
+      In addition to accepting an explicit entry ID, `start` can also be specified as `-`. When `-` is used, `XRANGE` retrieves entries from the beginning of the stream.
+
+      Here's an example of how that works:
+      We'll use our previous example for entries existing in a stream.
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      $ redis-cli xrange some_key - 1526985054079
+      1) 1) 1526985054069-0
+        2) 1) temperature
+            2) 36
+            3) humidity
+            4) 95
+      2) 1) 1526985054079-0
+        2) 1) temperature
+            2) 37
+            3) humidity
+            4) 94
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then create a few entries.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-3 baz foo
+      ```
+
+      It'll then send an `XRANGE` command to your server.
+
+      ```bash
+      $ redis-cli xrange stream_key - 0-2
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      *2\r\n
+      *2\r\n
+      $3\r\n0-1\r\n
+      *2\r\n
+      $3\r\nfoo\r\n
+      $3\r\nbar\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\nbar\r\n
+      $3\r\nbaz\r\n
+      ```
+
+      This is the RESP encoded representation of `[["0-1", ["foo", "bar"]], ["0-2", ["bar", "baz"]]]`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll extend support for `XRANGE` to allow querying using `-`.
+
+  - slug: "streams-xrange-max-id"
+    primary_extension_slug: "streams"
+    name: "Query with +"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll extend support for `XRANGE` to allow querying using `+`.
+
+      ### Using XRANGE with +
+      
+      In the previous stage, we saw that `XRANGE` takes `start` and `end` as arguments.
+
+      In addition to accepting an explicit entry ID, `end` can also be specified as `+`. When `+` is used, `XRANGE` retrieves entries until the end of the stream.
+
+      Here's an example of how that works:
+      We'll use our previous example for entries existing in a stream.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      $ redis-cli xrange some_key 1526985054069 +
+      1) 1) 1526985054069-0
+        2) 1) temperature
+            2) 36
+            3) humidity
+            4) 95
+      2) 1) 1526985054079-0
+        2) 1) temperature
+            2) 37
+            3) humidity
+            4) 94
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      It'll then create a few entries.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-3 baz foo
+      ```
+
+      It'll then send an `XRANGE` command to your server.
+
+      ```bash
+      $ redis-cli xrange stream_key 0-2 +
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      *2\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\nbar\r\n
+      $3\r\nbaz\r\n
+      *2\r\n
+      $3\r\n0-3\r\n
+      *2\r\n
+      $3\r\nbaz\r\n
+      $3\r\nfoo\r\n
+      ```
+
+      This is the RESP encoded representation of [["0-2", ["bar", "baz"]], ["0-3", ["baz", "foo"]]].
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll extend support for `XRANGE` to allow querying using `+`.
+
+  - slug: "streams-xread"
+    primary_extension_slug: "streams"
+    name: "Query single stream using XREAD"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add support to querying a stream using the `XREAD` command.
+
+      ### The XREAD command
+    
+      `XREAD` is used to read data from one or more streams, starting from a specified entry ID.
+
+      Here's how it works. Let's use the entries previously shown as an example:
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      $ redis-cli xread streams some_key 1526985054069-0
+      1) 1) "some_key"
+        2) 1) 1) 1526985054079-0
+              2) 1) temperature
+                  2) 37
+                  3) humidity
+                  4) 94
+      ```
+
+      `XREAD` is somewhat similar to `XRANGE`. The primary difference is that `XREAD` only takes a single argument and not a start-end pair.
+
+      Another difference is that `XREAD` is exclusive. This means that only. entries with the ID greater than what was provided will be included in the response.
+
+      Another difference is the return type. `XREAD` returns a map of key-value pairs instead of an array. The key is the stream key and the value is an array of entries for the stream.
+
+      Here's what the response in the example above actually looks like:
+
+      ```bash
+      {
+        "some_key": [
+          [
+            "1526985054079-0",
+            [
+              "temperature",
+              "37",
+              "humidity",
+              "94"
+            ],
+          ]
+      }
+      ```
+
+      When encoded as RESP, it looks like this:
+
+      ```bash
+      %1\r\n
+      $8\r\nsome_key\r\n
+      *1\r\n
+      *2\r\n
+      $15\r\n1526985054079-0\r\n
+      *4\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n37\r\n
+      $8\r\nhumidity\r\n
+      $2\r\n94\r\n
+      ```
+
+      The lines are separated into new lines for readability. The return value is just one line.
+
+      `XREAD` supports other optional arguments, but we won't deal with them right now.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      First, an entry will be added.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 temperature 96
+      ```
+
+      It'll then send an `XREAD` command to your server.
+
+      ```bash
+      $ redis-cli xread streams stream_key 0-0
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      %1\r\n
+      $9\r\nstream_key\r\n
+      *1\r\n
+      *2\r\n
+      $3\r\n0-1\r\n
+      *2\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n96\r\n
+      ```
+
+      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["temperature", "96"]]] }`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll add support to querying a stream using the `XREAD` command.
+
+  - slug: "streams-xread-multiple"
+    primary_extension_slug: "streams"
+    name: "Query multiple streams using XREAD"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add extend support to `XREAD` to allow querying multiple streams.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      First, an entry will be added to a couple of streams.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 temperature 95
+      $ redis-cli xadd other_stream_key 0-2 humidity 97
+      ```
+
+      It'll then send an `XREAD` command to your server with multiple streams.
+
+      ```bash
+      $ redis-cli xread streams stream_key other_stream_key 0-0 0-1
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      %2\r\n
+      $9\r\nstream_key\r\n
+      *2\r\n
+      $3\r\n0-1\r\n
+      *2\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n95\r\n
+      $14\r\nother_stream_key\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $8\r\nhumidity\r\n
+      $2\r\n97\r\n
+      ```
+
+      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["foo", "bar"]]], "other_stream_key": [["0-2", ["bar", "baz"]]] }`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll add extend support to `XREAD` to allow querying multiple streams.
+
+  - slug: "streams-xread-block"
+    primary_extension_slug: "streams"
+    name: "Support blocking reads"
+    difficulty: hard
+    description_md: |
+      In this stage, you'll add extend support to `XREAD` to allow for turning it into a blocking command.
+
+      ### Understanding blocking
+      
+      `BLOCK` is one of the optional parameters that could be passed in to the `XREAD` command.
+
+      Without blocking, the current implementation of our command is synchronous. This means that the command can get new data as long as there are items available. 
+
+      If we want to wait for new data coming in, we need blocking.
+
+      Here's how it works. Let's use the entries previously shown as an example.
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      On one instance of the redis-cli, we'd add an entry and send  a blocking `XREAD` command.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      ```
+
+      Then, on another instance of the redis-cli, we add another entry.
+
+      ```bash
+      $ other-redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      ```
+
+      If the command was sent within 1000 milliseconds, the redis-cli will respond with the added entry.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      1) 1) "some_key"
+        2) 1) 1) 1526985054079-0
+              2) 1) temperature
+                  2) 37
+                  3) humidity
+                  4) 94
+      ```
+
+      If not, the return type would be a RESP encoded [null](https://redis.io/docs/reference/protocol-spec/#nulls).
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      (nil)
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      First, an entry will be added to a stream.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 temperature 96
+      ```
+
+      It'll then send an `XREAD` command to your server with the `BLOCK` command.
+
+      ```bash
+      $ redis-cli xread block 1000 streams stream_key 0-0
+      ```
+
+      On another instance of the redis-cli, another entry will be added in 500 milliseconds after sending the `XREAD` command.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-2 temperature 95
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      %1\r\n
+      $9\r\stream_key\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\ntemperature\r\n
+      $3\r\n96\r\n
+      ```
+
+      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "96"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+
+      ```bash
+      $ redis-cli xread block 1000 streams stream_key 0-2
+      ```
+
+      Your server should respond with `_\r\n` which is a RESP encoded `null`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll add extend support to `XREAD` to allow querying multiple streams.
+
+  - slug: "streams-xread-block-no-timeout"
+    primary_extension_slug: "streams"
+    name: "Support blocking reads without timeout"
+    difficulty: medium
+    description_md: |
+      In this stage, you'll add extend support to `XREAD` to allow for the blocking command not timing out.
+
+      ### Understandign blocking without timeout
+      
+      Here's how it works. Let's use the entries previously shown as an example.
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      On one instance of the redis-cli, we'd add an entry and send a blocking `XREAD` command with 0 as the time passed in.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      ```
+
+      Then, on another instance of the redis-cli, we add another entry.
+
+      ```bash
+      $ other-redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      ```
+
+      The difference now is that the first instance of the redis-cli doesn't time out  and responds with null no matter how much time passes. It will wait until another entry is added. The return value after an entry is added is similar to the last stage.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      1) 1) "some_key"
+        2) 1) 1) 1526985054079-0
+              2) 1) temperature
+                  2) 37
+                  3) humidity
+                  4) 94
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      First, an entry will be added to a stream.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 temperature 96
+      ```
+
+      It'll then send an `XREAD` command to your server with the `BLOCK` command with the time passed in being 0.
+
+      ```bash
+      $ redis-cli xread block 0 streams stream_key 0-0
+      ```
+
+      It'll then wait for 1000 milliseconds before checking if there is a response. Your server should not have a new response. It'll then add another entry.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-2 temperature 95
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      %1\r\n
+      $9\r\stream_key\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\ntemperature\r\n
+      $3\r\n95\r\n
+      ```
+
+      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "95"]] }`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll add extend support to `XREAD` to allow for the blocking command not timing out.
+
+  - slug: "streams-xread-block-max-id"
+    primary_extension_slug: "streams"
+    name: "Support blocking reads using $"
+    difficulty: easy
+    description_md: |
+      In this stage, you'll add extend support to `XREAD` to allow for passing in `$` as the ID for a blocking command.
+
+      ### Understanding $
+
+      Using `$` as the ID passed to a blocking `XREAD` command signals that we only want new entries. This is similar to passing in the maximum ID we currently have in the stream.
+
+      Here's how it works. Let's use the entries previously shown as an example.
+
+      ```bash
+      - 1526985054069-0 # (ID of the first entry)
+        temperature: 36 # (A key value pair in the first entry)
+        humidity: 95 # (Another key value pair in the first entry)
+
+      - 1526985054079-0 # (ID of the second entry)
+        temperature: 37 # (A key value pair in the first entry)
+        humidity: 94 # (Another key value pair in the first entry)
+
+      # ... (and so on)
+      ```
+
+      On one instance of the redis-cli, we'd add an entry and send a blocking `XREAD` command with 0 as the time passed in.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key $
+      ```
+
+      Then, on another instance of the redis-cli, we add another entry.
+
+      ```bash
+      $ other-redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
+      "1526985054079-0"
+      ```
+
+      Similar to the behavior detailed in the earlier stages, if the command was sent within 1000 milliseconds, the redis-cli will respond with the new entry.
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      1) 1) "some_key"
+        2) 1) 1) 1526985054079-0
+              2) 1) temperature
+                  2) 37
+                  3) humidity
+                  4) 94
+      ```
+
+      If not, the return type would still be a RESP encoded [null](https://redis.io/docs/reference/protocol-spec/#nulls).
+
+      ```bash
+      $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
+      "1526985054069-0"
+      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      (nil)
+      ```
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
+      $ ./spawn_redis_server.sh
+      ```
+
+      First, an entry will be added to a stream.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-1 temperature 96
+      ```
+
+      It'll then send an `XREAD` command to your server with the `BLOCK` command with `$` as the ID.
+
+      ```bash
+      $ redis-cli xread block 0 streams stream_key $
+      ```
+
+      On another instance of the redis-cli, another entry will be added in 500 milliseconds after sending the `XREAD` command.
+
+      ```bash
+      $ redis-cli xadd stream_key 0-2 temperature 95
+      ```
+
+      Your server should respond with the following:
+
+      ```bash
+      %1\r\n
+      $9\r\stream_key\r\n
+      *2\r\n
+      $3\r\n0-2\r\n
+      *2\r\n
+      $3\r\ntemperature\r\n
+      $3\r\n96\r\n
+      ```
+
+      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "95"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+
+      ```bash
+      $ redis-cli xread block 1000 streams stream_key $
+      ```
+
+      Your server should respond with `_\r\n` which is a RESP encoded `null`.
+
+      ### Notes
+      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+    marketing_md: |
+      In this stage, you'll add extend support to `XREAD` to allow for passing in `$` as the ID for a blocking command.
