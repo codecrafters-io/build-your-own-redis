@@ -2373,7 +2373,7 @@ stages:
       First, an entry will be added to a stream.
 
       ```bash
-      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd stream_key 0-1 temperature 96
       ```
 
       It'll then send an `XREAD` command to your server with the `BLOCK` command.
@@ -2385,7 +2385,7 @@ stages:
       On another instance of the redis-cli, another entry will be added in 500 milliseconds after sending the `XREAD` command.
 
       ```bash
-      $ redis-cli xadd stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-2 temperature 95
       ```
 
       Your server should respond with the following:
@@ -2396,11 +2396,11 @@ stages:
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
-      $3\r\nbar\r\n
-      $3\r\nbaz\r\n
+      $3\r\ntemperature\r\n
+      $3\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["bar", "baz"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "96"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli xread block 1000 streams stream_key 0-2
@@ -2476,7 +2476,7 @@ stages:
       First, an entry will be added to a stream.
 
       ```bash
-      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd stream_key 0-1 temperature 96
       ```
 
       It'll then send an `XREAD` command to your server with the `BLOCK` command with the time passed in being 0.
@@ -2488,7 +2488,7 @@ stages:
       It'll then wait for 1000 milliseconds before checking if there is a response. Your server should not have a new response. It'll then add another entry.
 
       ```bash
-      $ redis-cli xadd stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-2 temperature 95
       ```
 
       Your server should respond with the following:
@@ -2499,11 +2499,11 @@ stages:
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
-      $3\r\nbar\r\n
-      $3\r\nbaz\r\n
+      $3\r\ntemperature\r\n
+      $3\r\n95\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["bar", "baz"]] }`.
+      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "95"]] }`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2584,7 +2584,7 @@ stages:
       First, an entry will be added to a stream.
 
       ```bash
-      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd stream_key 0-1 temperature 96
       ```
 
       It'll then send an `XREAD` command to your server with the `BLOCK` command with `$` as the ID.
@@ -2596,7 +2596,7 @@ stages:
       On another instance of the redis-cli, another entry will be added in 500 milliseconds after sending the `XREAD` command.
 
       ```bash
-      $ redis-cli xadd stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-2 temperature 95
       ```
 
       Your server should respond with the following:
@@ -2607,11 +2607,11 @@ stages:
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
-      $3\r\nbar\r\n
-      $3\r\nbaz\r\n
+      $3\r\ntemperature\r\n
+      $3\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["bar", "baz"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "95"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli xread block 1000 streams stream_key $
