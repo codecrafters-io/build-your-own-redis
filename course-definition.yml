@@ -2213,7 +2213,7 @@ stages:
       First, an entry will be added.
 
       ```bash
-      $ redis-cli xadd stream_key 0-1 foo bar
+      $ redis-cli xadd stream_key 0-1 temperature 96
       ```
 
       It'll then send an `XREAD` command to your server.
@@ -2231,11 +2231,11 @@ stages:
       *2\r\n
       $3\r\n0-1\r\n
       *2\r\n
-      $3\r\nfoo\r\n
-      $3\r\nbar\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["foo", "bar"]]] }`.
+      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["temperature", "96"]]] }`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2260,8 +2260,8 @@ stages:
       First, an entry will be added to a couple of streams.
 
       ```bash
-      $ redis-cli xadd stream_key 0-1 foo bar
-      $ redis-cli xadd other_stream_key 0-2 bar baz
+      $ redis-cli xadd stream_key 0-1 temperature 95
+      $ redis-cli xadd other_stream_key 0-2 humidity 97
       ```
 
       It'll then send an `XREAD` command to your server with multiple streams.
@@ -2278,14 +2278,14 @@ stages:
       *2\r\n
       $3\r\n0-1\r\n
       *2\r\n
-      $3\r\nfoo\r\n
-      $3\r\nbar\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n95\r\n
       $14\r\nother_stream_key\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
-      $3\r\nbar\r\n
-      $3\r\nbaz\r\n
+      $8\r\nhumidity\r\n
+      $2\r\n97\r\n
       ```
 
       This is the RESP encoded representation of `{ "stream_key": [["0-1", ["foo", "bar"]]], "other_stream_key": [["0-2", ["bar", "baz"]]] }`.
