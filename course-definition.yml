@@ -1866,12 +1866,12 @@ stages:
       "1526985054079-0"
       $ redis-cli xrange some_key 1526985054069 1526985054079
       1) 1) 1526985054069-0
-        2) 1) temperature
+         2) 1) temperature
             2) 36
             3) humidity
             4) 95
       2) 1) 1526985054079-0
-        2) 1) temperature
+         2) 1) temperature
             2) 37
             3) humidity
             4) 94
@@ -2009,12 +2009,12 @@ stages:
       "1526985054079-0"
       $ redis-cli xrange some_key - 1526985054079
       1) 1) 1526985054069-0
-        2) 1) temperature
+         2) 1) temperature
             2) 36
             3) humidity
             4) 95
       2) 1) 1526985054079-0
-        2) 1) temperature
+         2) 1) temperature
             2) 37
             3) humidity
             4) 94
@@ -2088,12 +2088,12 @@ stages:
       "1526985054079-0"
       $ redis-cli xrange some_key 1526985054069 +
       1) 1) 1526985054069-0
-        2) 1) temperature
+         2) 1) temperature
             2) 36
             3) humidity
             4) 95
       2) 1) 1526985054079-0
-        2) 1) temperature
+         2) 1) temperature
             2) 37
             3) humidity
             4) 94
@@ -2176,8 +2176,8 @@ stages:
       "1526985054079-0"
       $ redis-cli xread streams some_key 1526985054069-0
       1) 1) "some_key"
-        2) 1) 1) 1526985054079-0
-              2) 1) temperature
+         2) 1) 1) 1526985054079-0
+               2) 1) temperature
                   2) 37
                   3) humidity
                   4) 94
@@ -2369,8 +2369,8 @@ stages:
       "1526985054069-0"
       $ redis-cli xread block 1000 streams some_key 1526985054069-0
       1) 1) "some_key"
-        2) 1) 1) 1526985054079-0
-              2) 1) temperature
+         2) 1) 1) 1526985054079-0
+               2) 1) temperature
                   2) 37
                   3) humidity
                   4) 94
@@ -2481,8 +2481,8 @@ stages:
       "1526985054069-0"
       $ redis-cli xread block 1000 streams some_key 1526985054069-0
       1) 1) "some_key"
-        2) 1) 1) 1526985054079-0
-              2) 1) temperature
+         2) 1) 1) 1526985054079-0
+               2) 1) temperature
                   2) 37
                   3) humidity
                   4) 94
@@ -2580,8 +2580,8 @@ stages:
       "1526985054069-0"
       $ redis-cli xread block 1000 streams some_key 1526985054069-0
       1) 1) "some_key"
-        2) 1) 1) 1526985054079-0
-              2) 1) temperature
+         2) 1) 1) 1526985054079-0
+               2) 1) temperature
                   2) 37
                   3) humidity
                   4) 94
