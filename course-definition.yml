@@ -2185,31 +2185,36 @@ stages:
 
       `XREAD` is somewhat similar to `XRANGE`. The primary difference is that `XREAD` only takes a single argument and not a start-end pair.
 
-      Another difference is that `XREAD` is exclusive. This means that only. entries with the ID greater than what was provided will be included in the response.
+      Another difference is that `XREAD` is exclusive. This means that only entries with the ID greater than what was provided will be included in the response.
 
-      Another difference is the return type. `XREAD` returns a map of key-value pairs instead of an array. The key is the stream key and the value is an array of entries for the stream.
+      Another difference is the return type. `XREAD` returns an array where each element is an array composed of two elements, which are the ID and the list of fields and values.
 
       Here's what the response in the example above actually looks like:
 
       ```bash
-      {
-        "some_key": [
+      [
+        [
+          "some_key",
           [
-            "1526985054079-0",
             [
-              "temperature",
-              "37",
-              "humidity",
-              "94"
-            ],
+              "1526985054079-0",
+              [
+                "temperature",
+                "37",
+                "humidity",
+                "94"
+              ]
+            ]
           ]
-      }
+        ]
+      ]
       ```
 
       When encoded as RESP, it looks like this:
 
       ```bash
-      %1\r\n
+      *1\r\n
+      *2\r\n
       $8\r\nsome_key\r\n
       *1\r\n
       *2\r\n
@@ -2248,7 +2253,8 @@ stages:
       Your server should respond with the following:
 
       ```bash
-      %1\r\n
+      *1\r\n
+      *2\r\n
       $9\r\nstream_key\r\n
       *1\r\n
       *2\r\n
@@ -2258,7 +2264,7 @@ stages:
       $2\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["temperature", "96"]]] }`.
+      This is the RESP encoded representation of `["stream_key", [["0-1", ["temperature", "96"]]]]`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2296,14 +2302,18 @@ stages:
       Your server should respond with the following:
 
       ```bash
-      %2\r\n
+      *2\r\n
+      *2\r\n
       $9\r\nstream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-1\r\n
       *2\r\n
       $11\r\ntemperature\r\n
       $2\r\n95\r\n
+      *2\r\n
       $14\r\nother_stream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
@@ -2311,7 +2321,7 @@ stages:
       $2\r\n97\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["foo", "bar"]]], "other_stream_key": [["0-2", ["bar", "baz"]]] }`.
+      This is the RESP encoded representation of `[["stream_key", [["0-1", ["foo", "bar"]]]], ["other_stream_key", [["0-2", ["bar", "baz"]]]]]`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2376,7 +2386,7 @@ stages:
                   4) 94
       ```
 
-      If not, the return type would be a RESP encoded [null](https://redis.io/docs/reference/protocol-spec/#nulls).
+      If not, the response would be nil encoded as a bulk string.
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
@@ -2414,8 +2424,10 @@ stages:
       Your server should respond with the following:
 
       ```bash
-      %1\r\n
+      *1\r\n
+      *2\r\n
       $9\r\stream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
@@ -2423,13 +2435,13 @@ stages:
       $3\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "96"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "96"]]]]`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli xread block 1000 streams stream_key 0-2
       ```
 
-      Your server should respond with `_\r\n` which is a RESP encoded `null`.
+      Your server should respond with `$4\r\nnull\r\n` which is null RESP encoded as a bulk string.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2517,8 +2529,10 @@ stages:
       Your server should respond with the following:
 
       ```bash
-      %1\r\n
+      *1\r\n
+      *2\r\n
       $9\r\stream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
@@ -2526,7 +2540,7 @@ stages:
       $3\r\n95\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "95"]] }`.
+      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "95"]]]]`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2625,8 +2639,10 @@ stages:
       Your server should respond with the following:
 
       ```bash
-      %1\r\n
+      *1\r\n
+      *2\r\n
       $9\r\stream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
@@ -2634,7 +2650,7 @@ stages:
       $3\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "95"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "95"]]]]`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli xread block 1000 streams stream_key $
