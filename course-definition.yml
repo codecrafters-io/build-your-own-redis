@@ -1587,7 +1587,7 @@ stages:
 
       For example, if you were using a Redis stream to store real-time data from a temperature & humidity monitor, the contents of the stream might look like this:
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -1656,7 +1656,7 @@ stages:
       
       Here's an example of stream entries in the previous stage:
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -1748,9 +1748,9 @@ stages:
     name: "Partially auto-generated IDs"
     difficulty: easy
     description_md: |
-      In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
+      In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the sequence number.
 
-      ### Specifying entry IDs in `XADD`
+      ### Specifying entry IDs in XADD
 
       As a recap, there are multiple formats in which the ID can be specified in the `XADD` command:
       - Explicit ("1526919030473-0") (Previous stage)
@@ -1759,7 +1759,7 @@ stages:
 
       We dealt with explicit IDs in the last stage. Now, we'll handle the second case.
 
-      When * is used  for the sequence number with the `XADD` command, Redis auto-generates a unique incrementing ID for the entry being appended to the stream.
+      When `*` is used  for the sequence number with the `XADD` command, Redis auto-generates a unique incrementing ID for the entry being appended to the stream.
 
       The default sequence number is 0. The only exception is when the time is also 0. In that case, the default sequence number is 1.
 
@@ -1771,7 +1771,7 @@ stages:
       $ ./spawn_redis_server.sh
       ```
 
-      It'll send an `XADD` command with * as the sequence number.
+      It'll send an `XADD` command with `*` as the sequence number.
 
       ```bash
       $ redis-cli xadd stream_key 0-* foo bar
@@ -1791,7 +1791,7 @@ stages:
 
       Your server should respond with `$3\r\n1-1\r\n`, which is `1-1` encoded as a RESP bulk string.
     marketing_md: |
-      In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
+      In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the sequence number.
 
   - slug: "streams-xadd-full-autoid"
     primary_extension_slug: "streams"
@@ -1800,12 +1800,12 @@ stages:
     description_md: |
       In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the entry ID.
 
-      ### Specifying entry IDs in `XADD` (Continued)
+      ### Specifying entry IDs in XADD (Continued)
 
       As a recap, there are multiple formats in which the ID can be specified in the `XADD` command:
       - Explicit ("1526919030474-0") (Previous stages)
       - Auto-generate only sequence number ("1526919030473-*") (Previous stages)
-      - Auto-generate time part and sequence number ("*") (This stage)
+      - Auto-generate time part and sequence number ("*") (**This stage**)
 
       We'll now handle the third case.
 
@@ -1840,12 +1840,12 @@ stages:
 
       ### The XRANGE command
 
-      `XRANGE` is the command is used for retrieving a range of entries from a stream within defined start and end IDs.
+      [XRANGE](https://redis.io/commands/xrange/) is the command is used for retrieving a range of entries from a stream within defined start and end IDs.
 
       Here's how it works:
       We'll use our previous example for entries existing in a stream.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -1866,12 +1866,12 @@ stages:
       "1526985054079-0"
       $ redis-cli xrange some_key 1526985054069 1526985054079
       1) 1) 1526985054069-0
-        2) 1) temperature
+         2) 1) temperature
             2) 36
             3) humidity
             4) 95
       2) 1) 1526985054079-0
-        2) 1) temperature
+         2) 1) temperature
             2) 37
             3) humidity
             4) 94
@@ -1885,7 +1885,7 @@ stages:
 
       The return value of the example above is actually something like this:
 
-      ```bash
+      ```json
       [
         [
           "1526985054069-0",
@@ -1910,7 +1910,7 @@ stages:
 
       When encoded as a RESP list, it looks like this:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $15\r\n1526985054069-0\r\n
@@ -1953,7 +1953,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $3\r\n0-2\r\n
@@ -1990,7 +1990,7 @@ stages:
       Here's an example of how that works:
       We'll use our previous example for entries existing in a stream.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2009,12 +2009,12 @@ stages:
       "1526985054079-0"
       $ redis-cli xrange some_key - 1526985054079
       1) 1) 1526985054069-0
-        2) 1) temperature
+         2) 1) temperature
             2) 36
             3) humidity
             4) 95
       2) 1) 1526985054079-0
-        2) 1) temperature
+         2) 1) temperature
             2) 37
             3) humidity
             4) 94
@@ -2044,7 +2044,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $3\r\n0-1\r\n
@@ -2088,12 +2088,12 @@ stages:
       "1526985054079-0"
       $ redis-cli xrange some_key 1526985054069 +
       1) 1) 1526985054069-0
-        2) 1) temperature
+         2) 1) temperature
             2) 36
             3) humidity
             4) 95
       2) 1) 1526985054079-0
-        2) 1) temperature
+         2) 1) temperature
             2) 37
             3) humidity
             4) 94
@@ -2123,7 +2123,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $3\r\n0-2\r\n
@@ -2153,11 +2153,11 @@ stages:
 
       ### The XREAD command
     
-      `XREAD` is used to read data from one or more streams, starting from a specified entry ID.
+      [XREAD](https://redis.io/commands/xread/) is used to read data from one or more streams, starting from a specified entry ID.
 
       Here's how it works. Let's use the entries previously shown as an example:
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2176,8 +2176,8 @@ stages:
       "1526985054079-0"
       $ redis-cli xread streams some_key 1526985054069-0
       1) 1) "some_key"
-        2) 1) 1) 1526985054079-0
-              2) 1) temperature
+         2) 1) 1) 1526985054079-0
+               2) 1) temperature
                   2) 37
                   3) humidity
                   4) 94
@@ -2185,31 +2185,36 @@ stages:
 
       `XREAD` is somewhat similar to `XRANGE`. The primary difference is that `XREAD` only takes a single argument and not a start-end pair.
 
-      Another difference is that `XREAD` is exclusive. This means that only. entries with the ID greater than what was provided will be included in the response.
+      Another difference is that `XREAD` is exclusive. This means that only entries with the ID greater than what was provided will be included in the response.
 
-      Another difference is the return type. `XREAD` returns a map of key-value pairs instead of an array. The key is the stream key and the value is an array of entries for the stream.
+      Another difference is the return type. `XREAD` returns an array where each element is an array composed of two elements, which are the ID and the list of fields and values.
 
       Here's what the response in the example above actually looks like:
 
-      ```bash
-      {
-        "some_key": [
+      ```json
+      [
+        [
+          "some_key",
           [
-            "1526985054079-0",
             [
-              "temperature",
-              "37",
-              "humidity",
-              "94"
-            ],
+              "1526985054079-0",
+              [
+                "temperature",
+                "37",
+                "humidity",
+                "94"
+              ]
+            ]
           ]
-      }
+        ]
+      ]
       ```
 
       When encoded as RESP, it looks like this:
 
-      ```bash
-      %1\r\n
+      ```text
+      *1\r\n
+      *2\r\n
       $8\r\nsome_key\r\n
       *1\r\n
       *2\r\n
@@ -2247,8 +2252,9 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
-      %1\r\n
+      ```text
+      *1\r\n
+      *2\r\n
       $9\r\nstream_key\r\n
       *1\r\n
       *2\r\n
@@ -2258,7 +2264,7 @@ stages:
       $2\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["temperature", "96"]]] }`.
+      This is the RESP encoded representation of `["stream_key", [["0-1", ["temperature", "96"]]]]`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2295,15 +2301,19 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
-      %2\r\n
+      ```text
+      *2\r\n
+      *2\r\n
       $9\r\nstream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-1\r\n
       *2\r\n
       $11\r\ntemperature\r\n
       $2\r\n95\r\n
+      *2\r\n
       $14\r\nother_stream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
@@ -2311,7 +2321,7 @@ stages:
       $2\r\n97\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": [["0-1", ["foo", "bar"]]], "other_stream_key": [["0-2", ["bar", "baz"]]] }`.
+      This is the RESP encoded representation of `[["stream_key", [["0-1", ["foo", "bar"]]]], ["other_stream_key", [["0-2", ["bar", "baz"]]]]]`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2335,7 +2345,7 @@ stages:
 
       Here's how it works. Let's use the entries previously shown as an example.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2369,14 +2379,14 @@ stages:
       "1526985054069-0"
       $ redis-cli xread block 1000 streams some_key 1526985054069-0
       1) 1) "some_key"
-        2) 1) 1) 1526985054079-0
-              2) 1) temperature
+         2) 1) 1) 1526985054079-0
+               2) 1) temperature
                   2) 37
                   3) humidity
                   4) 94
       ```
 
-      If not, the return type would be a RESP encoded [null](https://redis.io/docs/reference/protocol-spec/#nulls).
+      If not, the response would be nil encoded as a bulk string.
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
@@ -2413,9 +2423,11 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
-      %1\r\n
+      ```text
+      *1\r\n
+      *2\r\n
       $9\r\stream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
@@ -2423,13 +2435,13 @@ stages:
       $3\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "96"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "96"]]]]`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli xread block 1000 streams stream_key 0-2
       ```
 
-      Your server should respond with `_\r\n` which is a RESP encoded `null`.
+      Your server should respond with `$3\r\nnil\r\n` which is nil RESP encoded as a bulk string.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2447,7 +2459,7 @@ stages:
       
       Here's how it works. Let's use the entries previously shown as an example.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2474,15 +2486,15 @@ stages:
       "1526985054079-0"
       ```
 
-      The difference now is that the first instance of the redis-cli doesn't time out  and responds with null no matter how much time passes. It will wait until another entry is added. The return value after an entry is added is similar to the last stage.
+      The difference now is that the first instance of the redis-cli doesn't time out and responds with nil no matter how much time passes. It will wait until another entry is added. The return value after an entry is added is similar to the last stage.
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
       "1526985054069-0"
       $ redis-cli xread block 1000 streams some_key 1526985054069-0
       1) 1) "some_key"
-        2) 1) 1) 1526985054079-0
-              2) 1) temperature
+         2) 1) 1) 1526985054079-0
+               2) 1) temperature
                   2) 37
                   3) humidity
                   4) 94
@@ -2516,9 +2528,11 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
-      %1\r\n
+      ```text
+      *1\r\n
+      *2\r\n
       $9\r\stream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
@@ -2526,7 +2540,7 @@ stages:
       $3\r\n95\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "95"]] }`.
+      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "95"]]]]`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2546,7 +2560,7 @@ stages:
 
       Here's how it works. Let's use the entries previously shown as an example.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2580,14 +2594,14 @@ stages:
       "1526985054069-0"
       $ redis-cli xread block 1000 streams some_key 1526985054069-0
       1) 1) "some_key"
-        2) 1) 1) 1526985054079-0
-              2) 1) temperature
+         2) 1) 1) 1526985054079-0
+               2) 1) temperature
                   2) 37
                   3) humidity
                   4) 94
       ```
 
-      If not, the return type would still be a RESP encoded [null](https://redis.io/docs/reference/protocol-spec/#nulls).
+      If not, the return type would still nil encoded as a bulk string.
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
@@ -2624,9 +2638,11 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
-      %1\r\n
+      ```text
+      *1\r\n
+      *2\r\n
       $9\r\stream_key\r\n
+      *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
@@ -2634,13 +2650,13 @@ stages:
       $3\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `{ "stream_key": ["0-2", ["temperature", "95"]] }`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "95"]]]]`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli xread block 1000 streams stream_key $
       ```
 
-      Your server should respond with `_\r\n` which is a RESP encoded `null`.
+      Your server should respond with `$3\r\nnil\r\n` which is a `nil` encoded as a RESP bulk string.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
