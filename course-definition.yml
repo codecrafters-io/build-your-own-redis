@@ -1805,7 +1805,7 @@ stages:
       As a recap, there are multiple formats in which the ID can be specified in the `XADD` command:
       - Explicit ("1526919030474-0") (Previous stages)
       - Auto-generate only sequence number ("1526919030473-*") (Previous stages)
-      - Auto-generate time part and sequence number ("*") (This stage)
+      - Auto-generate time part and sequence number ("*") (**This stage**)
 
       We'll now handle the third case.
 
