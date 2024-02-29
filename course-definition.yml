@@ -1840,7 +1840,7 @@ stages:
 
       ### The XRANGE command
 
-      `XRANGE` is the command is used for retrieving a range of entries from a stream within defined start and end IDs.
+      [XRANGE](https://redis.io/commands/xrange/) is the command is used for retrieving a range of entries from a stream within defined start and end IDs.
 
       Here's how it works:
       We'll use our previous example for entries existing in a stream.
@@ -2153,7 +2153,7 @@ stages:
 
       ### The XREAD command
     
-      `XREAD` is used to read data from one or more streams, starting from a specified entry ID.
+      [XREAD](https://redis.io/commands/xread/) is used to read data from one or more streams, starting from a specified entry ID.
 
       Here's how it works. Let's use the entries previously shown as an example:
 
