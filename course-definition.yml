@@ -1748,7 +1748,7 @@ stages:
     name: "Partially auto-generated IDs"
     difficulty: easy
     description_md: |
-      In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
+      In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the sequence number.
 
       ### Specifying entry IDs in XADD
 
@@ -1759,7 +1759,7 @@ stages:
 
       We dealt with explicit IDs in the last stage. Now, we'll handle the second case.
 
-      When * is used  for the sequence number with the `XADD` command, Redis auto-generates a unique incrementing ID for the entry being appended to the stream.
+      When `*` is used  for the sequence number with the `XADD` command, Redis auto-generates a unique incrementing ID for the entry being appended to the stream.
 
       The default sequence number is 0. The only exception is when the time is also 0. In that case, the default sequence number is 1.
 
@@ -1771,7 +1771,7 @@ stages:
       $ ./spawn_redis_server.sh
       ```
 
-      It'll send an `XADD` command with * as the sequence number.
+      It'll send an `XADD` command with `*` as the sequence number.
 
       ```bash
       $ redis-cli xadd stream_key 0-* foo bar
@@ -1791,7 +1791,7 @@ stages:
 
       Your server should respond with `$3\r\n1-1\r\n`, which is `1-1` encoded as a RESP bulk string.
     marketing_md: |
-      In this stage, you'll enhance the `XADD` command by adding the option to use * as the sequence number.
+      In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the sequence number.
 
   - slug: "streams-xadd-full-autoid"
     primary_extension_slug: "streams"
