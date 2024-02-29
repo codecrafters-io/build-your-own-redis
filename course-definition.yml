@@ -1587,7 +1587,7 @@ stages:
 
       For example, if you were using a Redis stream to store real-time data from a temperature & humidity monitor, the contents of the stream might look like this:
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -1656,7 +1656,7 @@ stages:
       
       Here's an example of stream entries in the previous stage:
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -1845,7 +1845,7 @@ stages:
       Here's how it works:
       We'll use our previous example for entries existing in a stream.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -1885,7 +1885,7 @@ stages:
 
       The return value of the example above is actually something like this:
 
-      ```bash
+      ```json
       [
         [
           "1526985054069-0",
@@ -1910,7 +1910,7 @@ stages:
 
       When encoded as a RESP list, it looks like this:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $15\r\n1526985054069-0\r\n
@@ -1953,7 +1953,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $3\r\n0-2\r\n
@@ -1990,7 +1990,7 @@ stages:
       Here's an example of how that works:
       We'll use our previous example for entries existing in a stream.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2044,7 +2044,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $3\r\n0-1\r\n
@@ -2123,7 +2123,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $3\r\n0-2\r\n
@@ -2157,7 +2157,7 @@ stages:
 
       Here's how it works. Let's use the entries previously shown as an example:
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2191,7 +2191,7 @@ stages:
 
       Here's what the response in the example above actually looks like:
 
-      ```bash
+      ```json
       [
         [
           "some_key",
@@ -2212,7 +2212,7 @@ stages:
 
       When encoded as RESP, it looks like this:
 
-      ```bash
+      ```text
       *1\r\n
       *2\r\n
       $8\r\nsome_key\r\n
@@ -2252,7 +2252,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *1\r\n
       *2\r\n
       $9\r\nstream_key\r\n
@@ -2301,7 +2301,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *2\r\n
       *2\r\n
       $9\r\nstream_key\r\n
@@ -2345,7 +2345,7 @@ stages:
 
       Here's how it works. Let's use the entries previously shown as an example.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2423,7 +2423,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *1\r\n
       *2\r\n
       $9\r\stream_key\r\n
@@ -2459,7 +2459,7 @@ stages:
       
       Here's how it works. Let's use the entries previously shown as an example.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2528,7 +2528,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *1\r\n
       *2\r\n
       $9\r\stream_key\r\n
@@ -2560,7 +2560,7 @@ stages:
 
       Here's how it works. Let's use the entries previously shown as an example.
 
-      ```bash
+      ```yaml
       - 1526985054069-0 # (ID of the first entry)
         temperature: 36 # (A key value pair in the first entry)
         humidity: 95 # (Another key value pair in the first entry)
@@ -2638,7 +2638,7 @@ stages:
 
       Your server should respond with the following:
 
-      ```bash
+      ```text
       *1\r\n
       *2\r\n
       $9\r\stream_key\r\n
