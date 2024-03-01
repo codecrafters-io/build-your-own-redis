@@ -1866,7 +1866,8 @@ stages:
 
       [XRANGE](https://redis.io/commands/xrange/) is the command is used for retrieving a range of entries from a stream within defined start and end IDs.
 
-      Here's how it works:
+      Here's how it works.
+
       We'll use our previous example for entries existing in a stream.
 
       ```yaml
@@ -1952,7 +1953,7 @@ stages:
       $2\r\n94\r\n
       ```
 
-      The lines are separated into new lines for readability. The return value is just one value.
+      The lines are separated into new lines for readability. The return value is just one line.
 
       ### Tests
 
@@ -2031,7 +2032,8 @@ stages:
 
       In addition to accepting an explicit entry ID, `start` can also be specified as `-`. When `-` is used, `XRANGE` retrieves entries from the beginning of the stream.
 
-      Here's an example of how that works:
+      Here's an example of how that works.
+
       We'll use our previous example for entries existing in a stream.
 
       ```yaml
@@ -2142,7 +2144,8 @@ stages:
 
       In addition to accepting an explicit entry ID, `end` can also be specified as `+`. When `+` is used, `XRANGE` retrieves entries until the end of the stream.
 
-      Here's an example of how that works:
+      Here's an example of how that works.
+      
       We'll use our previous example for entries existing in a stream.
 
       ```bash
@@ -2238,7 +2241,9 @@ stages:
 
       [XREAD](https://redis.io/commands/xread/) is used to read data from one or more streams, starting from a specified entry ID.
 
-      Here's how it works. Let's use the entries previously shown as an example:
+      Here's how it works.
+
+      Let's use the entries previously shown as an example.
 
       ```yaml
       entries:
@@ -2463,7 +2468,7 @@ stages:
     name: "Blocking reads"
     difficulty: hard
     description_md: |
-      In this stage, you'll add extend support to `XREAD` to allow for turning it into a blocking command.
+      In this stage, you'll extend support to `XREAD` to allow for turning it into a blocking command.
 
       ### Understanding blocking
 
@@ -2473,7 +2478,9 @@ stages:
 
       If we want to wait for new data coming in, we need blocking.
 
-      Here's how it works. Let's use the entries previously shown as an example.
+      Here's how it works.
+
+      Let's use the entries previously shown as an example.
 
       ```yaml
       entries:
@@ -2601,11 +2608,13 @@ stages:
     name: "Blocking reads without timeout"
     difficulty: medium
     description_md: |
-      In this stage, you'll add extend support to `XREAD` to allow for the blocking command not timing out.
+      In this stage, you'll extend support to `XREAD` to allow for the blocking command not timing out.
 
       ### Understanding blocking without timeout
 
-      Here's how it works. Let's use the entries previously shown as an example.
+      Here's how it works.
+
+      Let's use the entries previously shown as an example.
 
       ```yaml
       entries:
@@ -2716,13 +2725,15 @@ stages:
     name: "Blocking reads using $"
     difficulty: easy
     description_md: |
-      In this stage, you'll add extend support to `XREAD` to allow for passing in `$` as the ID for a blocking command.
+      In this stage, you'll extend support to `XREAD` to allow for passing in `$` as the ID for a blocking command.
 
       ### Understanding $
 
       Using `$` as the ID passed to a blocking `XREAD` command signals that we only want new entries. This is similar to passing in the maximum ID we currently have in the stream.
 
-      Here's how it works. Let's use the entries previously shown as an example.
+      Here's how it works.
+
+      Let's use the entries previously shown as an example.
 
       ```yaml
       entries:
