@@ -1608,24 +1608,25 @@ stages:
         # ... (and so on)
       ```
 
-      The entry IDs will be looked at more closely in the upcoming stages.
+      We'll take a closer look at the format of entry IDs (`1526985054069-0` and `1526985054079-0` in the example above) in the upcoming stages.
 
       ### The XADD command
 
-      [XADD](https://redis.io/commands/xadd/) is the command used to append an entry to the stream. If a stream doesn't exist already, it is created.
+      The [XADD](https://redis.io/commands/xadd/) command appends an entry to a stream. If a stream doesn't exist already, it is created.
 
       Here's how it works:
 
       ```bash
-      $ redis-cli xadd some_key 1526919030474-0 temperature 36 humidity 95
-      "1526919030474-0"
+      $ redis-cli xadd stream_key 1526919030474-0 temperature 36 humidity 95
+      "1526919030474-0" # (ID of the entry created)
       ```
 
       The return value is the ID of the entry created, encoded as a [bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
 
       `XADD` supports other optional arguments, but we won't deal with them in this challenge.
 
-      In this stage, we'll focus on adding support for explicit IDs and at least one key value pair.
+      `XADD` also supports auto-generating entry IDs. We'll add support for that in later stages. For now, we'll only deal with
+      explicit IDs (like `1526919030474-0` in the example above).
 
       ### Tests
 
@@ -1639,6 +1640,7 @@ stages:
 
       ```bash
       $ redis-cli xadd stream_key 0-1 foo bar
+      "0-1"
       ```
 
       Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string.
@@ -1647,11 +1649,13 @@ stages:
 
       ```bash
       $ redis-cli type stream_key
+      "stream"
       ```
 
       Your server should respond with `+stream\r\n`, which is `stream` encoded as a RESP simple string.
 
       ### Notes
+
       - You can ignore the ability to parse multiple key value pairs.
     marketing_md: |
       In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
@@ -1988,7 +1992,7 @@ stages:
       $3\r\nfoo\r\n
       ```
 
-      This is the RESP encoded representation of the following. 
+      This is the RESP encoded representation of the following.
 
       ```json
       [
@@ -2109,7 +2113,7 @@ stages:
             "foo",
             "bar"
           ]
-        ], 
+        ],
         [
           "0-2",
           [
@@ -2827,7 +2831,7 @@ stages:
         ]
       ]
       ```
-      
+
       It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
