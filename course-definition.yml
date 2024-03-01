@@ -1669,7 +1669,7 @@ stages:
 
       ### Entry IDs
 
-      Here's an example of stream entries in the previous stage:
+      Here's an example of stream entries from the previous stage:
 
       ```yaml
       entries:
@@ -2145,7 +2145,7 @@ stages:
       In addition to accepting an explicit entry ID, `end` can also be specified as `+`. When `+` is used, `XRANGE` retrieves entries until the end of the stream.
 
       Here's an example of how that works.
-      
+
       We'll use our previous example for entries existing in a stream.
 
       ```bash
