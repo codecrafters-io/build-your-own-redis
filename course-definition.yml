@@ -1806,9 +1806,9 @@ stages:
 
       ```bash
       $ redis-cli xadd some_key "1-*" foo bar
-      "1-1" # If there are no entries, the sequence number will be 1
+      "1-0" # If there are no entries, the sequence number will be 0
       $ redis-cli xadd some_key "1-*" bar baz
-      "1-2" # Adding another entry will increment the sequence number
+      "1-1" # Adding another entry will increment the sequence number
       ```
 
       ### Tests
