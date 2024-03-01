@@ -1735,19 +1735,23 @@ stages:
       $ redis-cli xadd stream_key 1-2 baz foo
       ```
 
-      Your server should respond with `-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n`, which is the error message in the example encoded as a [simple error](https://redis.io/docs/reference/protocol-spec/#simple-errors). It'll then send another `XADD` command with a smaller value for the time and a larger value for the sequence number.
+      Your server should respond with "-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n", which is the error message in the example encoded as a [simple error](https://redis.io/docs/reference/protocol-spec/#simple-errors).
+
+      It'll then send another `XADD` command with a smaller value for the time and a larger value for the sequence number.
 
       ```bash
       $ redis-cli xadd stream_key 0-3 baz foo
       ```
 
-      Your server should also respond with the same error message encoded as a RESP simple error. It'll then send another `XADD` command with `0-0` as the ID.
+      Your server should also respond with the same error message encoded as a RESP simple error.
+
+      It'll then send another `XADD` command with `0-0` as the ID.
 
       ```bash
       $ redis-cli xadd stream_key 0-0 baz foo
       ```
 
-      Your server should respond with `-ERR The ID specified in XADD must be greater than 0-0\r\n`, which is the error message in the example also encoded as a RESP simple error.
+      Your server should respond with "-ERR The ID specified in XADD must be greater than 0-0\r\n", which is the error message in the example also encoded as a RESP simple error.
     marketing_md: |
       In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
 
