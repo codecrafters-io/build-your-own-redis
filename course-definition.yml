@@ -1905,30 +1905,17 @@ stages:
 
       ### The XRANGE command
 
-      [XRANGE](https://redis.io/commands/xrange/) is the command is used for retrieving a range of entries from a stream within defined start and end IDs.
+      The [XRANGE](https://redis.io/commands/xrange/) command retrieves a range of entries from a stream.
 
-      Here's how it works.
+      It takes two arguments: `start` and `end`. Both are entry IDs. The command returns all entries in the
+      stream with IDs between the `start` and `end` IDs. This range is "inclusive", which means that the response
+      will includes entries with IDs that are equal to the `start` and `end` IDs.
 
-      We'll use our previous example for entries existing in a stream.
-
-      ```yaml
-      entries:
-        - id: 1526985054069-0 # (ID of the first entry)
-          temperature: 36 # (A key value pair in the first entry)
-          humidity: 95 # (Another key value pair in the first entry)
-
-        - id: 1526985054079-0 # (ID of the second entry)
-          temperature: 37 # (A key value pair in the first entry)
-          humidity: 94 # (Another key value pair in the first entry)
-
-        # ... (and so on)
-      ```
-
-      This is what the command looks like:
+      Here's an example of how it works:
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
-      "1526985054069-0"
+      "1526985054069-0" # (ID of the first added entry)
       $ redis-cli xadd some_key 1526985054079-0 temperature 37 humidity 94
       "1526985054079-0"
       $ redis-cli xrange some_key 1526985054069 1526985054079
@@ -1944,11 +1931,17 @@ stages:
             4) 94
       ```
 
-      The sequence number doesn't need to be included in the start and end IDs provided to the command. If not provided, the it defaults to a sequence number of 0 for the start and the maximum sequence number for the end.
+      The sequence number doesn't need to be included in the start and end IDs provided to the command. If not provided,
+      XRANGE defaults to a sequence number of 0 for the start and the maximum sequence number for the end.
 
-      The start and end IDs are inclusive, which means that the response includes entries with IDs matching both the start and end. The only way to get a single value from a stream is through the `XRANGE` command with the same value for the start and end IDs.
+      The return value of the command is not exactly what is shown in the example above. This is already formatted by redis-cli.
 
-      The return value of the command is not exactly what is shown in the example above. This is already formatted by the CLI. What is instead returned is actually a [list](https://redis.io/docs/reference/protocol-spec/#arrays) of an array of two items. The items being the ID and a list of key value pairs.
+      The actual return value is a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays) of arrays.
+
+      - Each inner array represents an entry.
+      - The first item in the inner array is the ID of the entry.
+      - The second item is a list of key value pairs, where the key value pairs are represented as a list of strings.
+        - The key value pairs are in the order they were added to the entry.
 
       The return value of the example above is actually something like this:
 
@@ -1994,7 +1987,8 @@ stages:
       $2\r\n94\r\n
       ```
 
-      The lines are separated into new lines for readability. The return value is just one line.
+      In the code block above, the response is separated into multiple lines for readability. The actual
+      return value doesn't contain any additional newlines.
 
       ### Tests
 
@@ -2008,8 +2002,11 @@ stages:
 
       ```bash
       $ redis-cli xadd stream_key 0-1 foo bar
+      "0-1"
       $ redis-cli xadd stream_key 0-2 bar baz
+      "0-2"
       $ redis-cli xadd stream_key 0-3 baz foo
+      "0-3"
       ```
 
       Then, it'll send an `XRANGE` command to your server.
@@ -2018,23 +2015,7 @@ stages:
       $ redis-cli xrange stream_key 0-2 0-3
       ```
 
-      Your server should respond with the following:
-
-      ```text
-      *2\r\n
-      *2\r\n
-      $3\r\n0-2\r\n
-      *2\r\n
-      $3\r\nbar\r\n
-      $3\r\nbaz\r\n
-      *2\r\n
-      $3\r\n0-3\r\n
-      *2\r\n
-      $3\r\nbaz\r\n
-      $3\r\nfoo\r\n
-      ```
-
-      This is the RESP encoded representation of the following.
+      Your server should respond with the following (encoded as a RESP Array):
 
       ```json
       [
@@ -2054,9 +2035,6 @@ stages:
         ]
       ]
       ```
-
-      ### Notes
-      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
     marketing_md: |
       In this stage, you'll add support for querying data from a stream using the `XRANGE` command.
 
