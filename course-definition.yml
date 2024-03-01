@@ -1643,7 +1643,7 @@ stages:
       "0-1"
       ```
 
-      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string.
+      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a [RESP bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
 
       The tester will then send a `TYPE` command to your server.
 
@@ -1652,10 +1652,11 @@ stages:
       "stream"
       ```
 
-      Your server should respond with `+stream\r\n`, which is `stream` encoded as a RESP simple string.
+      Your server should respond with `+stream\r\n`, which is `stream` encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
 
       ### Notes
 
+      - You still need to handle the "string" and "none" return values for the `TYPE` command. "stream" should only be returned for keys that are streams.
       - You can ignore the ability to parse multiple key value pairs.
     marketing_md: |
       In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
