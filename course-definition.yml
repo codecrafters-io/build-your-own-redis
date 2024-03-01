@@ -1782,7 +1782,7 @@ stages:
   - slug: "streams-xadd-partial-autoid"
     primary_extension_slug: "streams"
     name: "Partially auto-generated IDs"
-    difficulty: easy
+    difficulty: medium
     description_md: |
       In this stage, you'll extend your `XADD` command implementation to support auto-generating the
       sequence number part of the entry ID.
@@ -1853,7 +1853,7 @@ stages:
   - slug: "streams-xadd-full-autoid"
     primary_extension_slug: "streams"
     name: "Fully auto-generated IDs"
-    difficulty: easy
+    difficulty: medium
     description_md: |
       In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the entry ID.
 
