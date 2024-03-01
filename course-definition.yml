@@ -1684,10 +1684,11 @@ stages:
         # ... (and so on)
       ```
 
-      Entry IDs are always composed of two integers: `<millisecondsTime>-<sequenceNumber>`. Entry IDs are unique within a stream.
+      Entry IDs are always composed of two integers: `<millisecondsTime>-<sequenceNumber>`.
 
-      Entry IDs are guaranteed to be incremental within a stream - i.e. an entry added later will always have an ID greater than an entry added in the past. More
-      on the exact details of this in the next section.
+      Entry IDs are unique within a stream, and they're guaranteed to be incremental - i.e. an
+      entry added later will always have an ID greater than an entry added in the past. More
+      on this in the next section.
 
       ### Specifying entry IDs in XADD
 
