@@ -1522,7 +1522,9 @@ stages:
 
       ### The TYPE command
 
-      [TYPE](https://redis.io/commands/type/) is the command used in order to get the type of a value stored at a given key. The different types that can be returned are: string, list, set, zset, hash, and stream.
+      The [TYPE](https://redis.io/commands/type/) command returns the type of value stored at a given key.
+
+      It returns one of the following types: string, list, set, zset, hash, and stream.
 
       Here's how it works:
 
@@ -1540,7 +1542,7 @@ stages:
       "none"
       ```
 
-      The return value of the type command is encoded as a [simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
+      The return value is encoded as a [simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
 
       ### Tests
 
