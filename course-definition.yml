@@ -1713,7 +1713,7 @@ stages:
       $ redis-cli xadd some_key 1-1 foo bar
       "1-1"
       $ redis-cli xadd some_key 1-1 bar baz
-      "(error) ERR The ID specified in XADD is equal or smaller than the target stream top item"
+      (error) ERR The ID specified in XADD is equal or smaller than the target stream top item
       ```
 
       Here's another such example:
@@ -1722,14 +1722,14 @@ stages:
       $ redis-cli xadd some_key 1-1 foo bar
       "1-1"
       $ redis-cli xadd some_key 0-2 bar baz
-      "(error) ERR The ID specified in XADD is equal or smaller than the target stream top item"
+      (error) ERR The ID specified in XADD is equal or smaller than the target stream top item
       ```
 
       The minimum entry ID that Redis supports is 0-1. Passing in an ID lower than should result in an error.
 
       ```bash
       $ redis-cli xadd some_key 0-0 bar baz
-      "(error) ERR The ID specified in XADD must be greater than 0-0"
+      (error) ERR The ID specified in XADD must be greater than 0-0
       ```
 
       ### Tests
