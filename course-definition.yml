@@ -2053,21 +2053,6 @@ stages:
 
       Here's an example of how that works.
 
-      We'll use our previous example for entries existing in a stream.
-
-      ```yaml
-      entries:
-        - id: 1526985054069-0 # (ID of the first entry)
-          temperature: 36 # (A key value pair in the first entry)
-          humidity: 95 # (Another key value pair in the first entry)
-
-        - id: 1526985054079-0 # (ID of the second entry)
-          temperature: 37 # (A key value pair in the first entry)
-          humidity: 94 # (Another key value pair in the first entry)
-
-        # ... (and so on)
-      ```
-
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
       "1526985054069-0"
@@ -2086,6 +2071,8 @@ stages:
             4) 94
       ```
 
+      In the example above, `XRANGE` retrieves all entries from the beginning of the stream to the entry with ID `1526985054079-0`.
+
       ### Tests
 
       The tester will execute your program like this:
@@ -2098,33 +2085,26 @@ stages:
 
       ```bash
       $ redis-cli xadd stream_key 0-1 foo bar
+      "0-1"
       $ redis-cli xadd stream_key 0-2 bar baz
+      "0-2"
       $ redis-cli xadd stream_key 0-3 baz foo
+      "0-3"
       ```
 
       It'll then send an `XRANGE` command to your server.
 
       ```bash
       $ redis-cli xrange stream_key - 0-2
+      1) 1) 0-1
+         2) 1) foo
+            2) bar
+      2) 1) 0-2
+         2) 1) bar
+            2) baz
       ```
 
-      Your server should respond with the following:
-
-      ```text
-      *2\r\n
-      *2\r\n
-      $3\r\n0-1\r\n
-      *2\r\n
-      $3\r\nfoo\r\n
-      $3\r\nbar\r\n
-      *2\r\n
-      $3\r\n0-2\r\n
-      *2\r\n
-      $3\r\nbar\r\n
-      $3\r\nbaz\r\n
-      ```
-
-      This is the RESP encoded representation of the following.
+      Your server should respond with the following, encoded as a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays):
 
       ```json
       [
@@ -2144,9 +2124,6 @@ stages:
         ]
       ]
       ```
-
-      ### Notes
-      - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
     marketing_md: |
       In this stage, you'll extend support for `XRANGE` to allow querying using `-`.
 
