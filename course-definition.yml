@@ -1665,7 +1665,7 @@ stages:
     name: "Validating entry IDs"
     difficulty: easy
     description_md: |
-      In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
+      In this stage, you'll add support for validating entry IDs to the `XADD` command.
 
       ### Entry IDs
 
