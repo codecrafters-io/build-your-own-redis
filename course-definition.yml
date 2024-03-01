@@ -1641,7 +1641,9 @@ stages:
       $ redis-cli xadd stream_key 0-1 foo bar
       ```
 
-      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string. The tester will then send a `TYPE` command to your server.
+      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string.
+
+      The tester will then send a `TYPE` command to your server.
 
       ```bash
       $ redis-cli type stream_key
@@ -1737,19 +1739,23 @@ stages:
       $ redis-cli xadd stream_key 1-2 baz foo
       ```
 
-      Your server should respond with `-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n`, which is the error message in the example encoded as a [simple error](https://redis.io/docs/reference/protocol-spec/#simple-errors). It'll then send another `XADD` command with a smaller value for the time and a larger value for the sequence number.
+      Your server should respond with "-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n", which is the error message in the example encoded as a [simple error](https://redis.io/docs/reference/protocol-spec/#simple-errors).
+
+      It'll then send another `XADD` command with a smaller value for the time and a larger value for the sequence number.
 
       ```bash
       $ redis-cli xadd stream_key 0-3 baz foo
       ```
 
-      Your server should also respond with the same error message encoded as a RESP simple error. It'll then send another `XADD` command with `0-0` as the ID.
+      Your server should also respond with the same error message encoded as a RESP simple error.
+
+      It'll then send another `XADD` command with `0-0` as the ID.
 
       ```bash
       $ redis-cli xadd stream_key 0-0 baz foo
       ```
 
-      Your server should respond with `-ERR The ID specified in XADD must be greater than 0-0\r\n`, which is the error message in the example also encoded as a RESP simple error.
+      Your server should respond with "-ERR The ID specified in XADD must be greater than 0-0\r\n", which is the error message in the example also encoded as a RESP simple error.
     marketing_md: |
       In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
 
@@ -1787,13 +1793,17 @@ stages:
       $ redis-cli xadd stream_key 0-* foo bar
       ```
 
-      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string. It'll then send another `XADD` command with `*` as the sequence number, but this time with 1 as the time.
+      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string.
+
+      It'll then send another `XADD` command with `*` as the sequence number, but this time with 1 as the time.
 
       ```bash
       $ redis-cli xadd stream_key 1-* foo bar
       ```
 
-      Your server should respond with `$3\r\n1-0\r\n`, which is `1-0` encoded as a RESP bulk string. It'll send the same command again.
+      Your server should respond with `$3\r\n1-0\r\n`, which is `1-0` encoded as a RESP bulk string.
+
+      It'll send the same command again.
 
       ```bash
       $ redis-cli xadd stream_key 1-* bar baz
@@ -1978,7 +1988,26 @@ stages:
       $3\r\nfoo\r\n
       ```
 
-      This is the RESP encoded representation of `[["0-2", ["bar", "baz"]], ["0-3", ["baz", "foo"]]]`.
+      This is the RESP encoded representation of the following. 
+
+      ```json
+      [
+        [
+          "0-2",
+          [
+            "bar",
+            "baz"
+          ]
+        ],
+        [
+          "0-3",
+          [
+            "baz",
+            "foo"
+          ]
+        ]
+      ]
+      ```
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2070,7 +2099,26 @@ stages:
       $3\r\nbaz\r\n
       ```
 
-      This is the RESP encoded representation of `[["0-1", ["foo", "bar"]], ["0-2", ["bar", "baz"]]]`.
+      This is the RESP encoded representation of the following.
+
+      ```json
+      [
+        [
+          "0-1",
+          [
+            "foo",
+            "bar"
+          ]
+        ], 
+        [
+          "0-2",
+          [
+            "bar",
+            "baz"
+          ]
+        ]
+      ]
+      ```
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2149,7 +2197,26 @@ stages:
       $3\r\nfoo\r\n
       ```
 
-      This is the RESP encoded representation of [["0-2", ["bar", "baz"]], ["0-3", ["baz", "foo"]]].
+      This is the RESP encoded representation of the following.
+
+      ```json
+      [
+        [
+          "0-2",
+          [
+            "bar",
+            "baz"
+          ]
+        ],
+        [
+          "0-3",
+          [
+            "baz",
+            "foo"
+          ]
+        ]
+      ]
+      ```
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2277,7 +2344,24 @@ stages:
       $2\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `["stream_key", [["0-1", ["temperature", "96"]]]]`.
+      This is the RESP encoded representation of the following.
+
+      ```json
+      [
+        [
+          "stream_key",
+          [
+            [
+              "0-1",
+              [
+                "temperature",
+                "96"
+              ]
+            ]
+          ]
+        ]
+      ]
+      ```
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2334,7 +2418,36 @@ stages:
       $2\r\n97\r\n
       ```
 
-      This is the RESP encoded representation of `[["stream_key", [["0-1", ["foo", "bar"]]]], ["other_stream_key", [["0-2", ["bar", "baz"]]]]]`.
+      This is the RESP encoded representation of the following.
+
+      ```json
+      [
+        [
+          "stream_key",
+          [
+            [
+              "0-1",
+              [
+                "foo",
+                "bar"
+              ]
+            ]
+          ]
+        ],
+        [
+          "other_stream_key",
+          [
+            [
+              "0-2",
+              [
+                "bar",
+                "baz"
+              ]
+            ]
+          ]
+        ]
+      ]
+      ```
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2426,7 +2539,7 @@ stages:
       It'll then send an `XREAD` command to your server with the `BLOCK` command.
 
       ```bash
-      $ redis-cli xread block 1000 streams stream_key 0-0
+      $ redis-cli xread block 1000 streams stream_key 0-1
       ```
 
       On another instance of the redis-cli, another entry will be added in 500 milliseconds after sending the `XREAD` command.
@@ -2449,13 +2562,30 @@ stages:
       $3\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "96"]]]]`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      This is the RESP encoded representation of the following.
+
+      ```json
+      [
+        [
+          "stream_key",
+          [
+            "0-2",
+            [
+              "temperature",
+              "96"
+            ]
+          ]
+        ]
+      ]
+      ```
+
+      It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli xread block 1000 streams stream_key 0-2
       ```
 
-      Your server should respond with `$3\r\nnil\r\n` which is nil RESP encoded as a bulk string.
+      Your server should respond with `$3\r\nnil\r\n` which is `nil` RESP encoded as a bulk string.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2555,7 +2685,22 @@ stages:
       $3\r\n95\r\n
       ```
 
-      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "95"]]]]`.
+      This is the RESP encoded representation of the following.
+
+      ```json
+      [
+        [
+          "stream_key",
+          [
+            "0-2",
+            [
+              "temperature",
+              "95"
+            ]
+          ]
+        ]
+      ]
+      ```
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2666,7 +2811,24 @@ stages:
       $3\r\n96\r\n
       ```
 
-      This is the RESP encoded representation of `[["stream_key", ["0-2", ["temperature", "95"]]]]`. It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      This is the RESP encoded representation of the following.
+
+      ```json
+      [
+        [
+          "stream_key",
+          [
+            "0-2",
+            [
+              "temperature",
+              "95"
+            ]
+          ]
+        ]
+      ]
+      ```
+      
+      It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli xread block 1000 streams stream_key $
