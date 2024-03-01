@@ -1583,7 +1583,7 @@ stages:
   - slug: "streams-xadd"
     primary_extension_slug: "streams"
     name: "Create a stream"
-    difficulty: easy
+    difficulty: medium
     description_md: |
       In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
 
