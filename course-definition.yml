@@ -1543,7 +1543,7 @@ stages:
       The return value of the type command is encoded as a [simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
 
       ### Tests
-      
+
       The tester will execute your program like this:
 
       ```bash
@@ -1653,7 +1653,7 @@ stages:
       In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
 
       ### Entry IDs
-      
+
       Here's an example of stream entries in the previous stage:
 
       ```yaml
@@ -1668,7 +1668,7 @@ stages:
       # ... (and so on)
       ```
 
-      Entry IDs are always composed of two integers: `<millisecondsTime>-<sequenceNumber>`. 
+      Entry IDs are always composed of two integers: `<millisecondsTime>-<sequenceNumber>`.
 
       There are multiple formats in which the ID can be specified in the XADD command:
       - Explicit ("1526919030474-0") (**This stage**)
@@ -1795,7 +1795,7 @@ stages:
 
   - slug: "streams-xadd-full-autoid"
     primary_extension_slug: "streams"
-    name: "Full auto-generated IDs"
+    name: "Fully auto-generated IDs"
     difficulty: easy
     description_md: |
       In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the entry ID.
@@ -1967,7 +1967,7 @@ stages:
       $3\r\nfoo\r\n
       ```
 
-      This is the RESP encoded representation of `[["0-2", ["bar", "baz"]], ["0-3", ["baz", "foo"]]]`. 
+      This is the RESP encoded representation of `[["0-2", ["bar", "baz"]], ["0-3", ["baz", "foo"]]]`.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -1982,7 +1982,7 @@ stages:
       In this stage, you'll extend support for `XRANGE` to allow querying using `-`.
 
       ### Using XRANGE with -
-      
+
       In the previous stage, we saw that `XRANGE` takes `start` and `end` as arguments.
 
       In addition to accepting an explicit entry ID, `start` can also be specified as `-`. When `-` is used, `XRANGE` retrieves entries from the beginning of the stream.
@@ -2073,7 +2073,7 @@ stages:
       In this stage, you'll extend support for `XRANGE` to allow querying using `+`.
 
       ### Using XRANGE with +
-      
+
       In the previous stage, we saw that `XRANGE` takes `start` and `end` as arguments.
 
       In addition to accepting an explicit entry ID, `end` can also be specified as `+`. When `+` is used, `XRANGE` retrieves entries until the end of the stream.
@@ -2152,7 +2152,7 @@ stages:
       In this stage, you'll add support to querying a stream using the `XREAD` command.
 
       ### The XREAD command
-    
+
       [XREAD](https://redis.io/commands/xread/) is used to read data from one or more streams, starting from a specified entry ID.
 
       Here's how it works. Let's use the entries previously shown as an example:
@@ -2330,16 +2330,16 @@ stages:
 
   - slug: "streams-xread-block"
     primary_extension_slug: "streams"
-    name: "Support blocking reads"
+    name: "Blocking reads"
     difficulty: hard
     description_md: |
       In this stage, you'll add extend support to `XREAD` to allow for turning it into a blocking command.
 
       ### Understanding blocking
-      
+
       `BLOCK` is one of the optional parameters that could be passed in to the `XREAD` command.
 
-      Without blocking, the current implementation of our command is synchronous. This means that the command can get new data as long as there are items available. 
+      Without blocking, the current implementation of our command is synchronous. This means that the command can get new data as long as there are items available.
 
       If we want to wait for new data coming in, we need blocking.
 
@@ -2450,13 +2450,13 @@ stages:
 
   - slug: "streams-xread-block-no-timeout"
     primary_extension_slug: "streams"
-    name: "Support blocking reads without timeout"
+    name: "Blocking reads without timeout"
     difficulty: medium
     description_md: |
       In this stage, you'll add extend support to `XREAD` to allow for the blocking command not timing out.
 
-      ### Understandign blocking without timeout
-      
+      ### Understanding blocking without timeout
+
       Here's how it works. Let's use the entries previously shown as an example.
 
       ```yaml
@@ -2549,7 +2549,7 @@ stages:
 
   - slug: "streams-xread-block-max-id"
     primary_extension_slug: "streams"
-    name: "Support blocking reads using $"
+    name: "Blocking reads using $"
     difficulty: easy
     description_md: |
       In this stage, you'll add extend support to `XREAD` to allow for passing in `$` as the ID for a blocking command.
