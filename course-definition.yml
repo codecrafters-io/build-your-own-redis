@@ -1596,15 +1596,16 @@ stages:
       For example, if you were using a Redis stream to store real-time data from a temperature & humidity monitor, the contents of the stream might look like this:
 
       ```yaml
-      - 1526985054069-0 # (ID of the first entry)
-        temperature: 36 # (A key value pair in the first entry)
-        humidity: 95 # (Another key value pair in the first entry)
+      entries:
+        - id: 1526985054069-0 # (ID of the first entry)
+          temperature: 36 # (A key value pair in the first entry)
+          humidity: 95 # (Another key value pair in the first entry)
 
-      - 1526985054079-0 # (ID of the second entry)
-        temperature: 37 # (A key value pair in the first entry)
-        humidity: 94 # (Another key value pair in the first entry)
+        - id: 1526985054079-0 # (ID of the second entry)
+          temperature: 37 # (A key value pair in the first entry)
+          humidity: 94 # (Another key value pair in the first entry)
 
-      # ... (and so on)
+        # ... (and so on)
       ```
 
       The entry IDs will be looked at more closely in the upcoming stages.
@@ -1665,15 +1666,16 @@ stages:
       Here's an example of stream entries in the previous stage:
 
       ```yaml
-      - 1526985054069-0 # (ID of the first entry)
-        temperature: 36 # (A key value pair in the first entry)
-        humidity: 95 # (Another key value pair in the first entry)
+      entries:
+        - id: 1526985054069-0 # (ID of the first entry)
+          temperature: 36 # (A key value pair in the first entry)
+          humidity: 95 # (Another key value pair in the first entry)
 
-      - 1526985054079-0 # (ID of the second entry)
-        temperature: 37 # (A key value pair in the first entry)
-        humidity: 94 # (Another key value pair in the first entry)
+        - id: 1526985054079-0 # (ID of the second entry)
+          temperature: 37 # (A key value pair in the first entry)
+          humidity: 94 # (Another key value pair in the first entry)
 
-      # ... (and so on)
+        # ... (and so on)
       ```
 
       Entry IDs are always composed of two integers: `<millisecondsTime>-<sequenceNumber>`.
@@ -1854,15 +1856,16 @@ stages:
       We'll use our previous example for entries existing in a stream.
 
       ```yaml
-      - 1526985054069-0 # (ID of the first entry)
-        temperature: 36 # (A key value pair in the first entry)
-        humidity: 95 # (Another key value pair in the first entry)
+      entries:
+        - id: 1526985054069-0 # (ID of the first entry)
+          temperature: 36 # (A key value pair in the first entry)
+          humidity: 95 # (Another key value pair in the first entry)
 
-      - 1526985054079-0 # (ID of the second entry)
-        temperature: 37 # (A key value pair in the first entry)
-        humidity: 94 # (Another key value pair in the first entry)
+        - id: 1526985054079-0 # (ID of the second entry)
+          temperature: 37 # (A key value pair in the first entry)
+          humidity: 94 # (Another key value pair in the first entry)
 
-      # ... (and so on)
+        # ... (and so on)
       ```
 
       This is what the command looks like:
@@ -1999,15 +2002,16 @@ stages:
       We'll use our previous example for entries existing in a stream.
 
       ```yaml
-      - 1526985054069-0 # (ID of the first entry)
-        temperature: 36 # (A key value pair in the first entry)
-        humidity: 95 # (Another key value pair in the first entry)
+      entries:
+        - id: 1526985054069-0 # (ID of the first entry)
+          temperature: 36 # (A key value pair in the first entry)
+          humidity: 95 # (Another key value pair in the first entry)
 
-      - 1526985054079-0 # (ID of the second entry)
-        temperature: 37 # (A key value pair in the first entry)
-        humidity: 94 # (Another key value pair in the first entry)
+        - id: 1526985054079-0 # (ID of the second entry)
+          temperature: 37 # (A key value pair in the first entry)
+          humidity: 94 # (Another key value pair in the first entry)
 
-      # ... (and so on)
+        # ... (and so on)
       ```
 
       ```bash
@@ -2166,15 +2170,16 @@ stages:
       Here's how it works. Let's use the entries previously shown as an example:
 
       ```yaml
-      - 1526985054069-0 # (ID of the first entry)
-        temperature: 36 # (A key value pair in the first entry)
-        humidity: 95 # (Another key value pair in the first entry)
+      entries:
+        - id: 1526985054069-0 # (ID of the first entry)
+          temperature: 36 # (A key value pair in the first entry)
+          humidity: 95 # (Another key value pair in the first entry)
 
-      - 1526985054079-0 # (ID of the second entry)
-        temperature: 37 # (A key value pair in the first entry)
-        humidity: 94 # (Another key value pair in the first entry)
+        - id: 1526985054079-0 # (ID of the second entry)
+          temperature: 37 # (A key value pair in the first entry)
+          humidity: 94 # (Another key value pair in the first entry)
 
-      # ... (and so on)
+        # ... (and so on)
       ```
 
       ```bash
@@ -2354,15 +2359,16 @@ stages:
       Here's how it works. Let's use the entries previously shown as an example.
 
       ```yaml
-      - 1526985054069-0 # (ID of the first entry)
-        temperature: 36 # (A key value pair in the first entry)
-        humidity: 95 # (Another key value pair in the first entry)
+      entries:
+        - id: 1526985054069-0 # (ID of the first entry)
+          temperature: 36 # (A key value pair in the first entry)
+          humidity: 95 # (Another key value pair in the first entry)
 
-      - 1526985054079-0 # (ID of the second entry)
-        temperature: 37 # (A key value pair in the first entry)
-        humidity: 94 # (Another key value pair in the first entry)
+        - id: 1526985054079-0 # (ID of the second entry)
+          temperature: 37 # (A key value pair in the first entry)
+          humidity: 94 # (Another key value pair in the first entry)
 
-      # ... (and so on)
+        # ... (and so on)
       ```
 
       On one instance of the redis-cli, we'd add an entry and send  a blocking `XREAD` command.
@@ -2468,15 +2474,16 @@ stages:
       Here's how it works. Let's use the entries previously shown as an example.
 
       ```yaml
-      - 1526985054069-0 # (ID of the first entry)
-        temperature: 36 # (A key value pair in the first entry)
-        humidity: 95 # (Another key value pair in the first entry)
+      entries:
+        - id: 1526985054069-0 # (ID of the first entry)
+          temperature: 36 # (A key value pair in the first entry)
+          humidity: 95 # (Another key value pair in the first entry)
 
-      - 1526985054079-0 # (ID of the second entry)
-        temperature: 37 # (A key value pair in the first entry)
-        humidity: 94 # (Another key value pair in the first entry)
+        - id: 1526985054079-0 # (ID of the second entry)
+          temperature: 37 # (A key value pair in the first entry)
+          humidity: 94 # (Another key value pair in the first entry)
 
-      # ... (and so on)
+        # ... (and so on)
       ```
 
       On one instance of the redis-cli, we'd add an entry and send a blocking `XREAD` command with 0 as the time passed in.
@@ -2569,15 +2576,16 @@ stages:
       Here's how it works. Let's use the entries previously shown as an example.
 
       ```yaml
-      - 1526985054069-0 # (ID of the first entry)
-        temperature: 36 # (A key value pair in the first entry)
-        humidity: 95 # (Another key value pair in the first entry)
+      entries:
+        - id: 1526985054069-0 # (ID of the first entry)
+          temperature: 36 # (A key value pair in the first entry)
+          humidity: 95 # (Another key value pair in the first entry)
 
-      - 1526985054079-0 # (ID of the second entry)
-        temperature: 37 # (A key value pair in the first entry)
-        humidity: 94 # (Another key value pair in the first entry)
+        - id: 1526985054079-0 # (ID of the second entry)
+          temperature: 37 # (A key value pair in the first entry)
+          humidity: 94 # (Another key value pair in the first entry)
 
-      # ... (and so on)
+        # ... (and so on)
       ```
 
       On one instance of the redis-cli, we'd add an entry and send a blocking `XREAD` command with 0 as the time passed in.
