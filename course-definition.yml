@@ -1640,7 +1640,9 @@ stages:
       $ redis-cli xadd stream_key 0-1 foo bar
       ```
 
-      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string. The tester will then send a `TYPE` command to your server.
+      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string.
+
+      The tester will then send a `TYPE` command to your server.
 
       ```bash
       $ redis-cli type stream_key
@@ -1789,13 +1791,17 @@ stages:
       $ redis-cli xadd stream_key 0-* foo bar
       ```
 
-      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string. It'll then send another `XADD` command with `*` as the sequence number, but this time with 1 as the time.
+      Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a RESP bulk string.
+
+      It'll then send another `XADD` command with `*` as the sequence number, but this time with 1 as the time.
 
       ```bash
       $ redis-cli xadd stream_key 1-* foo bar
       ```
 
-      Your server should respond with `$3\r\n1-0\r\n`, which is `1-0` encoded as a RESP bulk string. It'll send the same command again.
+      Your server should respond with `$3\r\n1-0\r\n`, which is `1-0` encoded as a RESP bulk string.
+
+      It'll send the same command again.
 
       ```bash
       $ redis-cli xadd stream_key 1-* bar baz
