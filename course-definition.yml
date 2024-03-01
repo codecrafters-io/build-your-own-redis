@@ -2527,7 +2527,7 @@ stages:
       It'll then send an `XREAD` command to your server with the `BLOCK` command.
 
       ```bash
-      $ redis-cli xread block 1000 streams stream_key 0-0
+      $ redis-cli xread block 1000 streams stream_key 0-1
       ```
 
       On another instance of the redis-cli, another entry will be added in 500 milliseconds after sending the `XREAD` command.
