@@ -1797,7 +1797,8 @@ stages:
 
       We dealt with explicit IDs in the last stage. We'll handle the second case in this stage.
 
-      When `*` is used for the sequence number with the `XADD` command, Redis auto-generates a unique incrementing ID for the entry being appended to the stream.
+      When `*` is used for the sequence number, Redis picks the last sequence number used in the
+      stream (for the same time part) and increments it by 1.
 
       The default sequence number is 0. The only exception is when the time part is also 0. In that case, the default sequence number is 1.
 
