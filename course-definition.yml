@@ -1378,7 +1378,7 @@ stages:
       replconf getack * # expecting REPLCONF ACK 0, since 0 bytes have been processed
       replconf getack * # expecting REPLCONF ACK 37 (0 + 37 for the replconf command)
 
-      ping # master checking whether replica is alive
+      ping # master sending a ping command to notify the replica that it's still alive
       replconf getack * # expecting REPLCONF ACK 88 (37 + 37 for the replconf command + 14 for the ping command)
 
       set foo 1 # propagated from master to replica
@@ -1388,7 +1388,7 @@ stages:
       ### Notes
 
       - Although masters don't propagate `ping` commands when received from clients (since they aren't "write" commands),
-        they may send `ping` commands to replicas to check if they're alive.
+        they may send `ping` commands to replicas to notify replicas that the master is still alive.
       - Replicas should update their offset to account for **all** commands propagated from the master, including `ping` and `replconf` itself.
     marketing_md: |
       In this stage, you'll add support for returning an ACK back to master as a response to GETACK.
