@@ -25,8 +25,8 @@ int main() {
 	// 	return 1;
 	// }
 	//
-	// Since the tester restarts your program quite often, setting SO_REUSEADDR
-	// ensures that we don't run into 'Address already in use' errors
+	// // Since the tester restarts your program quite often, setting SO_REUSEADDR
+	// // ensures that we don't run into 'Address already in use' errors
 	// int reuse = 1;
 	// if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0) {
 	// 	printf("SO_REUSEADDR failed: %s \n", strerror(errno));
