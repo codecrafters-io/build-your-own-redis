@@ -9,6 +9,8 @@ Study and uncomment the relevant code:
    int port = 6379;
    try {
      serverSocket = new ServerSocket(port);
+     // Since the tester restarts your program quite often, setting SO_REUSEADDR
+     // ensures that we don't run into 'Address already in use' errors
      serverSocket.setReuseAddress(true);
      // Wait for connection from client.
      clientSocket = serverSocket.accept();

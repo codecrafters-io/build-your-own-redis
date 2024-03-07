@@ -5,7 +5,7 @@ Signal::TERM.trap { exit }
 
 class YourRedisServer
   def start
-    server = TCPServer.new("0.0.0.0", 6379, reuse_port: true)
+    server = TCPServer.new("0.0.0.0", 6379)
     client = server.accept?
   end
 end
