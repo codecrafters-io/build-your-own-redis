@@ -2630,7 +2630,7 @@ stages:
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
       "1526985054069-0"
-      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      $ redis-cli xread block 0 streams some_key 1526985054069-0
       ```
 
       Then, on another instance of the redis-cli, we add another entry.
@@ -2645,7 +2645,7 @@ stages:
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
       "1526985054069-0"
-      $ redis-cli xread block 1000 streams some_key 1526985054069-0
+      $ redis-cli xread block 0 streams some_key 1526985054069-0
       1) 1) "some_key"
          2) 1) 1) 1526985054079-0
                2) 1) temperature
@@ -2744,7 +2744,7 @@ stages:
         # ... (and so on)
       ```
 
-      On one instance of the redis-cli, we'd add an entry and send a blocking `XREAD` command with 0 as the time passed in.
+      On one instance of the redis-cli, we'd add an entry and send a blocking `XREAD` command with `1000` as the time passed in and `$` as the id passed in.
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
@@ -2796,7 +2796,7 @@ stages:
       $ redis-cli xadd stream_key 0-1 temperature 96
       ```
 
-      It'll then send an `XREAD` command to your server with the `BLOCK` command with `$` as the ID.
+      It'll then send an `XREAD` command to your server with the `BLOCK` command with `0` as the time and `$` as the ID.
 
       ```bash
       $ redis-cli xread block 0 streams stream_key $
