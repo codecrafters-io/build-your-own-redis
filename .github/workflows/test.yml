@@ -11,6 +11,6 @@ concurrency:
 
 jobs:
   test_course_definition:
-    uses: codecrafters-io/course-sdk-v2/.github/workflows/test-course-definition.yml@CC-1064
+    uses: codecrafters-io/course-sdk-v2/.github/workflows/test-course-definition.yml@main
     with:
       sdkRef: main
