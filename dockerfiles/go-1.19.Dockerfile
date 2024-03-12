@@ -6,6 +6,4 @@ WORKDIR /app
 
 COPY go.mod go.sum ./
 
-SHELL ["/bin/ash", "-eo", "pipefail"]
-
-RUN go mod graph | awk '{if ($1 !~ "@") print $2}' | xargs -r go get
+RUN /bin/ash -c "go mod graph | awk '{if ($1 !~ \"@\") print $2}' | xargs -r go get"
