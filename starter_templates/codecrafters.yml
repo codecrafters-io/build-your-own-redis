@@ -8,8 +8,8 @@ debug: false
 # on Codecrafters.
 #
 {{# language_is_python }}
-# Available versions: python-3.11
-language_pack: python-3.11
+# Available versions: python-3.12
+language_pack: python-3.12
 {{/ language_is_python }}
 {{# language_is_swift }}
 # Available versions: swift-5.1
