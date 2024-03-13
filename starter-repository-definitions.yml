@@ -276,10 +276,14 @@
         target: codecrafters.yml
       - source: starter_templates/swift/app/Sources/RedisServer.swift
         target: app/Sources/RedisServer.swift
+      - source: starter_templates/swift/app/Sources/RedisHandler.swift
+        target: app/Sources/RedisHandler.swift
       - source: starter_templates/swift/app/Package.swift
         target: app/Package.swift
       - source: starter_templates/swift/spawn_redis_server.sh
         target: spawn_redis_server.sh
+      - source: starter_templates/swift/.gitignore
+        target: .gitignore
       - source: starter_templates/.gitattributes
         target: .gitattributes
   template_attributes:

@@ -5,9 +5,6 @@ public struct RedisServer {
 
     public static func main() throws {
 
-        // You can use print statements as follows for debugging, they'll be visible when running tests.
-    	print("Logs from your program will appear here!\n");
-
         let eventLoopGroup = MultiThreadedEventLoopGroup(
             numberOfThreads: System.coreCount
         )
@@ -49,16 +46,14 @@ public struct RedisServer {
         let defaultHost = "127.0.0.1" // or ::1 for IPv6
         let defaultPort = 6379
 
-    	// Uncomment this block to pass the first stage
-        //
-        //  let channel = try serverBootstrap.bind(
-        //      host: defaultHost,
-        //      port: defaultPort
-        //  )
-        //  .wait()
-        // 
-        //  print("Server started and listening on \(channel.localAddress!)")
-        //  try channel.closeFuture.wait()
-        //  print("Server closed")
+         let channel = try serverBootstrap.bind(
+             host: defaultHost,
+             port: defaultPort
+         )
+         .wait()
+
+         print("Server started and listening on \(channel.localAddress!)")
+         try channel.closeFuture.wait()
+         print("Server closed")
     }
 }
