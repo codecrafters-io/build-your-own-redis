@@ -2520,7 +2520,7 @@ stages:
                   4) 94
       ```
 
-      If not, the response would be nil encoded as a bulk string.
+      If not, the response would be a null representation of a bulk string.
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
@@ -2592,7 +2592,7 @@ stages:
       $ redis-cli xread block 1000 streams stream_key 0-2
       ```
 
-      Your server should respond with `$3\r\nnil\r\n` which is `nil` RESP encoded as a bulk string.
+      Your server should respond with `$-1\r\n` which is a `null` representation of a RESP bulk string.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
@@ -2640,7 +2640,7 @@ stages:
       "1526985054079-0"
       ```
 
-      The difference now is that the first instance of the redis-cli doesn't time out and responds with nil no matter how much time passes. It will wait until another entry is added. The return value after an entry is added is similar to the last stage.
+      The difference now is that the first instance of the redis-cli doesn't time out and responds with null no matter how much time passes. It will wait until another entry is added. The return value after an entry is added is similar to the last stage.
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
@@ -2773,7 +2773,7 @@ stages:
                   4) 94
       ```
 
-      If not, the return type would still nil encoded as a bulk string.
+      If not, the return type would still be a null representation of a bulk string.
 
       ```bash
       $ redis-cli xadd some_key 1526985054069-0 temperature 36 humidity 95
@@ -2845,7 +2845,7 @@ stages:
       $ redis-cli xread block 1000 streams stream_key $
       ```
 
-      Your server should respond with `$3\r\nnil\r\n` which is a `nil` encoded as a RESP bulk string.
+      Your server should respond with `$-1\r\n` which is a `null` representation of a RESP bulk string.
 
       ### Notes
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
