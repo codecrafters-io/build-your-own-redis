@@ -12,8 +12,8 @@ debug: false
 language_pack: python-3.11
 {{/ language_is_python }}
 {{# language_is_swift }}
-# Available versions: swift-5.1
-language_pack: swift-5.1
+# Available versions: swift-5.10
+language_pack: swift-5.10
 {{/ language_is_swift }}
 {{# language_is_go }}
 # Available versions: go-1.19
