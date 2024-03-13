@@ -274,8 +274,8 @@
         target: README.md
       - source: starter_templates/codecrafters.yml
         target: codecrafters.yml
-      - source: starter_templates/swift/app/Sources/RedisService.swift
-        target: app/Sources/RedisService.swift
+      - source: starter_templates/swift/app/Sources/RedisServer.swift
+        target: app/Sources/RedisServer.swift
       - source: starter_templates/swift/app/Package.swift
         target: app/Package.swift
       - source: starter_templates/swift/spawn_redis_server.sh
@@ -284,4 +284,4 @@
         target: .gitattributes
   template_attributes:
       required_executable: "swift"
-      user_editable_file: "app/Sources/RedisService.swift"
+      user_editable_file: "app/Sources/RedisServer.swift"
