@@ -1365,7 +1365,7 @@ stages:
       <details>
         <summary>Click to expand/collapse</summary>
         As we saw in previous stages, when a replica receives a command from the master, it processes it and updates its state. In addition to processing
-        commands, the replica also keeps track of the number of bytes of commands it has processed.
+        commands, the replica also keeps a running count of the number of bytes of commands it has processed.
 
         This count is called the "offset". When a master sends a `REPLCONF GETACK` command to a replica, the replica is expected to respond with `REPLCONF ACK <offset>`,
         where `<offset>` is the number of bytes of commands processed by the replica.
