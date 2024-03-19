@@ -1381,6 +1381,8 @@ stages:
             - The returned offset is 37 since the first `REPLCONF GETACK` command was processed, and it was 37 bytes long.
             - The RESP encoding for the `REPLCONF GETACK` command looks like this: ``*3\r\n$8\r\nreplconf\r\n$6\r\ngetack\r\n$1\r\n*\r\n` (that's 37 bytes long)
         - The master then sends a `PING` command to the replica (masters do this periodically to notify replicas that the master is still alive).
+            - The replica must silently process the `PING` command and update its offset. It should not send a response back to the master.
+        - The master then sends `REPLCONF GETACK *` again (this is the third REPLCONF GETACK command received by the replica)
             - The replica should respond with `REPLCONF ACK 88`.
             - The returned offset is 88 (37 + 37 + 14)
                 - 37 for the first `REPLCONF GETACK` command
