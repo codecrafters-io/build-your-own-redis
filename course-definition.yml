@@ -1295,33 +1295,41 @@ stages:
 
       ### ACKs
 
-      Unlike regular commands, when a master forwards commands to a replica via the replication connection, the replica doesn't
-      respond to each command. It just silently processes the commands and updates its state.
+      <details>
+        <summary>Click to expand/collapse</summary>
 
-      Since the master doesn't receive a response for each command, it needs another way to keep track of whether a replica is "in sync".
-      That's what ACKs are for.
+        Unlike regular commands, when a master forwards commands to a replica via the replication connection, the replica doesn't
+        respond to each command. It just silently processes the commands and updates its state.
 
-      ACK is short for "acknowledgement". Redis masters periodically ask replicas to send ACKs.
+        Since the master doesn't receive a response for each command, it needs another way to keep track of whether a replica is "in sync".
+        That's what ACKs are for.
 
-      Each ACK contains an "offset", which is the number of bytes of commands processed by the replica.
+        ACK is short for "acknowledgement". Redis masters periodically ask replicas to send ACKs.
 
-      We'll learn about how this offset is calculated and used in later stages. In this stage, we'll focus on implementing the
-      mechanism through which a master asks for an ACK from a replica: the `REPLCONF GETACK` command.
+        Each ACK contains an "offset", which is the number of bytes of commands processed by the replica.
+
+        We'll learn about how this offset is calculated and used in later stages. In this stage, we'll focus on implementing the
+        mechanism through which a master asks for an ACK from a replica: the `REPLCONF GETACK` command.
+      </details>
 
       ### The `REPLCONF GETACK` command
 
-      When a master requires an ACK from a replica, it sends a `REPLCONF GETACK *` command to the replica. This is sent over
-      the replication connection (i.e. the connection that remains after the replication handshake is complete).
+      <details>
+        <summary>Click to expand/collapse</summary>
 
-      When the replica receives this command, it responds with a `REPLCONF ACK <offset>` response. The offset is the
-      number of bytes of commands processed by the replica. It starts at 0 and is incremented for every command processed by the replica.
+        When a master requires an ACK from a replica, it sends a `REPLCONF GETACK *` command to the replica. This is sent over
+        the replication connection (i.e. the connection that remains after the replication handshake is complete).
 
-      In this stage, you'll implement support for receiving the `REPLCONF GETACK *` command and responding with `REPLCONF ACK 0`.
+        When the replica receives this command, it responds with a `REPLCONF ACK <offset>` response. The offset is the
+        number of bytes of commands processed by the replica. It starts at 0 and is incremented for every command processed by the replica.
 
-      You can hardcode the offset to 0 for now. We'll implement proper offset tracking in the next stage.
+        In this stage, you'll implement support for receiving the `REPLCONF GETACK *` command and responding with `REPLCONF ACK 0`.
 
-      The exact command received by the replica will look something like this: `*3\r\n$8\r\nreplconf\r\n$6\r\ngetack\r\n$1\r\n*\r\n` (that's
-      `["replconf", "getack", "*"]` encoded as a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays)).
+        You can hardcode the offset to 0 for now. We'll implement proper offset tracking in the next stage.
+
+        The exact command received by the replica will look something like this: `*3\r\n$8\r\nreplconf\r\n$6\r\ngetack\r\n$1\r\n*\r\n` (that's
+        `["replconf", "getack", "*"]` encoded as a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays)).
+      </details>
 
       ### Tests
 
