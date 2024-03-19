@@ -5,12 +5,7 @@ Study and uncomment the relevant code:
 ```swift
 // Uncomment this block to pass the first stage
 
-    let channel = try serverBootstrap.bind(
-        host: defaultHost,
-        port: defaultPort
-    )
-    .wait()
-
+    let channel = try serverBootstrap.bind(host: defaultHost, port: defaultPort).wait()
     print("Server started and listening on \(channel.localAddress!)")
     try channel.closeFuture.wait()
     print("Server closed")
