@@ -1160,17 +1160,31 @@ stages:
 
       ### Command propagation
 
-      A master takes all write commands sent to it and propagates them to all connected replicas. The replicas
-      process these commands and apply them to their own state.
+      After the replication handshake is complete and the master has sent the RDB file to the replica, the
+      master starts propagating commands to the replica.
 
-      This propagation starts after the handshake is complete and the master has sent the RDB file to the replica.
+      When a master receives a "write" command from a client, it propagates the command to the replica. The
+      replica processes the command and updates its state. More on how this propagation works in the
+      "Replication connection" section below.
 
-      Every "write" command is sent to the replica as a RESP array, and the replica processes it as if it were a command sent by a client. Unlike
-      regular commands, the replica doesn't send a response to these commands. The master keeps propagating commands as they come in without stopping
-      to read responses from the replica.
+      Commands like `PING`, `ECHO` etc. are not considered "write" commands, so they aren't propagated. Commands like
+      `SET`, `DEL` etc. are considered "write" commands, so they are propagated.
 
-      Commands like `PING`, `ECHO` etc. are not considered "write" commands, so they aren't propagated. Commands like `SET`, `DEL` etc. are
-      considered "write" commands, so they are propagated.
+      ### Replication connection
+
+      Command propagation happens over the replication connection. This is the same connection that was used for the handshake.
+
+      Propagated commands are sent as RESP arrays. For example, if the master receives `SET foo bar` as a command from a client,
+      it'll send `*3\r\n$3\r\nSET\r\n$3\r\nfoo\r\n$3\r\nbar\r\n` to all connected replicas over their respective replication connections.
+
+      Replicas process commands received over the replication connection just like they would process commands received from a client,
+      but with one difference: Replicas don't send responses back to the master. They just process the command silently and update their
+      state.
+
+      Similarly, the master doesn't wait for a response from the replica when propagating commands. It just keeps sending commands as they
+      come in.
+
+      There is one exception to this "no response" rule, the `REPLCONF GETACK` command. We'll learn about this in later stages.
 
       ### Tests
 
@@ -1197,7 +1211,8 @@ stages:
       $ redis-cli SET baz 3
       ```
 
-      The tester will then assert that these commands were propagated to the replica server, in order.
+      It'll then assert that these commands were propagated to the replica, in order. The tester will
+      expect to receive these commands (encoded as RESP arrays) on the replication connection (the one used for the handshake).
 
       ### Notes
 
