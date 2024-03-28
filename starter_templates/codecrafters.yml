@@ -68,8 +68,8 @@ language_pack: crystal-1.1
 language_pack: clojure-1.10.3
 {{/language_is_clojure}}
 {{#language_is_csharp}}
-# Available versions: dotnet-6.0
-language_pack: dotnet-6.0
+# Available versions: dotnet-8.0
+language_pack: dotnet-8.0
 {{/language_is_csharp}}
 {{#language_is_cpp}}
 # Available versions: cpp-20
