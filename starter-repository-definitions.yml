@@ -73,7 +73,7 @@
     - source: starter_templates/.gitattributes
       target: .gitattributes
   template_attributes:
-    required_executable: "dotnet (6.0)"
+    required_executable: "dotnet (8.0)"
     user_editable_file: "src/Server.cs"
 
 - language: python
