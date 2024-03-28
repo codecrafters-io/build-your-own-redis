@@ -27,7 +27,7 @@ That's all!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `dotnet (6.0)` installed locally
+1. Ensure you have `dotnet (8.0)` installed locally
 1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented
    in `src/Server.cs`.
 1. Commit your changes and run `git push origin master` to submit your solution
