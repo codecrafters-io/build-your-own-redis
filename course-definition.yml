@@ -1425,7 +1425,7 @@ stages:
       replconf getack * # expecting REPLCONF ACK 0, since 0 bytes have been processed
 
       ping # master sending a ping command to notify the replica that it's still alive
-      replconf getack * # expecting REPLCONF ACK 51 (37 for the replconf command + 14 for the ping command)
+      replconf getack * # expecting REPLCONF ACK 51 (37 for the first replconf command + 14 for the ping command)
 
       set foo 1 # propagated from master to replica
       set bar 2 # propagated from master to replica
