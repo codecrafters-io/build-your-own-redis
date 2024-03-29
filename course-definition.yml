@@ -1423,13 +1423,13 @@ stages:
 
       ```bash
       replconf getack * # expecting REPLCONF ACK 0, since 0 bytes have been processed
-      replconf getack * # expecting REPLCONF ACK 37 (0 + 37 for the replconf command)
 
       ping # master sending a ping command to notify the replica that it's still alive
-      replconf getack * # expecting REPLCONF ACK 88 (37 + 37 for the replconf command + 14 for the ping command)
+      replconf getack * # expecting REPLCONF ACK 51 (37 for the replconf command + 14 for the ping command)
 
       set foo 1 # propagated from master to replica
-      replconf getack * # expecting REPLCONF ACK 154 (88 + 37 for the replconf command + 29 for the set command)
+      set bar 2 # propagated from master to replica
+      replconf getack * # expecting REPLCONF ACK 109 (51 + 29 for the first set command + 29 for the second set command)
       ```
 
       ### Notes
