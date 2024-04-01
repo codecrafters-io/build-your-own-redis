@@ -267,3 +267,19 @@
   template_attributes:
     required_executable: "node (16)"
     user_editable_file: "app/main.js"
+
+- language: typescript
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/typescript/app/main.ts
+      target: app/main.ts
+    - source: starter_templates/typescript/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
+  template_attributes:
+    required_executable: "deno (1.42)"
+    user_editable_file: "app/main.ts"
