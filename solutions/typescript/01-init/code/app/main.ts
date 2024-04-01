@@ -1,4 +1,4 @@
-import * as net from "net";
+import * as net from "node:net";
 
 const server: net.Server = net.createServer((connection: net.Socket) => {
   // Handle connection
