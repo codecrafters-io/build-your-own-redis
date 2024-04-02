@@ -2,7 +2,7 @@
 #
 # These can be VERY verbose, so we suggest turning them off
 # unless you really need them.
-debug: false
+debug: true
 
 # Use this to change the Gleam version used to run your code
 # on Codecrafters.
