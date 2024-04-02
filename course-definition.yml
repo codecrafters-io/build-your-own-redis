@@ -22,6 +22,8 @@ languages:
   - slug: "crystal"
   - slug: "csharp"
   - slug: "elixir"
+  - slug: "gleam"
+    release_status: "alpha"
   - slug: "go"
   - slug: "haskell"
   - slug: "java"
