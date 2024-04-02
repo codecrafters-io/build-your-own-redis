@@ -283,3 +283,25 @@
   template_attributes:
     required_executable: "deno (1.42)"
     user_editable_file: "app/main.ts"
+
+- language: gleam
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/gleam/src/redis.gleam
+      target: src/redis.gleam
+    - source: starter_templates/gleam/.gitignore
+      target: .gitignore
+    - source: starter_templates/gleam/gleam.toml
+      target: gleam.toml
+    - source: starter_templates/gleam/manifest.toml
+      target: manifest.toml
+    - source: starter_templates/gleam/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
+  template_attributes:
+    required_executable: "gleam (1.0)"
+    user_editable_file: "src/redis.gleam"
