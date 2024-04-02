@@ -79,3 +79,7 @@ language_pack: cpp-20
 # Available versions: deno-1.42
 language_pack: deno-1.42
 {{/language_is_typescript}}
+{{#language_is_gleam}}
+# Available versions: gleam-1.0
+language_pack: gleam-1.0
+{{/language_is_gleam}}
