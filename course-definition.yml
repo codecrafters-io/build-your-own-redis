@@ -23,6 +23,8 @@ languages:
   - slug: "csharp"
   - slug: "elixir"
   - slug: "go"
+  - slug: "gleam"
+    release_status: "alpha"
   - slug: "haskell"
   - slug: "java"
   - slug: "javascript"
