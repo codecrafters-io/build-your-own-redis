@@ -5,4 +5,4 @@
 # CodeCrafters uses this file to test your code. Don't make any changes here!
 #
 # DON'T EDIT THIS!
-exec gleam run src/redis.gleam "$@"
+exec gleam run -- "$@"
