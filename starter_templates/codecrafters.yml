@@ -20,7 +20,7 @@ language_pack: swift-5.1
 language_pack: go-1.21
 {{/ language_is_go }}
 {{# language_is_php }}
-# Available versions: php-7.4 php-8.3
+# Available versions: php-8.3
 language_pack: php-8.3
 {{/ language_is_php }}
 {{# language_is_javascript }}
