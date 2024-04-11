@@ -1,11 +1,16 @@
 import gleam/io
-import gleam/result
-import glisten/socket/options.{ActiveMode, Passive}
-import glisten/tcp
+
+import gleam/erlang/process
+import gleam/option.{None}
+import gleam/otp/actor
+import glisten
 
 pub fn main() {
-  use listener <- result.then(tcp.listen(6379, [ActiveMode(Passive)]))
-  use _socket <- result.then(tcp.accept(listener))
+  let assert Ok(_) =
+    glisten.handler(fn(_conn) { #(Nil, None) }, fn(_msg, state, _conn) {
+      actor.continue(state)
+    })
+    |> glisten.serve(6379)
 
-  Ok(Nil)
+  process.sleep_forever()
 }
