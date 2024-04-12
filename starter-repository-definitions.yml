@@ -314,8 +314,8 @@
       target: codecrafters.yml
     - source: starter_templates/scala/.gitignore
       target: .gitignore
-    - source: starter_templates/scala/src/main/scala/example/Hello.scala
-      target: src/main/scala/example/Hello.scala
+    - source: starter_templates/scala/src/main/scala/codecrafters_redis/Server.scala
+      target: src/main/scala/codecrafters_redis/Server.scala
     - source: starter_templates/scala/build.sbt
       target: build.sbt
     - source: starter_templates/scala/project/assembly.sbt
@@ -328,4 +328,4 @@
       target: .gitattributes
   template_attributes:
     required_executable: "sbt (1.9.9)"
-    user_editable_file: "src/main/scala/example/Hello.scala"
+    user_editable_file: "src/main/scala/codecrafters_redis/Server.scala"

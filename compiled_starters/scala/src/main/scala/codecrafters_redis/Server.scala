@@ -1,8 +1,8 @@
-package example
+package codecrafters_redis
 
 import java.net.{InetSocketAddress, ServerSocket}
 
-object Hello {
+object Server {
   def main(args: Array[String]): Unit = {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     println("Logs from your program will appear here!")

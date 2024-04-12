@@ -1,8 +1,8 @@
-package example
+package codecrafters_redis
 
 import java.net.{InetSocketAddress, ServerSocket}
 
-object Hello {
+object Server {
   def main(args: Array[String]): Unit = {
     val serverSocket = new ServerSocket()
     serverSocket.bind(new InetSocketAddress("localhost", 6379))

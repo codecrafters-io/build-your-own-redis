@@ -13,8 +13,8 @@ event loops, the Redis protocol and more.
 # Passing the first stage
 
 The entry point for your Redis implementation is in
-`src/main/scala/example/Hello.scala`. Study and uncomment the relevant code, and
-push your changes to pass the first stage:
+`src/main/scala/codecrafters_redis/Server.scala`. Study and uncomment the
+relevant code, and push your changes to pass the first stage:
 
 ```sh
 git add .
@@ -30,6 +30,6 @@ Note: This section is for stages 2 and beyond.
 
 1. Ensure you have `sbt (1.9.9)` installed locally
 1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented
-   in `src/main/scala/example/Hello.scala`.
+   in `src/main/scala/codecrafters_redis/Server.scala`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
