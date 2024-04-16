@@ -28,6 +28,6 @@ WORKDIR /app
 
 RUN sbt update
 
-RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && sbt assembly" > /codecrafters-precompile.sh
+RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && sbt assembly && sed -i 's/^\(sbt .*\)/#\1/' ./spawn_redis_server.sh\n" > /codecrafters-precompile.sh
 
 RUN chmod +x /codecrafters-precompile.sh

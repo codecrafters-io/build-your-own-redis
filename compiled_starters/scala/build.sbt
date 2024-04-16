@@ -10,6 +10,5 @@ lazy val root = (project in file("."))
     name := "codecrafter-redis",
     // List your dependencies here
     libraryDependencies ++= Seq(
-      // "org.scala-lang" %% "toolkit" % "0.1.7",
     )
   )
