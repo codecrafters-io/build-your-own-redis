@@ -498,7 +498,7 @@ stages:
 
       ### Notes
 
-      1.  You don't need to do anything with the `dir` and `dbfilename` parameters—you only need to accept them.
+      1.  You don't need to read the RDB file in this stage, you only need to store `dir` and `dbfilename`. Reading from the file will be covered in later stages.
       2.  If your repository was created before 5th Oct 2023, it's possible that your `./spawn_redis_server.sh` script is not passing arguments to your program. To fix this, you'll need to edit `./spawn_redis_server.sh`. Check the [update CLI args PR](https://github.com/codecrafters-io/build-your-own-redis/pull/89/files) for details on how to do this.
     marketing_md: |
       In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
