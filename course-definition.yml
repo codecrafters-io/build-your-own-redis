@@ -439,41 +439,67 @@ stages:
     name: "RDB file config"
     difficulty: easy
     description_md: |
-      Redis uses `.rdb` files for persistence. In this stage, you'll add support for reading the config values related to where RDB files are stored.
+      Welcome to the RDB Persistence Extension! In this extension, you'll add support for reading [RDB files](https://redis.io/docs/management/persistence/) (Redis Database files).
 
-      There are two config values that determine where RDB files are stored:
+      In this stage, you'll add support for two configuration parameters related to RDB persistence, as well as the [CONFIG GET](https://redis.io/docs/latest/commands/config-get/) command.
 
-      - `dir`: The directory where RDB files are stored
-      - `dbfilename`: The name of the RDB file
+      ### RDB files
 
-      These values will be passed into your program like this:
+      An RDB file is a point-in-time snapshot of a Redis dataset. When RDB persistence is enabled, the Redis server syncs its in-memory state with an RDB file, by doing the following:
 
+      1.  On startup, the Redis server loads the data from the RDB file.
+      2.  While running, the Redis server periodically takes new snapshots of the dataset, in order to update the RDB file.
+
+      ###  `dir` and `dbfilename`
+
+      The configuration parameters `dir` and `dbfilename` specify where an RDB file is stored:
+      -   `dir` - the path to the directory where the RDB file is stored (example: `/tmp/redis-data`)
+      -   `dbfilename` - the name of the RDB file (example: `rdbfile`)
+
+      ### The `CONFIG GET` command
+
+      The [`CONFIG GET`](https://redis.io/docs/latest/commands/config-get/) command returns the values of configuration parameters.
+
+      It takes in one or more configuration parameters and returns a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of key-value pairs:
+
+      ```bash
+      $ redis-cli config get dir
+      1) "dir"
+      2) "/tmp/redis-data"
       ```
+
+      Although `CONFIG GET` can fetch multiple parameters at a time, the tester will only send `CONFIG GET` commands with one parameter at a time.
+
+      ### Tests
+
+      The tester will execute your program like this:
+
+      ```bash
       ./spawn_redis_server.sh --dir /tmp/redis-files --dbfilename dump.rdb
       ```
 
-      To verify whether your program is reading config values correctly, the tester will send you two commands:
+      It'll then send the following commands:
 
       ```bash
-      redis-cli CONFIG GET dir
-      redis-cli CONFIG GET dbfilename
+      $ redis-cli CONFIG GET dir
+      $ redis-cli CONFIG GET dbfilename
       ```
 
-      The response to `CONFIG GET <key>` should be a RESP array with two elements: the key and the value.
+      Your server must respond to each `CONFIG GET` command with a RESP array containing two elements:
 
-      For example, let's say the `dir` value is `/tmp/redis-files`. The expected response will be:
+      1.  The parameter **name**, encoded as a [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings)
+      2.  The parameter **value**, encoded as a RESP Bulk string
 
-      ```
+      For example, if the value of `dir` is `/tmp/redis-files`, then the expected response to `CONFIG GET dir` is:
+
+      ```bash
       *2\r\n$3\r\ndir\r\n$16\r\n/tmp/redis-files\r\n
       ```
 
-      - `*2\r\n` indicates that the array has two elements
-      - `$3\r\ndir\r\n` indicates that the first element is a bulk string with the value `dir`
-      - `$16\r\n/tmp/redis-files\r\n` indicates that the second element is a bulk string with the value `/tmp/redis-files`
+      ### Notes
 
-      **Note**: If your repository was created before 5th Oct 2023, it's possible that your `./spawn_redis_server.sh` script
-      might not be passing arguments on to your program. You'll need to edit `./spawn_redis_server.sh` to fix this, check
-      [this PR](https://github.com/codecrafters-io/build-your-own-redis/pull/89/files) for details.
+      1.  You don't need to read the RDB file in this stage, you only need to store `dir` and `dbfilename`. Reading from the file will be covered in later stages.
+      2.  If your repository was created before 5th Oct 2023, it's possible that your `./spawn_redis_server.sh` script is not passing arguments to your program. To fix this, you'll need to edit `./spawn_redis_server.sh`. Check the [update CLI args PR](https://github.com/codecrafters-io/build-your-own-redis/pull/89/files) for details on how to do this.
     marketing_md: |
       In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
 
