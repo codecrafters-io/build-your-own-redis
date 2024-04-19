@@ -32,6 +32,8 @@ languages:
   - slug: "ruby"
   - slug: "rust"
   - slug: "typescript"
+  - slug: "scala"
+    release_status: "alpha"
 
 marketing:
   difficulty: medium

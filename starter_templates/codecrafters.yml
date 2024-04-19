@@ -83,3 +83,7 @@ language_pack: deno-1.42
 # Available versions: gleam-1.0
 language_pack: gleam-1.0
 {{/language_is_gleam}}
+{{#language_is_scala}}
+# Available versions: scala-2.12
+language_pack: scala-2.12
+{{/language_is_scala}}
