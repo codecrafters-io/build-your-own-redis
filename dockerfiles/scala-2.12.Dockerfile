@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/openjdk/jdk:11-ubuntu
+FROM maven:3.9.6-eclipse-temurin-17-focal
 
 RUN apt-get update && \
     apt-get install --no-install-recommends apt-transport-https=* curl=* gnupg=* -yqq && \
