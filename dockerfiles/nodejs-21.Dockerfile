@@ -1,6 +1,6 @@
 FROM node:21.7-alpine3.19
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="package.json, package-lock.json"
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="package.json,package-lock.json"
 
 WORKDIR /app
 
