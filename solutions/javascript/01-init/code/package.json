@@ -1,0 +1,15 @@
+{
+    "name": "@codecrafters/build-your-own-redis",
+    "version": "1.0.0",
+    "description": "Build your own Redis challenge, from CodeCrafters",
+    "main": "main.js",
+    "scripts": {
+        "dev": "node app/main.js"
+    },
+    "keywords": [
+        "build-your-own-x"
+    ],
+    "author": "",
+    "license": "MIT",
+    "dependencies": {}
+}
