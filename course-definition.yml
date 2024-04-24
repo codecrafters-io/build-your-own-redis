@@ -33,7 +33,7 @@ languages:
   - slug: "rust"
   - slug: "typescript"
   - slug: "scala"
-    release_status: "alpha"
+    release_status: "beta"
 
 marketing:
   difficulty: medium
