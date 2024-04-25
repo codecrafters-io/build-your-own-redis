@@ -72,8 +72,8 @@ language_pack: clojure-1.10.3
 language_pack: dotnet-8.0
 {{/language_is_csharp}}
 {{#language_is_cpp}}
-# Available versions: cpp-20
-language_pack: cpp-20
+# Available versions: cpp-23
+language_pack: cpp-23
 {{/language_is_cpp}}
 {{#language_is_typescript}}
 # Available versions: deno-1.42
