@@ -7,10 +7,11 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <fmt/core.h>
 
 int main(int argc, char **argv) {
   // You can use print statements as follows for debugging, they'll be visible when running tests.
-  std::cout << "Logs from your program will appear here!\n";
+  fmt::print("Logs from your program will appear here!\n");
 
   // Uncomment this block to pass the first stage
   //

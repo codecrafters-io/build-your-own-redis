@@ -6,6 +6,7 @@
 #
 # DON'T EDIT THIS!
 set -e
-cmake . >/dev/null
-make >/dev/null
-exec ./server "$@"
+# cmake 3.29 is required by vcpkg. 
+# cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake
+# cmake --build ./build
+exec ./build/server "$@"
