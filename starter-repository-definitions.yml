@@ -24,6 +24,10 @@
       target: README.md
     - source: starter_templates/codecrafters.yml
       target: codecrafters.yml
+    - source: starter_templates/cpp/vcpkg.json
+      target: vcpkg.json
+    - source: starter_templates/cpp/vcpkg-configuration.json
+      target: vcpkg-configuration.json
     - source: starter_templates/cpp/.gitignore
       target: .gitignore
     - source: starter_templates/cpp/src/Server.cpp

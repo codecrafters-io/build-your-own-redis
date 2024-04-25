@@ -6,6 +6,9 @@
 #
 # DON'T EDIT THIS!
 set -e
-cmake . >/dev/null
-make >/dev/null
-exec ./server "$@"
+export PATH=/cmake-portable/bin:$PATH
+cmake --build ./build
+# ls -la build
+# cmake . >/dev/null
+# make >/dev/null
+exec ./build/server "$@"
