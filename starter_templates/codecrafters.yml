@@ -76,8 +76,8 @@ language_pack: dotnet-8.0
 language_pack: cpp-20
 {{/language_is_cpp}}
 {{#language_is_typescript}}
-# Available versions: deno-1.42
-language_pack: deno-1.42
+# Available versions: bun-1.1
+language_pack: bun-1.1
 {{/language_is_typescript}}
 {{#language_is_gleam}}
 # Available versions: gleam-1.0

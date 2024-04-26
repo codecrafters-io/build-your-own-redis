@@ -1,4 +1,4 @@
-import * as net from "node:net";
+import * as net from "net";
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
@@ -9,4 +9,3 @@ console.log("Logs from your program will appear here!");
 // });
 //
 // server.listen(6379, "127.0.0.1");
-
