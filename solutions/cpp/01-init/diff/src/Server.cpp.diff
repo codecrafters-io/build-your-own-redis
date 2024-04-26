@@ -1,4 +1,4 @@
-@@ -1,59 +1,54 @@
+@@ -1,58 +1,53 @@
  #include <iostream>
  #include <cstdlib>
  #include <string>
@@ -8,11 +8,10 @@
  #include <sys/socket.h>
  #include <arpa/inet.h>
  #include <netdb.h>
- #include <fmt/core.h>
 
  int main(int argc, char **argv) {
 -  // You can use print statements as follows for debugging, they'll be visible when running tests.
--  fmt::print("Logs from your program will appear here!\n");
+-  std::cout << "Logs from your program will appear here!\n";
 +  int server_fd = socket(AF_INET, SOCK_STREAM, 0);
 +  if (server_fd < 0) {
 +   std::cerr << "Failed to create server socket\n";
