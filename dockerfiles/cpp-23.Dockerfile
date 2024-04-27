@@ -1,6 +1,6 @@
 FROM gcc:13.2.0-bookworm
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="vcpkg.json,vcpkg-configuration.json,CMakeLists.txt"
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="vcpkg.json,vcpkg-configuration.json"
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y zip=3.* && \ 
@@ -24,7 +24,6 @@ WORKDIR /app
 
 COPY vcpkg.json ./
 COPY vcpkg-configuration.json ./
-COPY CMakeLists.txt ./
 
 RUN vcpkg install
 
