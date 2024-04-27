@@ -342,3 +342,19 @@
   template_attributes:
     required_executable: "sbt (1.9.9)"
     user_editable_file: "src/main/scala/codecrafters_redis/Server.scala"
+
+- language: zig
+  file_mappings:
+    - source: starter_templates/README.md
+      target: README.md
+    - source: starter_templates/codecrafters.yml
+      target: codecrafters.yml
+    - source: starter_templates/zig/src/main.zig
+      target: src/main.zig
+    - source: starter_templates/zig/spawn_redis_server.sh
+      target: spawn_redis_server.sh
+    - source: starter_templates/zig/.gitignore
+      target: .gitignore
+  template_attributes:
+    required_executable: "zig (0.12)"
+    user_editable_file: "src/main.zig"

@@ -87,3 +87,7 @@ language_pack: gleam-1.0
 # Available versions: scala-2.12
 language_pack: scala-2.12
 {{/language_is_scala}}
+{{#language_is_zig}}
+# Available versions: zig-0.12
+language_pack: zig-0.12
+{{/language_is_zig}}
