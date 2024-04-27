@@ -1,4 +1,4 @@
-@@ -1,24 +1,20 @@
+@@ -1,25 +1,20 @@
  const std = @import("std");
 -// const net = std.net;
 +const net = std.net;
@@ -8,31 +8,32 @@
 
 -    // You can use print statements as follows for debugging, they'll be visible when running tests.
 -    try stdout.print("Logs from your program will appear here!", .{});
++    const address = try net.Address.resolveIp("127.0.0.1", 6379);
 
 -    // Uncomment this block to pass the first stage
 -    //
 -    // const address = try net.Address.resolveIp("127.0.0.1", 6379);
 -    //
--    // const listener = try address.listen(.{
+-    // var listener = try address.listen(.{
 -    //     .reuse_address = true,
 -    // });
+-    // defer listener.deinit();
 -    //
 -    // while (true) {
 -    //     const connection = try listener.accept();
--    //     _ = connection;
 -    //
 -    //     try stdout.print("accepted new connection", .{});
+-    // connection.stream.close();
 -    // }
-+    const address = try net.Address.resolveIp("127.0.0.1", 6379);
-+
-+    const listener = try address.listen(.{
++    var listener = try address.listen(.{
 +        .reuse_address = true,
 +    });
++    defer listener.deinit();
 +
 +    while (true) {
 +        const connection = try listener.accept();
-+        _ = connection;
 +
 +        try stdout.print("accepted new connection", .{});
++        connection.stream.close();
 +    }
  }

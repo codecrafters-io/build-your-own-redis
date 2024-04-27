@@ -11,14 +11,15 @@ pub fn main() !void {
     //
     // const address = try net.Address.resolveIp("127.0.0.1", 6379);
     //
-    // const listener = try address.listen(.{
+    // var listener = try address.listen(.{
     //     .reuse_address = true,
     // });
+    // defer listener.deinit();
     //
     // while (true) {
     //     const connection = try listener.accept();
-    //     _ = connection;
     //
     //     try stdout.print("accepted new connection", .{});
+    // connection.stream.close();
     // }
 }
