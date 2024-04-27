@@ -6,5 +6,5 @@ RUN echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/ap
 # Update the package list and install Zig
 RUN apk add --no-cache zig@testing=0.12.0-r0
 
-RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && zig build run && sed -i 's/^\(zig .*\)/#\1/' ./spawn_redis_server.sh" > /codecrafters-precompile.sh
+RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && zig build run" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
