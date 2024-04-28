@@ -1,5 +1,6 @@
-@@ -1,25 +1,20 @@
+@@ -1,26 +1,20 @@
  const std = @import("std");
+-// Uncomment this block to pass the first stage
 -// const net = std.net;
 +const net = std.net;
 
@@ -23,7 +24,7 @@
 -    //     const connection = try listener.accept();
 -    //
 -    //     try stdout.print("accepted new connection", .{});
--    // connection.stream.close();
+-    //     connection.stream.close();
 -    // }
 +    var listener = try address.listen(.{
 +        .reuse_address = true,

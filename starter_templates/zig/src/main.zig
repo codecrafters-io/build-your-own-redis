@@ -1,4 +1,5 @@
 const std = @import("std");
+// Uncomment this block to pass the first stage
 // const net = std.net;
 
 pub fn main() !void {
@@ -20,6 +21,6 @@ pub fn main() !void {
     //     const connection = try listener.accept();
     //
     //     try stdout.print("accepted new connection", .{});
-    // connection.stream.close();
+    //     connection.stream.close();
     // }
 }
