@@ -1,6 +1,6 @@
-The entry point for your Redis implementation is in `src/main.rs`.
+The entry point for your Redis implementation is in `src/main.zig`.
 
-Study and uncomment the relevant code:
+Study and uncomment the relevant code: 
 
 ```zig
 // Uncomment this block to pass the first stage
@@ -12,15 +12,16 @@ const net = std.net;
 
 const address = try net.Address.resolveIp("127.0.0.1", 6379);
 
-const listener = try address.listen(.{
+var listener = try address.listen(.{
     .reuse_address = true,
 });
+defer listener.deinit();
 
 while (true) {
     const connection = try listener.accept();
-    _ = connection;
 
     try stdout.print("accepted new connection", .{});
+    connection.stream.close();
 }
 ```
 

@@ -1,6 +1,6 @@
 ![progress-banner](https://codecrafters.io/landing/images/default_progress_banners/redis.png)
 
-This is a starting point for Rust solutions to the
+This is a starting point for Zig solutions to the
 ["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
 
 In this challenge, you'll build a toy Redis clone that's capable of handling
@@ -27,9 +27,8 @@ That's all!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `zig 0.12` installed locally
+1. Ensure you have `zig (0.12)` installed locally
 1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented
-   in `src/main.zig`. This command compiles your Zig project, so it might be
-   slow the first time you run it. Subsequent runs will be fast.
+   in `src/main.zig`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
