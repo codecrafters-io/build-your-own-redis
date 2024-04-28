@@ -1,5 +1,4 @@
 const std = @import("std");
-// Uncomment this block to pass the first stage
 // const net = std.net;
 
 pub fn main() !void {
