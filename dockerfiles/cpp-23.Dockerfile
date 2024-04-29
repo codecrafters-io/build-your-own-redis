@@ -28,7 +28,7 @@ COPY vcpkg-configuration.json ./
 RUN vcpkg install
 
 RUN mkdir -p /app-cached
-RUN if [ -d "/app/vcpkg_installed" ]; then mv /app/vcpkg_installed /app-cached; fi
+RUN if [ -d "/app/build" ]; then mv /app/build /app-cached; fi
 
-RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake && cmake --build ./build && sed -i '/^cmake/ s/^/# /' ./spawn_redis_server.sh" > /codecrafters-precompile.sh
+RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake && cmake --build ./build && sed -i '/^cmake/ s/^/# /' ./spawn_redis_server.sh" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
