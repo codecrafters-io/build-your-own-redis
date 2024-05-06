@@ -92,7 +92,13 @@ extensions:
 stages:
   - slug: "init"
     concept_slugs:
-      ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
+      [
+        "network-protocols",
+        "tcp-overview",
+        "go-tcp-server",
+        "rust-tcp-server",
+        "python-tcp-server",
+      ]
     name: "Bind to a port"
     description_md: |-
       In this stage, you'll implement a TCP server that listens on port 6379.
@@ -125,7 +131,13 @@ stages:
 
   - slug: "ping-pong"
     concept_slugs:
-      ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
+      [
+        "network-protocols",
+        "tcp-overview",
+        "go-tcp-server",
+        "rust-tcp-server",
+        "python-tcp-server",
+      ]
     name: "Respond to PING"
     difficulty: easy
     description_md: |-
@@ -171,7 +183,13 @@ stages:
 
   - slug: "ping-pong-multiple"
     concept_slugs:
-      ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
+      [
+        "network-protocols",
+        "tcp-overview",
+        "go-tcp-server",
+        "rust-tcp-server",
+        "python-tcp-server",
+      ]
     name: "Respond to multiple PINGs"
     difficulty: easy
     description_md: |-
@@ -221,7 +239,13 @@ stages:
 
   - slug: "concurrent-clients"
     concept_slugs:
-      ["network-protocols", "tcp-overview", "go-tcp-server", "rust-tcp-server"]
+      [
+        "network-protocols",
+        "tcp-overview",
+        "go-tcp-server",
+        "rust-tcp-server",
+        "python-tcp-server",
+      ]
     name: "Handle concurrent clients"
     difficulty: medium
     description_md: |-
