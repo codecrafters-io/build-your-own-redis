@@ -27,6 +27,7 @@ COPY vcpkg.json ./
 COPY vcpkg-configuration.json ./
 
 RUN vcpkg install --no-print-usage
+RUN sed -i '1s/^/set(VCPKG_INSTALL_OPTIONS --no-print-usage)\n/' ${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 
 RUN mkdir -p /app-cached
 RUN if [ -d "/app/build" ]; then mv /app/build /app-cached; fi
