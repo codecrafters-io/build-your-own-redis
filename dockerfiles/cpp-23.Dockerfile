@@ -4,6 +4,8 @@ ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="vcpkg.json,vcpkg-configuration.json"
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y zip=3.* && \ 
+    apt-get install --no-install-recommends -y g++=4:* && \
+    apt-get install --no-install-recommends -y build-essential=12.* && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
@@ -29,9 +31,9 @@ COPY vcpkg-configuration.json ./
 RUN vcpkg install --no-print-usage
 RUN sed -i '1s/^/set(VCPKG_INSTALL_OPTIONS --no-print-usage)\n/' ${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 
-RUN mkdir -p /app-cached
+RUN mkdir -p /app-cached/build
 RUN if [ -d "/app/build" ]; then mv /app/build /app-cached; fi
-RUN if [ -d "/app/vcpkg_installed" ]; then mv /app/vcpkg_installed /app-cached; fi
+RUN if [ -d "/app/vcpkg_installed" ]; then mv /app/vcpkg_installed /app-cached/build; fi
 
 RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake && cmake --build ./build && sed -i '/^cmake/ s/^/# /' ./spawn_redis_server.sh" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
