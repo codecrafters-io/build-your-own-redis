@@ -292,7 +292,6 @@
       target: package.json
     - source: starter_templates/typescript/bun.lockb
       target: bun.lockb
-      should_skip_template_evaluation: true
     - source: starter_templates/typescript/spawn_redis_server.sh
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
