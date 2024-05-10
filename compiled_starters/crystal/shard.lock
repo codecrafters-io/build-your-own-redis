@@ -1,26 +1,6 @@
 version: 2.0
 shards:
-  backtracer:
-    git: https://github.com/sija/backtracer.cr.git
-    version: 1.2.2
-
-  db:
-    git: https://github.com/crystal-lang/crystal-db.git
-    version: 0.13.1
-
-  exception_page:
-    git: https://github.com/crystal-loot/exception_page.git
-    version: 0.4.1
-
-  kemal:
-    git: https://github.com/kemalcr/kemal.git
-    version: 1.5.0
-
-  radix:
-    git: https://github.com/luislavena/radix.git
-    version: 0.4.1
-
-  redis:
-    git: https://github.com/jgaskins/redis.git
-    version: 0.9.0+git.commit.635d7a34849e661803f7ab84268b2448fcf48a39
+  kiwi:
+    git: https://github.com/crystal-community/kiwi.git
+    version: 0.1.0
 

@@ -1,19 +1,17 @@
-name: helloworld
+name: build-your-own-redis
 version: 0.1.0
 
 dependencies:
-  redis:
-      github: jgaskins/redis
-      branch: master
-  kemal:
-    github: kemalcr/kemal
+  kiwi:
+    github: crystal-community/kiwi
+    version: ~> 0.1.0
 
 authors:
-  - Ryan <ryan-gg@outlook.com>
+  - CodeCrafters <hello@codecrafters.io>
 
 targets:
-  helloworld:
-    main: src/helloworld.cr
+  server:
+    main: app/main.cr
 
 crystal: '>= 1.12.1'
 
