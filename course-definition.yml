@@ -813,7 +813,7 @@ stages:
       Here's an example usage of the `--replicaof` flag:
 
       ```
-      ./spawn_redis_server.sh --port 6380 --replicaof localhost 6379
+      ./spawn_redis_server.sh --port 6380 --replicaof "localhost 6379"
       ```
 
       In this example, we're starting a Redis server in replica mode. The server itself will listen for connections on port 6380, but it'll
@@ -827,7 +827,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       It'll then send the `INFO` command with `replication` as an argument to your server.
@@ -922,7 +922,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       It'll then assert that the replica connects to the master and sends the `PING` command.
@@ -975,7 +975,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       It'll then assert that the replica connects to the master and:
@@ -1035,7 +1035,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       It'll then assert that the replica connects to the master and:
@@ -1333,7 +1333,7 @@ stages:
       The tester will spawn a Redis master, and it'll then execute your program as a replica like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <MASTER_HOST> <MASTER_PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       Just like in the previous stages, your replica should complete the handshake with the master and receive an empty RDB file.
@@ -1411,7 +1411,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <HOST> <PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof "<HOST> <PORT>"
       ```
 
       Just like in the previous stages, your replica should complete the handshake with the master and receive an empty RDB file.
@@ -1474,7 +1474,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof <HOST> <PORT>
+      ./spawn_redis_server.sh --port <PORT> --replicaof "<HOST> <PORT>"
       ```
 
       Just like in the previous stages, your replica should complete the handshake with the master and receive an empty RDB file.
