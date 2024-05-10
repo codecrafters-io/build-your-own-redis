@@ -6,5 +6,5 @@
 #
 # DON'T EDIT THIS!
 set -e
-crystal build -p -s -t -o server app/main.cr
+crystal build --progress --stats --time -o server app/main.cr
 exec ./server "$@"
