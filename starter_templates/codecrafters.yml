@@ -60,8 +60,8 @@ language_pack: java-21
 language_pack: nim-1.0
 {{/ language_is_nim }}
 {{# language_is_crystal }}
-# Available versions: crystal-1.1
-language_pack: crystal-1.1
+# Available versions: crystal-1.12
+language_pack: crystal-1.12
 {{/ language_is_crystal }}
 {{#language_is_clojure}}
 # Available versions: clojure-1.10.3

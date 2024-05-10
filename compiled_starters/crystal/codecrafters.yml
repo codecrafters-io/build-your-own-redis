@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Crystal version used to run your code
 # on Codecrafters.
 #
-# Available versions: crystal-1.1
-language_pack: crystal-1.1
+# Available versions: crystal-1.12
+language_pack: crystal-1.12
