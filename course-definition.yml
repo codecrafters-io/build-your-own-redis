@@ -90,7 +90,7 @@ extensions:
       [xrange-command]: https://redis.io/commands/xrange/
 
 stages:
-  - slug: "init"
+  - legacy_slug: "init"
     concept_slugs:
       [
         "network-protocols",
@@ -129,7 +129,7 @@ stages:
       default port that Redis uses.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_bind.go#L11"
 
-  - slug: "ping-pong"
+  - legacy_slug: "ping-pong"
     concept_slugs:
       [
         "network-protocols",
@@ -181,7 +181,7 @@ stages:
       protocol](https://redis.io/topics/protocol) to encode the reply.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L9"
 
-  - slug: "ping-pong-multiple"
+  - legacy_slug: "ping-pong-multiple"
     concept_slugs:
       [
         "network-protocols",
@@ -237,7 +237,7 @@ stages:
       [PING](https://redis.io/commands/ping) commands sent by the same client.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L35"
 
-  - slug: "concurrent-clients"
+  - legacy_slug: "concurrent-clients"
     concept_slugs:
       [
         "network-protocols",
@@ -297,7 +297,7 @@ stages:
       like the official Redis implementation does.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L56"
 
-  - slug: "echo"
+  - legacy_slug: "echo"
     name: "Implement the ECHO command"
     difficulty: medium
     description_md: |-
@@ -345,7 +345,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_echo.go#L11"
 
   # TODO: Change this to use hyphens
-  - slug: "set_get"
+  - legacy_slug: "set_get"
     name: "Implement the SET & GET commands"
     difficulty: medium
     description_md: |-
@@ -399,7 +399,7 @@ stages:
       [GET](https://redis.io/commands/get) commands.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_get_set.go#L11"
 
-  - slug: "expiry"
+  - legacy_slug: "expiry"
     name: "Expiry"
     difficulty: medium
     description_md: |-
