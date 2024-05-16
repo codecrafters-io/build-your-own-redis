@@ -1,0 +1,37 @@
+# DON'T EDIT THIS!
+#
+# Codecrafters relies on this file being intact to run tests successfully. Any changes
+# here will not reflect when CodeCrafters tests your code, and might even cause build
+# failures.
+#
+# DON'T EDIT THIS!
+
+name:                hs-redis-clone
+version:             0.1.0.0
+license:             BSD3
+
+dependencies:
+- base >= 4.7 && < 5
+- network-simple  # establish a simple TCP network
+- bytestring  # useful to send bytes over the network
+- network  # required when using bytestring
+- text  # use Text rather than String
+- stm  # may help with a concurrent database
+- containers  # may help with the database structure and debugging
+- time  # may help with the expiry function
+- async  # may help with concurrency
+- mtl  # may help with structuring
+# Parsing libs
+- megaparsec
+- parser-combinators
+- parsec
+- attoparsec
+
+executables:
+  hs-redis-clone-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N

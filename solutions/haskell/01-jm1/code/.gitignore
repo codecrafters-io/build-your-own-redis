@@ -1,0 +1,4 @@
+.stack-work/
+.stack/
+hs-redis-clone.cabal
+*~
