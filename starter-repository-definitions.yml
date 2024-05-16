@@ -52,6 +52,12 @@
       target: codecrafters.yml
     - source: starter_templates/crystal/app/main.cr
       target: app/main.cr
+    - source: starter_templates/crystal/shard.yml
+      target: shard.yml
+    - source: starter_templates/crystal/shard.lock
+      target: shard.lock
+    - source: starter_templates/crystal/.gitignore
+      target: .gitignore
     - source: starter_templates/crystal/spawn_redis_server.sh
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes

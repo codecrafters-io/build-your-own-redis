@@ -6,6 +6,5 @@
 #
 # DON'T EDIT THIS!
 set -e
-tmpfile=$(mktemp)
-crystal build -o "$tmpfile" app/main.cr
-exec "$tmpfile" "$@"
+crystal build --progress --stats --time -o server app/main.cr
+exec ./server "$@"

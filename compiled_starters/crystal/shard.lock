@@ -1,0 +1,6 @@
+version: 2.0
+shards:
+  kiwi:
+    git: https://github.com/crystal-community/kiwi.git
+    version: 0.1.0
+
