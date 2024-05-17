@@ -90,8 +90,7 @@ extensions:
       [xrange-command]: https://redis.io/commands/xrange/
 
 stages:
-  - legacy_slug: "init"
-    slug: "jm1"
+  - slug: "jm1"
     concept_slugs:
       [
         "network-protocols",
@@ -130,8 +129,7 @@ stages:
       default port that Redis uses.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_bind.go#L11"
 
-  - legacy_slug: "ping-pong"
-    slug: "rg2"
+  - slug: "rg2"
     concept_slugs:
       [
         "network-protocols",
@@ -183,8 +181,7 @@ stages:
       protocol](https://redis.io/topics/protocol) to encode the reply.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L9"
 
-  - legacy_slug: "ping-pong-multiple"
-    slug: "wy1"
+  - slug: "wy1"
     concept_slugs:
       [
         "network-protocols",
@@ -240,8 +237,7 @@ stages:
       [PING](https://redis.io/commands/ping) commands sent by the same client.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L35"
 
-  - legacy_slug: "concurrent-clients"
-    slug: "zu2"
+  - slug: "zu2"
     concept_slugs:
       [
         "network-protocols",
@@ -301,8 +297,7 @@ stages:
       like the official Redis implementation does.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L56"
 
-  - legacy_slug: "echo"
-    slug: "qq0"
+  - slug: "qq0"
     name: "Implement the ECHO command"
     difficulty: medium
     description_md: |-
@@ -350,8 +345,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_echo.go#L11"
 
   # TODO: Change this to use hyphens
-  - legacy_slug: "set_get"
-    slug: "la7"
+  - slug: "la7"
     name: "Implement the SET & GET commands"
     difficulty: medium
     description_md: |-
@@ -405,8 +399,7 @@ stages:
       [GET](https://redis.io/commands/get) commands.
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_get_set.go#L11"
 
-  - legacy_slug: "expiry"
-    slug: "yz1"
+  - slug: "yz1"
     name: "Expiry"
     difficulty: medium
     description_md: |-
@@ -468,8 +461,7 @@ stages:
 
   # Persistence
 
-  - legacy_slug: "rdb-config"
-    slug: "zg5"
+  - slug: "zg5"
     primary_extension_slug: "persistence-rdb"
     name: "RDB file config"
     difficulty: easy
@@ -538,8 +530,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
 
-  - legacy_slug: "rdb-read-key"
-    slug: "jz6"
+  - slug: "jz6"
     primary_extension_slug: "persistence-rdb"
     name: "Read a key"
     difficulty: medium
@@ -582,8 +573,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for reading a key from an RDB file that contains a single key-value pair. You'll do this by implementing the `KEYS *` command.
 
-  - legacy_slug: "rdb-read-string-value"
-    slug: "gc6"
+  - slug: "gc6"
     primary_extension_slug: "persistence-rdb"
     name: "Read a string value"
     difficulty: medium
@@ -620,8 +610,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for reading the value of a key from an RDB file that contains a single key-value pair.
 
-  - legacy_slug: "rdb-read-multiple-keys"
-    slug: "jw4"
+  - slug: "jw4"
     primary_extension_slug: "persistence-rdb"
     name: "Read multiple keys"
     difficulty: medium
@@ -654,8 +643,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for reading multiple keys from an RDB file. You'll do this by extending the `KEYS *` command to support multiple keys.
 
-  - legacy_slug: "rdb-read-multiple-string-values"
-    slug: "dq3"
+  - slug: "dq3"
     primary_extension_slug: "persistence-rdb"
     name: "Read multiple string values"
     difficulty: medium
@@ -679,8 +667,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for reading multiple string values from an RDB file.
 
-  - legacy_slug: "rdb-read-value-with-expiry"
-    slug: "sm4"
+  - slug: "sm4"
     primary_extension_slug: "persistence-rdb"
     name: "Read value with expiry"
     difficulty: medium
@@ -711,8 +698,7 @@ stages:
 
   # Replication
 
-  - legacy_slug: "repl-custom-port"
-    slug: "bw1"
+  - slug: "bw1"
     primary_extension_slug: "replication"
     name: "Configure listening port"
     difficulty: easy
@@ -746,8 +732,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for parsing the `--port` flag and starting Redis on a custom port.
 
-  - legacy_slug: "repl-info"
-    slug: "ye5"
+  - slug: "ye5"
     primary_extension_slug: "replication"
     name: "The INFO command"
     difficulty: easy
@@ -814,8 +799,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for the INFO command on the master.
 
-  - legacy_slug: "repl-info-replica"
-    slug: "hc6"
+  - slug: "hc6"
     primary_extension_slug: "replication"
     name: "The INFO command on a replica"
     difficulty: medium
@@ -863,8 +847,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for the --replicaof arg and INFO command on the replica.
 
-  - legacy_slug: "repl-id"
-    slug: "xc1"
+  - slug: "xc1"
     primary_extension_slug: "replication"
     name: "Initial Replication ID and Offset"
     difficulty: easy
@@ -915,8 +898,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for reading a key from an RDB file that contains a single key-value pair. You'll do this by implementing the `KEYS *` command.
 
-  - legacy_slug: "repl-replica-ping"
-    slug: "gl7"
+  - slug: "gl7"
     primary_extension_slug: "replication"
     name: "Send handshake (1/3)"
     difficulty: easy
@@ -951,8 +933,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for starting the handshake from the Replica side.
 
-  - legacy_slug: "repl-replica-replconf"
-    slug: "eh4"
+  - slug: "eh4"
     primary_extension_slug: "replication"
     name: "Send handshake (2/3)"
     difficulty: easy
@@ -1009,8 +990,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for continuing the handshake from the Replica side, by sending REPLCONF.
 
-  - legacy_slug: "repl-replica-psync"
-    slug: "ju6"
+  - slug: "ju6"
     primary_extension_slug: "replication"
     name: "Send handshake (3/3)"
     difficulty: medium
@@ -1067,8 +1047,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for finishing the handshake from the Replica side, by sending PSYNC.
 
-  - legacy_slug: "repl-master-replconf"
-    slug: "fj0"
+  - slug: "fj0"
     primary_extension_slug: "replication"
     name: "Receive handshake (1/2)"
     difficulty: easy
@@ -1107,8 +1086,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for starting the handshake from the master side, by accepting REPLCONF.
 
-  - legacy_slug: "repl-master-psync"
-    slug: "vm3"
+  - slug: "vm3"
     primary_extension_slug: "replication"
     name: "Receive handshake (2/2)"
     difficulty: easy
@@ -1167,8 +1145,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for accepting PSYNC, and starting a FULLRESYNC.
 
-  - legacy_slug: "repl-master-psync-rdb"
-    slug: "cf8"
+  - slug: "cf8"
     primary_extension_slug: "replication"
     name: "Empty RDB Transfer"
     difficulty: easy
@@ -1229,8 +1206,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for sending an empty RDB file to the replica. This is part of the "full resynchronization" process.
 
-  - legacy_slug: "repl-master-cmd-prop"
-    slug: "zn8"
+  - slug: "zn8"
     primary_extension_slug: "replication"
     name: "Single-replica propagation"
     difficulty: medium
@@ -1300,8 +1276,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for finishing the sync handshake from the master side, by sending a RDB file.
 
-  - legacy_slug: "repl-multiple-replicas"
-    slug: "hd5"
+  - slug: "hd5"
     primary_extension_slug: "replication"
     name: "Multi Replica Command Propagation"
     difficulty: hard
@@ -1337,8 +1312,7 @@ stages:
     marketing_md: |
       In this stage, you'll complete your implementation of Redis replication.
 
-  - legacy_slug: "repl-cmd-processing"
-    slug: "yg4"
+  - slug: "yg4"
     primary_extension_slug: "replication"
     name: "Command Processing"
     difficulty: hard
@@ -1387,8 +1361,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for processing commands received by the replica from the master.
 
-  - legacy_slug: "repl-replica-getack"
-    slug: "xv6"
+  - slug: "xv6"
     primary_extension_slug: "replication"
     name: "ACKs with no commands"
     difficulty: easy
@@ -1455,8 +1428,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for returning an ACK back to master as a response to GETACK.
 
-  - legacy_slug: "repl-replica-getack-nonzero"
-    slug: "yd3"
+  - slug: "yd3"
     primary_extension_slug: "replication"
     name: "ACKs with commands"
     difficulty: medium
@@ -1531,8 +1503,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for returning an ACK back to master as a response to GETACK.
 
-  - legacy_slug: "repl-wait-zero-replicas"
-    slug: "my8"
+  - slug: "my8"
     primary_extension_slug: "replication"
     name: "WAIT with no replicas"
     difficulty: medium
@@ -1569,8 +1540,7 @@ stages:
     marketing_md: |
       In this stage, you'll start implementing the WAIT command on your master.
 
-  - legacy_slug: "repl-wait-zero-offset"
-    slug: "tu8"
+  - slug: "tu8"
     primary_extension_slug: "replication"
     name: "WAIT with no commands"
     difficulty: medium
@@ -1611,8 +1581,7 @@ stages:
     marketing_md: |
       In this stage, you'll continue implementing the WAIT command on your master.
 
-  - legacy_slug: "repl-wait"
-    slug: "na2"
+  - slug: "na2"
     primary_extension_slug: "replication"
     name: "WAIT with multiple commands"
     difficulty: hard
@@ -1654,8 +1623,7 @@ stages:
       In this stage, you'll finish implementing the WAIT command on your master.
 
   # Streams
-  - legacy_slug: "streams-type"
-    slug: "cc3"
+  - slug: "cc3"
     primary_extension_slug: "streams"
     name: "The TYPE command"
     difficulty: easy
@@ -1722,8 +1690,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for the `TYPE` command.
 
-  - legacy_slug: "streams-xadd"
-    slug: "cf6"
+  - slug: "cf6"
     primary_extension_slug: "streams"
     name: "Create a stream"
     difficulty: medium
@@ -1803,8 +1770,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
 
-  - legacy_slug: "streams-xadd-validate-id"
-    slug: "hq8"
+  - slug: "hq8"
     primary_extension_slug: "streams"
     name: "Validating entry IDs"
     difficulty: easy
@@ -1923,8 +1889,7 @@ stages:
     marketing_md: |
       In this stage, you'll enhance the `XADD` command by extending support for explicit IDs.
 
-  - legacy_slug: "streams-xadd-partial-autoid"
-    slug: "yh3"
+  - slug: "yh3"
     primary_extension_slug: "streams"
     name: "Partially auto-generated IDs"
     difficulty: medium
@@ -1995,8 +1960,7 @@ stages:
     marketing_md: |
       In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the sequence number.
 
-  - legacy_slug: "streams-xadd-full-autoid"
-    slug: "xu6"
+  - slug: "xu6"
     primary_extension_slug: "streams"
     name: "Fully auto-generated IDs"
     difficulty: medium
@@ -2042,8 +2006,7 @@ stages:
     marketing_md: |
       In this stage, you'll enhance the `XADD` command by adding the option to use `*` as the entry ID.
 
-  - legacy_slug: "streams-xrange"
-    slug: "zx1"
+  - slug: "zx1"
     primary_extension_slug: "streams"
     name: "Query entries from stream"
     difficulty: medium
@@ -2186,8 +2149,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for querying data from a stream using the `XRANGE` command.
 
-  - legacy_slug: "streams-xrange-min-id"
-    slug: "yp1"
+  - slug: "yp1"
     primary_extension_slug: "streams"
     name: "Query with -"
     difficulty: easy
@@ -2276,8 +2238,7 @@ stages:
     marketing_md: |
       In this stage, you'll extend support for `XRANGE` to allow querying using `-`.
 
-  - legacy_slug: "streams-xrange-max-id"
-    slug: "fs1"
+  - slug: "fs1"
     primary_extension_slug: "streams"
     name: "Query with +"
     difficulty: easy
@@ -2376,8 +2337,7 @@ stages:
     marketing_md: |
       In this stage, you'll extend support for `XRANGE` to allow querying using `+`.
 
-  - legacy_slug: "streams-xread"
-    slug: "um0"
+  - slug: "um0"
     primary_extension_slug: "streams"
     name: "Query single stream using XREAD"
     difficulty: medium
@@ -2524,8 +2484,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support to querying a stream using the `XREAD` command.
 
-  - legacy_slug: "streams-xread-multiple"
-    slug: "ru9"
+  - slug: "ru9"
     primary_extension_slug: "streams"
     name: "Query multiple streams using XREAD"
     difficulty: medium
@@ -2611,8 +2570,7 @@ stages:
     marketing_md: |
       In this stage, you'll add extend support to `XREAD` to allow querying multiple streams.
 
-  - legacy_slug: "streams-xread-block"
-    slug: "bs1"
+  - slug: "bs1"
     primary_extension_slug: "streams"
     name: "Blocking reads"
     difficulty: hard
@@ -2752,8 +2710,7 @@ stages:
     marketing_md: |
       In this stage, you'll add extend support to `XREAD` to allow querying multiple streams.
 
-  - legacy_slug: "streams-xread-block-no-timeout"
-    slug: "hw1"
+  - slug: "hw1"
     primary_extension_slug: "streams"
     name: "Blocking reads without timeout"
     difficulty: medium
@@ -2870,8 +2827,7 @@ stages:
     marketing_md: |
       In this stage, you'll add extend support to `XREAD` to allow for the blocking command not timing out.
 
-  - legacy_slug: "streams-xread-block-max-id"
-    slug: "xu1"
+  - slug: "xu1"
     primary_extension_slug: "streams"
     name: "Blocking reads using $"
     difficulty: easy
