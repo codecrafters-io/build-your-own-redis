@@ -1,4 +1,4 @@
-FROM clojure:openjdk-18-lein-alpine
+FROM clojure:openjdk-19-lein-alpine
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="project.clj"
 
