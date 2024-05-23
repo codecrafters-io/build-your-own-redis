@@ -1,7 +1,10 @@
+# syntax=docker/dockerfile:1.7-labs
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine
 
 WORKDIR /app
-COPY . /app
+
+# .git & README.md are unique per-repository. We ignore them on first copy to prevent cache misses
+COPY --exclude=.git --exclude=README.md . /app
 
 # This saves nuget packages to ~/.nuget
 RUN dotnet build --configuration Release .
@@ -15,4 +18,7 @@ RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && dotnet build --configuration Rel
 RUN chmod +x /codecrafters-precompile.sh
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-redis.csproj,codecrafters-redis.sln"
+
+# Once the heavy steps are done, we can copy all files back
+COPY . /app
 
