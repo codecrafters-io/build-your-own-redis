@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine
 
 WORKDIR /app
-ADD . /app
+COPY . /app
 
 # This saves nuget packages to ~/.nuget
 RUN dotnet build --configuration Release .

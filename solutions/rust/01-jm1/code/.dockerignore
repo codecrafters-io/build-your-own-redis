@@ -1,3 +1,0 @@
-# We ignore README.md files since they're different for each repository and
-# could result in build caches not being used.
-README.md
