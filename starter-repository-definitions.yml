@@ -14,6 +14,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "lein"
     user_editable_file: "src/redis/core.clj"
@@ -40,6 +42,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "cmake"
     user_editable_file: "src/Server.cpp"
@@ -56,6 +60,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "crystal (1.1.0)"
     user_editable_file: "app/main.cr"
@@ -78,6 +84,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "dotnet (8.0)"
     user_editable_file: "src/Server.cs"
@@ -96,6 +104,8 @@
       target: .gitignore
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "python (3.x)"
     user_editable_file: "app/main.py"
@@ -116,6 +126,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "go (1.19)"
     user_editable_file: "app/server.go"
@@ -132,6 +144,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "gcc"
     user_editable_file: "app/server.c"
@@ -152,6 +166,8 @@
       target: Gemfile
     - source: starter_templates/ruby/Gemfile.lock
       target: Gemfile.lock
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "ruby (2.7)"
     user_editable_file: "app/server.rb"
@@ -176,6 +192,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "stack"
     user_editable_file: "app/Main.hs"
@@ -196,6 +214,8 @@
       target: .gitattributes
     - source: starter_templates/java/pom.xml
       target: pom.xml
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "java (1.8)"
     user_editable_file: "src/main/java/Main.java"
@@ -216,6 +236,8 @@
       target: .gitattributes
     - source: starter_templates/elixir/.gitignore
       target: .gitignore
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "mix"
     user_editable_file: "lib/server.ex"
@@ -238,6 +260,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "cargo (1.54)"
     user_editable_file: "src/main.rs"
@@ -254,6 +278,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "php (7.4)"
     user_editable_file: "app/main.php"
@@ -276,6 +302,8 @@
       target: .gitattributes
     - source: starter_templates/javascript/.gitignore
       target: .gitignore
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "node (21)"
     user_editable_file: "app/main.js"
@@ -300,6 +328,8 @@
       target: .gitattributes
     - source: starter_templates/typescript/.gitignore
       target: .gitignore
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "bun (1.1)"
     user_editable_file: "app/main.ts"
@@ -322,6 +352,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "gleam (1.0)"
     user_editable_file: "src/redis.gleam"
@@ -346,6 +378,8 @@
       target: spawn_redis_server.sh
     - source: starter_templates/.gitattributes
       target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "sbt (1.9.9)"
     user_editable_file: "src/main/scala/codecrafters_redis/Server.scala"
@@ -366,6 +400,10 @@
       target: build.zig
     - source: starter_templates/zig/build.zig.zon
       target: build.zig.zon
+    - source: starter_templates/.gitattributes
+      target: .gitattributes
+    - source: starter_templates/.dockerignore
+      target: .dockerignore
   template_attributes:
     required_executable: "zig (0.12)"
     user_editable_file: "src/main.zig"
