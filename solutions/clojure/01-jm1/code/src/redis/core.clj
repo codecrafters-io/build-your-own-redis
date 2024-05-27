@@ -17,16 +17,15 @@
     (.flush writer)))
 
 (defn serve [port handler]
-  ;; Since the tester restarts your program quite often, setting SO_REUSEADDR
-  ;; ensures that we don't run into 'Address already in use' errors
-  (. server-sock (setReuseAddress true))
-  ;; Bind the socket to the specified port
-  (.bind server-sock (ServerSocket. port))
+  (with-open [server-sock (ServerSocket. port)]
+    ;; Since the tester restarts your program quite often, setting SO_REUSEADDR
+    ;; ensures that we don't run into 'Address already in use' errors
+    (. server-sock (setReuseAddress true))
 
-  (with-open [sock (.accept server-sock)]
+   (with-open [sock (.accept server-sock)]
     (let [msg-in (receive-message sock)
           msg-out (handler msg-in)]
-      (send-message sock msg-out))))
+      (send-message sock msg-out)))))
 
 (defn handler
   [& args]
