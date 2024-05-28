@@ -14,7 +14,8 @@ if (server_fd < 0) {
 // Since the tester restarts your program quite often, setting SO_REUSEADDR
 // ensures that we don't run into 'Address already in use' errors
 int reuse = 1;
-if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0) {
+if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse))
+< 0) {
   std::cerr << "setsockopt failed\n";
   return 1;
 }
@@ -24,7 +25,8 @@ server_addr.sin_family = AF_INET;
 server_addr.sin_addr.s_addr = INADDR_ANY;
 server_addr.sin_port = htons(6379);
 
-if (bind(server_fd, (struct sockaddr *) &server_addr, sizeof(server_addr)) != 0) {
+if (bind(server_fd, (struct sockaddr *) &server_addr, sizeof(server_addr))
+!= 0) {
   std::cerr << "Failed to bind to port 6379\n";
   return 1;
 }
@@ -40,8 +42,8 @@ int client_addr_len = sizeof(client_addr);
 
 std::cout << "Waiting for a client to connect...\n";
 
-accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
-std::cout << "Client connected\n";
+accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *)
+&client_addr_len); std::cout << "Client connected\n";
 
 close(server_fd);
 ```
