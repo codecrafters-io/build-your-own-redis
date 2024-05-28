@@ -8,7 +8,7 @@
                  [aleph "0.6.4"]]
 
   :main ^:skip-aot redis.core
-  :target-path "target/%s"
+  :target-path "/tmp/codecrafters-redis-target/%s"
+  :clean-targets ^{:protect false} ["/tmp/codecrafters-redis-target"]
   :profiles {:uberjar {:aot :all
-                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
-            :user {:local-repo "/app/deps/"}})
+                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})

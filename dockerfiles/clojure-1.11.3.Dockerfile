@@ -7,8 +7,5 @@ COPY project.clj ./
 
 RUN lein deps
 
-RUN mkdir -p /app-cached/deps/
-RUN if [ -d "/app/deps/" ]; then mv /app/deps/ /app-cached/deps/; fi
-
-RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && lein deps" > /codecrafters-precompile.sh
+RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && lein deps && lein uberjar" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
