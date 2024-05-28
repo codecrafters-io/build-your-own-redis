@@ -3,8 +3,12 @@
   :url "http://github.com/codecrafters-io/redis-starter-clojure"
   :license {:name "MIT"
             :url "https://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.10.3"]]
+  :dependencies [[org.clojure/clojure "1.10.3"]
+                 [org.clojure/tools.cli "1.1.230"]
+                 [aleph "0.6.4"]]
+
   :main ^:skip-aot redis.core
-  :target-path "target/%s"
+  :target-path "/tmp/codecrafters-redis-target/%s"
+  :clean-targets ^{:protect false} ["/tmp/codecrafters-redis-target"]
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
