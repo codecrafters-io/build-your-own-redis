@@ -7,5 +7,5 @@ COPY project.clj ./
 
 RUN lein deps
 
-RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && lein deps && lein uberjar" > /codecrafters-precompile.sh
+RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && lein deps && lein uberjar && sed -i 's/^\(lein .*\)/#\1/' ./spawn_redis_server.sh\n" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
