@@ -1,4 +1,4 @@
-@@ -1,58 +1,53 @@
+@@ -1,62 +1,57 @@
  #include <iostream>
  #include <cstdlib>
  #include <string>
@@ -10,6 +10,10 @@
  #include <netdb.h>
 
  int main(int argc, char **argv) {
+   // Flush after every std::cout / std::cerr
+   std:: cout < std: :unitbuf;
+   std:: cerr < std: :unitbuf;
+
 -  // You can use print statements as follows for debugging, they'll be visible when running tests.
 -  std::cout << "Logs from your program will appear here!\n";
 +  int server_fd = socket(AF_INET, SOCK_STREAM, 0);
