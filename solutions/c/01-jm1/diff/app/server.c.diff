@@ -1,4 +1,4 @@
-@@ -1,61 +1,56 @@
+@@ -1,62 +1,57 @@
  #include <stdio.h>
  #include <stdlib.h>
  #include <sys/socket.h>
@@ -11,7 +11,8 @@
  int main() {
  	// Disable output buffering
  	setbuf(stdout, NULL);
-
+ 	setbuf(stderr, NULL);
+ 	
 -	// You can use print statements as follows for debugging, they'll be visible when running tests.
 -	printf("Logs from your program will appear here!\n");
 +	int server_fd, client_addr_len;
