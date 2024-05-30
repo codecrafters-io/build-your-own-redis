@@ -10,7 +10,8 @@
 int main() {
 	// Disable output buffering
 	setbuf(stdout, NULL);
-
+	setbuf(stderr, NULL);
+	
 	int server_fd, client_addr_len;
 	struct sockaddr_in client_addr;
 
