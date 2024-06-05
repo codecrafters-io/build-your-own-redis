@@ -3,10 +3,11 @@ const std = @import("std");
 // Learn more about this file here: https://ziglang.org/learn/build-system
 pub fn build(b: *std.Build) void {
     const exe = b.addExecutable(.{
-        .name = "zig",
+        .name = "redis_challenge",
         .root_source_file = b.path("src/main.zig"),
         .target = b.standardTargetOptions(.{}),
         .optimize = b.standardOptimizeOption(.{}),
+        .link_libc = true,
     });
 
     // This declares intent for the executable to be installed into the
