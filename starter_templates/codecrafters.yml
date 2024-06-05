@@ -64,8 +64,8 @@ language_pack: nim-1.0
 language_pack: crystal-1.1
 {{/ language_is_crystal }}
 {{#language_is_clojure}}
-# Available versions: clojure-1.11.3
-language_pack: clojure-1.11.3
+# Available versions: clojure-1.10.3
+language_pack: clojure-1.10.3
 {{/language_is_clojure}}
 {{#language_is_csharp}}
 # Available versions: dotnet-8.0
