@@ -2,12 +2,7 @@ FROM gcc:13.2.0-bookworm
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="vcpkg.json,vcpkg-configuration.json"
 
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y zip=3.* && \ 
-    apt-get install --no-install-recommends -y g++=4:* && \
-    apt-get install --no-install-recommends -y build-essential=12.* && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y zip g++ build-essential
 
 # cmake 3.29.2 is required by vcpkg
 RUN wget --progress=dot:giga https://github.com/Kitware/CMake/releases/download/v3.29.2/cmake-3.29.2-Linux-x86_64.tar.gz && \
