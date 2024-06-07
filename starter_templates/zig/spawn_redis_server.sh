@@ -7,4 +7,4 @@
 # DON'T EDIT THIS!
 set -e
 
-exec zig build run -- $@
+exec zig build run -Doptimize=ReleaseFast -- $@
