@@ -89,6 +89,18 @@ extensions:
       [xadd-command]: https://redis.io/commands/xadd/
       [xrange-command]: https://redis.io/commands/xrange/
 
+  - slug: "transactions"
+    name: "Transactions"
+    description_markdown: |-
+      In this challenge extension you'll add support for [Transactions][redis-transactions] to your Redis implementation.
+      
+      Along the way, you'll learn about the [MULTI][multi-command], [EXEC][exec-command], and [DISCARD][discard-command] commands, as well as how Redis handles transactions atomically.
+
+      [redis-transactions]: https://redis.io/docs/latest/develop/interact/transactions/
+      [multi-command]: https://redis.io/commands/multi/
+      [exec-command]: https://redis.io/commands/exec/
+      [discard-command]: https://redis.io/commands/discard/
+
 stages:
   - slug: "jm1"
     concept_slugs:
@@ -1803,6 +1815,7 @@ stages:
       In this stage, you'll finish implementing the WAIT command on your master.
 
   # Streams
+
   - slug: "cc3"
     primary_extension_slug: "streams"
     name: "The TYPE command"
@@ -3142,3 +3155,313 @@ stages:
       - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
     marketing_md: |
       In this stage, you'll add extend support to `XREAD` to allow for passing in `$` as the ID for a blocking command.
+
+  # Transactions
+
+  - slug: "si4"
+    primary_extension_slug: "transactions"
+    name: "INCR Command (1/3)"
+    difficulty: easy
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli SET foo 41
+      > INCR foo
+      ```
+
+    marketing_md: |
+      In this stage, you'll start implementing the INCR command.
+
+  - slug: "lz8"
+    primary_extension_slug: "transactions"
+    name: "INCR Command (2/3)"
+    difficulty: easy
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli INCR foo
+      > INCR bar
+      ```
+
+    marketing_md: |
+      In this stage, you'll continue implementing the INCR command.
+
+  - slug: "mk1"
+    primary_extension_slug: "transactions"
+    name: "INCR Command (3/3)"
+    difficulty: easy
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli SET foo xyz
+      > INCR foo
+      ```
+
+    marketing_md: |
+      In this stage, you'll finish implementing the INCR command.
+
+  - slug: "pn0"
+    primary_extension_slug: "transactions"
+    name: "MULTI Command"
+    difficulty: easy
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli MULTI
+      ```
+
+    marketing_md: |
+      In this stage, you'll implement the MULTI command.
+
+  - slug: "lo4"
+    primary_extension_slug: "transactions"
+    name: "EXEC Command"
+    difficulty: easy
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli EXEC
+      ```
+
+    marketing_md: |
+      In this stage, you'll start implementing the EXEC command.
+
+  - slug: "we1"
+    primary_extension_slug: "transactions"
+    name: "Empty transaction"
+    difficulty: hard
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli MULTI
+      > EXEC
+      > EXEC
+      ```
+
+    marketing_md: |
+      In this stage, you'll implement an empty transaction.
+
+  - slug: "rs9"
+    primary_extension_slug: "transactions"
+    name: "Queueing Commands"
+    difficulty: medium
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli MULTI
+      > SET foo 41
+      > INCR foo
+      ```
+
+      The tester will then create another connection to your master as a Redis client, and send a single command:
+
+      ```bash
+      $ redis-cli GET foo
+      ```
+
+    marketing_md: |
+      In this stage, you'll implement queueing commands to a transaction.
+
+  - slug: "fy6"
+    primary_extension_slug: "transactions"
+    name: "Executing a transaction"
+    difficulty: hard
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli MULTI
+      > SET foo 6
+      > INCR foo
+      > INCR bar
+      > GET bar
+      > EXEC
+      ```
+
+      The tester will then create another connection to your master as a Redis client, and send a single command:
+
+      ```bash
+      $ redis-cli GET foo
+      ```
+
+    marketing_md: |
+      In this stage, you'll implement executing a successful transaction.
+
+  - slug: "rl9"
+    primary_extension_slug: "transactions"
+    name: "DISCARD Command"
+    difficulty: easy
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli MULTI
+      > SET foo 41
+      > INCR foo
+      > DISCARD
+      > GET foo
+      > GET bar
+      > DISCARD
+      ```
+
+    marketing_md: |
+      In this stage, you'll implement the DISCARD command.
+
+  - slug: "sg9"
+    primary_extension_slug: "transactions"
+    name: "Failures within transactions"
+    difficulty: medium
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+
+      ```bash
+      $ redis-cli SET foo abc
+      > SET bar 7 
+      > MULTI
+      > INCR foo
+      > INCR bar
+      > EXEC
+      ```
+
+      The tester will then create another connection to your master as a Redis client, and send a single command:
+
+      ```bash
+      $ redis-cli GET foo
+      > GET bar
+      ```
+
+    marketing_md: |
+      In this stage, you'll implement handling failures while executing a transaction.
+
+  - slug: "jf8"
+    primary_extension_slug: "transactions"
+    name: "Multiple transactions"
+    difficulty: medium
+    description_md: |
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program as a master like this:
+
+      ```
+      ./spawn_redis_server.sh
+      ```
+
+      The tester will then connect to your master as multiple Redis clients, and send multiple commands from each connection:
+
+      ```bash
+      $ redis-cli MULTI
+      > INCR foo
+      > EXEC
+      ```
+
+    marketing_md: |
+      In this stage, you'll implement multiple concurrent transactions.
