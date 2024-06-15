@@ -3244,9 +3244,7 @@ stages:
     name: "The MULTI command"
     difficulty: easy
     description_md: |
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
-
-      ### Tests
+      In this stage, you'll add support for the `MULTI` command.
 
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
