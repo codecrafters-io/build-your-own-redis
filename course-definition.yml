@@ -3241,49 +3241,57 @@ stages:
 
   - slug: "pn0"
     primary_extension_slug: "transactions"
-    name: "MULTI Command"
+    name: "The MULTI command"
     difficulty: easy
     description_md: |
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+
+      ### Tests
+
+      The tester will execute your program like this:
 
       ```
       ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client and run the following commands:
 
       ```bash
       $ redis-cli MULTI
       ```
 
+      The tester will expect "+OK\r\n" as the response.
     marketing_md: |
       In this stage, you'll implement the MULTI command.
 
   - slug: "lo4"
     primary_extension_slug: "transactions"
-    name: "EXEC Command"
+    name: "The EXEC command"
     difficulty: easy
     description_md: |
+      In this stage, you'll add support for the `EXEC` command when the `MULTI` command has not been called.
+
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
       ```
       ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client and run the following commands:
 
       ```bash
       $ redis-cli EXEC
       ```
 
+      The tester will expect "-ERR EXEC without MULTI\r\n" as the response.
     marketing_md: |
       In this stage, you'll start implementing the EXEC command.
 
@@ -3292,22 +3300,25 @@ stages:
     name: "Empty transaction"
     difficulty: hard
     description_md: |
+      In this stage, you'll add support for the `EXEC` command when the `MULTI` command has been called but no commands have been queued.
+
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
       ```
       ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client and run the following commands:
 
       ```bash
-      $ redis-cli MULTI
-      > EXEC
-      > EXEC
+      $ redis-cli
+      > MULTI
+      > EXEC (expecting empty array "*0\r\n" as the response)
+      > EXEC (expecting "-ERR EXEC without MULTI\r\n" as the response)
       ```
 
     marketing_md: |
