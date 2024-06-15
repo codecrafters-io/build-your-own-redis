@@ -3160,7 +3160,7 @@ stages:
 
   - slug: "si4"
     primary_extension_slug: "transactions"
-    name: "INCR Command (1/3)"
+    name: "The INCR command (1/3)"
     difficulty: easy
     description_md: |
       In this stage, you'll add support for handling the `INCR` command when a key exists with numerical value.
@@ -3187,7 +3187,7 @@ stages:
 
   - slug: "lz8"
     primary_extension_slug: "transactions"
-    name: "INCR Command (2/3)"
+    name: "The INCR command (2/3)"
     difficulty: easy
     description_md: |
       In this stage, you'll add support for handling the `INCR` command when a key does not exist.
@@ -3214,7 +3214,7 @@ stages:
 
   - slug: "mk1"
     primary_extension_slug: "transactions"
-    name: "INCR Command (3/3)"
+    name: "The INCR command (3/3)"
     difficulty: easy
     description_md: |
       In this stage, you'll add support for handling the `INCR` command when a key exists but doesn't have a numerical value.
@@ -3262,7 +3262,7 @@ stages:
       $ redis-cli MULTI
       ```
 
-      The tester will expect "+OK\r\n" as the response.
+      The tester will expect `+OK\r\n` as the response.
     marketing_md: |
       In this stage, you'll implement the MULTI command.
 
@@ -3324,7 +3324,7 @@ stages:
 
   - slug: "rs9"
     primary_extension_slug: "transactions"
-    name: "Queueing Commands"
+    name: "Queueing commands"
     difficulty: medium
     description_md: |
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
@@ -3391,7 +3391,7 @@ stages:
 
   - slug: "rl9"
     primary_extension_slug: "transactions"
-    name: "DISCARD Command"
+    name: "The DISCARD command"
     difficulty: easy
     description_md: |
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
