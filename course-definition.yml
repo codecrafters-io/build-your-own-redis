@@ -3206,8 +3206,8 @@ stages:
 
       ```bash
       $ redis-cli
-      > INCR foo (expecting ":0\r\n" as the response)
-      > INCR bar (expecting ":0\r\n" as the response)
+      > INCR foo (expecting ":1\r\n" as the response)
+      > INCR bar (expecting ":1\r\n" as the response)
       ```
     marketing_md: |
       In this stage, you'll continue implementing the INCR command.
