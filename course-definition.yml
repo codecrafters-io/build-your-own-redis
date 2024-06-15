@@ -93,7 +93,7 @@ extensions:
     name: "Transactions"
     description_markdown: |-
       In this challenge extension you'll add support for [Transactions][redis-transactions] to your Redis implementation.
-      
+
       Along the way, you'll learn about the [MULTI][multi-command], [EXEC][exec-command], and [DISCARD][discard-command] commands, as well as how Redis handles transactions atomically.
 
       [redis-transactions]: https://redis.io/docs/latest/develop/interact/transactions/
@@ -3163,23 +3163,25 @@ stages:
     name: "INCR Command (1/3)"
     difficulty: easy
     description_md: |
+      In this stage, you'll add support for handling the `INCR` command when a key exists with numerical value.
+
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
       ```
       ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client and run the following commands:
 
       ```bash
-      $ redis-cli SET foo 41
-      > INCR foo
+      $ redis-cli
+      > SET foo 41 (expecting "+OK" as the response)
+      > INCR foo (expecting ":42\r\n" as the response)
       ```
-
     marketing_md: |
       In this stage, you'll start implementing the INCR command.
 
@@ -3188,23 +3190,25 @@ stages:
     name: "INCR Command (2/3)"
     difficulty: easy
     description_md: |
+      In this stage, you'll add support for handling the `INCR` command when a key does not exist.
+
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
       ```
       ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client and run the following commands:
 
       ```bash
-      $ redis-cli INCR foo
-      > INCR bar
+      $ redis-cli
+      > INCR foo (expecting ":0\r\n" as the response)
+      > INCR bar (expecting ":0\r\n" as the response)
       ```
-
     marketing_md: |
       In this stage, you'll continue implementing the INCR command.
 
@@ -3213,23 +3217,25 @@ stages:
     name: "INCR Command (3/3)"
     difficulty: easy
     description_md: |
+      In this stage, you'll add support for handling the `INCR` command when a key exists but doesn't have a numerical value.
+
       **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
       ```
       ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client and run the following commands:
 
       ```bash
-      $ redis-cli SET foo xyz
-      > INCR foo
+      $ redis-cli
+      > SET foo xyz (expecting "+OK" as the response)
+      > INCR foo (expecting "-ERR value is not an integer or out of range" as the response)
       ```
-
     marketing_md: |
       In this stage, you'll finish implementing the INCR command.
 
@@ -3423,7 +3429,7 @@ stages:
 
       ```bash
       $ redis-cli SET foo abc
-      > SET bar 7 
+      > SET bar 7
       > MULTI
       > INCR foo
       > INCR bar
