@@ -2710,7 +2710,7 @@ stages:
       ```text
       *2\r\n
       *2\r\n
-      $9\r\nstream_key\r\n
+      $10\r\nstream_key\r\n
       *1\r\n
       *2\r\n
       $3\r\n0-1\r\n
@@ -2718,7 +2718,7 @@ stages:
       $11\r\ntemperature\r\n
       $2\r\n95\r\n
       *2\r\n
-      $14\r\nother_stream_key\r\n
+      $16\r\nother_stream_key\r\n
       *1\r\n
       *2\r\n
       $3\r\n0-2\r\n
@@ -2737,8 +2737,8 @@ stages:
             [
               "0-1",
               [
-                "foo",
-                "bar"
+                "temperature",
+                "95"
               ]
             ]
           ]
@@ -2749,8 +2749,8 @@ stages:
             [
               "0-2",
               [
-                "bar",
-                "baz"
+                "humidity",
+                "97"
               ]
             ]
           ]
