@@ -3175,9 +3175,9 @@ stages:
       $ redis-cli SET foo 5
       "OK"
       $ redis-cli INCR foo
-      "6"
+      (integer) 6
       $ redis-cli INCR foo
-      "7"
+      (integer) 7
       ```
 
       If the key doesn't exist, the value will be set to 1.
@@ -3213,14 +3213,29 @@ stages:
     description_md: |
       In this stage, you'll add support for handling the `INCR` command when a key does not exist.
 
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      ### Recap
+
+      As a recap, the implementation of `INCR` is split into three stages:
+
+      - Key exists and has a numerical value (previous stages)
+      - Key doesn't exist (**This stage**)
+      - Key exists but doesn't have a numerical value (later stages)
+
+      When a key doesn't exit, `INCR` sets the value to 1. Example:
+
+      ```bash
+      $ redis-cli INCR missing_key
+      (integer) 1
+      $ redis-cli GET missing_key
+      "1"
+      ```
 
       ### Tests
 
       The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
@@ -3230,6 +3245,10 @@ stages:
       > INCR foo (expecting ":1\r\n" as the response)
       > INCR bar (expecting ":1\r\n" as the response)
       ```
+
+      ### Notes
+
+      - Your implementation still needs to pass the tests in the previous stage.
     marketing_md: |
       In this stage, you'll continue implementing the INCR command.
 
