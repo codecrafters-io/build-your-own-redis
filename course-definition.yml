@@ -3221,7 +3221,7 @@ stages:
       - Key doesn't exist (**This stage**)
       - Key exists but doesn't have a numerical value (later stages)
 
-      When a key doesn't exit, `INCR` sets the value to 1. Example:
+      When a key doesn't exist, `INCR` sets the value to 1. Example:
 
       ```bash
       $ redis-cli INCR missing_key
@@ -3273,7 +3273,7 @@ stages:
       $ redis-cli SET foo xyz
       "OK"
       $ redis-cli INCR foo
-      -ERR value is not an integer or out of range
+      (error) ERR value is not an integer or out of range
       ```
 
       ### Tests
@@ -3288,8 +3288,8 @@ stages:
 
       ```bash
       $ redis-cli
-      > SET foo xyz (expecting "+OK" as the response)
-      > INCR foo (expecting "-ERR value is not an integer or out of range" as the response)
+      > SET foo xyz (expecting "+OK\r\n" as the response)
+      > INCR foo (expecting "-ERR value is not an integer or out of range\r\n" as the response)
       ```
     marketing_md: |
       In this stage, you'll finish implementing the INCR command.
