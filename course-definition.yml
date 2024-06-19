@@ -3215,7 +3215,7 @@ stages:
 
       ### Recap
 
-      As a recap, the implementation of `INCR` is split into three stages:
+      The implementation of [`INCR`](https://redis.io/docs/latest/commands/incr/) is split into three stages:
 
       - Key exists and has a numerical value (previous stages)
       - Key doesn't exist (**This stage**)
@@ -3259,14 +3259,29 @@ stages:
     description_md: |
       In this stage, you'll add support for handling the `INCR` command when a key exists but doesn't have a numerical value.
 
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      ### Recap
+
+      The implementation of [`INCR`](https://redis.io/docs/latest/commands/incr/) is split into three stages:
+
+      - Key exists and has a numerical value (previous stages)
+      - Key doesn't exist (previous stages)
+      - Key exists but doesn't have a numerical value (**This stage**)
+
+      When a key exists but doesn't have a numerical value, `INCR` will return an error. Example:
+
+      ```bash
+      $ redis-cli SET foo xyz
+      "OK"
+      $ redis-cli INCR foo
+      -ERR value is not an integer or out of range
+      ```
 
       ### Tests
 
       The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
