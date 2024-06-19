@@ -3221,7 +3221,7 @@ stages:
       - Key doesn't exist (**This stage**)
       - Key exists but doesn't have a numerical value (later stages)
 
-      When a key doesn't exit, `INCR` sets the value to 1. Example:
+      When a key doesn't exist, `INCR` sets the value to 1. Example:
 
       ```bash
       $ redis-cli INCR missing_key
@@ -3273,7 +3273,7 @@ stages:
       $ redis-cli SET foo xyz
       "OK"
       $ redis-cli INCR foo
-      -ERR value is not an integer or out of range
+      (error) ERR value is not an integer or out of range
       ```
 
       ### Tests
@@ -3288,8 +3288,8 @@ stages:
 
       ```bash
       $ redis-cli
-      > SET foo xyz (expecting "+OK" as the response)
-      > INCR foo (expecting "-ERR value is not an integer or out of range" as the response)
+      > SET foo xyz (expecting "+OK\r\n" as the response)
+      > INCR foo (expecting "-ERR value is not an integer or out of range\r\n" as the response)
       ```
     marketing_md: |
       In this stage, you'll finish implementing the INCR command.
@@ -3301,7 +3301,27 @@ stages:
     description_md: |
       In this stage, you'll add support for the `MULTI` command.
 
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      ### The MULTI command
+
+      The [MULTI](https://redis.io/docs/latest/commands/multi/) command starts a transaction.
+
+      After a `MULTI` command is executed, any further commands from the same connection will be "queued" but not executed.
+
+      Example usage:
+
+      ```bash
+      $ redis-cli
+      > MULTI
+      OK
+      > SET foo 41
+      QUEUED
+      > INCR foo
+      QUEUED
+      ```
+
+      The queued commands can be executed using [EXEC](https://redis.io/docs/latest/commands/exec/), which we'll cover in later stages.
+
+      In this stage, you'll just add support for handling the `MULTI` command and returning `+OK\r\n`. We'll get to queueing commands in later stages.
 
       ### Tests
 
@@ -3311,13 +3331,17 @@ stages:
       ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your server as a Redis client and run the following commands:
+      The tester will then connect to your server as a Redis client and run the following command:
 
       ```bash
       $ redis-cli MULTI
       ```
 
       The tester will expect `+OK\r\n` as the response.
+
+      ### Notes
+
+      - We'll test queueing commands & executing a transaction in later stages.
     marketing_md: |
       In this stage, you'll implement the MULTI command.
 
