@@ -3415,27 +3415,41 @@ stages:
     name: "Empty transaction"
     difficulty: hard
     description_md: |
-      In this stage, you'll add support for the `EXEC` command when the `MULTI` command has been called but no commands have been queued.
+      In this stage, you'll add support for executing an empty transaction.
 
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      ### Empty trasactions
+
+      If [EXEC](https://redis.io/docs/latest/commands/exec/) is executed soon after [MULTI](https://redis.io/docs/latest/commands/multi/),
+      it returns an empty array.
+
+      The empty array signifies that no commands were queued, and that the transaction was executed successfully.
+
+      Example usage:
+
+      ```bash
+      $ redis-cli
+      > MULTI
+      OK
+      > EXEC
+      (empty array)
+      ```
 
       ### Tests
 
       The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
 
       ```bash
       $ redis-cli
-      > MULTI
-      > EXEC (expecting empty array "*0\r\n" as the response)
+      > MULTI (expecting "+OK\r\n")
+      > EXEC (expecting "*0\r\n" as the response)
       > EXEC (expecting "-ERR EXEC without MULTI\r\n" as the response)
       ```
-
     marketing_md: |
       In this stage, you'll implement an empty transaction.
 
@@ -3448,13 +3462,13 @@ stages:
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
 
       ```bash
       $ redis-cli MULTI
@@ -3480,13 +3494,13 @@ stages:
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
 
       ```bash
       $ redis-cli MULTI
@@ -3497,7 +3511,7 @@ stages:
       > EXEC
       ```
 
-      The tester will then create another connection to your master as a Redis client, and send a single command:
+      The tester will then create another connection to your server as a Redis client, and send a single command:
 
       ```bash
       $ redis-cli GET foo
@@ -3515,13 +3529,13 @@ stages:
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
 
       ```bash
       $ redis-cli MULTI
@@ -3545,13 +3559,13 @@ stages:
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as a Redis client, and send multiple commands using the same connection:
+      The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
 
       ```bash
       $ redis-cli SET foo abc
@@ -3562,7 +3576,7 @@ stages:
       > EXEC
       ```
 
-      The tester will then create another connection to your master as a Redis client, and send a single command:
+      The tester will then create another connection to your server as a Redis client, and send a single command:
 
       ```bash
       $ redis-cli GET foo
@@ -3581,13 +3595,13 @@ stages:
 
       ### Tests
 
-      The tester will execute your program as a master like this:
+      The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
-      The tester will then connect to your master as multiple Redis clients, and send multiple commands from each connection:
+      The tester will then connect to your server as multiple Redis clients, and send multiple commands from each connection:
 
       ```bash
       $ redis-cli MULTI
