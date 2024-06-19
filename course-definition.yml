@@ -3163,16 +3163,37 @@ stages:
     name: "The INCR command (1/3)"
     difficulty: easy
     description_md: |
-      In this stage, you'll add support for handling the `INCR` command when a key exists with numerical value.
+      In this stage, you'll add support for the `INCR` command.
 
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      ### The INCR command
+
+      The [INCR](https://redis.io/docs/latest/commands/incr/) command is used to increment the value of a key by 1.
+
+      Example usage:
+
+      ```bash
+      $ redis-cli SET foo 5
+      "OK"
+      $ redis-cli INCR foo
+      "6"
+      $ redis-cli INCR foo
+      "7"
+      ```
+
+      If the key doesn't exist, the value will be set to 1.
+
+      We'll split the implementation of this command into three stages:
+
+      - Key exists and has a numerical value (**This stage**)
+      - Key doesn't exist (later stages)
+      - Key exists but doesn't have a numerical value (later stages)
 
       ### Tests
 
       The tester will execute your program like this:
 
-      ```
-      ./spawn_redis_server.sh
+      ```bash
+      $ ./spawn_redis_server.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
