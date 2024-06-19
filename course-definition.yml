@@ -3458,7 +3458,32 @@ stages:
     name: "Queueing commands"
     difficulty: medium
     description_md: |
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      In this stage, you'll add support for queuing commands within a transaction.
+
+      ### Queuing commands
+
+      After [MULTI](https://redis.io/docs/latest/commands/multi/) is executed, any further commands
+      from a connection are queued until [EXEC](https://redis.io/docs/latest/commands/exec/) is executed.
+
+      The response to all of these commands is `+QUEUED\r\n` (That's `QUEUED` encoded as a [Simple String](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)).
+
+      Example:
+
+      ```bash
+      $ redis-cli
+      > MULTI
+      OK
+      > SET foo 41
+      QUEUED
+      > INCR foo
+      QUEUED
+
+      ... (and so on, until EXEC is executed)
+      ```
+
+      When commands are queued, they should not be executed or alter the database in any way.
+
+      In the example above, until `EXEC` is executed, the key `foo` will not exist.
 
       ### Tests
 
@@ -3471,17 +3496,18 @@ stages:
       The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
 
       ```bash
-      $ redis-cli MULTI
-      > SET foo 41
-      > INCR foo
+      $ redis-cli
+      > MULTI
+      > SET foo 41 (expecting "+QUEUED\r\n")
+      > INCR foo (expecting "+QUEUED\r\n")
       ```
 
-      The tester will then create another connection to your master as a Redis client, and send a single command:
+      Since these commands were only "queued", the key `foo` should not exist yet. The tester will verify this by creating
+      another connection and sending this command:
 
       ```bash
-      $ redis-cli GET foo
+      $ redis-cli GET foo (expecting `$-1\r\n` as the response)
       ```
-
     marketing_md: |
       In this stage, you'll implement queueing commands to a transaction.
 
@@ -3490,7 +3516,31 @@ stages:
     name: "Executing a transaction"
     difficulty: hard
     description_md: |
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      In this stage, you'll add support for executing a transaction that contains multiple commands.
+
+      ### Executing a transaction
+
+      When the [EXEC](https://redis.io/docs/latest/commands/exec/) command is sent within a transaction,
+      all commands queued in that transaction are executed.
+
+      The response to [EXEC](https://redis.io/docs/latest/commands/exec/) is an array of the responses of the queued commands.
+
+      Example:
+
+      ```bash
+      $ redis-cli
+      > MULTI
+      OK
+      > SET foo 41
+      QUEUED
+      > INCR foo
+      QUEUED
+      > EXEC
+      1) OK
+      2) (integer) 42
+      ```
+
+      In the above example, `OK` is the response of the `SET` command, and `42` is the response of the `INCR` command.
 
       ### Tests
 
@@ -3504,19 +3554,20 @@ stages:
 
       ```bash
       $ redis-cli MULTI
-      > SET foo 6
-      > INCR foo
-      > INCR bar
-      > GET bar
-      > EXEC
+      > SET foo 6 (expecting "+QUEUED\r\n")
+      > INCR foo (expecting "+QUEUED\r\n")
+      > INCR bar (expecting "+QUEUED\r\n")
+      > GET bar (expecting "+QUEUED\r\n")
+      > EXEC (expecting an array of responses for the queued commands)
       ```
 
-      The tester will then create another connection to your server as a Redis client, and send a single command:
+      Since the transaction was executed, the key `foo` should exist and have the value `7`.
+
+      The tester will verify this by running a GET command:
 
       ```bash
-      $ redis-cli GET foo
+      $ redis-cli GET foo (expecting "7" encoded as a bulk string)
       ```
-
     marketing_md: |
       In this stage, you'll implement executing a successful transaction.
 
@@ -3525,7 +3576,30 @@ stages:
     name: "The DISCARD command"
     difficulty: easy
     description_md: |
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      In this stage, you'll add support for the DISCARD command.
+
+      ### The DISCARD command
+
+      [DISCARD](https://redis.io/docs/latest/commands/discard/) is used to abort a transactions. It discards all commands queued in a transaction,
+      and returns `+OK\r\n`.
+
+      Example:
+
+      ```bash
+      $ redis-cli
+      > MULTI
+      OK
+      > SET foo 41
+      QUEUED
+      > DISCARD
+      OK
+      > DISCARD
+      (error) ERR DISCARD without MULTI
+      ```
+
+      In the above example, note that the first `DISCARD` returns `OK`, but the second `DISCARD` returns an error since the transaction was aborted.
+
+      ### DISCARD
 
       ### Tests
 
@@ -3538,13 +3612,13 @@ stages:
       The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
 
       ```bash
-      $ redis-cli MULTI
-      > SET foo 41
-      > INCR foo
-      > DISCARD
-      > GET foo
-      > GET bar
-      > DISCARD
+      $ redis-cli
+      > MULTI
+      > SET foo 41 (expecting "+QUEUED\r\n")
+      > INCR foo (expecting "+QUEUED\r\n")
+      > DISCARD (expecting "+OK\r\n")
+      > GET foo (expecting "$-1\r\n" as the response)
+      > DISCARD (expecting "-ERR DISCARD without MULTI\r\n" as the response)
       ```
 
     marketing_md: |
@@ -3555,7 +3629,34 @@ stages:
     name: "Failures within transactions"
     difficulty: medium
     description_md: |
-      **🚧 We're still working on instructions for this stage**. You can find notes on how the tester works below.
+      In this stage, you'll add support for handling failures within a transaction.
+
+      ### Failures within transactions
+
+      When executing a transaction, if a command fails, the error is captured and returned within the response for `EXEC`. All other commands in
+      the transaction are still executed.
+
+      You can read more about this behaviour [in the official Redis docs](https://redis.io/docs/latest/develop/interact/transactions/#errors-inside-a-transaction).
+
+      Example:
+
+      ```bash
+      $ redis-cli
+      > MULTI
+      OK
+      > SET foo xyz
+      QUEUED
+      > INCR foo
+      QUEUED
+      > SET bar 7
+      > EXEC
+      1) OK
+      2) (error) ERR value is not an integer or out of range
+      3) OK
+      ```
+
+      In the example above, note that the error for the `INCR` command was returned as the second array element. The third command (`SET bar 7`) was
+      still executed successfully.
 
       ### Tests
 
@@ -3568,21 +3669,41 @@ stages:
       The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
 
       ```bash
-      $ redis-cli SET foo abc
-      > SET bar 7
+      $ redis-cli
+      > SET foo abc
+      OK
+      > SET bar 41
+      OK
       > MULTI
+      OK
       > INCR foo
+      QUEUED
       > INCR bar
+      QUEUED
       > EXEC
+      1) (error) ERR value is not an integer or out of range
+      2) (integer) 42
       ```
 
-      The tester will then create another connection to your server as a Redis client, and send a single command:
+      The expected response for `EXEC` is a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of
+      the responses of the queued commands. The exact bytes will be:
 
       ```bash
-      $ redis-cli GET foo
-      > GET bar
+      *2\r\n-ERR value is not an integer or out of range\r\n:42\r\n
       ```
 
+      The tester will also verify that the last command was successfully executed and that the key `bar` exists:
+
+      ```bash
+      $ redis-cli
+      > GET foo (expecting "$3\r\nabc\r\n" as the response)
+      > GET bar (expecting "$2\r\n42\r\n" as the response)
+      ```
+
+      ### Notes
+
+      - There are a subset of command failures (like syntax errors) that will cause a transaction to be aborted entirely. We won't
+        cover those in this challenge.
     marketing_md: |
       In this stage, you'll implement handling failures while executing a transaction.
 
