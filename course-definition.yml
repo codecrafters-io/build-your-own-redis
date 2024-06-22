@@ -2869,8 +2869,8 @@ stages:
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
-      $3\r\ntemperature\r\n
-      $3\r\n96\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n96\r\n
       ```
 
       This is the RESP encoded representation of the following.
@@ -2994,8 +2994,8 @@ stages:
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
-      $3\r\ntemperature\r\n
-      $3\r\n95\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n95\r\n
       ```
 
       This is the RESP encoded representation of the following.
@@ -3122,8 +3122,8 @@ stages:
       *2\r\n
       $3\r\n0-2\r\n
       *2\r\n
-      $3\r\ntemperature\r\n
-      $3\r\n96\r\n
+      $11\r\ntemperature\r\n
+      $2\r\n96\r\n
       ```
 
       This is the RESP encoded representation of the following.
