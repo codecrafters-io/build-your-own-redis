@@ -1,12 +1,13 @@
+# syntax=docker/dockerfile:1.7-labs
 FROM rust:1.43-buster
 
-COPY Cargo.toml /app/Cargo.toml
-COPY Cargo.lock /app/Cargo.lock
 
 RUN mkdir /app/src
 RUN echo 'fn main() { println!("Hello World!"); }' > /app/src/main.rs
 
 WORKDIR /app
+# .git & README.md are unique per-repository. We ignore them on first copy to prevent cache misses
+COPY --exclude=.git --exclude=README.md . /app
 RUN cargo build --release --target-dir=/tmp/codecrafters-redis-target
 
 RUN rm /tmp/codecrafters-redis-target/release/redis-starter-rust
@@ -22,3 +23,6 @@ RUN rm -rf /app/src
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
 
+
+# Once the heave steps are done, we can copy all files back
+COPY . /app

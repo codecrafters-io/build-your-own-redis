@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7-labs
 FROM maven:3.9.6-eclipse-temurin-17-focal
 
 RUN apt-get update && \
@@ -21,13 +22,16 @@ RUN apt-get update && \
 
 ENV PATH=/usr/local/sbt/bin:$PATH
 
-COPY build.sbt /app/build.sbt
-COPY project /app/project
 
 WORKDIR /app
+# .git & README.md are unique per-repository. We ignore them on first copy to prevent cache misses
+COPY --exclude=.git --exclude=README.md . /app
 
 RUN sbt update
 
 RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && sbt assembly && sed -i 's/^\(sbt .*\)/#\1/' ./spawn_redis_server.sh\n" > /codecrafters-precompile.sh
 
 RUN chmod +x /codecrafters-precompile.sh
+
+# Once the heave steps are done, we can copy all files back
+COPY . /app

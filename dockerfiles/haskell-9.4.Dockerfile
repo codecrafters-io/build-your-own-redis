@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1.7-labs
 FROM haskell:9.4.6-buster
 
 WORKDIR /app
@@ -11,12 +12,9 @@ RUN echo "allow-different-user: true" >> /etc/stack/config.yaml
 RUN echo "install-ghc: false" >> /etc/stack/config.yaml
 RUN echo "system-ghc: true" >> /etc/stack/config.yaml
 
-COPY stack.yaml package.yaml stack.yaml.lock /app/
+# .git & README.md are unique per-repository. We ignore them on first copy to prevent cache misses
+COPY --exclude=.git --exclude=README.md . /app
 
-# Dummy static content to circumvent the /app doesn't exist warning
-RUN mkdir /app/app
-RUN echo 'main :: IO ()' >> /app/app/Main.hs
-RUN echo 'main = putStrLn "Hello, World!"' >> /app/app/Main.hs
 
 ENV STACK_ROOT=/app/.stack
 
@@ -32,3 +30,6 @@ RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && stack build" > /codecrafters-pre
 RUN chmod +x /codecrafters-precompile.sh
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"
+
+# Once the heave steps are done, we can copy all files back
+COPY . /app
