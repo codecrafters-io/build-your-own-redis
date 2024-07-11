@@ -1,373 +1,72 @@
 - language: clojure
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/clojure/.gitignore
-      target: .gitignore
-    - source: starter_templates/clojure/project.clj
-      target: project.clj
-    - source: starter_templates/clojure/src/redis/core.clj
-      target: src/redis/core.clj
-    - source: starter_templates/clojure/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "lein"
     user_editable_file: "src/redis/core.clj"
-
 - language: cpp
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/cpp/vcpkg.json
-      target: vcpkg.json
-    - source: starter_templates/cpp/vcpkg-configuration.json
-      target: vcpkg-configuration.json
-    - source: starter_templates/cpp/CMakeLists.txt
-      target: CMakeLists.txt
-    - source: starter_templates/cpp/.gitignore
-      target: .gitignore
-    - source: starter_templates/cpp/src/Server.cpp
-      target: src/Server.cpp
-    - source: starter_templates/cpp/CMakeLists.txt
-      target: CMakeLists.txt
-    - source: starter_templates/cpp/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "cmake"
     user_editable_file: "src/Server.cpp"
-
 - language: crystal
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/crystal/app/main.cr
-      target: app/main.cr
-    - source: starter_templates/crystal/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "crystal (1.1.0)"
     user_editable_file: "app/main.cr"
-
 - language: csharp
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/csharp/.gitignore
-      target: .gitignore
-    - source: starter_templates/csharp/codecrafters-redis.sln
-      target: codecrafters-redis.sln
-    - source: starter_templates/csharp/codecrafters-redis.csproj
-      target: codecrafters-redis.csproj
-    - source: starter_templates/csharp/src/Server.cs
-      target: src/Server.cs
-    - source: starter_templates/csharp/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "dotnet (8.0)"
     user_editable_file: "src/Server.cs"
-
 - language: python
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/python/app/main.py
-      target: app/main.py
-    - source: starter_templates/python/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/python/.gitignore
-      target: .gitignore
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "python (3.x)"
     user_editable_file: "app/main.py"
-
 - language: go
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/go/app/server.go
-      target: app/server.go
-    - source: starter_templates/go/go.mod
-      target: go.mod
-    - source: starter_templates/go/go.sum
-      target: go.sum
-    - source: starter_templates/go/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "go (1.19)"
     user_editable_file: "app/server.go"
-
 - language: c
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/c/app/server.c
-      target: app/server.c
-    - source: starter_templates/c/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "gcc"
     user_editable_file: "app/server.c"
-
 - language: ruby
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/ruby/app/server.rb
-      target: app/server.rb
-    - source: starter_templates/ruby/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
-    - source: starter_templates/ruby/Gemfile
-      target: Gemfile
-    - source: starter_templates/ruby/Gemfile.lock
-      target: Gemfile.lock
   template_attributes:
     required_executable: "ruby (2.7)"
     user_editable_file: "app/server.rb"
-
 - language: haskell
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/haskell/.gitignore
-      target: .gitignore
-    - source: starter_templates/haskell/package.yaml
-      target: package.yaml
-    - source: starter_templates/haskell/stack.yaml
-      target: stack.yaml
-    - source: starter_templates/haskell/stack.yaml.lock
-      target: stack.yaml.lock
-    - source: starter_templates/haskell/app/Main.hs
-      target: app/Main.hs
-    - source: starter_templates/haskell/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "stack"
     user_editable_file: "app/Main.hs"
-
 - language: java
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/java/.gitignore
-      target: .gitignore
-    - source: starter_templates/java/src/main/java/Main.java
-      target: src/main/java/Main.java
-    - source: starter_templates/java/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
-    - source: starter_templates/java/pom.xml
-      target: pom.xml
   template_attributes:
     required_executable: "java (1.8)"
     user_editable_file: "src/main/java/Main.java"
-
 - language: elixir
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/elixir/lib/server.ex
-      target: lib/server.ex
-    - source: starter_templates/elixir/mix.exs
-      target: mix.exs
-    - source: starter_templates/elixir/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
-    - source: starter_templates/elixir/.gitignore
-      target: .gitignore
   template_attributes:
     required_executable: "mix"
     user_editable_file: "lib/server.ex"
-
 - language: rust
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/rust/src/main.rs
-      target: src/main.rs
-    - source: starter_templates/rust/.gitignore
-      target: .gitignore
-    - source: starter_templates/rust/Cargo.toml
-      target: Cargo.toml
-    - source: starter_templates/rust/Cargo.lock
-      target: Cargo.lock
-    - source: starter_templates/rust/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "cargo (1.54)"
     user_editable_file: "src/main.rs"
-
 - language: php
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/php/app/main.php
-      target: app/main.php
-    - source: starter_templates/php/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "php (7.4)"
     user_editable_file: "app/main.php"
-
 - language: javascript
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/javascript/package.json
-      target: package.json
-    - source: starter_templates/javascript/package-lock.json
-      target: package-lock.json
-    - source: starter_templates/javascript/app/main.js
-      target: app/main.js
-    - source: starter_templates/javascript/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
-    - source: starter_templates/javascript/.gitignore
-      target: .gitignore
   template_attributes:
     required_executable: "node (21)"
     user_editable_file: "app/main.js"
-
 - language: typescript
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/typescript/app/main.ts
-      target: app/main.ts
-    - source: starter_templates/typescript/package.json
-      target: package.json
-    - source: starter_templates/typescript/bun.lockb
-      target: bun.lockb
-    - source: starter_templates/typescript/tsconfig.json
-      target: tsconfig.json
-    - source: starter_templates/typescript/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
-    - source: starter_templates/typescript/.gitignore
-      target: .gitignore
   template_attributes:
     required_executable: "bun (1.1)"
     user_editable_file: "app/main.ts"
-
 - language: gleam
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/gleam/src/redis.gleam
-      target: src/redis.gleam
-    - source: starter_templates/gleam/.gitignore
-      target: .gitignore
-    - source: starter_templates/gleam/gleam.toml
-      target: gleam.toml
-    - source: starter_templates/gleam/manifest.toml
-      target: manifest.toml
-    - source: starter_templates/gleam/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "gleam (1.0)"
     user_editable_file: "src/redis.gleam"
-
 - language: scala
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/scala/.gitignore
-      target: .gitignore
-    - source: starter_templates/scala/src/main/scala/codecrafters_redis/Server.scala
-      target: src/main/scala/codecrafters_redis/Server.scala
-    - source: starter_templates/scala/build.sbt
-      target: build.sbt
-    - source: starter_templates/scala/project/assembly.sbt
-      target: project/assembly.sbt
-    - source: starter_templates/scala/project/build.properties
-      target: project/build.properties
-    - source: starter_templates/scala/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "sbt (1.9.9)"
     user_editable_file: "src/main/scala/codecrafters_redis/Server.scala"
-
 - language: zig
-  file_mappings:
-    - source: starter_templates/README.md
-      target: README.md
-    - source: starter_templates/codecrafters.yml
-      target: codecrafters.yml
-    - source: starter_templates/zig/src/main.zig
-      target: src/main.zig
-    - source: starter_templates/zig/spawn_redis_server.sh
-      target: spawn_redis_server.sh
-    - source: starter_templates/zig/.gitignore
-      target: .gitignore
-    - source: starter_templates/zig/build.zig
-      target: build.zig
-    - source: starter_templates/zig/build.zig.zon
-      target: build.zig.zon
-    - source: starter_templates/.gitattributes
-      target: .gitattributes
   template_attributes:
     required_executable: "zig (0.12)"
     user_editable_file: "src/main.zig"
