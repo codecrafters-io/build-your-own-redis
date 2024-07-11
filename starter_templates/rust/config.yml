@@ -1,0 +1,3 @@
+attributes:
+  required_executable: cargo (1.54)
+  user_editable_file: src/main.rs
