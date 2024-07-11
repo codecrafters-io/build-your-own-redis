@@ -1,0 +1,3 @@
+attributes:
+  required_executable: bun (1.1)
+  user_editable_file: app/main.ts
