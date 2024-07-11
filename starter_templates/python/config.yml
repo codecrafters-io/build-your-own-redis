@@ -1,0 +1,3 @@
+attributes:
+  required_executable: python (3.x)
+  user_editable_file: app/main.py

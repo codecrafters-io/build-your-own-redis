@@ -1,0 +1,3 @@
+attributes:
+  required_executable: dotnet (8.0)
+  user_editable_file: src/Server.cs

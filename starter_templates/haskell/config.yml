@@ -1,0 +1,3 @@
+attributes:
+  required_executable: stack
+  user_editable_file: app/Main.hs

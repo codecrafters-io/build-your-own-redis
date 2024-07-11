@@ -1,0 +1,3 @@
+attributes:
+  required_executable: gcc
+  user_editable_file: app/server.c
