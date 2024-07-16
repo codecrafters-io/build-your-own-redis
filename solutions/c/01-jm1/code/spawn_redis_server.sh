@@ -6,6 +6,5 @@
 #
 # DON'T EDIT THIS!
 set -e
-tmpFile=$(mktemp)
-gcc app/*.c -o $tmpFile
-exec $tmpFile "$@"
+
+gcc -o /tmp/codecrafters-build-redis-c app/*.c
