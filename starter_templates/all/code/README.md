@@ -15,7 +15,7 @@ event loops, the Redis protocol and more.
 The entry point for your Redis implementation is in `{{ user_editable_file }}`. Study and uncomment the relevant code, and
 push your changes to pass the first stage:
 
-``` sh
+```sh
 git add .
 git commit -m "pass 1st stage" # any msg
 git push origin master
@@ -28,15 +28,15 @@ That's all!
 Note: This section is for stages 2 and beyond.
 
 1. Ensure you have `{{ required_executable }}` installed locally
-1. Run `./spawn_redis_server.sh` to run your Redis server, which is implemented in
+1. Run `./your_program.sh` to run your Redis server, which is implemented in
    `{{ user_editable_file }}`.{{# language_is_rust }} This command compiles your
    Rust project, so it might be slow the first time you run it. Subsequent runs
    will be fast.{{/ language_is_rust}}
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
 
-
 {{#language_is_python}}
+
 # Troubleshooting
 
 ## module `socket` has no attribute `create_server`
