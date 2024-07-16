@@ -12,8 +12,11 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program compiles locally
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
-lein deps
-lein uberjar
+(
+  cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
+  lein deps
+  lein uberjar
+)
 
 # Copied from .codecrafters/run.sh
 #

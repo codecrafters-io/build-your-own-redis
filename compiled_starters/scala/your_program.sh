@@ -12,7 +12,10 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program compiles locally
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
-sbt assembly
+(
+  cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
+  sbt assembly
+)
 
 # Copied from .codecrafters/run.sh
 #
