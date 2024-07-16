@@ -126,7 +126,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then try to connect to your TCP server on port 6379. If the connection succeeds, you'll pass this stage.
@@ -169,7 +169,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then send a `PING` command to your server and expect a `+PONG\r\n` response.
@@ -216,7 +216,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then send two PING commands using the same connection:
@@ -284,7 +284,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then send two PING commands concurrently using two different connections:
@@ -330,7 +330,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then send an `ECHO` command with an argument to your server:
@@ -380,7 +380,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      ./spawn_redis_server.sh
+      ./your_program.sh
       ```
 
       It'll then send a `SET` command to your server:
@@ -435,7 +435,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then send a `SET` command to your server to set a key with an expiry:
@@ -513,7 +513,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      ./spawn_redis_server.sh --dir /tmp/redis-files --dbfilename dump.rdb
+      ./your_program.sh --dir /tmp/redis-files --dbfilename dump.rdb
       ```
 
       It'll then send the following commands:
@@ -537,7 +537,7 @@ stages:
       ### Notes
 
       - You don't need to read the RDB file in this stage, you only need to store `dir` and `dbfilename`. Reading from the file will be covered in later stages.
-      - If your repository was created before 5th Oct 2023, it's possible that your `./spawn_redis_server.sh` script is not passing arguments to your program. To fix this, you'll need to edit `./spawn_redis_server.sh`. Check the [update CLI args PR](https://github.com/codecrafters-io/build-your-own-redis/pull/89/files) for details on how to do this.
+      - If your repository was created before 5th Oct 2023, it's possible that your `./your_program.sh` script is not passing arguments to your program. To fix this, you'll need to edit `./your_program.sh`. Check the [update CLI args PR](https://github.com/codecrafters-io/build-your-own-redis/pull/89/files) for details on how to do this.
     marketing_md: |
       In this stage, you'll add support for reading the config values related to where RDB files are stored. You'll implement the `CONFIG GET` command.
 
@@ -744,7 +744,7 @@ stages:
 
       The tester will create an RDB file with a single key and execute your program like this:
       ```
-      $ ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      $ ./your_program.sh --dir <dir> --dbfilename <filename>
       ```
 
       It'll then send a `KEYS "*"` command to your server.
@@ -777,7 +777,7 @@ stages:
       The tester will create an RDB file with a single key and execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      ./your_program.sh --dir <dir> --dbfilename <filename>
       ```
 
       It'll then send a `GET <key>` command to your server.
@@ -812,7 +812,7 @@ stages:
       The tester will create an RDB file with multiple keys and execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      $ ./your_program.sh --dir <dir> --dbfilename <filename>
       ```
 
       It'll then send a `KEYS *` command to your server.
@@ -845,7 +845,7 @@ stages:
       The tester will create an RDB file with multiple keys and execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      $ ./your_program.sh --dir <dir> --dbfilename <filename>
       ```
 
       It'll then send multiple `GET <key>` commands to your server.
@@ -872,7 +872,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh --dir <dir> --dbfilename <filename>
+      $ ./your_program.sh --dir <dir> --dbfilename <filename>
       ```
 
       It'll then send multiple `GET <key>` commands to your server.
@@ -909,7 +909,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port 6380
+      ./your_program.sh --port 6380
       ```
 
       It'll then try to connect to your TCP server on the specified port number (`6380` in the example above). If the connection succeeds, you'll pass this stage.
@@ -918,8 +918,8 @@ stages:
 
       - Your program still needs to pass the previous stages, so if `--port` isn't specified, you should default to port 6379.
       - The tester will pass a random port number to your program, so you can't hardcode the port number from the example above.
-      - If your repository was created before 5th Oct 2023, it's possible that your `./spawn_redis_server.sh` script
-      might not be passing arguments on to your program. You'll need to edit `./spawn_redis_server.sh` to fix this, check
+      - If your repository was created before 5th Oct 2023, it's possible that your `./your_program.sh` script
+      might not be passing arguments on to your program. You'll need to edit `./your_program.sh` to fix this, check
       [this PR](https://github.com/codecrafters-io/build-your-own-redis/pull/89/files) for details.
     marketing_md: |
       In this stage, you'll add support for parsing the `--port` flag and starting Redis on a custom port.
@@ -968,7 +968,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT>
+      ./your_program.sh --port <PORT>
       ```
 
       It'll then send the `INFO` command with `replication` as an argument.
@@ -1005,7 +1005,7 @@ stages:
       Here's an example usage of the `--replicaof` flag:
 
       ```
-      ./spawn_redis_server.sh --port 6380 --replicaof "localhost 6379"
+      ./your_program.sh --port 6380 --replicaof "localhost 6379"
       ```
 
       In this example, we're starting a Redis server in replica mode. The server itself will listen for connections on port 6380, but it'll
@@ -1019,7 +1019,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
+      ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       It'll then send the `INFO` command with `replication` as an argument to your server.
@@ -1069,7 +1069,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh
+      ./your_program.sh
       ```
 
       It'll then send the `INFO` command with `replication` as an argument to your server.
@@ -1114,7 +1114,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
+      ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       It'll then assert that the replica connects to the master and sends the `PING` command.
@@ -1167,7 +1167,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
+      ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       It'll then assert that the replica connects to the master and:
@@ -1227,7 +1227,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
+      ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       It'll then assert that the replica connects to the master and:
@@ -1267,7 +1267,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT>
+      ./your_program.sh --port <PORT>
       ```
 
       It'll then send the following commands:
@@ -1321,7 +1321,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT>
+      ./your_program.sh --port <PORT>
       ```
 
       It'll then connect to your TCP server as a replica and execute the following commands:
@@ -1373,7 +1373,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT>
+      ./your_program.sh --port <PORT>
       ```
 
       It'll then connect to your TCP server as a replica and execute the following commands:
@@ -1438,7 +1438,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT>
+      ./your_program.sh --port <PORT>
       ```
 
       It'll then connect to your TCP server as a replica and execute the following commands:
@@ -1480,7 +1480,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT>
+      ./your_program.sh --port <PORT>
       ```
 
       It'll then start **multiple** replicas that connect to your server and execute the following commands:
@@ -1525,7 +1525,7 @@ stages:
       The tester will spawn a Redis master, and it'll then execute your program as a replica like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
+      ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
       ```
 
       Just like in the previous stages, your replica should complete the handshake with the master and receive an empty RDB file.
@@ -1603,7 +1603,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof "<HOST> <PORT>"
+      ./your_program.sh --port <PORT> --replicaof "<HOST> <PORT>"
       ```
 
       Just like in the previous stages, your replica should complete the handshake with the master and receive an empty RDB file.
@@ -1666,7 +1666,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh --port <PORT> --replicaof "<HOST> <PORT>"
+      ./your_program.sh --port <PORT> --replicaof "<HOST> <PORT>"
       ```
 
       Just like in the previous stages, your replica should complete the handshake with the master and receive an empty RDB file.
@@ -1714,7 +1714,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh
+      ./your_program.sh
       ```
 
       A redis client will then connect to your master and send `WAIT 0 60000`:
@@ -1751,7 +1751,7 @@ stages:
       The tester will execute your program as a master like this:
 
       ```
-      ./spawn_redis_server.sh
+      ./your_program.sh
       ```
 
       It'll then start **multiple** replicas that connect to your server. Each will complete the handshake and expect to receive an empty RDB file.
@@ -1790,7 +1790,7 @@ stages:
       The tester will execute your program as a master like this:
 
       ```
-      ./spawn_redis_server.sh
+      ./your_program.sh
       ```
 
       It'll then start **multiple** replicas that connect to your server. Each will complete the handshake and expect to receive an empty RDB file.
@@ -1852,7 +1852,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then send a `SET` command to your server.
@@ -1936,7 +1936,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then send an `XADD` command to your server and expect the ID as a response.
@@ -2040,7 +2040,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll create a few entries usind `XADD`.
@@ -2119,7 +2119,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll send an `XADD` command with `*` as the sequence number.
@@ -2180,7 +2180,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then create an entry with `*` as the ID.
@@ -2299,7 +2299,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       First, it'll add a few entries.
@@ -2382,7 +2382,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then create a few entries.
@@ -2471,7 +2471,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       It'll then create a few entries.
@@ -2624,7 +2624,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       First, an entry will be added.
@@ -2689,7 +2689,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       First, an entry will be added to a couple of streams.
@@ -2838,7 +2838,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       First, an entry will be added to a stream.
@@ -2963,7 +2963,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       First, an entry will be added to a stream.
@@ -3091,7 +3091,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       First, an entry will be added to a stream.
@@ -3193,7 +3193,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
@@ -3235,7 +3235,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
@@ -3281,7 +3281,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
@@ -3328,7 +3328,7 @@ stages:
       The tester will execute your program like this:
 
       ```
-      ./spawn_redis_server.sh
+      ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following command:
@@ -3392,7 +3392,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
@@ -3439,7 +3439,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client and run the following commands:
@@ -3490,7 +3490,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
@@ -3547,7 +3547,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
@@ -3606,7 +3606,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
@@ -3663,7 +3663,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
@@ -3765,7 +3765,7 @@ stages:
       The tester will execute your program like this:
 
       ```bash
-      $ ./spawn_redis_server.sh
+      $ ./your_program.sh
       ```
 
       The tester will then connect to your server as multiple Redis clients, and send multiple commands from each connection:
