@@ -1,0 +1,3 @@
+attributes:
+  required_executable: "kotlin (>=2.0)"
+  user_editable_file: src/main/kotlin/Main.kt

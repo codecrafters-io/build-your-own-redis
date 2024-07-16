@@ -12,7 +12,10 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program compiles locally
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
-gcc -o /tmp/codecrafters-build-redis-c app/*.c
+(
+  cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
+  gcc -o /tmp/codecrafters-build-redis-c app/*.c
+)
 
 # Copied from .codecrafters/run.sh
 #

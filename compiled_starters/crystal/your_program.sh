@@ -12,7 +12,10 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program compiles locally
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
-crystal build -o /tmp/codecrafters-build-redis-crystal app/main.cr
+(
+  cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
+  crystal build -o /tmp/codecrafters-build-redis-crystal app/main.cr
+)
 
 # Copied from .codecrafters/run.sh
 #

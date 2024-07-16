@@ -27,13 +27,13 @@ languages:
   - slug: "haskell"
   - slug: "java"
   - slug: "javascript"
+  - slug: "kotlin"
   - slug: "php"
   - slug: "python"
   - slug: "ruby"
   - slug: "rust"
   - slug: "typescript"
   - slug: "scala"
-    release_status: "beta"
   - slug: "zig"
 
 marketing:
