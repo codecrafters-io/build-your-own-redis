@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-# TODO: Fill this in
+# This compiles the program into $(stack path --local-install-root)/bin/hs-redis-clone-exe.
+stack build
