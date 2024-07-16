@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-# TODO: Fill this in
+lein deps
+lein uberjar
