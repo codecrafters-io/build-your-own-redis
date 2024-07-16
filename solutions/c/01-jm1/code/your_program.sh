@@ -12,7 +12,8 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program compiles locally
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
-gcc -o /tmp/codecrafters-build-redis-c app/*.c
+lein deps
+lein uberjar
 
 # Copied from .codecrafters/run.sh
 #

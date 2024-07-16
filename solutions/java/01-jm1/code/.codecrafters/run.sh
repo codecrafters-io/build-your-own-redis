@@ -8,4 +8,8 @@
 
 set -e # Exit on failure
 
-exec /tmp/codecrafters-build-redis-go "$@"
+# TODO: Fill this in
+#!/bin/sh
+set -e
+mvn -B --quiet package -Ddir=/tmp/codecrafters-redis-target
+exec java -jar /tmp/codecrafters-redis-target/java_redis.jar "$@"

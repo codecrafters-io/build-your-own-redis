@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-gcc -o /tmp/codecrafters-build-redis-c app/*.c
+lein deps
+lein uberjar
