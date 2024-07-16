@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-# TODO: Fill this in
+mvn -B package -Ddir=/tmp/codecrafters-build-redis-java
