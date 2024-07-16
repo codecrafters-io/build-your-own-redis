@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-# TODO: Fill this in
+# (This file is empty since Ruby programs don't use a compile step)
