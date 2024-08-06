@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-# (This file is empty since Gleam programs don't use a compile step)
+gleam export erlang-shipment
+mv build/erlang-shipment /tmp/codecrafters-build-redis-gleam

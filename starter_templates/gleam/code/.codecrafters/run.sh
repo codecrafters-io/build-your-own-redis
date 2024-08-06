@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec gleam run -- "$@"
+exec /tmp/codecrafters-build-redis-gleam/entrypoint.sh run "$@"

@@ -1,4 +1,4 @@
-@@ -1,23 +1,16 @@
+@@ -1,24 +1,17 @@
  import gleam/io
 
 -// Uncomment this block to pass the first stage
@@ -17,6 +17,7 @@
 -  io.println("Logs from your program will appear here!")
 +  let assert Ok(_) =
 +    glisten.handler(fn(_conn) { #(Nil, None) }, fn(_msg, state, _conn) {
++      io.println("Received message!")
 +      actor.continue(state)
 +    })
 +    |> glisten.serve(6379)
@@ -25,6 +26,7 @@
 -  //
 -  // let assert Ok(_) =
 -  //   glisten.handler(fn(_conn) { #(Nil, None) }, fn(_msg, state, _conn) {
+-  //     io.println("Received message!")
 -  //     actor.continue(state)
 -  //   })
 -  //   |> glisten.serve(6379)
