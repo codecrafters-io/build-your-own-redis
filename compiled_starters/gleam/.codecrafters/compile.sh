@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-# (This file is empty since Gleam programs don't use a compile step)
+gleam build

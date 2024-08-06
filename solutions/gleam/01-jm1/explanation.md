@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `src/redis.gleam`.
+The entry point for your Redis implementation is in `src/main.gleam`.
 
 Study and uncomment the relevant code: 
 
@@ -16,6 +16,7 @@ import glisten
 
 let assert Ok(_) =
   glisten.handler(fn(_conn) { #(Nil, None) }, fn(_msg, state, _conn) {
+    io.println("Received message!")
     actor.continue(state)
   })
   |> glisten.serve(6379)

@@ -12,7 +12,7 @@ event loops, the Redis protocol and more.
 
 # Passing the first stage
 
-The entry point for your Redis implementation is in `src/redis.gleam`. Study and
+The entry point for your Redis implementation is in `src/main.gleam`. Study and
 uncomment the relevant code, and push your changes to pass the first stage:
 
 ```sh
@@ -27,8 +27,8 @@ That's all!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `gleam (1.0)` installed locally
+1. Ensure you have `gleam (1.0+)` installed locally
 1. Run `./your_program.sh` to run your Redis server, which is implemented in
-   `src/redis.gleam`.
+   `src/main.gleam`.
 1. Commit your changes and run `git push origin master` to submit your solution
    to CodeCrafters. Test output will be streamed to your terminal.
