@@ -9,6 +9,9 @@ WORKDIR /app
 # .git & README.md are unique per-repository. We ignore them on first copy to prevent cache misses
 COPY --exclude=.git --exclude=README.md . /app
 
+# Force deps to be downloaded
+RUN gleam build
+
 # Pre-compile steps (legacy)
 RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && gleam build" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh

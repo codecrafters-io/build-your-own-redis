@@ -8,5 +8,4 @@
 
 set -e # Exit on failure
 
-gleam export erlang-shipment
-mv build/erlang-shipment /tmp/codecrafters-build-redis-gleam
+gleam build
