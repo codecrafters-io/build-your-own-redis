@@ -1,5 +1,6 @@
 # Zig build artifacts
 main
+.zig-cache/
 zig-cache/
 zig-out/
 
