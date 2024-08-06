@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec gleam run -- "$@"
+exec gleam run --module main -- "$@"

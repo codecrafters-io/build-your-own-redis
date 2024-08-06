@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `src/redis.gleam`.
+The entry point for your Redis implementation is in `src/main.gleam`.
 
 Study and uncomment the relevant code: 
 
