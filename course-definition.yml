@@ -2644,7 +2644,7 @@ stages:
       ```text
       *1\r\n
       *2\r\n
-      $9\r\nstream_key\r\n
+      $10\r\nstream_key\r\n
       *1\r\n
       *2\r\n
       $3\r\n0-1\r\n
