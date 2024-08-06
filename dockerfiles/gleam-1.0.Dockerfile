@@ -12,6 +12,10 @@ COPY --exclude=.git --exclude=README.md . /app
 # Force deps to be downloaded
 RUN gleam build
 
+# Cache build directory
+RUN mkdir -p /app-cached
+RUN mv build /app-cached/build
+
 # Pre-compile steps (legacy)
 RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && gleam build" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
