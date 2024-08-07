@@ -1,0 +1,3 @@
+attributes:
+  required_executable: "dune"
+  user_editable_file: "src/main.ml"
