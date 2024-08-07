@@ -9,4 +9,3 @@
 set -e # Exit on failure
 
 dune build --build-dir /tmp/codecrafters-build-redis-ocaml
-
