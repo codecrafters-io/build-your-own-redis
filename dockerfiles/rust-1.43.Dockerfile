@@ -21,4 +21,3 @@ RUN rm -f /tmp/codecrafters-redis-target/release/.fingerprint/redis_starter_rust
 RUN rm -rf /app/src
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
-

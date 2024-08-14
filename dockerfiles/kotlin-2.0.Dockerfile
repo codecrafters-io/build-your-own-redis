@@ -11,6 +11,3 @@ COPY --exclude=.git --exclude=README.md . /app
 
 # Cache dependencies
 RUN mvn -B package -Ddir=/tmp/codecrafters-build-dir
-
-# Once the heavy steps are done, we can copy all files back
-COPY . /app

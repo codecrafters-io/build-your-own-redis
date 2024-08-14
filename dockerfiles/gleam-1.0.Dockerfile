@@ -19,6 +19,3 @@ RUN mv build /app-cached/build
 # Pre-compile steps (legacy)
 RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && gleam build" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
-
-# Once the heavy steps are done, we can copy all files back
-COPY . /app

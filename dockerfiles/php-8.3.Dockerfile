@@ -4,4 +4,3 @@ FROM php:8.3-cli-alpine3.19
 RUN apk add --no-cache linux-headers=6.5-r0
 
 RUN docker-php-ext-install sockets
-
