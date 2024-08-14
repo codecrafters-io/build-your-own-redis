@@ -25,5 +25,5 @@ COPY --exclude=.git --exclude=README.md . /app
 
 RUN zig build
 
-RUN printf "set -e \ncd \${CODECRAFTERS_SUBMISSION_DIR} \necho 'Running zig build' \nzig build \necho 'zig build completed.' \n" > /codecrafters-precompile.sh
+RUN printf "set -e \ncd \${CODECRAFTERS_REPOSITORY_DIR} \necho 'Running zig build' \nzig build \necho 'zig build completed.' \n" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh

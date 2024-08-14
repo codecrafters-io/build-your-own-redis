@@ -12,5 +12,5 @@ RUN mkdir -p /app-cached
 RUN mv /app/target /app-cached # Is this needed?
 
 # Pre-compile steps
-RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && mvn -B package -Ddir=/tmp/codecrafters-build-redis-java && sed -i 's/^\(mvn .*\)/#\1/' ./spawn_redis_server.sh && sed -i 's|/tmp/codecrafters-redis-target|/tmp/codecrafters-build-redis-java|g' ./spawn_redis_server.sh" > /codecrafters-precompile.sh
+RUN printf "cd \${CODECRAFTERS_REPOSITORY_DIR} && mvn -B package -Ddir=/tmp/codecrafters-build-redis-java && sed -i 's/^\(mvn .*\)/#\1/' ./spawn_redis_server.sh && sed -i 's|/tmp/codecrafters-redis-target|/tmp/codecrafters-build-redis-java|g' ./spawn_redis_server.sh" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
