@@ -28,7 +28,7 @@ RUN mv .stack /app-cached/.stack
 
 RUN rm -rf /app/app
 
-RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && stack build" > /codecrafters-precompile.sh
+RUN echo "cd \${CODECRAFTERS_REPOSITORY_DIR} && stack build" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="stack.yaml,package.yaml,stack.yaml.lock"

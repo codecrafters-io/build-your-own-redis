@@ -17,5 +17,5 @@ RUN mkdir -p /app-cached
 RUN mv build /app-cached/build
 
 # Pre-compile steps (legacy)
-RUN printf "cd \${CODECRAFTERS_SUBMISSION_DIR} && gleam build" > /codecrafters-precompile.sh
+RUN printf "cd \${CODECRAFTERS_REPOSITORY_DIR} && gleam build" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
