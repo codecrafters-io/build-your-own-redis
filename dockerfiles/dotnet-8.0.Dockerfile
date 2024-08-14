@@ -18,7 +18,3 @@ RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && dotnet build --configuration Rel
 RUN chmod +x /codecrafters-precompile.sh
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-redis.csproj,codecrafters-redis.sln"
-
-# Once the heavy steps are done, we can copy all files back
-COPY . /app
-

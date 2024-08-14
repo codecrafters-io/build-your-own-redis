@@ -24,6 +24,3 @@ RUN echo "cd \${CODECRAFTERS_SUBMISSION_DIR} && cargo build --release --target-d
 RUN chmod +x /codecrafters-precompile.sh
 
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Cargo.toml,Cargo.lock"
-
-# Once the heavy steps are done, we can copy all files back
-COPY . /app

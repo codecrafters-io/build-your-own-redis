@@ -27,6 +27,3 @@ RUN zig build
 
 RUN printf "set -e \ncd \${CODECRAFTERS_SUBMISSION_DIR} \necho 'Running zig build' \nzig build \necho 'zig build completed.' \n" > /codecrafters-precompile.sh
 RUN chmod +x /codecrafters-precompile.sh
-
-# Once the heavy steps are done, we can copy all files back
-COPY . /app

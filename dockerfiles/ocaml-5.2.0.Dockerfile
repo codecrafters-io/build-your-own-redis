@@ -27,6 +27,3 @@ RUN opam install . --yes
 
 # This runs dune build
 RUN .codecrafters/compile.sh
-
-# Once the heavy steps are done, we can copy all files back
-COPY . /app

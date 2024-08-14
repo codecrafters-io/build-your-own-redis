@@ -17,6 +17,3 @@ WORKDIR /app
 COPY --exclude=.git --exclude=README.md . /app
 
 RUN bundle install --verbose
-
-# Once the heavy steps are done, we can copy all files back
-COPY . /app

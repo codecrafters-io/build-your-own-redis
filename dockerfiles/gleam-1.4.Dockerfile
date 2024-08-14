@@ -15,6 +15,3 @@ RUN gleam build
 # Cache build directory
 RUN mkdir -p /app-cached
 RUN mv build /app-cached/build
-
-# Once the heavy steps are done, we can copy all files back
-COPY . /app
