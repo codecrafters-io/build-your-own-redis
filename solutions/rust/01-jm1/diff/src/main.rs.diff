@@ -1,7 +1,6 @@
-@@ -1,22 +1,16 @@
--// Uncomment this block to pass the first stage
--// use std::net::TcpListener;
-+use std::net::TcpListener;
+@@ -1,22 +1,17 @@
+ #![allow(unused_imports)]
+ use std::net::TcpListener;
 
  fn main() {
 -    // You can use print statements as follows for debugging, they'll be visible when running tests.

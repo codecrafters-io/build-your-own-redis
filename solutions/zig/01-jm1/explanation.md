@@ -4,11 +4,6 @@ Study and uncomment the relevant code:
 
 ```zig
 // Uncomment this block to pass the first stage
-const net = std.net;
-```
-
-```zig
-// Uncomment this block to pass the first stage
 
 const address = try net.Address.resolveIp("127.0.0.1", 6379);
 

@@ -2,10 +2,13 @@ package main
 
 import (
 	"fmt"
-	// Uncomment this block to pass the first stage
-	// "net"
-	// "os"
+	"net"
+	"os"
 )
+
+// Ensures gofmt doesn't remove the "net" and "os" imports in stage 1 (feel free to remove this!)
+var _ = net.Listen
+var _ = os.Exit
 
 func main() {
 	// You can use print statements as follows for debugging, they'll be visible when running tests.

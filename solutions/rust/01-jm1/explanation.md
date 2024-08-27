@@ -4,11 +4,6 @@ Study and uncomment the relevant code:
 
 ```rust
 // Uncomment this block to pass the first stage
-use std::net::TcpListener;
-```
-
-```rust
-// Uncomment this block to pass the first stage
 
 let listener = TcpListener::bind("127.0.0.1:6379").unwrap();
 

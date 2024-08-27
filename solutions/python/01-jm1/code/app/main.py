@@ -1,4 +1,4 @@
-import socket
+import socket  # noqa: F401
 
 
 def main():

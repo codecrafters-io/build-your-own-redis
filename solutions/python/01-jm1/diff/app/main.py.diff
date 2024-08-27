@@ -1,7 +1,5 @@
-@@ -1,16 +1,10 @@
--# Uncomment this to pass the first stage
--# import socket
-+import socket
+@@ -1,15 +1,10 @@
+ import socket  # noqa: F401
 
 
  def main():
