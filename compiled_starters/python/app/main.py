@@ -1,5 +1,4 @@
-# Uncomment this to pass the first stage
-# import socket
+import socket  # noqa: F401
 
 
 def main():

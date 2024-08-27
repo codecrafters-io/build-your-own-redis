@@ -1,6 +1,5 @@
 const std = @import("std");
-// Uncomment this block to pass the first stage
-// const net = std.net;
+const net = std.net;
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
