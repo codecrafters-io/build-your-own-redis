@@ -570,10 +570,10 @@ stages:
 
       RDB files begin with a header section, which looks something like this:
       ```
-      52 45 44 49 53 30 30 30 37  // Magic string + version number (ASCII): "REDIS0007".
+      52 45 44 49 53 30 30 31 31  // Magic string + version number (ASCII): "REDIS0011".
       ```
 
-      The header contains the magic string `REDIS`, followed by a four-character RDB version number. In this challenge, the test RDB files all use version 7. So, the header is always `REDIS0007`.
+      The header contains the magic string `REDIS`, followed by a four-character RDB version number. In this challenge, the test RDB files all use version 11. So, the header is always `REDIS0011`.
 
       #### Metadata section
 
