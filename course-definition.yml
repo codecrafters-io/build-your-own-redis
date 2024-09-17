@@ -595,10 +595,10 @@ stages:
                                   Here, the index is 0. */
 
       FB                       // Indicates that hash table size information follows.
-      02                       /* The size of the hash table that stores the keys and values (size encoded).
-                                  Here, the key-value hash table size is 2. */
-      01                       /* The size of the hash table that stores the expires of the keys (size encoded).
-                                  Here, the expire hash table size is 1. */
+      03                       /* The size of the hash table that stores the keys and values (size encoded).
+                                  Here, the total key-value hash table size is 3. */
+      02                       /* The size of the hash table that stores the expires of the keys (size encoded).
+                                  Here, the number of keys with an expiry is 2. */
 
       00                       /* The 1-byte flag that specifies the value’s type and encoding.
                                   Here, the flag is 0, which means "string." */
