@@ -2,7 +2,7 @@
 FROM swift:6.0-focal
 
 # Ensures the container is re-built if Package.swift changes
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Package.swift"
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="Package.swift,Package.resolved"
 
 WORKDIR /app
 
