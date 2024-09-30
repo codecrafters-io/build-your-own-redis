@@ -9,7 +9,5 @@ WORKDIR /app
 # .git & README.md are unique per-repository. We ignore them on first copy to prevent cache misses
 COPY --exclude=.git --exclude=README.md . /app
 
+# Runs swift build, which caches dependencies
 RUN .codecrafters/compile.sh
-
-# Cache dependencies (TODO: Check if this is required, or whether build implicitly caches dependencies)
-RUN swift package --build-path /tmp/codecrafters-build-redis-swift resolve
