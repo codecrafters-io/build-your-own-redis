@@ -9,6 +9,6 @@
     "async": "^3.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.12.11"
+    "@types/bun": "latest"
   }
 }
