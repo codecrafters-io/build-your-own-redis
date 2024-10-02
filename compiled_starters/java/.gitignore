@@ -1,4 +1,3 @@
-java_redis.jar
-target/*
+*.jar
 target/
 .idea/
