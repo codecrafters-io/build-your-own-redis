@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec zig-out/bin/zig "$@"
+exec zig-out/bin/main "$@"
