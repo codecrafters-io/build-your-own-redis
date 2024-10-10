@@ -602,13 +602,17 @@ stages:
                                   Here, the total key-value hash table size is 3. */
       02                       /* The size of the hash table that stores the expires of the keys (size encoded).
                                   Here, the number of keys with an expiry is 2. */
+      ```
 
+      ```
       00                       /* The 1-byte flag that specifies the value’s type and encoding.
                                   Here, the flag is 0, which means "string." */
       06 66 6F 6F 62 61 72     // The name of the key (string encoded). Here, it's "foobar".
       06 62 61 7A 71 75 78     // The value (string encoded). Here, it's "bazqux".
+      ```
 
-      FC                       /* Indicates that this key has an expire,
+      ```
+      FC                       /* Indicates that this key ("foo") has an expire,
                                   and that the expire timestamp is expressed in milliseconds. */
       15 72 E7 07 8F 01 00 00  /* The expire timestamp, expressed in Unix time,
                                   stored as an 8-byte unsigned long, in little-endian (read right-to-left).
@@ -616,8 +620,10 @@ stages:
       00                       // Value type is string.
       03 66 6F 6F              // Key name is "foo".
       03 62 61 72              // Value is "bar".
+      ```
 
-      FD                       /* Indicates that this key has an expire,
+      ```
+      FD                       /* Indicates that this key ("baz") has an expire,
                                   and that the expire timestamp is expressed in seconds. */
       52 ED 2A 66              /* The expire timestamp, expressed in Unix time,
                                   stored as an 4-byte unsigned integer, in little-endian (read right-to-left).
