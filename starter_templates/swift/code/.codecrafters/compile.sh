@@ -21,7 +21,7 @@ if [ -d "/tmp/codecrafters-build-redis-swift" ]; then
     # cp -R /tmp/codecrafters-build-redis-swift-old /tmp/codecrafters-build-redis-swift
 
     mv /tmp/codecrafters-build-redis-swift /tmp/codecrafters-build-redis-swift-old
-    cp -p -R /tmp/codecrafters-build-redis-swift-old /tmp/codecrafters-build-redis-swift
+    cp -R /tmp/codecrafters-build-redis-swift-old /tmp/codecrafters-build-redis-swift
 else
     echo "Build directory does not exist."
 fi
