@@ -13,12 +13,15 @@ if [ -d "/tmp/codecrafters-build-redis-swift" ]; then
     echo "Build directory already exists. Proceeding with the build..."
 
     # This does NOT trigger a rebuild
-    mv /tmp/codecrafters-build-redis-swift /tmp/codecrafters-build-redis-swift-old
-    mv /tmp/codecrafters-build-redis-swift-old /tmp/codecrafters-build-redis-swift
+    # mv /tmp/codecrafters-build-redis-swift /tmp/codecrafters-build-redis-swift-old
+    # mv /tmp/codecrafters-build-redis-swift-old /tmp/codecrafters-build-redis-swift
 
     # This DOES trigger a rebuild! inode changes?
+    # mv /tmp/codecrafters-build-redis-swift /tmp/codecrafters-build-redis-swift-old
+    # cp -R /tmp/codecrafters-build-redis-swift-old /tmp/codecrafters-build-redis-swift
+
     mv /tmp/codecrafters-build-redis-swift /tmp/codecrafters-build-redis-swift-old
-    cp -R /tmp/codecrafters-build-redis-swift-old /tmp/codecrafters-build-redis-swift
+    cp -p -R /tmp/codecrafters-build-redis-swift-old /tmp/codecrafters-build-redis-swift
 else
     echo "Build directory does not exist."
 fi
