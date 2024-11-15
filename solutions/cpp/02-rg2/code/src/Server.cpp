@@ -47,15 +47,14 @@ int main(int argc, char **argv) {
   int client_addr_len = sizeof(client_addr);
   std::cout << "Waiting for a client to connect...\n";
 
-  // You can use print statements as follows for debugging, they'll be visible when running tests.
-  std::cout << "Logs from your program will appear here!\n";
+  int client_fd = accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
+  std::cout << "Client connected\n";
 
-  // Uncomment this block to pass the first stage
-  // 
-  // accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
-  // std::cout << "Client connected\n";
-  // 
-  // close(server_fd);
+  std::string response = "+PONG\r\n";
+  send(client_fd, response.c_str(), response.size(), 0);
+
+  close(client_fd);
+  close(server_fd);
 
   return 0;
 }

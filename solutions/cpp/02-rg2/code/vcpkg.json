@@ -1,0 +1,6 @@
+{
+  "dependencies": [
+    "asio",
+    "pthreads"
+  ]
+}
