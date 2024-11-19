@@ -1310,7 +1310,7 @@ stages:
       After the replica sends `REPLCONF` twice, it'll send a `PSYNC ? -1` command to the master.
 
       - The first argument is `?`
-        - This is replication ID of the master, it is `?` because this is the first time the replica is connecting to the master.
+        - This is the replication ID of the master, it is `?` because this is the first time the replica is connecting to the master.
       - The second argument is `-1`
         - This is the replication offset, it is `-1` because this is the first time the replica is connecting to the master.
 
