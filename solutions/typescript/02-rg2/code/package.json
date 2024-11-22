@@ -1,0 +1,11 @@
+{
+  "name": "@codecrafters/redis",
+  "description": "Build your own Redis challenge, from CodeCrafters",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run app/main.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
