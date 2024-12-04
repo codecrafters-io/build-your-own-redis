@@ -227,13 +227,13 @@ stages:
       $ ./your_program.sh
       ```
 
-      It'll then send two PING commands using the same connection:
+      It'll then send multiple PING commands using the same connection. For example, it might send:
 
       ```bash
       $ echo -e "PING\nPING" | redis-cli
       ```
 
-      The tester will expect to receive two `+PONG\r\n` responses.
+      The tester will expect to receive multiple `+PONG\r\n` responses (one for each command sent).
 
       {{#lang_is_javascript}}
       In most languages, you'd need to run a loop that reads input from a connection and sends a
@@ -251,7 +251,7 @@ stages:
 
       - Just like the previous stage, you can hardcode `+PONG\r\n` as the response for this stage. We'll get to parsing
        client input in later stages.
-      - The two PING commands will be sent using the same connection. We'll get to handling multiple connections in later stages.
+      - The PING commands will be sent using the same connection. We'll get to handling multiple connections in later stages.
     marketing_md: |-
       In this stage, you'll respond to multiple
       [PING](https://redis.io/commands/ping) commands sent by the same client.
