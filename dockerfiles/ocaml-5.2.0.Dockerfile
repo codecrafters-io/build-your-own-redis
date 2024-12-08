@@ -11,6 +11,9 @@ ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="dune,dune-project"
 # hadolint ignore=DL3002
 USER root
 
+# Install headers as OCaml libraries that use system APIs will inevitably need this
+RUN apk add linux-headers=6.6-r0 --no-cache
+
 # Install dune
 RUN opam update && opam install dune.3.16.0 --yes
 
