@@ -1,4 +1,4 @@
-@@ -1,17 +1,13 @@
+@@ -1,16 +1,12 @@
  <?php
  error_reporting(E_ALL);
 
@@ -22,4 +22,3 @@
 +socket_accept($sock); // Wait for first client
 
  // socket_close($sock);
- ?>
