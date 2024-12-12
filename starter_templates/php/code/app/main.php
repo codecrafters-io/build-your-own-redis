@@ -14,4 +14,3 @@ echo "Logs from your program will appear here";
 // socket_accept($sock); // Wait for first client
 
 // socket_close($sock);
-?>

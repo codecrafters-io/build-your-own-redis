@@ -10,4 +10,3 @@ socket_listen($sock, 5);
 socket_accept($sock); // Wait for first client
 
 // socket_close($sock);
-?>
