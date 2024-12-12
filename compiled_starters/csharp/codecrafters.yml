@@ -7,5 +7,5 @@ debug: false
 # Use this to change the C# version used to run your code
 # on Codecrafters.
 #
-# Available versions: dotnet-8.0
-language_pack: dotnet-8.0
+# Available versions: dotnet-9.0
+language_pack: dotnet-9.0
