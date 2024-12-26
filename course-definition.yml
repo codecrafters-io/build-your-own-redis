@@ -2989,7 +2989,7 @@ stages:
       It'll then send an `XREAD` command to your server with the `BLOCK` command with the time passed in being 0.
 
       ```bash
-      $ redis-cli XREAD block 0 streams stream_key 0-0
+      $ redis-cli XREAD block 0 streams stream_key 0-1
       ```
 
       It'll then wait for 1000 milliseconds before checking if there is a response. Your server should not have a new response. It'll then add another entry.
