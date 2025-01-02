@@ -1288,7 +1288,7 @@ stages:
 
       1. `PING` (expecting `+PONG\r\n` back)
       2. `REPLCONF listening-port <PORT>` (expecting `+OK\r\n` back)
-      3. `REPLCONF capa eof capa psync2` (expecting `+OK\r\n` back)
+      3. `REPLCONF capa psync2` (expecting `+OK\r\n` back)
     marketing_md: |
       In this stage, you'll add support for starting the handshake from the master side, by accepting REPLCONF.
 
