@@ -943,10 +943,9 @@ stages:
     name: "The INFO command"
     difficulty: easy
     description_md: |
-      In this stage, you'll add support for the [INFO](https://redis.io/commands/info/) command.
+      In this stage, you'll add support for responding to the [INFO](https://redis.io/commands/info/) command as a master.
 
-      The `INFO` command returns information and statistics about a Redis server. In this stage, we'll add support for the
-      `replication` section of the `INFO` command.
+      The `INFO` command returns information and statistics about a Redis server. In this stage, we'll add support for the `replication` section of the `INFO` command.
 
       ### The replication section
 
@@ -1356,7 +1355,7 @@ stages:
     name: "Empty RDB Transfer"
     difficulty: easy
     description_md: |
-      In this stage, you'll add support for sending an empty RDB file to the replica. This is part of the "full resynchronization" process.
+      In this stage, you'll add support for sending an empty RDB file as a master. This is part of the "full resynchronization" process.
 
       ### Full resynchronization
 
@@ -1417,7 +1416,7 @@ stages:
     name: "Single-replica propagation"
     difficulty: medium
     description_md: |
-      In this stage, you'll add support for propagating write commands from a master to a single replica.
+      In this stage, you'll add support for propagating write commands to a single replica as a master.
 
       ### Command propagation
 
@@ -1523,7 +1522,7 @@ stages:
     name: "Command Processing"
     difficulty: hard
     description_md: |
-      In this stage you'll implement the processing of commands propagated to the replica from the master.
+      In this stage you'll implement the processing of propagated commands as a replica.
 
       ### Command processing
 
@@ -1572,7 +1571,7 @@ stages:
     name: "ACKs with no commands"
     difficulty: easy
     description_md: |
-      In this stage you'll implement support for the `REPLCONF GETACK` command that a master sends a replica.
+      In this stage you'll implement support for responding to the `REPLCONF GETACK` command as a replica.
 
       ### ACKs
 
