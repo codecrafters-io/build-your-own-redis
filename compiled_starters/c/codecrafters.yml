@@ -7,5 +7,5 @@ debug: false
 # Use this to change the C version used to run your code
 # on Codecrafters.
 #
-# Available versions: c-9.2
-language_pack: c-9.2
+# Available versions: c-23
+language_pack: c-23

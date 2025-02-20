@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-gcc -o /tmp/codecrafters-build-redis-c app/*.c
+cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
+cmake --build ./build
