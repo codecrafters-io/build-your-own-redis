@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec /tmp/codecrafters-build-redis-c "$@"
+exec $(dirname $0)/build/redis "$@"
