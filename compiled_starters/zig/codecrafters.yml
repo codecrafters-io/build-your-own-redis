@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Zig version used to run your code
 # on Codecrafters.
 #
-# Available versions: zig-0.13
-language_pack: zig-0.13
+# Available versions: zig-0.14
+language_pack: zig-0.14
