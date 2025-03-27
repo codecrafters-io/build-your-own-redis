@@ -5,7 +5,7 @@ FROM ocaml/opam:alpine-3.20-ocaml-5.2
 ENV OPAMROOT /home/opam/.opam
 
 # Ensures the container is re-built if dune/dune-project changes
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="dune,dune-project"
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="dune,dune-project,test/dune"
 
 # Change to root user. All other images seem to use root, so let's do the same here
 # hadolint ignore=DL3002
@@ -26,7 +26,7 @@ WORKDIR /app
 COPY --exclude=.git --exclude=README.md . /app
 
 # Cache dependencies
-RUN opam install . --yes
+RUN opam install . --yes --deps-only --with-test
 
 # This runs dune build
 RUN .codecrafters/compile.sh
