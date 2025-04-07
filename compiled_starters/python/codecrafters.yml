@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Python version used to run your code
 # on Codecrafters.
 #
-# Available versions: python-3.12
-language_pack: python-3.12
+# Available versions: python-3.13
+language_pack: python-3.13
