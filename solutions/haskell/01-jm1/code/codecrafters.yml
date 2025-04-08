@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Haskell version used to run your code
 # on Codecrafters.
 #
-# Available versions: haskell-9.4
-language_pack: haskell-9.4
+# Available versions: haskell-9.8
+language_pack: haskell-9.8
