@@ -6,7 +6,7 @@
 #
 # DON'T EDIT THIS!
 
-name: hs-redis-clone
+name: codecrafters-redis
 version: 0.1.0.0
 license: BSD3
 
@@ -28,7 +28,7 @@ dependencies:
   - attoparsec
 
 executables:
-  hs-redis-clone-exe:
+  codecrafters-redis-exe:
     main: Main.hs
     source-dirs: app
     ghc-options:

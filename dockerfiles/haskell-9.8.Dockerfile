@@ -21,7 +21,7 @@ RUN echo 'main = putStrLn "Hello, World!"' >> /app/app/Main.hs
 ENV STACK_ROOT=/app/.stack
 
 RUN stack build
-RUN stack clean hs-redis-clone
+RUN stack clean codecrafters-redis
 RUN mkdir /app-cached
 RUN mv .stack-work /app-cached/.stack-work
 RUN mv .stack /app-cached/.stack

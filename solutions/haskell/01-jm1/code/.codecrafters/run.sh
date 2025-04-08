@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec $(stack path --local-install-root)/bin/hs-redis-clone-exe "$@"
+exec $(stack path --local-install-root)/bin/codecrafters-redis-exe "$@"
