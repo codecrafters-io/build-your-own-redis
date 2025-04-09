@@ -5,7 +5,7 @@
 module Main (main) where
 
 import Network.Simple.TCP (serve, HostPreference(HostAny), closeSock)
-import System.IO (hSetBuffering, stdout, stderr, BufferMode(NoBuffering))
+import System.IO (hPutStrLn, hSetBuffering, stdout, stderr, BufferMode(NoBuffering))
 
 main :: IO ()
 main = do
@@ -14,7 +14,7 @@ main = do
     hSetBuffering stderr NoBuffering
 
     -- You can use print statements as follows for debugging, they'll be visible when running tests.
-    putStrLn "Logs from your program will appear here"
+    hPutStrLn stderr "Logs from your program will appear here"
 
     -- Uncomment this block to pass stage 1
     -- let port = "6379"
