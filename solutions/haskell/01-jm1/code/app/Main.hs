@@ -5,7 +5,7 @@
 module Main (main) where
 
 import Network.Simple.TCP (serve, HostPreference(HostAny), closeSock)
-import System.IO (hSetBuffering, stdout, stderr, BufferMode(NoBuffering))
+import System.IO (hPutStrLn, hSetBuffering, stdout, stderr, BufferMode(NoBuffering))
 
 main :: IO ()
 main = do
