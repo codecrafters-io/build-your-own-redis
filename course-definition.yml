@@ -2893,17 +2893,19 @@ stages:
         [
           "stream_key",
           [
-            "0-2",
             [
-              "temperature",
-              "96"
+              "0-2",
+              [
+                "temperature",
+                "96"
+              ]
             ]
           ]
         ]
       ]
       ```
 
-      It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 1000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli XREAD block 1000 streams stream_key 0-2
@@ -3018,10 +3020,12 @@ stages:
         [
           "stream_key",
           [
-            "0-2",
             [
-              "temperature",
-              "95"
+              "0-2",
+              [
+                "temperature",
+                "95"
+              ]
             ]
           ]
         ]
@@ -3146,17 +3150,19 @@ stages:
         [
           "stream_key",
           [
-            "0-2",
             [
-              "temperature",
-              "95"
+              "0-2",
+              [
+                "temperature",
+                "95"
+              ]
             ]
           ]
         ]
       ]
       ```
 
-      It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 2000 milliseconds before checking the response of your server.
+      It'll send another `XREAD` command to your server with the `BLOCK` command but this time, it'll wait for 1000 milliseconds before checking the response of your server.
 
       ```bash
       $ redis-cli XREAD block 1000 streams stream_key $
