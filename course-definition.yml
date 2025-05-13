@@ -1486,7 +1486,7 @@ stages:
     name: "Multi Replica Command Propagation"
     difficulty: hard
     description_md: |
-      In this stage, you'll extend your implementation to support propagating commands to multiple replicas.
+      In this stage, you'll extend your implementation of the master to support propagating commands to multiple replicas. No need to change anything in the replica implementation.
 
       ### Tests
 
