@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-# (This file is empty since Elixir programs don't use a compile step)
+mix escript.build
+mv codecrafters_redis /tmp/codecrafters-build-redis-elixir

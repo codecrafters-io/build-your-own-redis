@@ -1,9 +1,9 @@
-@@ -1,26 +1,21 @@
+@@ -1,36 +1,31 @@
  defmodule Server do
    @moduledoc """
    Your implementation of a Redis server
    """
-
+   
    use Application
 
    def start(_type, _args) do
@@ -29,3 +29,14 @@
 +    {:ok, _client} = :gen_tcp.accept(socket)
    end
  end
+
+ defmodule CLI do
+   def main(_args) do
+     # Start the Server application
+     {:ok, _pid} = Application.ensure_all_started(:codecrafters_redis)
+
+     # Run forever
+     Process.sleep(:infinity)
+   end
+ end
+\ No newline at end of file

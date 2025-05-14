@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec mix run --no-halt -- "$@"
+exec /tmp/codecrafters-build-redis-elixir "$@"
