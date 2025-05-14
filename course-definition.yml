@@ -1486,7 +1486,7 @@ stages:
     name: "Multi Replica Command Propagation"
     difficulty: hard
     description_md: |
-      In this stage, you'll extend your implementation of the master to support propagating commands to multiple replicas. No need to change anything in the replica implementation.
+      In this stage, you'll extend your implementation of the master to support propagating commands to multiple replicas.
 
       ### Tests
 
@@ -1514,6 +1514,9 @@ stages:
       ```
 
       It'll then assert that each replica received those commands, in order.
+
+      ### Notes
+      - There is no need to change anything in the replica implementation for this stage.
     marketing_md: |
       In this stage, you'll complete your implementation of Redis replication.
 
