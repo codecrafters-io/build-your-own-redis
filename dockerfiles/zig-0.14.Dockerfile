@@ -1,8 +1,10 @@
 # syntax=docker/dockerfile:1.7-labs
 FROM debian:bookworm
 
-RUN apt-get update && apt-get install -y xz-utils \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y xz-utils=5.4.1-1 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Download and install Zig
 RUN curl -O https://ziglang.org/download/0.14.0/zig-linux-x86_64-0.14.0.tar.xz \
