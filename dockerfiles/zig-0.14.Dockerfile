@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1.7-labs
-FROM alpine:3.20
+FROM debian:bookworm
 
-RUN apk add --no-cache 'xz>=5.6' 'curl>=8.9'
+RUN apt-get update && apt-get install -y xz-utils \
+    && rm -rf /var/lib/apt/lists/*
 
 # Download and install Zig
 RUN curl -O https://ziglang.org/download/0.14.0/zig-linux-x86_64-0.14.0.tar.xz \
