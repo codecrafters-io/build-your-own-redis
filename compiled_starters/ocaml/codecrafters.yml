@@ -7,5 +7,5 @@ debug: false
 # Use this to change the OCaml version used to run your code
 # on Codecrafters.
 #
-# Available versions: ocaml-5.2.0
-language_pack: ocaml-5.2.0
+# Available versions: ocaml-5.3
+language_pack: ocaml-5.3
