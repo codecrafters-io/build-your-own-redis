@@ -3,9 +3,9 @@
   :url "http://github.com/codecrafters-io/redis-starter-clojure"
   :license {:name "MIT"
             :url "https://opensource.org/licenses/MIT"}
-  :dependencies [[org.clojure/clojure "1.10.3"]
+  :dependencies [[org.clojure/clojure "1.12.0"]
                  [org.clojure/tools.cli "1.1.230"]
-                 [aleph "0.6.4"]]
+                 [aleph "0.8.3"]]
 
   :main ^:skip-aot redis.core
   :target-path "/tmp/codecrafters-redis-target/%s"
