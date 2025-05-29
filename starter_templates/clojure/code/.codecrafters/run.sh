@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec java -jar /tmp/codecrafters-redis-target/uberjar/redis-0.1.0-SNAPSHOT-standalone.jar "$@"
+exec java -jar /tmp/codecrafters-build-redis-clojure/target.jar "$@"

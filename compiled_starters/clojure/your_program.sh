@@ -14,12 +14,11 @@ set -e # Exit early if any commands fail
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
 (
   cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
-  lein deps
-  lein uberjar
+  clj -T:build
 )
 
 # Copied from .codecrafters/run.sh
 #
 # - Edit this to change how your program runs locally
 # - Edit .codecrafters/run.sh to change how your program runs remotely
-exec java -jar /tmp/codecrafters-redis-target/uberjar/redis-0.1.0-SNAPSHOT-standalone.jar "$@"
+exec java -jar /tmp/codecrafters-build-redis-clojure/target.jar "$@"

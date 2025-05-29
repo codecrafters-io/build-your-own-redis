@@ -8,5 +8,4 @@
 
 set -e # Exit on failure
 
-lein deps
-lein uberjar
+clj -T:build
