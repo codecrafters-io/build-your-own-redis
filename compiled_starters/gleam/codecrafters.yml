@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Gleam version used to run your code
 # on Codecrafters.
 #
-# Available versions: gleam-1.9
-language_pack: gleam-1.9
+# Available versions: gleam-1.11
+language_pack: gleam-1.11
