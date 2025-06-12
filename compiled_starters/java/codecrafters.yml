@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Java version used to run your code
 # on Codecrafters.
 #
-# Available versions: java-23
-language_pack: java-23
+# Available versions: java-24
+language_pack: java-24
