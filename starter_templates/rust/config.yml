@@ -1,3 +1,3 @@
 attributes:
-  required_executable: cargo (1.86)
+  required_executable: cargo (1.87)
   user_editable_file: src/main.rs
