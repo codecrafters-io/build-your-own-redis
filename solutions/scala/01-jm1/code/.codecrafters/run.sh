@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec java -jar ./target/scala-2.13/redis.jar "$@"
+exec java -jar ./target/scala-3.7.1/redis.jar "$@"
