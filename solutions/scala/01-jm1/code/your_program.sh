@@ -14,11 +14,11 @@ set -e # Exit early if any commands fail
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
 (
   cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
-  sbt assembly
+  SBT_OPTS="--enable-native-access=ALL-UNNAMED" sbt assembly
 )
 
 # Copied from .codecrafters/run.sh
 #
 # - Edit this to change how your program runs locally
 # - Edit .codecrafters/run.sh to change how your program runs remotely
-exec java -jar ./target/scala-2.13/redis.jar "$@"
+exec java -jar ./target/scala-3.7.1/redis.jar "$@"

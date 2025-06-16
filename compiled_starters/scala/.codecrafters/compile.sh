@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-sbt assembly
+# The option is needed for Java 17+ to allow native memory access operations.
+SBT_OPTS="--enable-native-access=ALL-UNNAMED" sbt assembly
