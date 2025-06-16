@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `src/main/scala/codecrafters_redis/Server.scala`.
+The entry point for your Redis implementation is in `src/main/scala/codecrafters_redis/App.scala`.
 
 Study and uncomment the relevant code: 
 
