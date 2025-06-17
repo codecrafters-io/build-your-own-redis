@@ -29,6 +29,8 @@ languages:
   - slug: "javascript"
   - slug: "kotlin"
   - slug: "ocaml"
+  - slug: "odin"
+    release_status: "alpha"
   - slug: "php"
   - slug: "python"
   - slug: "ruby"
