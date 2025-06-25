@@ -1055,7 +1055,7 @@ stages:
 
   - slug: "xc1"
     primary_extension_slug: "replication"
-    name: "Initial Replication ID and Offset"
+    name: "Initial replication ID and offset"
     difficulty: easy
     description_md: |
       In this stage, you'll extend your `INFO` command to return two additional values: `master_replid` and `master_repl_offset`.
@@ -1353,7 +1353,7 @@ stages:
 
   - slug: "cf8"
     primary_extension_slug: "replication"
-    name: "Empty RDB Transfer"
+    name: "Empty RDB transfer"
     difficulty: easy
     description_md: |
       In this stage, you'll add support for sending an empty RDB file as a master. This is part of the "full resynchronization" process.
@@ -1484,7 +1484,7 @@ stages:
 
   - slug: "hd5"
     primary_extension_slug: "replication"
-    name: "Multi Replica Command Propagation"
+    name: "Multi-replica propagation"
     difficulty: hard
     description_md: |
       In this stage, you'll extend your implementation of the master to support propagating commands to multiple replicas.
@@ -1520,7 +1520,7 @@ stages:
 
   - slug: "yg4"
     primary_extension_slug: "replication"
-    name: "Command Processing"
+    name: "Command processing"
     difficulty: hard
     description_md: |
       In this stage you'll implement the processing of propagated commands as a replica.
