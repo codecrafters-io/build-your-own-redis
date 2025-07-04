@@ -1476,6 +1476,7 @@ stages:
 
       ### Notes
 
+      - Don't use the `listening-port` value for propagation. Reuse the connection initiated by the replica.
       - A true implementation would buffer the commands so that they can be sent to the replica after it loads the RDB file. For the
         purposes of this challenge, you can assume that the replica is ready to receive commands immediately after receiving the RDB file.
     marketing_md: |
