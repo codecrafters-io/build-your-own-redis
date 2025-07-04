@@ -1192,6 +1192,8 @@ stages:
       **Notes**
 
       - The response to `REPLCONF` will always be `+OK\r\n` ("OK" encoded as a RESP Simple String)
+      - At a later stage, you might be tempted to use the `listening-port` value. Just don't. We'll get to that later.
+
     marketing_md: |
       In this stage, you'll add support for continuing the handshake from the Replica side, by sending REPLCONF.
 
