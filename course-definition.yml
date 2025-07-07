@@ -1158,7 +1158,7 @@ stages:
       The `REPLCONF` command is used to configure replication. Replicas will send this command to the master twice:
 
       - The first time, it'll be sent like this: `REPLCONF listening-port <PORT>`
-        - This is the replica notifying the master of the port it's listening on
+        - This is the replica notifying the master of the port it's listening on (for [monitoring/logging purposes](https://github.com/redis/redis/blob/90178712f6eccf1e5b61daa677c5c103114bda3a/src/replication.c#L107-L130), not for actual propagation).
       - The second time, it'll be sent like this: `REPLCONF capa psync2`
         - This is the replica notifying the master of its capabilities ("capa" is short for "capabilities")
         - You can safely hardcode these capabilities for now, we won't need to use them in this challenge.
@@ -1192,7 +1192,6 @@ stages:
       **Notes**
 
       - The response to `REPLCONF` will always be `+OK\r\n` ("OK" encoded as a RESP Simple String)
-      - At a later stage, you might be tempted to use the `listening-port` value. Just don't. We'll get to that later.
 
     marketing_md: |
       In this stage, you'll add support for continuing the handshake from the Replica side, by sending REPLCONF.
@@ -1478,7 +1477,7 @@ stages:
 
       ### Notes
 
-      - Don't use the `listening-port` value for propagation. Reuse the connection initiated by the replica.
+      - The `listening-port` provided during the handshake is used for [monitoring/logging purposes](https://github.com/redis/redis/blob/90178712f6eccf1e5b61daa677c5c103114bda3a/src/replication.c#L107-L130). The official Redis doesn't use it for propagation.
       - A true implementation would buffer the commands so that they can be sent to the replica after it loads the RDB file. For the
         purposes of this challenge, you can assume that the replica is ready to receive commands immediately after receiving the RDB file.
     marketing_md: |
