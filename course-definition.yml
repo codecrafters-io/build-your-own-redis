@@ -63,25 +63,16 @@ marketing:
         Didn't even know that was possible!
 
 extensions:
-  - slug: "persistence-rdb"
-    name: "RDB Persistence"
-    description_markdown: |
-      In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
+  - slug: "lists"
+    name: "Lists"
+    description_markdown: |-
+      In this challenge extension you'll add support for [Lists][redis-lists] to your Redis implementation.
 
-      Along the way you'll learn about Redis's [RDB file format][rdb-file-format] and more.
+      Along the way, you'll learn commands like RPUSH, LRANGE, and more.
 
-      [redis-persistence]: https://redis.io/docs/manual/persistence/
-      [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
-
-  - slug: "replication"
-    name: "Replication"
-    description_markdown: |
-      In this challenge extension you'll add support for [Replication][redis-replication] to your Redis implementation.
-
-      Along the way you'll learn about how Redis's leader-follower replication works, the [PSYNC][redis-psync-command] command and more.
-
-      [redis-replication]: https://redis.io/docs/management/replication/
-      [redis-psync-command]: https://redis.io/commands/psync/
+      [redis-lists]: https://redis.io/docs/latest/develop/data-types/lists/
+      [rpush-command]: https://redis.io/docs/latest/commands/rpush/
+      [lrange-command]: https://redis.io/docs/latest/commands/lrange/
 
   - slug: "streams"
     name: "Streams"
@@ -106,17 +97,25 @@ extensions:
       [exec-command]: https://redis.io/commands/exec/
       [discard-command]: https://redis.io/commands/discard/
 
-  - slug: "lists"
-    name: "Lists"
-    description_markdown : |-
-      In this challenge extension you'll add support for [Lists][redis-lists] to your Redis implementation.
+  - slug: "replication"
+    name: "Replication"
+    description_markdown: |
+      In this challenge extension you'll add support for [Replication][redis-replication] to your Redis implementation.
 
-      Along the way, you'll learn commands like RPUSH, LRANGE, and more.
+      Along the way you'll learn about how Redis's leader-follower replication works, the [PSYNC][redis-psync-command] command and more.
 
-      [redis-lists]: https://redis.io/docs/latest/develop/data-types/lists/
-      [rpush-command]: https://redis.io/docs/latest/commands/rpush/
-      [lrange-command]: https://redis.io/docs/latest/commands/lrange/
+      [redis-replication]: https://redis.io/docs/management/replication/
+      [redis-psync-command]: https://redis.io/commands/psync/
 
+  - slug: "persistence-rdb"
+    name: "RDB Persistence"
+    description_markdown: |
+      In this challenge extension you'll add [persistence][redis-persistence] support to your Redis implementation.
+
+      Along the way you'll learn about Redis's [RDB file format][rdb-file-format] and more.
+
+      [redis-persistence]: https://redis.io/docs/manual/persistence/
+      [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
 stages:
   - slug: "jm1"
@@ -3879,4 +3878,3 @@ stages:
     name: "Blocking retrieval with timeout"
     difficulty: medium
     marketing_md: In this stage, you will add support for a non-zero timeout duration for the `BLPOP` command.
-  
