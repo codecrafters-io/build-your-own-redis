@@ -678,7 +678,7 @@ stages:
       - String encoding begins with a size-encoded value that specifies the number of characters in the string.
       - List encoding begins with a size-encoded value that specifies the number of elements in the list.
 
-      The first two bits of a size-encoded value indicate how the value should be parsed. Here's a guide (bits are shown in both hexadecimal and binary):
+      The first (most significant) two bits of a size-encoded value indicate how the value should be parsed. Here's a guide (bits are shown in both hexadecimal and binary):
       ```
       /* If the first two bits are 0b00:
          The size is the remaining 6 bits of the byte.
