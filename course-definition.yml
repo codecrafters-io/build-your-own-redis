@@ -117,6 +117,18 @@ extensions:
       [redis-persistence]: https://redis.io/docs/manual/persistence/
       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
+  - slug: "geospatial"
+    name: "Geospatial Commands"
+    description_markdown: |
+      In this challenge extension you'll add support for [Geospatial Commands][geospatial-commands] to your Redis implementation.
+
+      Along the way, you'll learn commands like [GEOADD][geoadd-command], [GEOSEARCH][geosearch-command], and more.
+
+      [geospatial-commands]: https://redis.io/docs/latest/develop/data-types/geospatial/
+      [geoadd-command]: https://redis.io/docs/latest/commands/geoadd/
+      [geosearch-command]: https://redis.io/docs/latest/commands/geosearch/
+
+
 stages:
   - slug: "jm1"
     concept_slugs:
@@ -3878,3 +3890,58 @@ stages:
     name: "Blocking retrieval with timeout"
     difficulty: medium
     marketing_md: In this stage, you will add support for a non-zero timeout duration for the `BLPOP` command.
+
+  # Geospatial Commands
+  - slug: "zt4"
+    primary_extension_slug: "geospatial"
+    name: "Add a location"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for adding a single location under a key using the `GEOADD` command.
+
+  - slug: "wq4"
+    primary_extension_slug: "geospatial"
+    name: "Add multiple locations"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for inserting multiple locations in one `GEOADD` command.
+
+  - slug: "ck3"
+    primary_extension_slug: "geospatial"
+    name: "Validate Coordinates"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for validating the latitude and longitude provided in the `GEOADD` command.
+
+  - slug: "xg4"
+    primary_extension_slug: "geospatial"
+    name: "Retrieve a location"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for retrieving the coordinates of a location using the `GEOPOS` command.
+
+  - slug: "ia8"
+    primary_extension_slug: "geospatial"
+    name: "Retrieve multiple locations"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for retrieving multiple locations using a single `GEOPOS` command.
+
+  - slug: "ek6"
+    primary_extension_slug: "geospatial"
+    name: "Measure Distance"
+    difficulty: medium
+    marketing_md: In this stage, you'll add support for calculating the distance between two locations using the `GEODIST` comamnd.
+
+  - slug: "ra4"
+    primary_extension_slug: "geospatial"
+    name: "Unit Conversion"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for different units of measure in the `GEODIST` command.
+
+  - slug: "rm9"
+    primary_extension_slug: "geospatial"
+    name: "Search within radius"
+    difficulty: hard
+    marketing_md: In this stage, you'll add support for searching locations near a coordinate within a given radius.
+
+  - slug: "hv8"
+    primary_extension_slug: "geospatial"
+    name: "Search within box"
+    difficulty: hard
+    marketing_md: In this stage, you'll add support for searching locations near a coordinate within a rectangular bounding box.
