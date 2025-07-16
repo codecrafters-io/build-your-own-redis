@@ -68,7 +68,7 @@ extensions:
     description_markdown: |-
       In this challenge extension you'll add support for [Lists][redis-lists] to your Redis implementation.
 
-      Along the way, you'll learn commands like RPUSH, LRANGE, and more.
+      Along the way, you'll learn commands like [RPUSH][rpush-command], [LRANGE][lrange-command], and more.
 
       [redis-lists]: https://redis.io/docs/latest/develop/data-types/lists/
       [rpush-command]: https://redis.io/docs/latest/commands/rpush/
