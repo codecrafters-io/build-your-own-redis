@@ -117,6 +117,17 @@ extensions:
       [redis-persistence]: https://redis.io/docs/manual/persistence/
       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
+  - slug: "pub-sub"
+    name: "Pub/Sub"
+    description_markdown : |-
+      In this challenge extension you'll add support for [Publish/Subscribe (Pub/Sub)][redis-pub-sub] to your Redis implementation.
+
+      Along the way, you'll learn commands like [SUBSCRIBE][subscribe-command], [PUBLISH][publish-command], and more.
+
+      [redis-pub-sub]: https://redis.io/docs/latest/develop/pubsub/
+      [subscribe-command]: https://redis.io/docs/latest/commands/subscribe/
+      [publish-command]: https://redis.io/docs/latest/commands/publish/
+
 stages:
   - slug: "jm1"
     concept_slugs:
@@ -642,6 +653,12 @@ stages:
     name: "Enter subscribed mode"
     difficulty: medium
     marketing_md: In this stage, you'll add support for marking a client as having entered Subscribed mode.
+
+  - slug: "lf1"
+    primary_extension_slug: "pub-sub"
+    name: "Change PING behavior"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for changing the response of `PING` command in Subscribed mode.
 
   - slug: "hf2"
     primary_extension_slug: "pub-sub"
