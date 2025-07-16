@@ -1,5 +1,14 @@
 In this stage, you'll add support for inserting multiple locations in one `GEOADD` command.
 
+### The `GEOADD` command (Multiple Locations)
+The `GEOADD` command also supports adding multiple locations at once.
+
+Example usage:
+
+```
+> GEOADD places 15.087269 37.502669 "Catania" 12.496365 41.902783 "Rome"
+(integer) 2
+```
 
 ### Tests
 The tester will execute your program like this:

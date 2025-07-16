@@ -13,9 +13,6 @@ Example usage:
 ```
 > GEOADD places 13.361389 38.115556 "Palermo"
 (integer) 1
-
-> GEOADD places 15.087269 37.502669 "Catania" 12.496365 41.902783 "Rome"
-(integer) 2
 ```
 
 It returns the count of elements added, encoded as a RESP Integer.
@@ -32,4 +29,4 @@ It will then send a `GEOADD` command specifying a key, random values of latitude
 The tester will verify that the response to the command is `:1\r\n`, which is 1 (the number of locations added), encoded as a RESP Integer.
 
 ### Notes
-In this stage, you'll only handle adding one location per GEOADD command. We'll get to adding multiple locations in a single GEOADD command in the next stage.
+- In this stage, you'll only handle adding only one location per `GEOADD` command. We'll get to adding multiple locations in single `GEOADD` command in the next stage.

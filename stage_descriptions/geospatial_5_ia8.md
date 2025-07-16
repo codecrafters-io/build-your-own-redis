@@ -11,18 +11,20 @@ It will add multiple locations using the `GEOADD` command.
 
 ```
 $ redis-cli
-> GEOADD location_key 19.0872 33.5026 "Foo" 49.125 72.991 "Bar"
+> GEOADD location_key 19.08729 33.5026 "Foo" 49.125 72.991 "Bar"
 > GEOADD location_key 10.0872 34.5026 "Baz" 41.125 73.991 "Caz"
 ```
 
-The tester will then send multiple `GEOPOS` commands, each specifying a multiple locations that may or may not have been added. For example, for the following command
+The tester will then send multiple `GEOPOS` commands, each specifying a multiple locations that may or may not have been added. For example, for the following command,
 
 ```
 > GEOPOS location_key Foo Caz non_existent
 ```
 
+it will expect the response to be
+
 ```
-1) 1) "19.0872"
+1) 1) "19.08729"
    2) "33.5026"
 2) 1) "41.125"
    2) "73.991"
@@ -32,15 +34,16 @@ The tester will then send multiple `GEOPOS` commands, each specifying a multiple
 which is RESP-encoded as 
 
 ```
+*3\r\n
 *2\r\n
+$8\r\n
+19.08729\r\n
+$7\r\n
+33.5026\r\n
 *2\r\n
-$18\r\n
-19.087197482585907\r\n
-$17\r\n
-33.50259961456723\r\n
-*2\r\n
-$18\r\n
-41.12499922513962\r\n
-$17\r\n
-73.99100100464304\r\n
+$6\r\n
+41.125\r\n
+$6\r\n
+73.991\r\n
+$-1\r\n
 ```

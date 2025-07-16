@@ -6,15 +6,20 @@ Example use case:
 
 ```
 # Invalid latitude
-> GEOADD places 180 90 test
+> GEOADD places 180 90 test1
 (error) ERR invalid longitude,latitude pair 180.000000,90.000000
 
 # Invalid longitude
-> geoadd places 181 0.3 test
+> GEOADD places 181 0.3 test2
 (error) ERR invalid longitude,latitude pair 181.000000,0.300000
+
+# Roundinf off to 6 digits in case of errors
+> GEOADD loc 122 90.23454393 test3
+(error) ERR invalid longitude,latitude pair 122.000000,90.234544
+
 ```
 
-In the response, both latitude and longitude values are  rounded to 6 digits after the decimal point.
+In the response, both latitude and longitude values are rounded to 6 digits after the decimal point.
 
 ### Tests
 The tester will execute your program like this:
@@ -22,7 +27,6 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 It will then send multiple GEOADD commands specifying one or more location to add. For valid co-ordinates, the tester will expect the response to be the usual response of the GEOADD command. For invalid co-ordinate values, it will expect an error.
-
 
 For example, the tester will expect the response of the following command
 
@@ -33,14 +37,14 @@ $ redis-cli
 
 to be
 ```
-(error) ERR invalid longitude,latitude pair 180.000000,90.000000
+(error) ERR invalid longitude,latitude pair 200.000000,100.000000
 ```
 
 which is RESP-encoded as
 
 ```
--ERR invalid longitude,latitude pair 180.000000,90.000000\r\n
+-ERR invalid longitude,latitude pair 200.000000,100.000000\r\n
 ```
 
 ### Notes
-If a GEOADD command specifies multiple locations, and if the co-ordinates of any one of those locations is invalid, it returns the error message and all the locations are discarded.
+If a `GEOADD` command specifies multiple locations, and if the co-ordinates of any one of those locations is invalid, it returns the error message and all the locations are discarded.

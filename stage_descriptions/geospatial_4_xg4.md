@@ -22,11 +22,11 @@ Example usage:
 
 It returns an array with one entry for each location requested.
 
+- If the key does not exist, an empty array is returned `(*0\r\n)`
 - If a location exists under the key, its entry is an array of two items:
     - Longitude (Encoded as a Bulk string)
     - Latitude (Encoded as a Bulk string)
 - If a location doesn’t exist, the entry is a null bulk string `($-1\r\n)`.
-- If the key does not exist, an empty array is returned `(*0\r\n)`
 
 ### Tests
 The tester will execute your program like this:
@@ -42,7 +42,7 @@ $ redis-cli
 > GEOADD location_key 10.0872 34.5026 "Baz" 41.125 73.991 "Caz"
 ```
 
-The tester will then send multiple GEOPOS commands, each specifying a single location that may or may not have been added.  For example, for the following command
+The tester will then send multiple GEOPOS commands, each specifying a single location that may or may not have been added. For example, for the following command
 
 ```
 > GEOPOS places Foo
@@ -66,5 +66,17 @@ $7\r\n
 ```
 
 ### Notes
+
+- The tester will be lenient in checking the coordinates provided. The latitude and longitude returned by the server should match the values provided in the `GEOADD` command with a precision of up to 4 decimal places when rounded-off.
+
+  * For example, if a location was added using `GEOADD key 20.123456 30.123001`, any of the following will be accepted:
+
+    * `20.1235 30.1230`
+    * `20.123456 30.123000`
+    * `20.123490 30.123045`
+    * `20.123459 30.123001`
+    * `20.1235001 30.122999`
+
 - If the location key does not exist, you should return an empty array.
+
 - In this stage, you will only implement retrieving a single location using the `GEOPOS` command. We'll get to retrieving multiple locations in a single `GEOPOS` command in the next stage.
