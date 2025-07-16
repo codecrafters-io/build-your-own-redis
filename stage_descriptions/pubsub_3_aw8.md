@@ -51,13 +51,8 @@ For un-allowed command (like `SET`, `GET`, and `ECHO`) the tester will verify th
 
 The tester only verifies that error message starts with "Can't execute '<command_name>'", so you're free to use a flexible error message and not stick to the exact format that Redis uses.
 
-For allowed commands (like `PING`, `SUBSCRIBE` etc.), the tester will verify that the responses are not errors.
-
+For `SUBSCRIBE` command, the tester will verify that the response is its usual response.
 ```bash
-> PING
-# Expecting ["pong", ""] encoded as
-# *2\r\n$4\r\npong\r\n$0\r\n\r\n
-
 > SUBSCRIBE bar
 # Expecting ["subscribe", "bar", 2] as RESP-encoded array
 ```
@@ -67,3 +62,5 @@ For allowed commands (like `PING`, `SUBSCRIBE` etc.), the tester will verify tha
 - For un-allowed commands, the tester is lenient in checking error messages so you don't have to stick to the exact format Redis uses. The exact format it checks for is `Can't execute '<command>'` (case-insensitive). Examples of error message strings that will pass tests: 
     - `Can't execute 'set' in subscribed mode`
     - `can't execute 'SET' when one or more subscriptions exist`
+
+- In this stage, you'll only need to handle responding with errors in case of `SET`, `GET`, and `ECHO` commands. We will get to modifying the response of `PING` command in Subscribed mode in the next stage.
