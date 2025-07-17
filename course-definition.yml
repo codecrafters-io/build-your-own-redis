@@ -117,7 +117,17 @@ extensions:
       [redis-persistence]: https://redis.io/docs/manual/persistence/
       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
-<<<<<<< HEAD
+  - slug: "pub-sub"
+    name: "Pub/Sub"
+    description_markdown : |-
+      In this challenge extension you'll add support for [Publish/Subscribe (Pub/Sub)][redis-pub-sub] to your Redis implementation.
+
+      Along the way, you'll learn commands like [SUBSCRIBE][subscribe-command], [PUBLISH][publish-command], and more.
+
+      [redis-pub-sub]: https://redis.io/docs/latest/develop/pubsub/
+      [subscribe-command]: https://redis.io/docs/latest/commands/subscribe/
+      [publish-command]: https://redis.io/docs/latest/commands/publish/
+  
   - slug: "geospatial"
     name: "Geospatial Commands"
     description_markdown: |
@@ -129,18 +139,6 @@ extensions:
       [geoadd-command]: https://redis.io/docs/latest/commands/geoadd/
       [geosearch-command]: https://redis.io/docs/latest/commands/geosearch/
 
-=======
-  - slug: "pub-sub"
-    name: "Pub/Sub"
-    description_markdown : |-
-      In this challenge extension you'll add support for [Publish/Subscribe (Pub/Sub)][redis-pub-sub] to your Redis implementation.
-
-      Along the way, you'll learn commands like [SUBSCRIBE][subscribe-command], [PUBLISH][publish-command], and more.
-
-      [redis-pub-sub]: https://redis.io/docs/latest/develop/pubsub/
-      [subscribe-command]: https://redis.io/docs/latest/commands/subscribe/
-      [publish-command]: https://redis.io/docs/latest/commands/publish/
->>>>>>> main
 
 stages:
   - slug: "jm1"
