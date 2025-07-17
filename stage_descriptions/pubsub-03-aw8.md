@@ -42,7 +42,7 @@ $ redis-cli
 
 The tester will then send a series of commands, which might be allowed or un-allowed for subscribed mode.
 
-For un-allowed command (like `SET`, `GET`, and `ECHO`) the tester will verify that your server responds with the following error:
+For un-allowed commands (like `SET`, `GET`, and `ECHO`) the tester will verify that your server responds with the following error:
 
 ```
 > SET key value
@@ -51,7 +51,7 @@ For un-allowed command (like `SET`, `GET`, and `ECHO`) the tester will verify th
 
 The tester only verifies that error message starts with "Can't execute '<command_name>'", so you're free to use a flexible error message and not stick to the exact format that Redis uses.
 
-For `SUBSCRIBE` command, the tester will verify that the response is its usual response.
+For the `SUBSCRIBE` command, the tester will verify that the response is its usual response.
 ```bash
 > SUBSCRIBE bar
 # Expecting ["subscribe", "bar", 2] as RESP-encoded array
@@ -63,4 +63,4 @@ For `SUBSCRIBE` command, the tester will verify that the response is its usual r
     - `Can't execute 'set' in subscribed mode`
     - `can't execute 'SET' when one or more subscriptions exist`
 
-- In this stage, you'll only need to handle responding with errors in case of `SET`, `GET`, and `ECHO` commands. We will get to modifying the response of `PING` command in Subscribed mode in the next stage.
+- In subscribed mode, `PING` has a different response (it doesn't respond with `+PONG\r\n`). We'll get to this in later stages. 
