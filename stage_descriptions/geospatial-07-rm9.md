@@ -30,7 +30,8 @@ The tester will execute your program like this:
 It will add multiple locations using the `GEOADD` command.
 
 ```
-GEOADD places 13.361389 38.115556 Palermo 15.087269 37.502669 Catania
+> GEOADD places 13.361389 38.115556 Palermo
+> GEOADD places 15.087269 37.502669 Catania
 ```
 
 The tester will then send multiple `GEOSEARCH` commands specifying a latitude and longitude pair with `BYRADIUS` option specifying the distance and unit. For example, it may send the following command.

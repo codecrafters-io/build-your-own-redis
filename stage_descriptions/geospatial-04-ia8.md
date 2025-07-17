@@ -11,8 +11,10 @@ It will add multiple locations using the `GEOADD` command.
 
 ```
 $ redis-cli
-> GEOADD location_key 19.08729 33.5026 "Foo" 49.125 72.991 "Bar"
-> GEOADD location_key 10.0872 34.5026 "Baz" 41.125 73.991 "Caz"
+> GEOADD location_key 19.08729 33.5026 "Foo"
+> GEOADD location_key 49.125 72.991 "Bar"
+> GEOADD location_key 10.0872 34.5026 "Baz"
+> GEOADD location_key 41.125 73.991 "Caz"
 ```
 
 The tester will then send multiple `GEOPOS` commands, each specifying a multiple locations that may or may not have been added. For example, for the following command,

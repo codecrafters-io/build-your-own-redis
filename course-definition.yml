@@ -699,15 +699,9 @@ stages:
     difficulty: easy
     marketing_md: In this stage, you'll add support for adding a single location under a key using the `GEOADD` command.
 
-  - slug: "wq4"
-    primary_extension_slug: "geospatial"
-    name: "Add multiple locations"
-    difficulty: easy
-    marketing_md: In this stage, you'll add support for inserting multiple locations in one `GEOADD` command.
-
   - slug: "ck3"
     primary_extension_slug: "geospatial"
-    name: "Validate Coordinates"
+    name: "Validate coordinates"
     difficulty: easy
     marketing_md: In this stage, you'll add support for validating the latitude and longitude provided in the `GEOADD` command.
 
