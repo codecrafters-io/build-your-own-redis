@@ -4,32 +4,30 @@ In this stage, you'll extend your `REPLCONF GETACK` implementation to respond wi
 
 <details>
     <summary>Click to expand/collapse</summary>
-    As we saw in previous stages, when a replica receives a command from the master, it processes it and updates its state. In addition to processing
-    commands, the replica also keeps a running count of the number of bytes of commands it has processed.
+    As we saw in previous stages, when a replica receives a command from the master, it processes it and updates its state. In addition to processing commands, the replica also keeps a running count of the number of bytes of commands it has processed.
 
-    This count is called the "offset". When a master sends a `REPLCONF GETACK` command to a replica, the replica is expected to respond with
-    `REPLCONF ACK <offset>`. The returned `<offset>` should only include the number of bytes of commands processed **before** receiving the `REPLCONF GETACK` command.
+    This count is called the "offset". When a master sends a `REPLCONF GETACK` command to a replica, the replica is expected to respond with `REPLCONF ACK <offset>`. The returned `<offset>` should only include the number of bytes of commands processed **before** receiving the `REPLCONF GETACK` command.
 
     As an example:
 
     - Let's say a replica connects to a master and completes the handshake.
     - The master then sends a `REPLCONF GETACK *` command.
-    - The replica should respond with `REPLCONF ACK 0`.
-    - The returned offset is 0 since no commands have been processed yet (before receiving the `REPLCONF GETACK` command)
+        - The replica should respond with `REPLCONF ACK 0`.
+        - The returned offset is 0 since no commands have been processed yet (before receiving the `REPLCONF GETACK` command)
     - The master then sends `REPLCONF GETACK *` again.
-    - The replica should respond with `REPLCONF ACK 37`.
-    - The returned offset is 37 since the first `REPLCONF GETACK` command was processed, and it was 37 bytes long.
-    - The RESP encoding for the `REPLCONF GETACK` command looks like this: ``*3\r\n$8\r\nreplconf\r\n$6\r\ngetack\r\n$1\r\n*\r\n` (that's 37 bytes long)
+        - The replica should respond with `REPLCONF ACK 37`.
+        - The returned offset is 37 since the first `REPLCONF GETACK` command was processed, and it was 37 bytes long.
+        - The RESP encoding for the `REPLCONF GETACK` command looks like this: `*3\r\n$8\r\nreplconf\r\n$6\r\ngetack\r\n$1\r\n*\r\n` (that's 37 bytes long)
     - The master then sends a `PING` command to the replica (masters do this periodically to notify replicas that the master is still alive).
-    - The replica must silently process the `PING` command and update its offset. It should not send a response back to the master.
+        - The replica must silently process the `PING` command and update its offset. It should not send a response back to the master.
     - The master then sends `REPLCONF GETACK *` again (this is the third REPLCONF GETACK command received by the replica)
-    - The replica should respond with `REPLCONF ACK 88`.
-    - The returned offset is 88 (37 + 37 + 14)
-    - 37 for the first `REPLCONF GETACK` command
-    - 37 for the second `REPLCONF GETACK` command
-    - 14 for the `PING` command
-    - Note that the third `REPLCONF GETACK` command is not included in the offset, since the value should
-    only include the number of bytes of commands processed **before** receiving the current `REPLCONF GETACK` command.
+        - The replica should respond with `REPLCONF ACK 88`.
+        - The returned offset is 88 (37 + 37 + 14)
+            - 37 for the first `REPLCONF GETACK` command
+            - 37 for the second `REPLCONF GETACK` command
+            - 14 for the `PING` command
+        - Note that the third `REPLCONF GETACK` command is not included in the offset, since the value should
+            only include the number of bytes of commands processed **before** receiving the current `REPLCONF GETACK` command.
     - ... and so on
 
 </details>
