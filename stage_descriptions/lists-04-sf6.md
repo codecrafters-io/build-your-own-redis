@@ -27,7 +27,7 @@ Here are some additional notes on how the LRANGE command behaves with different 
 
 - If the list does not exist, an empty array is returned
 - If the start index is greater than or equal to the list's length, an empty array is returned.
-- If the stop index is greater than the list's length, the stop index is treated as the last element.
+- If the stop index is greater than or equal to the list's length, the stop index is treated as the last element.
 - If the start index is greater than the stop index, the result is an empty array.
 
 ### Tests
