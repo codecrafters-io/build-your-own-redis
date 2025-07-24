@@ -12,7 +12,7 @@ It will then send a BLPOP command with a non-zero timeout:
 
 ```bash
 $ redis-cli BLPOP list_key 0.1
-# (Blocks for 0.1 second)
+# (Blocks for 0.1 seconds)
 ```
 
 After the timeout expires, the tester will expect to receive a null bulk string (`$-1\r\n`) as the response.
