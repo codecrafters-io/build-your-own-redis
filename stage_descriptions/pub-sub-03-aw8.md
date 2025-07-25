@@ -49,7 +49,7 @@ For un-allowed commands (like `SET`, `GET`, and `ECHO`) the tester will verify t
 - ERR Can't execute 'set': only (P|S)SUBSCRIBE / (P|S)UNSUBSCRIBE / PING / QUIT / RESET are allowed in this context 
 ```
 
-The tester only verifies that error message starts with "Can't execute '<command_name>'", so you're free to use a flexible error message and not stick to the exact format that Redis uses.
+The tester only verifies that error message starts with "ERR Can't execute '<command_name>'", so you're free to use a flexible error message and not stick to the exact format that Redis uses.
 
 For the `SUBSCRIBE` command, the tester will verify that the response is its usual response.
 ```bash
@@ -59,8 +59,8 @@ For the `SUBSCRIBE` command, the tester will verify that the response is its usu
 
 ### Notes
 
-- For un-allowed commands, the tester is lenient in checking error messages so you don't have to stick to the exact format Redis uses. The exact format it checks for is `Can't execute '<command>'` (case-insensitive). Examples of error message strings that will pass tests: 
-    - `Can't execute 'set' in subscribed mode`
-    - `can't execute 'SET' when one or more subscriptions exist`
+- For un-allowed commands, the tester is lenient in checking error messages so you don't have to stick to the exact format Redis uses. The exact format it checks for is `ERR Can't execute '<command>'` (case-insensitive). Examples of error message strings that will pass tests: 
+    - `ERR Can't execute 'set' in subscribed mode`
+    - `ERR can't execute 'SET' when one or more subscriptions exist`
 
 - In subscribed mode, `PING` has a different response (it doesn't respond with `+PONG\r\n`). We'll get to this in later stages. 
