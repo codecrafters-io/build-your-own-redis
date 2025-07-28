@@ -34,14 +34,14 @@ The tester will then send multiple `GEODIST` commands specifying two locations. 
 
 ```
 > GEODIST places Catania Rome
-# Expecting "166.2742"
+# Expecting "537215.1152"
 ```
 
 The value is a RESP bulk string encoded as:
 
 ```
-$8\r\n
-166.2742\r\n
+$11\r\n
+537215.1152\r\n
 ```
 
 ### Notes
