@@ -28,8 +28,10 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 
-It will add multiple locations with random co-ordinates using the `GEOADD` command.
+It will add multiple locations with random coordinates using the `GEOADD` command.
+
 ```
+$ redis-cli
 > GEOADD test 0 0 "center"
 > GEOADD test 0.5 0 "east"
 > GEOADD test -0.5 0 "west"
@@ -38,8 +40,7 @@ It will add multiple locations with random co-ordinates using the `GEOADD` comma
 > GEOADD test 1 1 "outside"
 ```
 
-The tester will then send multiple `GEOSEARCH` commands with `FROMLONLAT` and `BYBOX` option specifying random longitude and latitude and bounding box size. For example, it may send the following:
-
+The tester will then send multiple `GEOSEARCH` commands with `FROMLONLAT` and `BYBOX` option specifying random longitude and latitude and bounding box size. For example, the tester may send your program the following command:
 
 ```
 > GEOSEARCH test fromlonlat 0 0 bybox 300 300 km
@@ -49,11 +50,8 @@ The tester will then send multiple `GEOSEARCH` commands with `FROMLONLAT` and `B
 4) "outside"
 5) "south"
 6) "west"
-```
 
-It will  expect the response to be 
-
-```
+# Expecting
 [
   "center",
   "east",
@@ -63,7 +61,8 @@ It will  expect the response to be
   "west",
 ]
 ```
-which is RESP-Encoded as
+
+The value is a RESP array, which is encoded as
 ```
 *6\r\n
 $6\r\n

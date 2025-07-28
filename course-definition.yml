@@ -717,13 +717,13 @@ stages:
 
   - slug: "ek6"
     primary_extension_slug: "geospatial"
-    name: "Measure Distance"
+    name: "Measure distance"
     difficulty: medium
     marketing_md: In this stage, you'll add support for calculating the distance between two locations using the `GEODIST` comamnd.
 
   - slug: "ra4"
     primary_extension_slug: "geospatial"
-    name: "Unit Conversion"
+    name: "Unit conversion"
     difficulty: easy
     marketing_md: In this stage, you'll add support for different units of measure in the `GEODIST` command.
 

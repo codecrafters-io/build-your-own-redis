@@ -30,6 +30,7 @@ The tester will execute your program like this:
 It will add multiple locations using the `GEOADD` command.
 
 ```
+$ redis-cli
 > GEOADD places 13.361389 38.115556 Palermo
 > GEOADD places 15.087269 37.502669 Catania
 ```
@@ -37,10 +38,12 @@ It will add multiple locations using the `GEOADD` command.
 The tester will then send multiple `GEOSEARCH` commands specifying a latitude and longitude pair with `BYRADIUS` option specifying the distance and unit. For example, it may send the following command.
 
 ```
-GEOSEARCH places FROMLONLAT 15 37 BYRADIUS 200 km
+> GEOSEARCH places FROMLONLAT 15 37 BYRADIUS 200 km
+
+# Expecting ["Palermo", "Catania"]
 ```
 
-It will expect the response to be (["Palermo", "Catania"]) which is RESP Encoded as:
+The value is a RESP array, which is encoded as:
 
 ```
 *2\r\n
@@ -51,4 +54,4 @@ Catania\r\n
 ```
 
 ### Notes
-In this stage, you will only implement the BYRADIUS option. We'll get to implementing the BYBOX option in the next stage.
+In this stage, you will only implement the `BYRADIUS` option. We'll get to implementing the BYBOX option in the next stage.

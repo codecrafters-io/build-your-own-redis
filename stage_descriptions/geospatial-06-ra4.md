@@ -21,17 +21,19 @@ The tester will execute your program like this:
 It will then add multiple locations using the `GEOADD` command.
 
 ```
+$ redis-cli
 > GEOADD places 15.087269 37.502669 "Catania"
 > GEOADD places 12.496365 41.902783 "Rome"
 ```
 
-The tester will then send multiple `GEODIST` commands specifying two locations and a unit of measure. For example, in this case,
+The tester will then send multiple `GEODIST` commands specifying two locations and a unit of measure. For example, the tester might send your program command like this:
 
 ```
 > GEODIST places Catania Rome km
+# Expecting "537.2151"
 ```
 
-It will expect the response to be "537.2151", which is RESP bulk string encoded as
+The value is a RESP bulk string, which is encoded as
 
 ```
 $8\r\n

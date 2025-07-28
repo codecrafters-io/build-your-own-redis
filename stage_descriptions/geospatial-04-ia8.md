@@ -17,15 +17,12 @@ $ redis-cli
 > GEOADD location_key 41.125 73.991 "Caz"
 ```
 
-The tester will then send multiple `GEOPOS` commands, each specifying a multiple locations that may or may not have been added. For example, for the following command,
+The tester will then send multiple `GEOPOS` commands, each specifying a multiple locations that may or may not have been added. For example, the tester might send your program a command like this:
 
 ```
 > GEOPOS location_key Foo Caz non_existent
-```
 
-it will expect the response to be
-
-```
+# Expecting RESP Array
 1) 1) "19.08729"
    2) "33.5026"
 2) 1) "41.125"
@@ -33,7 +30,7 @@ it will expect the response to be
 3) (nil)
 ```
 
-which is RESP-encoded as 
+The value is a RESP array, which is encoded as 
 
 ```
 *3\r\n
