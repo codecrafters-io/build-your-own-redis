@@ -48,7 +48,7 @@ $ redis-cli
 The tester will then send multiple `GEOPOS` commands, each specifying a single location that may or may not have been added. For example, the tester might send your program a command like this:
 
 ```
-> GEOPOS places Foo
+> GEOPOS location_key Foo
 
 # Expecting [["19.0872", "33.5026"]]
 ```
