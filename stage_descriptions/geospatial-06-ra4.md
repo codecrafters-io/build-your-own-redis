@@ -18,7 +18,7 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 
-It will then add multiple locations using the `GEOADD` command.
+It will add multiple locations using the `GEOADD` command.
 
 ```
 $ redis-cli

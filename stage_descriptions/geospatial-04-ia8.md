@@ -17,7 +17,7 @@ $ redis-cli
 > GEOADD location_key 41.125 73.991 "Caz"
 ```
 
-The tester will then send multiple `GEOPOS` commands, each specifying a multiple locations that may or may not have been added. For example, the tester might send your program a command like this:
+The tester will then send multiple `GEOPOS` commands, each specifying multiple locations that may or may not have been added. For example, the tester might send your program a command like this:
 
 ```
 > GEOPOS location_key Foo Caz non_existent
