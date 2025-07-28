@@ -39,13 +39,12 @@ The value is RESP simple error, which is RESP-encoded as
 ### Notes
 
 - In case of out-of-bounds values for latitude or longitude, the tester is lenient but structured in checking error messages.
+    - The error response does not need to match Redis’s exact error message format.
     - The error response must:
         - Start with the phrase "ERR invalid" (case-insensitive)
          - Contain the word latitude if the latitude value is invalid
         - Contain the word longitude if the longitude value is invalid
         - Contain both "latitude" and "longitude" if both the latitudes and longitudes are invalid.
-
-    - You do not need to match Redis’s exact error message format, just ensure the right keywords are included.
 
     - Examples that will pass:
         - ERR Invalid latitude value (In case of invalid latitude and valid longitude)
