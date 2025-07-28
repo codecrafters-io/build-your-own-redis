@@ -36,17 +36,24 @@ The value is RESP simple error, which is RESP-encoded as
 -ERR invalid longitude,latitude pair 200,100\r\n
 ```
 
-The tester will also send your program a `GEOADD` command specifying a non-numeric value in the latitude/longitude field. In this case, it will expect an error. For example, in case of the following command, it will expect an error.
-
-```
-$ redis-cli GEOADD location_key foo bar location_name
-
-# Expecting RESP simple error
-(error) ERR value is not a valid float
-```
-
 ### Notes
-- In case of out-of-bounds values of latitude or longitude, the tester is lenient in checking error messages so you don't have to stick to the exact format Redis uses. The exact format it checks for is `ERR invalid` (case-insensitive). Examples of error message strings that will pass the tests:
-    - `ERR invalid longitude,latitude pair 200,100`
-    - `ERR Invalid longitude,latitude`
-    - `ERR invalid`
+
+- In case of out-of-bounds values for latitude or longitude, the tester is lenient but structured in checking error messages.
+    - The error response must:
+        - Start with the phrase "ERR invalid" (case-insensitive)
+         - Contain the word latitude if the latitude value is invalid
+        - Contain the word longitude if the longitude value is invalid
+        - Contain both "latitude" and "longitude" if both the latitudes and longitudes are invalid.
+
+    - You do not need to match Redis’s exact error message format, just ensure the right keywords are included.
+
+    - Examples that will pass:
+        - ERR Invalid latitude value (In case of invalid latitude and valid longitude)
+        - ERR invalid longitude: must be between -180 and 180 (In case of invalid longitude but valid latitude value)
+        - ERR invalid longitude,latitude pair (In case of one or both invalid values)
+        - ERR invalid longitude and latitude range (In case of one or both invalid values)
+
+    - Examples that will not pass:
+        - ERR invalid (In case of one or both invalid values)
+        - ERR invalid longitude (In case of invalid latitude but valid longitude)
+        - ERR invalid latitude (In case of invalid longitude but valid latitude)
