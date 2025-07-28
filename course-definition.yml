@@ -738,3 +738,4 @@ stages:
     name: "Search within box"
     difficulty: hard
     marketing_md: In this stage, you'll add support for searching locations near a coordinate within a rectangular bounding box.
+    

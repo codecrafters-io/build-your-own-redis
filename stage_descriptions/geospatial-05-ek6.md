@@ -13,7 +13,7 @@ Example usage:
 "537215.1152"
 ```
 
-It returns the distance as a string, encoded as a RESP Bulk String. The precision of the response is up to 4 digits after the decimal.
+It returns the distance as a string, encoded as a RESP Bulk String.
 
 Redis uses the [Haversine's Formula](https://en.wikipedia.org/wiki/Haversine_formula#Example) to calculate the distance between two points. You can see how this is done in the Redis source code [here](https://github.com/redis/redis/blob/4322cebc1764d433b3fce3b3a108252648bf59e7/src/geohash_helper.c#L228C1-L228C72).
 
