@@ -133,7 +133,7 @@ extensions:
     description_markdown: |
       In this challenge extension you'll add support for [Optimistic Locking][redis-optimistic-locking] to your Redis implementation.
 
-      Along the way you'll learn about the [WATCH][watch-command] command and how it works in synergy with the `MULTI`, `EXEC`, and `DISCARD` commands.
+      Along the way you'll learn about the [WATCH][watch-command] command and how it works in synergy with the `MULTI`, `EXEC`, and `DISCARD` commands to achieve optimistic locking.
 
       [redis-optimistic-locking]: https://redis.io/docs/latest/develop/using-commands/transactions/#cas
       [watch-command]: https://redis.io/docs/latest/commands/watch/
