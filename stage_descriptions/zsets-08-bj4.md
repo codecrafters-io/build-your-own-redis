@@ -20,12 +20,12 @@ Example usage:
 
 
 # List last 2 elements
-> LRANGE racer_scores -2 -1
+> ZRANGE racer_scores -2 -1
 1) "Royce"
 2) "Prickett"
 
 # List all items except last 2
-> LRANGE racer_scores 0 -3
+> ZRANGE racer_scores 0 -3
 1) "Ford"
 2) "Sam-Bodden"
 3) "Ben"
