@@ -65,3 +65,4 @@ The error in case of invalid score is a simple RESP error, which is encoded as:
 
 ### Tests
 - Redis stores the score value of zset members as a `double`, i.e. as a 64-bit floating point number. We suggest that you do the same for maximum precision.
+- Redis uses [`strtod()`](https://man7.org/linux/man-pages/man3/strtod.3.html) function to convert the score argument from string to its value. You can see how it is done [here](https://github.com/redis/redis/blob/db4fc2a83309bf8b65e25deedfac0ff71d67e4b8/tests/modules/zset.c#L37).

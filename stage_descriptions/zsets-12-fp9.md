@@ -51,21 +51,21 @@ After a short while, it'll then send `ZADD` using another client:
 
 ```bash
 # In another client:
-$ redis-cli ZADD zset_key 10.0 "foo"
+$ redis-cli ZADD zset_key 10.50 "foo"
 # Expect: (integer) 1
 ```
 
 The tester will then expect the following response from the first client:
 
 ```bash
-# RESP encoding of ["zset_key", "foo", "10.0"] ->
+# RESP encoding of ["zset_key", "foo", "10.5"] ->
 *3\r\n
 $8\r\n
 zset_key\r\n
 $3\r\n
 foo\r\n
 $4\r\n
-10.0\r\n
+10.5\r\n
 ```
 
 The tester will also test `BZPOPMIN` using multiple blocking clients. For example, it will spawn multiple clients one after another, and send `BZPOPMIN` command from each client specifying the same zset.

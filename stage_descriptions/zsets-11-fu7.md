@@ -53,7 +53,7 @@ It will then send an `ZPOPMIN` command to your program specifying the zset that 
 
 ```bash
 > ZPOPMIN zset_key 2
-# Expecting RESP Encoded Array: ["zset_member1", "20.0", "bar", "25.0"]
+# Expecting RESP Encoded Array: ["zset_member1", "20", "bar", "25"]
 ```
 
 The tester will also verify that the remaining members are present in the zset using the `ZRANGE` command.
