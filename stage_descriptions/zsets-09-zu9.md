@@ -18,7 +18,7 @@ The `REV` option in the `ZRANGE` can be used to list the members in the reverse 
 
 
 # List all elements in reverse order
-> LRANGE racer_scores 0 -1 REV
+> ZRANGE racer_scores 0 -1 REV
 1) "Prickett"
 2) "Royce"
 3) "Ben"

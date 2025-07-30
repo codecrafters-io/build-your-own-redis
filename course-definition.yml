@@ -131,7 +131,7 @@ extensions:
   - slug: "zsets"
     name: "Sorted Sets"
     description_markdown : |-
-      In this challenge extension you'll add support for [Sorted Sets (zsets)][redis-pub-sub] to your Redis implementation.
+      In this challenge extension you'll add support for [Sorted Sets (zsets)][redis-zset] to your Redis implementation.
 
       Along the way, you'll learn commands like [ZADD][zadd-command], [ZRANGE][zrange-command], and more.
 

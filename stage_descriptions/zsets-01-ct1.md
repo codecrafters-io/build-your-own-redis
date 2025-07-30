@@ -46,7 +46,7 @@ The tester will then send a `TYPE` command to your server.
 ```
 $ redis-cli TYPE zset_key
 ```
-Your server should respond with `+zset\r\n`, which is stream encoded as a RESP simple string.
+Your server should respond with `+zset\r\n`, which is "zset" encoded as a RESP simple string.
 
 ### Notes
 - In this stage, you'll only need to handle creating a new zset with a single member. We will get to verifying the score, and adding new members to existing zset in the later stages.
