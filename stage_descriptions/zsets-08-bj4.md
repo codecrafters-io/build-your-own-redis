@@ -31,7 +31,7 @@ Example usage:
 3) "Ben"
 ```
 
-An index of -1 refers to the last element, -2 to the second last, and so on. If a negative index is out of range (i.e. >= the cardinality of the zset), it is treated as 0 (start of the zset).
+An index of -1 refers to the last element, -2 to the second last, and so on. If a absolute value of the negative index is out of range (i.e. >= the cardinality of the zset), it is treated as 0 (start of the zset).
 
 ### Tests
 
