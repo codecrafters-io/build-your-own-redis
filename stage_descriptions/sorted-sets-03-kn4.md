@@ -20,8 +20,8 @@ The `ZCARD` command is used to query the cardinality (number of elements) of a s
 
 The tester will execute your program like this:
 
-```
-./your_program.sh
+```bash
+$ ./your_program.sh
 ```
 
 It will then send a `ZADD` command to create and add members to it.
@@ -41,7 +41,7 @@ $ redis-cli ZCARD zset_key (Expecting ":4\r\n")
 
 The tester will then update the score of an existing member.
 ```bash
-> ZADD zset_key 100.0 zset_member1 (Expecting ":0\r\n")
+$ redis-cli ZADD zset_key 100.0 zset_member1 (Expecting ":0\r\n")
 ```
 
 It will again check the cardinality of the zset using the `ZCARD` command.

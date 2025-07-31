@@ -30,8 +30,8 @@ The `REV` option in the `ZRANGE` can be used to list the members in the reverse 
 
 The tester will execute your program like this:
 
-```
-./your_program.sh
+```bash
+$ ./your_program.sh
 ```
 
 It will then send a `ZADD` command to create and add members to it.
@@ -49,7 +49,7 @@ The tester will then send your program a series of `ZRANGE` commands specifying 
 
 For example, the tester might send you this command:
 
-```
+```bash
 > ZRANGE zset_key 0 -1 REV
 1) "zset_member3"
 2) "zset_member2"

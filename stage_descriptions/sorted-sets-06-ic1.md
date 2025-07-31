@@ -33,13 +33,13 @@ Here are some additional notes on how the `ZRANGE` command behaves with differen
 
 The tester will execute your program like this:
 
-```
-./your_program.sh
+```bash
+$ ./your_program.sh
 ```
 
 It will then create a new zset with multiple members.
 
-```
+```bash
 $ redis-cli
 > ZADD zset_key 20.0 member1 (Expecting ":1\r\n")
 > ZADD zset_key 30.1 member2 (Expecting ":1\r\n")

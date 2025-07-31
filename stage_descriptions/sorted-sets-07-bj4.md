@@ -37,8 +37,8 @@ An index of -1 refers to the last element, -2 to the second last, and so on. If 
 
 The tester will execute your program like this:
 
-```
-./your_program.sh
+```bash
+$ ./your_program.sh
 ```
 
 It will then send a `ZADD` command to create and add members to it.
@@ -56,7 +56,7 @@ The tester will then send your program a series of `ZRANGE` commands with one or
 
 For example, the tester might send you this command:
 
-```
+```bash
 > ZRANGE zset_key 2 -1
 1) "foo"
 2) "zset_member2"
