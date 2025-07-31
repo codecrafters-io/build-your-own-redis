@@ -26,8 +26,8 @@ If the member or the zset specified in the argument does not exist, RESP null bu
 
 The tester will execute your program like this:
 
-```
-./your_program.sh
+```bash
+$ ./your_program.sh
 ```
 
 It will then send a `ZADD` command to create and add new members to it.
@@ -47,13 +47,13 @@ The tester will then send `ZSCORE` command specifying one of the members. For ex
 ```
 
 It will expect the response to be "30.1", which is the score of `zset_member2`. The response is encoded as a RESP bulk string:
-```
+```bash
 $4\r\n
 30.1\r\n
 ```
 
 The tester will then update the value of the member.
-```
+```bash
 > ZADD zset_key 100.99 zset_member2 (Expecting ":0\r\n")
 ```
 

@@ -35,8 +35,8 @@ The rank of `three` is 1, and `two` is 2. It is because though the both members 
 
 The tester will execute your program like this:
 
-```
-./your_program.sh
+```bash
+$ ./your_program.sh
 ```
 
 It will then send a `ZADD` command to create and add new members to it.
@@ -61,7 +61,7 @@ $ redis-cli
 ```
 
 The tester will then send multiple `ZRANK` commands specifying the members of the zset.
-```
+```bash
 > ZRANK zset_key zset_member3 (Expecting ":2\r\n")
 > ZRANK zset_key zset_member1 (Expecting ":0\r\n")
 > ZRANK zset_key foo (Expecting ":5\r\n")

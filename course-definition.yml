@@ -128,7 +128,7 @@ extensions:
       [subscribe-command]: https://redis.io/docs/latest/commands/subscribe/
       [publish-command]: https://redis.io/docs/latest/commands/publish/
 
-  - slug: "zsets"
+  - slug: "sorted-sets"
     name: "Sorted Sets"
     description_markdown : |-
       In this challenge extension you'll add support for [Sorted Sets (zsets)][redis-zset] to your Redis implementation.
@@ -691,92 +691,57 @@ stages:
 
   # Sorted Sets
   - slug: "ct1"
-    primary_extension_slug: "zsets"
-    name: "Create sorted set"
+    primary_extension_slug: "sorted-sets"
+    name: "Create a sorted set"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for creating a new sorted set using the `ZADD` command.
 
-  - slug: "hl2"
-    primary_extension_slug: "zsets"
-    name: "Validate score values"
-    difficulty: easy
-    marketing_md: |
-      In this stage, you'll add support for verifying the value of the score argument for `ZADD` command.
-
   - slug: "hf1"
-    primary_extension_slug: "zsets"
-    name: "Add to existing zset"
+    primary_extension_slug: "sorted-sets"
+    name: "Add members"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for adding elements to an existing zset.
+      In this stage, you'll add support for adding members to an existing zset.
 
   - slug: "kn4"
-    primary_extension_slug: "zsets"
+    primary_extension_slug: "sorted-sets"
     name: "Count zset members"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for counting the number of members in a zset.
 
   - slug: "gd7"
-    primary_extension_slug: "zsets"
+    primary_extension_slug: "sorted-sets"
     name: "Retrieve member score"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for retrieving the score of a zset member.
 
   - slug: "lg6"
-    primary_extension_slug: "zsets"
+    primary_extension_slug: "sorted-sets"
     name: "Retrieve member rank"
     difficulty: medium
     marketing_md: |
       In this stage, you'll add support for retrieving the rank of a zset member.
 
   - slug: "ic1"
-    primary_extension_slug: "zsets"
+    primary_extension_slug: "sorted-sets"
     name: "List zset members"
     difficulty: medium
     marketing_md: |
       In this stage, you'll add support for listing the zset members using the `ZRANGE` command.
 
   - slug: "bj4"
-    primary_extension_slug: "zsets"
+    primary_extension_slug: "sorted-sets"
     name: "ZRANGE with negative indexes"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for negative indexes for the `ZRANGE` command.
 
   - slug: "zu9"
-    primary_extension_slug: "zsets"
+    primary_extension_slug: "sorted-sets"
     name: "List members in reverse"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for `REV` option for the `ZRANGE` command.
-
-  - slug: "sq7"
-    primary_extension_slug: "zsets"
-    name: "Remove minimum member"
-    difficulty: medium
-    marketing_md: |
-      In this stage, you'll implement support for removing a single member with the lowest score using the `ZPOPMIN` command.
-
-  - slug: "fu7"
-    primary_extension_slug: "zsets"
-    name: "Remove multiple members"
-    difficulty: medium
-    marketing_md: |
-      In this stage, you'll add support for removing multiple members in a single `ZPOPMIN` command.
-
-  - slug: "fp9"
-    primary_extension_slug: "zsets"
-    name: "Blocking removal"
-    difficulty: hard
-    marketing_md: |
-      In this stage, you'll add support for the `BZPOPMIN` command, which blocks until a member is available to be removed from a zset.
-
-  - slug: "wt8"
-    primary_extension_slug: "zsets"
-    name: "Blocking removal with timeout"
-    difficulty: medium
-    marketing_md: |
-      In this stage, you'll add support for a non-zero timeout duration for the `BZPOPMIN` command.
