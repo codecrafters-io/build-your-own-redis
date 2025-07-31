@@ -758,4 +758,4 @@ stages:
     name: "Remove multiple member"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for removing multiple zset members.
+      In this stage, you'll add support for removing multiple zset members using the `ZREM` command.

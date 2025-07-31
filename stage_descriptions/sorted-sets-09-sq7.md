@@ -1,4 +1,4 @@
-In this stage, you'll add support for removing the a specified zset member.
+In this stage, you'll add support for removing a single zset member using the `ZREM` command.
 
 ## The `ZREM` command
 
