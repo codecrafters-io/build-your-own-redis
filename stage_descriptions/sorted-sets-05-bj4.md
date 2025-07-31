@@ -74,3 +74,7 @@ zset_member2\r\n
 $12\r\n
 zset_member3\r\n
 ```
+
+### Notes
+
+- In this stage, we'll only implement `ZRANGE` with no options. We'll get to the `REV` option in the next stage.

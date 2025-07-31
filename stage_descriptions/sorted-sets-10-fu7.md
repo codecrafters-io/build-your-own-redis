@@ -1,8 +1,8 @@
 In this stage, you'll add support for removing the a specified zset member.
 
-## The `ZREM` command
+## The `ZREM` command (Removing multiple members)
 
-The [`ZREM`](https://redis.io/docs/latest/commands/zrem/) command is used to remove a member from a zset given the member's name.
+The `ZREM` command can be used to remove multiple members from a zset.
 
 Example Usage:
 
@@ -17,21 +17,15 @@ Example Usage:
 (integer) 1
 
 # Remove "Royce" from the zset
-> ZREM racer_scores "Royce"
-(integer) 1
+> ZREM racer_scores "Royce" "Prickett"
+(integer) 2
 
 # List the remaining members
 > ZRANGE racer_scores 0 -1
 1) "Ford"
 2) "Sam-Bodden"
-3) "Prickett"
-
-# Remove a non-existing member
-> ZREM racer_scores "non_existing_member"
-(integer)0
 ```
 
-It returns the number of members removed from the zset. If the specified member does not exist, 0 is returned.
 
 ### Tests
 
@@ -53,26 +47,17 @@ $ redis-cli
 > ZADD zset_key 50.3 member4 (Expecting ":1\r\n")
 ```
 
-After that the tester will send your program a `ZREM` command specifying the member to be removed.
+After that the tester will send your program a `ZREM` command specifying multiple members to be removed.
 
 As an example, the tester might send your program a command like this.
 ```bash
-> ZREM zset_key "member3"
-# Expected: (integer) 1
+> ZREM zset_key "member3" "foo" "member1"
+# Expected: (integer) 3
 ```
 
 It will then send your program a `ZRANGE` command and check for the remaining members.
 
 ```bash
 > ZRANGE zset_key 0 -1
-# Expected RESP Encoded Array: ["member1", "member2", "member4", "bar", "foo"]
+# Expected RESP Encoded Array: ["member2", "member4", "bar"]
 ```
-
-The tester will also send a `ZREM` command specifying a non-existing member.
-```bash
-> ZREM zset_key "non_existent_member"
-# Expected: (integer) 0
-```
-
-### Notes
-- In this stage, you'll only need to remove one member at a time using the `ZREM` command. We'll get to removing multiple members in a single command in the next stage.

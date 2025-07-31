@@ -72,4 +72,4 @@ The tester will issue multiple such commands and verify their responses.
 
 ### Notes
 
-- In this stage, you will only implement `ZRANGE` with non-negative indexes. We will get to handling `ZRANGE` for negative indexes, and the implementation of `REV` option in the later stages.
+- In this stage, you will only implement `ZRANGE` with non-negative indexes. We will get to handling `ZRANGE` for negative indexes in the next stage.
