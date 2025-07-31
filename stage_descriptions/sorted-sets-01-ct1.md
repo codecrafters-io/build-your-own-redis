@@ -43,3 +43,4 @@ The tester will verify that the response to the command is `:1\r\n`, which is 1 
 
 ### Notes
 - In this stage, you'll only need to handle creating a new zset with a single member. We will get to adding new members to existing zset in the later stages.
+- It is recommended to store the score as a 64 bit floating point number for highest precision as the official Redis implementation uses [`double`](https://github.com/redis/redis/blob/bec644aab198049eaa5583631c419b4574b137e1/tests/modules/zset.c#L34).

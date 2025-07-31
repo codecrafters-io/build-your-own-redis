@@ -704,20 +704,6 @@ stages:
     marketing_md: |
       In this stage, you'll add support for adding members to an existing zset.
 
-  - slug: "kn4"
-    primary_extension_slug: "sorted-sets"
-    name: "Count zset members"
-    difficulty: easy
-    marketing_md: |
-      In this stage, you'll add support for counting the number of members in a zset.
-
-  - slug: "gd7"
-    primary_extension_slug: "sorted-sets"
-    name: "Retrieve member score"
-    difficulty: easy
-    marketing_md: |
-      In this stage, you'll add support for retrieving the score of a zset member.
-
   - slug: "lg6"
     primary_extension_slug: "sorted-sets"
     name: "Retrieve member rank"
@@ -735,7 +721,7 @@ stages:
   - slug: "bj4"
     primary_extension_slug: "sorted-sets"
     name: "ZRANGE with negative indexes"
-    difficulty: easy
+    difficulty: medium
     marketing_md: |
       In this stage, you'll add support for negative indexes for the `ZRANGE` command.
 
@@ -745,3 +731,31 @@ stages:
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for `REV` option for the `ZRANGE` command.
+
+  - slug: "kn4"
+    primary_extension_slug: "sorted-sets"
+    name: "Count zset members"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for counting the number of members in a zset.
+
+  - slug: "gd7"
+    primary_extension_slug: "sorted-sets"
+    name: "Retrieve member score"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for retrieving the score of a zset member.
+
+  - slug: "sq7"
+    primary_extension_slug: "sorted-sets"
+    name: "Remove a member"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for removing a single zset member using the `ZREM` command.
+
+  - slug: "fu7"
+    primary_extension_slug: "sorted-sets"
+    name: "Remove multiple member"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for removing multiple zset members.
