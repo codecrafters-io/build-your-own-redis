@@ -1,4 +1,4 @@
-In this stage, you'll add support for calculating the distance between two locations.
+In this stage, you'll add support for calculating the distance between two locations using the `GEODIST` comamnd.
 
 ### The `GEODIST` command
 The `GEODIST` command returns the distance between two members. The default unit of the distance which is returned, is meters.
@@ -59,6 +59,4 @@ $11\r\n
 
   * However, values like `12345.64`, `12345.70`, or `12345.61` would be considered incorrect.
 
-
 - If one or both of the location specified in the `GEODIST` command does not exist, it should return a null bulk string `($-1\r\n)`.
-- In this stage, you will only implement returning the distance in meters. We will get to using different units in the next stage.

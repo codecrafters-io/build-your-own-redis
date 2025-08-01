@@ -35,14 +35,14 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 
-It will add multiple locations using the `GEOADD` command.
+It will add multiple locations using the `ZADD` command. It will use a score which will be equivalent to a latitude and longitude.
 
 ```
 $ redis-cli
-> GEOADD location_key 19.0872 33.5026 "Foo"
-> GEOADD location_key 49.125 72.991 "Bar"
-> GEOADD location_key 10.0872 34.5026 "Baz"
-> GEOADD location_key 41.125 73.991 "Caz"
+> ZADD location_key 3477108430792699 "Foo"
+> ZADD location_key 3876464048901851 "Bar"
+> ZADD location_key 3468915414364476 "Baz"
+> ZADD location_key 3781709020344510 "Caz"
 ```
 
 The tester will then send multiple `GEOPOS` commands, each specifying a single location that may or may not have been added. For example, the tester might send your program a command like this:
@@ -50,31 +50,29 @@ The tester will then send multiple `GEOPOS` commands, each specifying a single l
 ```
 > GEOPOS location_key Foo
 
-# Expecting [["19.0872", "33.5026"]]
+# Expecting [["19.087197482585907", "33.50259961456723"]]
 ```
 
 The value is a RESP array, which is encoded as
 ```
 *1\r\n
 *2\r\n
-$7\r\n
-19.0872\r\n
-$7\r\n
-33.5026\r\n
+$18\r\n
+19.087197482585907\r\n
+$17\r\n
+33.50259961456723\r\n
 ```
 
 ### Notes
 
 - The tester will be lenient in checking the coordinates provided. The latitude and longitude returned by the server should match the values provided in the `GEOADD` command with a precision of up to 4 decimal places when rounded off.
 
-  * For example, if a location was added using `GEOADD key 20.123456 30.123001`, any of the following will be accepted:
+   - For example, for the response of the example shown above, any of the following will be accepted:
 
-    * `20.1235 30.1230`
-    * `20.123456 30.123000`
-    * `20.123490 30.123045`
-    * `20.123459 30.123001`
-    * `20.1235001 30.122999`
+      - `19.0872 33.5026`
+      - `19.087197 33.502599`
+      - `19.08719 33.50260`
+      - `19.087199 33.5025996`
+      - `19.0872001 33.5026001`
 
 - If the location key does not exist, you should return an empty array.
-
-- In this stage, you will only implement retrieving a single location using the `GEOPOS` command. We'll get to retrieving multiple locations in a single `GEOPOS` command in the next stage.

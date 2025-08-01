@@ -1,0 +1,1 @@
+In this stage, you'll add support for calculating the score of a location.

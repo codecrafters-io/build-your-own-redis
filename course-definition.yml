@@ -693,9 +693,9 @@ stages:
   # Geospatial Commands
   - slug: "zt4"
     primary_extension_slug: "geospatial"
-    name: "Add a location"
+    name: "Respond to GEOADD"
     difficulty: easy
-    marketing_md: In this stage, you'll add support for adding a single location under a key using the `GEOADD` command.
+    marketing_md: In this stage, you'll add support for responding to the `GEOADD` command.
 
   - slug: "ck3"
     primary_extension_slug: "geospatial"
@@ -703,17 +703,23 @@ stages:
     difficulty: easy
     marketing_md: In this stage, you'll add support for validating the latitude and longitude provided in the `GEOADD` command.
 
+  - slug: "tn5"
+    primary_extension_slug: "geospatial"
+    name: "Store a location"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for storing a location in a sorted set.
+
+  - slug: "cr3"
+    primary_extension_slug: "geospatial"
+    name: "Calculate location score"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for calculating the score of a location.
+
   - slug: "xg4"
     primary_extension_slug: "geospatial"
     name: "Retrieve a location"
     difficulty: easy
     marketing_md: In this stage, you'll add support for retrieving the coordinates of a location using the `GEOPOS` command.
-
-  - slug: "ia8"
-    primary_extension_slug: "geospatial"
-    name: "Retrieve multiple locations"
-    difficulty: easy
-    marketing_md: In this stage, you'll add support for retrieving multiple locations using a single `GEOPOS` command.
 
   - slug: "ek6"
     primary_extension_slug: "geospatial"
@@ -721,21 +727,8 @@ stages:
     difficulty: medium
     marketing_md: In this stage, you'll add support for calculating the distance between two locations using the `GEODIST` comamnd.
 
-  - slug: "ra4"
-    primary_extension_slug: "geospatial"
-    name: "Unit conversion"
-    difficulty: easy
-    marketing_md: In this stage, you'll add support for different units of measure in the `GEODIST` command.
-
   - slug: "rm9"
     primary_extension_slug: "geospatial"
     name: "Search within radius"
     difficulty: hard
     marketing_md: In this stage, you'll add support for searching locations near a coordinate within a given radius.
-
-  - slug: "hv8"
-    primary_extension_slug: "geospatial"
-    name: "Search within box"
-    difficulty: hard
-    marketing_md: In this stage, you'll add support for searching locations near a coordinate within a rectangular bounding box.
-    
