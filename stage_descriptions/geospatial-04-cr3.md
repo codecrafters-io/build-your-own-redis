@@ -30,8 +30,8 @@ You can see how the official Redis implementation does this [here](https://githu
 2. The normalized values are then scaled in the range of [0, 2^26). This can be achieved by multiplying the normalized values by 2^26.
 
 ```
-scaled_latitude = scaled_latitude * (2^26)
-scaled_longitude = scaled_longitude * (2^26)
+scaled_latitude = normalized_latitude * (2^26)
+scaled_longitude = normalized_longitude * (2^26)
 ```
 
 You can see how the official Redis implementation does this [here](https://github.com/redis/redis/blob/ff2f0b092c24d5cc590ff1eb596fc0865e0fb721/src/geohash.c#L147)

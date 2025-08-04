@@ -156,11 +156,11 @@ func convert_to_lat_lon(latitude: uint64, longitude: uint64) -> ()
     double lat_scale = LATITUDE_MAX - LATITUDE_MIN;
     double long_scale = LONGITUDE_MAX - LONGITUDE_MIN;
 
-    latitude_min = LATITUDE_MIN + (latitude * 1.0 / (1ULL << step)) * lat_scale;
-    latitude_max = LATITUDE_MAX + ((latitude + 1) * 1.0 / (1ULL << step)) * lat_scale;
+    latitude_min = LATITUDE_MIN + (latitude * 1.0 / (1ULL << 26)) * lat_scale;
+    latitude_max = LATITUDE_MAX + ((latitude + 1) * 1.0 / (1ULL << 26)) * lat_scale;
 
-    longitude_min = LONGITUDE_MIN + (longitude * 1.0 / (1ULL << step)) * long_scale;
-    longitude_max = LONGITUDE_MAX + ((longitude + 1) * 1.0 / (1ULL << step)) * long_scale;
+    longitude_min = LONGITUDE_MIN + (longitude * 1.0 / (1ULL << 26)) * long_scale;
+    longitude_max = LONGITUDE_MAX + ((longitude + 1) * 1.0 / (1ULL << 26)) * long_scale;
 
     lat = (latitude_min + latitude_max) / 2;
     lon = (longitude_min + longitude_max) / 2;
