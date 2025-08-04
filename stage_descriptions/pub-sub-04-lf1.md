@@ -28,7 +28,7 @@ The tester will then send a `PING` command.
 > PING 
 ```
 
-It will expect the response to be an RESP-encoded array `["ping", ""]`, which would look like this:
+It will expect the response to be an RESP-encoded array `["pong", ""]`, which would look like this:
 ```
 *2\r\n
 $4\r\n
