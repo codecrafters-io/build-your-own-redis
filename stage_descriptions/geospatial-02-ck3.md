@@ -39,6 +39,8 @@ The value is RESP simple error, which is RESP-encoded as
 
 ### Notes
 
+- In this stage, you'll only extend responding to `GEOADD` in case of invalid values of latitude and longitude. You do not need to implement the storage mechanism yet.
+
 - In case of out-of-bounds values for latitude or longitude, the tester is lenient but structured in checking error messages.
     - The error response does not need to match Redis’s exact error message format.
     - The error response must:
@@ -58,4 +60,4 @@ The value is RESP simple error, which is RESP-encoded as
         - ERR invalid longitude (In case of invalid latitude but valid longitude)
         - ERR invalid latitude (In case of invalid longitude but valid latitude)
 
-- If you're wondering why the boundary of latitude are clipped at -85.05112878 and 85.05112878 degrees instead of -90 and 90 degrees respectively. It is because of the Web Mercator projection used by Redis. You can read more about it on [Wikipedia](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+- The booundary of latitude are clipped at -85.05112878 and 85.05112878 degrees instead of -90 and 90 degrees respectively. It is because of the Web Mercator projection used by Redis. You can read more about it on [Wikipedia](https://en.wikipedia.org/wiki/Web_Mercator_projection).

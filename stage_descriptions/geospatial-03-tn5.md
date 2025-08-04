@@ -2,20 +2,20 @@ In this stage, you'll add support for storing locations in a sorted set.
 
 ### Storing locations in sorted set
 
-The locations added using the `GEOADD` command are stored in a sorted set. After a `GEOADD` command is issued, Redis internally calculates a score for the specified location using its latitude and longitude. For example, if you send the following command to Redis.
-```bash
-$ redis-cli GEOADD places_key <longitude> <latitude> location
-```
+The locations added using the `GEOADD` command are stored in a sorted set. Redis internally calculates a score for the specified location using a location's latitude and longitude.
 
-This is equivalent to sending the following command:
+For example, the following two commands are equivalent in Redis.
 ```bash
+# Adding a location
+$ redis-cli GEOADD places_key <longitude> <latitude> location
+
+# This command is equivalent to the command above
 $ redis-cli ZADD places_key <score> location
 ```
 
 where <score> is calculated using the location's <latitude> and <longitude> values using a special algorithm. We'll get to implementing this algorithm in the later stage.
 
 For now, you can hardcode a location's score to be 0 for all the locations.
-
 
 ### Tests
 The tester will execute your program like this:

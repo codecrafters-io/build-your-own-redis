@@ -8,7 +8,7 @@ GEODIST <key> <location1> <location2>
 ```
 Example usage:
 
-```
+```bash
 > GEODIST places Catania Rome
 "537215.1152"
 ```
@@ -19,12 +19,12 @@ Redis uses the [Haversine's Formula](https://en.wikipedia.org/wiki/Haversine_for
 
 ### Tests
 The tester will execute your program like this:
-```
-./your_program.sh
+```bash
+$ ./your_program.sh
 ```
 
 It will add multiple locations using the `GEOADD` command.
-```
+```bash
 $ redis-cli
 > GEOADD places 15.087269 37.502669 "Catania"
 > GEOADD places 12.496365 41.902783 "Rome"
@@ -32,7 +32,7 @@ $ redis-cli
 
 The tester will then send multiple `GEODIST` commands specifying two locations. For example, the tester might send your program a command like this:
 
-```
+```bash
 > GEODIST places Catania Rome
 # Expecting "537215.1152"
 ```

@@ -1,7 +1,8 @@
 In this stage, you'll add support for responding to the `GEOADD` command.
 
 ### The `GEOADD` command
-The `GEOADD` command adds a location (with longitude, latitude, and name) to a key. If the key doesn’t exist, it is created. If the key exists, the location is appended to that key.
+The `GEOADD` command adds a location (with longitude, latitude, and name) to a key. It stores the location as a [sorted set](https://redis.io/docs/latest/develop/data-types/sorted-sets/) under the specified key. If the key doesn’t exist, a new sorted set is created under the specified name and the location is inserted to it. If the key exists, the location is inserted in the sorted set.
+
 The syntax for `GEOADD` command is
 
 ```
