@@ -1,35 +1,39 @@
-In this stage, you'll add support for retrieving the rank of a member in a zset.
+In this stage, you'll add support for retrieving the rank of a sorted set member.
 
 ### The `ZRANK` Command
 
-The `ZRANK` command is used to query the rank of a member in a zset. It returns an integer, which is 0-based index of the member when the sorted set is ordered by increasing score.
-If two members have same score, the members are ordered lexicographically. If the member, or the zset does not exist, the command returns null bulk string.
+The `ZRANK` command is used to query the rank of a member in a sorted set. It returns an integer, which is 0-based index of the member when the sorted set is ordered by increasing score.
+If two members have same score, the members are ordered lexicographically.
 
 Example usage:
 ```bash
-> ZADD zset_key 1.0 one
+> ZADD zset_key 1.0 member_with_score_1
 (integer) 1
-> ZADD zset_key 2.0 two
+> ZADD zset_key 2.0 member_with_score_2
 (integer) 1
-> ZADD zset_key 2.0 three
+> ZADD zset_key 2.0 another_member_with_score_2
 (integer) 1
 
 
-> ZRANK zset_key one
+> ZRANK zset_key member_with_score_1
 (integer) 0
-> ZRANK zset_key two
+> ZRANK zset_key member_with_score_2
 (integer) 2
-> ZRANK zset_key three
+> ZRANK zset_key another_member_with_score_2
 (integer) 1
-
-# Missing zset and member
-> ZRANK zset_key missing
-(nil)
-> ZRANK non_existent_key member
-(nil)
 ```
 
-The rank of `three` is 1, and `two` is 2. It is because though the both members have same scores, "three" preceeds "two" lexicographically.
+The rank of `another_member_with_score_2` is 1, and `member_with_score_2` is 2. It is because though the both members have same scores, `another_member_with_score_2` preceeds `member_with_score_2` lexicographically.
+
+
+If the member, or the sorted set does not exist, the command returns null bulk string.
+```bash
+# Missing sorted set and member
+> ZRANK zset_key missing_member
+(nil)
+> ZRANK missing_key member
+(nil)
+```
 
 ### Tests
 
@@ -43,34 +47,31 @@ It will then send a `ZADD` command to create and add new members to it.
 
 ```bash
 $ redis-cli
-> ZADD zset_key 20.0 zset_member1 (Expecting ":1\r\n")
-> ZADD zset_key 30.1 zset_member2 (Expecting ":1\r\n")
-> ZADD zset_key 40.2 zset_member3 (Expecting ":1\r\n")
-> ZADD zset_key 50.3 zset_member4 (Expecting ":1\r\n")
-
 > ZADD zset_key 100.0 foo (Expecting ":1\r\n")
 > ZADD zset_key 100.0 bar (Expecting ":1\r\n")
+> ZADD zset_key 20.0 baz (Expecting ":1\r\n")
+> ZADD zset_key 30.1 caz (Expecting ":1\r\n")
+> ZADD zset_key 40.2 paz (Expecting ":1\r\n")
 
 # Expected Ranks
-# zset_member1 -> 0
-# zset_member2 -> 1
-# zset_member3 -> 2
-# zset_member4 -> 3
-# foo -> 5
-# bar -> 4
+# baz -> 0
+# caz -> 1
+# paz -> 2
+# bar -> 3
+# foo -> 4
 ```
 
-The tester will then send multiple `ZRANK` commands specifying the members of the zset.
+The tester will then send multiple `ZRANK` commands specifying the members of the sorted set.
 ```bash
-> ZRANK zset_key zset_member3 (Expecting ":2\r\n")
-> ZRANK zset_key zset_member1 (Expecting ":0\r\n")
-> ZRANK zset_key foo (Expecting ":5\r\n")
-> ZRANK zset_key bar (Expecting ":4\r\n")
+> ZRANK zset_key caz (Expecting ":1\r\n")
+> ZRANK zset_key baz (Expecting ":0\r\n")
+> ZRANK zset_key foo (Expecting ":4\r\n")
+> ZRANK zset_key bar (Expecting ":3\r\n")
 ```
 
-The tester will also send `ZRANK` command specifying a non-existing member, and a non-existent zset.
+The tester will also send `ZRANK` command specifying a non-existing member, and a non-existent sorted set.
 
 ```bash
-> ZRANK zset_key zset_member100 (Expecting RESP bulk string "$-1\r\n")
-> ZRANK non_existent_key member (Expecting RESP bulk string "$-1\r\n")
+> ZRANK zset_key missing_member (Expecting RESP bulk string "$-1\r\n")
+> ZRANK missing_key member (Expecting RESP bulk string "$-1\r\n")
 ```
