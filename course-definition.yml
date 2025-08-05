@@ -695,67 +695,53 @@ stages:
     name: "Create a sorted set"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for creating a new sorted set using the `ZADD` command.
+      In this stage, you'll add support for creating a [Redis sorted set](https://redis.io/docs/latest/develop/data-types/sorted-sets/) using the `ZADD` command.
 
   - slug: "hf1"
     primary_extension_slug: "sorted-sets"
     name: "Add members"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for adding members to an existing zset.
+      In this stage, you'll add support for adding elements to an existing sorted set.
 
   - slug: "lg6"
     primary_extension_slug: "sorted-sets"
     name: "Retrieve member rank"
     difficulty: medium
     marketing_md: |
-      In this stage, you'll add support for retrieving the rank of a zset member.
+      In this stage, you'll add support for retrieving the rank of a sorted set member.
 
   - slug: "ic1"
     primary_extension_slug: "sorted-sets"
     name: "List zset members"
-    difficulty: medium
+    difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for listing the zset members using the `ZRANGE` command.
+      In this stage, you'll add support for listing the members of a sorted set using the `ZRANGE` command.
 
   - slug: "bj4"
     primary_extension_slug: "sorted-sets"
     name: "ZRANGE with negative indexes"
-    difficulty: medium
-    marketing_md: |
-      In this stage, you'll add support for negative indexes for the `ZRANGE` command.
-
-  - slug: "zu9"
-    primary_extension_slug: "sorted-sets"
-    name: "List members in reverse"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for `REV` option for the `ZRANGE` command.
+      In this stage, you'll add support for negative indexes for the `ZRANGE` command.
 
   - slug: "kn4"
     primary_extension_slug: "sorted-sets"
     name: "Count zset members"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for counting the number of members in a zset.
+      In this stage, you'll add support for counting the number of members in a sorted set using the `ZCARD` command.
 
   - slug: "gd7"
     primary_extension_slug: "sorted-sets"
     name: "Retrieve member score"
-    difficulty: easy
+    difficulty: medium
     marketing_md: |
-      In this stage, you'll add support for retrieving the score of a zset member.
+      In this stage, you'll add support for retrieving the score of a sorted set member using the `ZSCORE` command.
 
   - slug: "sq7"
     primary_extension_slug: "sorted-sets"
     name: "Remove a member"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for removing a single zset member using the `ZREM` command.
-
-  - slug: "fu7"
-    primary_extension_slug: "sorted-sets"
-    name: "Remove multiple member"
-    difficulty: easy
-    marketing_md: |
-      In this stage, you'll add support for removing multiple zset members using the `ZREM` command.
+      In this stage, you'll add support for removing a single member of a sorted set using the `ZREM` command.

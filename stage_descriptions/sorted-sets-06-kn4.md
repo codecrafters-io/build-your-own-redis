@@ -1,18 +1,18 @@
-In this stage, you'll add support for counting the number of members in a zset.
+In this stage, you'll add support for counting the number of members in a sorted set using the `ZCARD` command.
 
 ### The `ZCARD` Command
 
-The `ZCARD` command is used to query the cardinality (number of elements) of a sorted set. It returns an integer. The response is 0 if the zset specified does not exist.
+The `ZCARD` command is used to query the cardinality (number of elements) of a sorted set. It returns an integer. The response is 0 if the sorted set specified does not exist.
 
 ```bash
-> ZADD zset_key 1 "one"
+> ZADD zset_key 1.2 "one"
 (integer) 1
-> ZADD zset_key 2 "two"
+> ZADD zset_key 2.2 "two"
 (integer) 1
 > ZCARD zset_key
 (integer) 2
 
-> ZCARD non_existent_key
+> ZCARD missing_key
 (integer) 0
 ```
 
@@ -34,7 +34,7 @@ $ redis-cli
 > ZADD zset_key 50.3 zset_member4 (Expecting ":1\r\n")
 ```
 
-It will check the number of elements in the zset using the `ZCARD` command.
+It will check the number of elements in the sorted set using the `ZCARD` command.
 ```bash
 $ redis-cli ZCARD zset_key (Expecting ":4\r\n")
 ```
@@ -44,12 +44,12 @@ The tester will then update the score of an existing member.
 $ redis-cli ZADD zset_key 100.0 zset_member1 (Expecting ":0\r\n")
 ```
 
-It will again check the cardinality of the zset using the `ZCARD` command.
+It will again check the cardinality of the sorted set using the `ZCARD` command.
 ```bash
 $ redis-cli ZCARD zset_key (Expecting ":4\r\n")
 ```
 
-The tester will also check the cardinality of a non existing zset.
+The tester will also check the cardinality of a non existing sorted set.
 ```bash
-$ redis-cli ZCARD non_existing_key (Expecting ":0\r\n")
+$ redis-cli ZCARD missing_key (Expecting ":0\r\n")
 ```
