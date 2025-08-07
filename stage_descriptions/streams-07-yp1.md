@@ -59,7 +59,7 @@ $ redis-cli XRANGE stream_key - 0-2
       2) baz
 ```
 
-Your server should respond with the following, encoded as a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays):
+Your server should respond with the following, encoded as a [RESP Array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays):
 
 ```json
 [

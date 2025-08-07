@@ -24,7 +24,7 @@ It'll then send an `ECHO` command with an argument to your server:
 $ redis-cli ECHO hey
 ```
 
-The tester will expect to receive `$3\r\nhey\r\n` as a response (that's the string `hey` encoded as a [RESP bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
+The tester will expect to receive `$3\r\nhey\r\n` as a response (that's the string `hey` encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
 ### Notes
 
@@ -32,5 +32,5 @@ The tester will expect to receive `$3\r\nhey\r\n` as a response (that's the stri
 - Redis command names are case-insensitive, so `ECHO`, `echo` and `EcHo` are all valid commands.
 - The tester will send a random string as an argument to the `ECHO` command, so you won't be able to hardcode the response to pass this stage.
 - The exact bytes your program will receive won't be just `ECHO hey`, you'll receive something like this: `*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n`. That's
-  `["ECHO", "hey"]` encoded using the [Redis protocol](https://redis.io/docs/reference/protocol-spec/).
-- You can read more about how "commands" are handled in the Redis protocol [here](https://redis.io/docs/reference/protocol-spec/#sending-commands-to-a-redis-server).
+  `["ECHO", "hey"]` encoded using the [Redis protocol](https://redis.io/docs/latest/develop/reference/protocol-spec/).
+- You can read more about how "commands" are handled in the Redis protocol [here](https://redis.io/docs/latest/develop/reference/protocol-spec/#sending-commands-to-a-redis-server).

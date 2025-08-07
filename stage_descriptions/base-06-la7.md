@@ -27,7 +27,7 @@ It'll then send a `SET` command to your server:
 $ redis-cli SET foo bar
 ```
 
-The tester will expect to receive `+OK\r\n` as a response (that's the string `OK` encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#resp-simple-strings)).
+The tester will expect to receive `+OK\r\n` as a response (that's the string `OK` encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)).
 
 This command will be followed by a `GET` command:
 
@@ -35,7 +35,7 @@ This command will be followed by a `GET` command:
 $ redis-cli GET foo
 ```
 
-The tester will expect to receive `$3\r\nbar\r\n` as a response (that's the string `bar` encoded as a [RESP bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
+The tester will expect to receive `$3\r\nbar\r\n` as a response (that's the string `bar` encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
 ### Notes
 
