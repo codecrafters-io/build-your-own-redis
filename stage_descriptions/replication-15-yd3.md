@@ -63,5 +63,5 @@ REPLCONF getack * # expecting REPLCONF ACK 146
 - Although masters don't propagate `PING` commands when received from clients (since they aren't "write" commands),
   they may send `PING` commands to replicas to notify replicas that the master is still alive.
 - Replicas should update their offset to account for **all** commands propagated from the master, including `PING` and `REPLCONF` itself.
-- The response should be encoded as a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays), like
+- The response should be encoded as a [RESP Array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays), like
   this: `*3\r\n$8\r\nREPLCONF\r\n$3\r\nACK\r\n$3\r\n154\r\n`.

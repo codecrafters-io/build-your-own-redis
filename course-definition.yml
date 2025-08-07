@@ -81,7 +81,7 @@ extensions:
 
       Along the way you'll learn about commands like [XADD][xadd-command], [XRANGE][xrange-command] and more.
 
-      [redis-streams-data-type]: https://redis.io/docs/data-types/streams/
+      [redis-streams-data-type]: https://redis.io/docs/latest/develop/data-types/streams/
       [xadd-command]: https://redis.io/commands/xadd/
       [xrange-command]: https://redis.io/commands/xrange/
 
@@ -410,7 +410,7 @@ stages:
     name: "Create a stream"
     difficulty: medium
     marketing_md: |
-      In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
+      In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/latest/develop/data-types/streams/) using the `XADD` command.
 
   - slug: "hq8"
     primary_extension_slug: "streams"

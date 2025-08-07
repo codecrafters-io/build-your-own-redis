@@ -20,7 +20,7 @@ repl_backlog_first_byte_offset:0
 repl_backlog_histlen:
 ```
 
-The reply to this command is a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line is a key value pair, separated by ":".
+The reply to this command is a [Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) where each line is a key value pair, separated by ":".
 
 Here are what some of the important fields mean:
 
@@ -45,14 +45,14 @@ It'll then send the `INFO` command with `replication` as an argument.
 $ redis-cli -p <PORT> info replication
 ```
 
-Your program should respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line
+Your program should respond with a [Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) where each line
 is a key value pair separated by `:`. The tester will only look for the `role` key, and assert that the value is `master`.
 
 ### Notes
 
 - In the response for the `INFO` command, you only need to support the `role` key for this stage. We'll add support for the other keys in later stages.
 - The `# Replication` heading in the response is optional, you can ignore it.
-- The response to `INFO` needs to be encoded as a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
-  - An example valid response would be `$11\r\nrole:master\r\n` (the string `role:master` encoded as a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings))
+- The response to `INFO` needs to be encoded as a [Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
+  - An example valid response would be `$11\r\nrole:master\r\n` (the string `role:master` encoded as a [Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
 - The `INFO` command can be used without any arguments, in which case it returns all sections available. In this stage, we'll
   always send `replication` as an argument to the `INFO` command, so you only need to support the `replication` section.

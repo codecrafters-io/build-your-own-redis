@@ -48,7 +48,7 @@ random number as the time part.
 $ redis-cli XADD stream_key 5-* foo bar
 ```
 
-Your server should respond with `$3\r\n5-0\r\n`, which is `5-0` encoded as a [RESP bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings)
+Your server should respond with `$3\r\n5-0\r\n`, which is `5-0` encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings)
 
 It'll send the same command again.
 
@@ -56,7 +56,7 @@ It'll send the same command again.
 $ redis-cli XADD stream_key 5-* bar baz
 ```
 
-Your server should respond with `$3\r\n5-1\r\n`, which is `5-1` encoded as a [RESP bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings)
+Your server should respond with `$3\r\n5-1\r\n`, which is `5-1` encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings)
 
 ### Notes
 

@@ -5,7 +5,7 @@ Commands and responses are both encoded using the [Redis protocol](https://redis
 
 [PING](https://redis.io/commands/ping/) is one of the simplest Redis commands. It's used to check whether a Redis server is healthy.
 
-The response for the `PING` command is `+PONG\r\n`. This is the string "PONG" encoded using the [Redis protocol](https://redis.io/docs/reference/protocol-spec/).
+The response for the `PING` command is `+PONG\r\n`. This is the string "PONG" encoded using the [Redis protocol](https://redis.io/docs/latest/develop/reference/protocol-spec).
 
 In this stage, we'll cut corners by ignoring client input and hardcoding `+PONG\r\n` as a response. We'll learn to parse client input in later stages.
 
@@ -23,7 +23,7 @@ It'll then send a `PING` command to your server and expect a `+PONG\r\n` respons
 $ redis-cli PING
 ```
 
-Your server should respond with `+PONG\r\n`, which is "PONG" encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#resp-simple-strings).
+Your server should respond with `+PONG\r\n`, which is "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 ### Notes
 

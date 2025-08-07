@@ -35,7 +35,7 @@ In this stage you'll implement support for responding to the `REPLCONF GETACK` c
   You can hardcode the offset to 0 for now. We'll implement proper offset tracking in the next stage.
 
   The exact command received by the replica will look something like this: `*3\r\n$8\r\nreplconf\r\n$6\r\ngetack\r\n$1\r\n*\r\n` (that's
-  `["replconf", "getack", "*"]` encoded as a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays)).
+  `["replconf", "getack", "*"]` encoded as a [RESP Array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays)).
 </details>
 
 ### Tests
@@ -52,7 +52,7 @@ The master will then send `REPLCONF GETACK *` to your replica. It'll expect to r
 
 ### Notes
 
-- The response should be encoded as a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays), like
+- The response should be encoded as a [RESP Array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays), like
   this: `*3\r\n$8\r\nREPLCONF\r\n$3\r\nACK\r\n$1\r\n0\r\n`.
 - We'll implement proper offset tracking in the next stage, for now you can hardcode the offset to 0.
 - After the master-replica handshake is complete, a replica should **only** send responses to `REPLCONF GETACK` commands. All
