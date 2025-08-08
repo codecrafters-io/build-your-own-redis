@@ -2,7 +2,8 @@ In this stage, you'll add support for validating the latitude and longitude prov
 
 ### The `GEOADD` command (Validate coordinates)
 Latitudes and longitudes used in the `GEOADD` command should be in a certain range as per [EPSG:3857](https://epsg.io/3857). Valid longitudes are from -180 to 180 degrees. Valid latitudes are from -85.05112878 to 85.05112878 degrees. Both of these limits are inclusive.
-Example use case:
+
+If either of these values aren't within the appropriate range, `GEOADD` returns an error. Examples:
 
 ```bash
 # Invalid latitude
@@ -20,7 +21,8 @@ The tester will execute your program like this:
 ```bash
 $ ./your_program.sh
 ```
-It will then send multiple `GEOADD` commands specifying one or more location to add. For valid coordinates, the tester will expect the response to be the usual response of the `GEOADD` command. For invalid coordinates values, it will expect an error.
+
+It will then send multiple `GEOADD` commands. If the coordinates supplied are valid, the tester will expect the response to be `:1\r\n`, the usual response of the `GEOADD` command. For invalid coordinates values, it will expect an error response.
 
 For example, the tester might send your program a command like this:
 
@@ -41,23 +43,14 @@ The value is RESP simple error, which is RESP-encoded as
 
 - In this stage, you'll only extend responding to `GEOADD` in case of invalid values of latitude and longitude. You do not need to implement the storage mechanism yet.
 
-- In case of out-of-bounds values for latitude or longitude, the tester is lenient but structured in checking error messages.
-    - The error response does not need to match Redis’s exact error message format.
+- The tester is lenient in checking error messages, it doesn't require that errors match Redis's exact format.
     - The error response must:
-        - Start with the phrase "ERR invalid" (case-insensitive)
-         - Contain the word latitude if the latitude value is invalid
-        - Contain the word longitude if the longitude value is invalid
-        - Contain both "latitude" and "longitude" if both the latitudes and longitudes are invalid.
+        - Start with "ERR invalid" (case-insensitive)
+        - Include "latitude" if latitude is invalid.
+        - Include "longitude" if longitude is invalid.
 
-    - Examples that will pass:
-        - ERR Invalid latitude value (In case of invalid latitude and valid longitude)
-        - ERR invalid longitude: must be between -180 and 180 (In case of invalid longitude but valid latitude value)
-        - ERR invalid longitude,latitude pair (In case of one or both invalid values)
-        - ERR invalid longitude and latitude range (In case of one or both invalid values)
+    - Examples:
+        - ✅ ERR invalid latitude value
+        - ❌ ERR invalid
 
-    - Examples that will not pass:
-        - ERR invalid (In case of one or both invalid values)
-        - ERR invalid longitude (In case of invalid latitude but valid longitude)
-        - ERR invalid latitude (In case of invalid longitude but valid latitude)
-
-- The booundary of latitude are clipped at -85.05112878 and 85.05112878 degrees instead of -90 and 90 degrees respectively. It is because of the Web Mercator projection used by Redis. You can read more about it on [Wikipedia](https://en.wikipedia.org/wiki/Web_Mercator_projection).
+- The boundary of latitude are clipped at -85.05112878 and 85.05112878 degrees instead of -90 and 90 degrees respectively. It is because of the Web Mercator projection used by Redis. You can read more about it on [Wikipedia](https://en.wikipedia.org/wiki/Web_Mercator_projection).

@@ -1,16 +1,13 @@
 In this stage, you'll add support for calculating the distance between two locations using the `GEODIST` comamnd.
 
 ### The `GEODIST` command
-The `GEODIST` command returns the distance between two members. The default unit of the distance which is returned, is meters.
-The syntax for `GEODIST` command is:
-```
-GEODIST <key> <location1> <location2>
-```
+The `GEODIST` command returns the distance between two members of a key. The default unit of the distance which is returned, is meters.
+
 Example usage:
 
 ```bash
-> GEODIST places Catania Rome
-"537215.1152"
+> GEODIST places Munich Paris
+"682477.7582"
 ```
 
 It returns the distance as a string, encoded as a RESP Bulk String.
@@ -26,22 +23,22 @@ $ ./your_program.sh
 It will add multiple locations using the `GEOADD` command.
 ```bash
 $ redis-cli
-> GEOADD places 15.087269 37.502669 "Catania"
-> GEOADD places 12.496365 41.902783 "Rome"
+> GEOADD places 11.5030378 48.164271 "Munich"
+> GEOADD places 2.2944692 48.8584625 "Paris"
 ```
 
 The tester will then send multiple `GEODIST` commands specifying two locations. For example, the tester might send your program a command like this:
 
 ```bash
-> GEODIST places Catania Rome
-# Expecting "537215.1152"
+> GEODIST places Munich Paris
+# Expecting "682477.7582"
 ```
 
 The value is a RESP bulk string encoded as:
 
 ```
 $11\r\n
-537215.1152\r\n
+682477.7582\r\n
 ```
 
 ### Notes

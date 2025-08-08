@@ -2,23 +2,20 @@ In this stage, you'll add support for responding to the `GEOPOS` command.
 
 ### The `GEOPOS` command
 
-The `GEOPOS` command returns the longitude and latitude of the specified location. Its syntax is
-
-```
-GEOPOS <key> <location1>
-```
+The `GEOPOS` command returns the longitude and latitude of the specified location.
 
 Example usage:
 ```bash
-> GEOADD places 15.087269 37.502669 "Catania"
-> GEOADD places 12.496365 41.902783 "Rome"
+> GEOADD places -0.0884948 51.506479 "London"
+> GEOADD places 11.5030378 48.164271 "Munich"
 
-> GEOPOS places Catania Rome non_existent
-1) 1) "15.087267458438873"
-   2) "37.50266842333162"
-2) 1) "12.496366202831268"
-   2) "41.90278213378984"
-3) (nil)
+> GEOPOS places London
+1) 1) "-0.08849412202835083"
+   2) "51.50647814139934"
+
+> GEOPOS places Munich
+1) 1) "11.503036916255951"
+   2) "48.16427086232978"
 ```
 
 It returns an array with one entry for each location requested.
@@ -69,3 +66,4 @@ It will expect the response to be a RESP nil array, which is encoded as `*0\r\n`
 ### Notes
 
 - In this stage, you will only implement responding to the `GEOPOS` command using valid floating point numbers. We'll get to responding with actual values of latitude and longitude in the next stage.
+- You can specify any floating point value for latitude and longitude.
