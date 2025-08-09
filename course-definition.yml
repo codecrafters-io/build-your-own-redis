@@ -104,7 +104,7 @@ extensions:
 
       Along the way you'll learn about how Redis's leader-follower replication works, the [PSYNC][redis-psync-command] command and more.
 
-      [redis-replication]: https://redis.io/docs/management/replication/
+      [redis-replication]: https://redis.io/docs/latest/operate/oss_and_stack/management/replication/
       [redis-psync-command]: https://redis.io/commands/psync/
 
   - slug: "persistence-rdb"
@@ -114,7 +114,7 @@ extensions:
 
       Along the way you'll learn about Redis's [RDB file format][rdb-file-format] and more.
 
-      [redis-persistence]: https://redis.io/docs/manual/persistence/
+      [redis-persistence]: https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/
       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
   - slug: "pub-sub"
