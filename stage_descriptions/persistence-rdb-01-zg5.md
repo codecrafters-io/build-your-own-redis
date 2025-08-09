@@ -1,4 +1,4 @@
-Welcome to the RDB Persistence Extension! In this extension, you'll add support for reading [RDB files](https://redis.io/docs/management/persistence/) (Redis Database files).
+Welcome to the RDB Persistence Extension! In this extension, you'll add support for reading [RDB files](https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/) (Redis Database files).
 
 In this stage, you'll add support for two configuration parameters related to RDB persistence, as well as the [CONFIG GET](https://redis.io/docs/latest/commands/config-get/) command.
 
