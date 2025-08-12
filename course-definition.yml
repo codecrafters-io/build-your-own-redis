@@ -700,7 +700,7 @@ stages:
   - slug: "hf1"
     primary_extension_slug: "sorted-sets"
     name: "Add members"
-    difficulty: easy
+    difficulty: medium
     marketing_md: |
       In this stage, you'll add support for adding elements to an existing sorted set.
 
