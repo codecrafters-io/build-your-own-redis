@@ -713,7 +713,7 @@ stages:
 
   - slug: "ic1"
     primary_extension_slug: "sorted-sets"
-    name: "List zset members"
+    name: "List sorted set members"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for listing the members of a sorted set using the `ZRANGE` command.
@@ -727,7 +727,7 @@ stages:
 
   - slug: "kn4"
     primary_extension_slug: "sorted-sets"
-    name: "Count zset members"
+    name: "Count sorted set members"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for counting the number of members in a sorted set using the `ZCARD` command.
