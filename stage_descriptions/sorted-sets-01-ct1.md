@@ -1,4 +1,4 @@
-In this stage, you'll add support for creating a [Redis sorted set](https://redis.io/docs/latest/develop/data-types/sorted-sets/) using the `ZADD` command.
+In this stage, you'll add support for creating a [sorted set](https://redis.io/docs/latest/develop/data-types/sorted-sets/) using the `ZADD` command.
 
 ### Redis Sorted Sets
 
@@ -6,7 +6,7 @@ Sorted sets are one of the data types that Redis supports. A sorted set is a col
 
 This makes them useful for use cases like leaderboards, priority queues, or any scenario where you need fast access to items sorted by a numerical value.
 
-For example, if you were using a Redis sorted sets to store user rankings in a game leaderboard, the contents of the sorted set might look like this:
+For example, if you were using sorted sets to store user rankings in a game leaderboard, the contents of the sorted set might look like this:
 
 ```yaml
 racer_scores:
@@ -27,7 +27,7 @@ Sorted sets are ordered based on increasing scores.
 
 The [ZADD](https://redis.io/docs/latest/commands/zadd/) command is used to add a member to a sorted set.
 
-If the sorted set does not exist, it is created and the member is added to it. The syntax for `ZADD` is:
+If the sorted set does not exist, it is created and the member is added to it.
 
 Example usage:
 
@@ -59,4 +59,4 @@ The tester will verify that the response to the command is `:1\r\n`, which is 1 
 - It is recommended to store the score as a 64 bit floating point number for highest precision as the official Redis implementation uses [`double`](https://github.com/redis/redis/blob/bec644aab198049eaa5583631c419b4574b137e1/tests/modules/zset.c#L34).
 
 - We suggest that you implement sorted sets using a data structure where the members are stored in a sorted fashion according to their scores. It'll come in handy in the later stages.
-    - Redis implements sorted sets using a combination of hash tables and skip lists. This structure allows Redis to efficiently perform operations on sorted sets. However, as a part of your implementation, you may choose any data structure that offers ordering.
+    -  Redis implements sorted sets using a combination of [hash table and skip list](https://github.com/redis/redis/blob/674b829981c0b8ad15a670a32df503e0e4514e96/src/server.h#L1560).

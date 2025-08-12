@@ -695,7 +695,7 @@ stages:
     name: "Create a sorted set"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for creating a [Redis sorted set](https://redis.io/docs/latest/develop/data-types/sorted-sets/) using the `ZADD` command.
+      In this stage, you'll add support for creating a [sorted set](https://redis.io/docs/latest/develop/data-types/sorted-sets/) using the `ZADD` command.
 
   - slug: "hf1"
     primary_extension_slug: "sorted-sets"
@@ -709,7 +709,7 @@ stages:
     name: "Retrieve member rank"
     difficulty: medium
     marketing_md: |
-      In this stage, you'll add support for retrieving the rank of a sorted set member.
+      In this stage, you'll add support for retrieving the rank of a sorted set member using the `ZRANK` command.
 
   - slug: "ic1"
     primary_extension_slug: "sorted-sets"
@@ -744,4 +744,4 @@ stages:
     name: "Remove a member"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for removing a single member of a sorted set using the `ZREM` command.
+      In this stage, you'll add support for removing a member of a sorted set using the `ZREM` command.

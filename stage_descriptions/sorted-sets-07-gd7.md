@@ -12,7 +12,7 @@ The `ZSCORE` command is used to query the score of a member of a sorted set. If 
 "24.34"
 ```
 
-If the member or the sorted set specified in the argument does not exist, RESP null bulk string is returned.
+If the member or the sorted set specified in the argument does not exist, RESP null bulk string(`$-1\r\n`) is returned.
 ```bash
 > ZSCORE zset_key "three"
 (nil)
@@ -29,7 +29,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will then send a `ZADD` command to create and add new members to it.
+It will then send a `ZADD` command to create a sorted set and add new members to it.
 
 ```bash
 $ redis-cli
@@ -62,7 +62,7 @@ The tester will then send a `ZSCORE` command specifying the updated member.
 > ZSCORE zset_key zset_member2 (Expecting RESP bulk string "100.99")
 ```
 
-The tester will also send `ZSCORE` command specifying a non-existent member, and a non-existent key.
+The tester will also send `ZSCORE` commands where either the member or the key doesn't exist.
 ```bash
 > ZSCORE zset_key zset_member100 (Expecting RESP bulk string "$-1\r\n")
 > ZSCORE missing_key member (Expecting RESP bulk string "$-1\r\n")
