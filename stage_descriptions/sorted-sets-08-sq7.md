@@ -1,4 +1,4 @@
-In this stage, you'll add support for removing a single member of a sorted set using the `ZREM` command.
+In this stage, you'll add support for removing a member of a sorted set using the `ZREM` command.
 
 ## The `ZREM` command
 
@@ -59,7 +59,7 @@ It will then send your program a `ZRANGE` command and check for the remaining me
 # Expected RESP Encoded Array: ["bar", "foo"]
 ```
 
-The tester will also send a `ZREM` command specifying a non-existing member.
+The tester will also send a `ZREM` command where the member doesn't exist.
 ```bash
 > ZREM zset_key "missing_member"
 # Expected: (integer) 0

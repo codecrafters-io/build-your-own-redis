@@ -1,4 +1,4 @@
-In this stage, you'll add support for retrieving the rank of a sorted set member.
+In this stage, you'll add support for retrieving the rank of a sorted set member using the `ZRANK` command.
 
 ### The `ZRANK` Command
 
@@ -26,7 +26,7 @@ Example usage:
 The rank of `another_member_with_score_2` is 1, and `member_with_score_2` is 2. It is because though the both members have same scores, `another_member_with_score_2` preceeds `member_with_score_2` lexicographically.
 
 
-If the member, or the sorted set does not exist, the command returns null bulk string.
+If the member, or the sorted set does not exist, the command returns null bulk string (`$-1\r\n`).
 ```bash
 # Missing sorted set and member
 > ZRANK zset_key missing_member
@@ -69,7 +69,7 @@ The tester will then send multiple `ZRANK` commands specifying the members of th
 > ZRANK zset_key bar (Expecting ":3\r\n")
 ```
 
-The tester will also send `ZRANK` command specifying a non-existing member, and a non-existent sorted set.
+The tester will also send `ZRANK` commands where either the member or key doesn't exist.
 
 ```bash
 > ZRANK zset_key missing_member (Expecting RESP bulk string "$-1\r\n")
