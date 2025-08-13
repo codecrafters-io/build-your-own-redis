@@ -2,7 +2,7 @@ In this stage, you'll add support for responding to the `GEOADD` command.
 
 ### The `GEOADD` command
 
-The [`GEOADD` command](https://redis.io/docs/latest/commands/geoadd/) adds a location (with longitude, latitude, and name) to a key. It stores the location as a [sorted set](https://redis.io/docs/latest/develop/data-types/sorted-sets/) under the specified key.
+The [`GEOADD` command](https://redis.io/docs/latest/commands/geoadd/) adds a location (with longitude, latitude, and name) to a key.
 
 Example usage:
 
