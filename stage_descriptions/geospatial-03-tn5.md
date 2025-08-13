@@ -14,29 +14,33 @@ $ redis-cli GEOADD places_key 2.2944692 48.8584625 location
 $ redis-cli ZADD places_key 3663832614298053 location
 ```
 
-where score is calculated using the location's latitude and longitude values using an algorithm. We'll get to implementing this algorithm in the later stage.
+In this stage, you'll implement adding locations to a sorted set when a `GEOADD` command is run.
 
-For now, you can hardcode a location's score to be 0 for all the locations.
+You can hardcode the score to be 0 for now, we'll get to calculating the score in later stages.
 
 ### Tests
+
 The tester will execute your program like this:
 
 ```bash
 $ ./your_program.sh
 ```
 
-It will then send a `GEOADD` command specifying a key, laitude, longitude, and location name.
+It will then send a `GEOADD` command:
 
 ```bash
 $ redis-cli GEOADD places 2.2944692 48.8584625 Paris
 # Expect: (integer) 1
 ```
 
-The tester will then send a `ZRANGE` command to your program specifying the key used in `GEOADD` command.
+The tester will then send a `ZRANGE` command to validate that the location was added to the sorted set:
+
 ```bash
 $ redis-cli ZRANGE places 0 -1
 # Expect RESP Array: ["Paris"]
 ```
 
 ### Notes
-- In this stage, you can hardcode the score of the location to be 0. We'll get to calculating the value of score using latitude and longitude in the next stage.
+
+- In this stage, you can hardcode the score of the location to be 0. We'll get to calculating the value of score using latitude and longitude in later stages.
+- The implementation of the `ZRANGE` command is covered in the sorted sets extension.

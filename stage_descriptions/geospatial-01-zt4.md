@@ -1,5 +1,9 @@
 In this stage, you'll add support for responding to the `GEOADD` command.
 
+### Extension prerequisites
+
+This stage depends on the [**Sorted Sets**](https://redis.io/docs/latest/data-types/sorted-sets/) extension. Before attempting this extension, please make sure you've completed the Sorted Sets extension.
+
 ### The `GEOADD` command
 
 The [`GEOADD` command](https://redis.io/docs/latest/commands/geoadd/) adds a location (with longitude, latitude, and name) to a key.
