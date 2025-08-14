@@ -25,7 +25,7 @@ This should be sent as a RESP Array, so the exact bytes will look something like
 *3\r\n$5\r\nPSYNC\r\n$1\r\n?\r\n$2\r\n-1\r\n
 ```
 
-The master will respond with a [Simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings) that looks like this:
+The master will respond with a [Simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings) that looks like this:
 
 ```
 +FULLRESYNC <REPL_ID> 0\r\n

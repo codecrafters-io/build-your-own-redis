@@ -30,7 +30,7 @@ It'll then send the `INFO` command with `replication` as an argument to your ser
 $ redis-cli -p <PORT> info replication
 ```
 
-Your program should respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line
+Your program should respond with a [Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) where each line
 is a key value pair separated by `:`. The tester will only look for the `role` key, and assert that the value is `slave`.
 
 ### Notes

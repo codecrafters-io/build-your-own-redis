@@ -81,7 +81,7 @@ extensions:
 
       Along the way you'll learn about commands like [XADD][xadd-command], [XRANGE][xrange-command] and more.
 
-      [redis-streams-data-type]: https://redis.io/docs/data-types/streams/
+      [redis-streams-data-type]: https://redis.io/docs/latest/develop/data-types/streams/
       [xadd-command]: https://redis.io/commands/xadd/
       [xrange-command]: https://redis.io/commands/xrange/
 
@@ -104,7 +104,7 @@ extensions:
 
       Along the way you'll learn about how Redis's leader-follower replication works, the [PSYNC][redis-psync-command] command and more.
 
-      [redis-replication]: https://redis.io/docs/management/replication/
+      [redis-replication]: https://redis.io/docs/latest/operate/oss_and_stack/management/replication/
       [redis-psync-command]: https://redis.io/commands/psync/
 
   - slug: "persistence-rdb"
@@ -114,7 +114,7 @@ extensions:
 
       Along the way you'll learn about Redis's [RDB file format][rdb-file-format] and more.
 
-      [redis-persistence]: https://redis.io/docs/manual/persistence/
+      [redis-persistence]: https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/
       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
   - slug: "pub-sub"
@@ -127,6 +127,17 @@ extensions:
       [redis-pub-sub]: https://redis.io/docs/latest/develop/pubsub/
       [subscribe-command]: https://redis.io/docs/latest/commands/subscribe/
       [publish-command]: https://redis.io/docs/latest/commands/publish/
+
+  - slug: "sorted-sets"
+    name: "Sorted Sets"
+    description_markdown : |-
+      In this challenge extension you'll add support for [Sorted Sets (zsets)][redis-zset] to your Redis implementation.
+
+      Along the way, you'll learn commands like [ZADD][zadd-command], [ZRANGE][zrange-command], and more.
+
+      [redis-zset]: https://redis.io/docs/latest/develop/data-types/sorted-sets/
+      [zadd-command]: https://redis.io/docs/latest/commands/zadd/
+      [zrange-command]: https://redis.io/docs/latest/commands/zrange/
   
   - slug: "geospatial"
     name: "Geospatial Commands"
@@ -138,7 +149,6 @@ extensions:
       [geospatial-commands]: https://redis.io/docs/latest/develop/data-types/geospatial/
       [geoadd-command]: https://redis.io/docs/latest/commands/geoadd/
       [geosearch-command]: https://redis.io/docs/latest/commands/geosearch/
-
 
 stages:
   - slug: "jm1"
@@ -422,7 +432,7 @@ stages:
     name: "Create a stream"
     difficulty: medium
     marketing_md: |
-      In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
+      In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/latest/develop/data-types/streams/) using the `XADD` command.
 
   - slug: "hq8"
     primary_extension_slug: "streams"
@@ -689,6 +699,63 @@ stages:
     name: "Unsubscribe"
     difficulty: medium
     marketing_md: In this stage, you'll add support for the `UNSUBSCRIBE command`, which is used to unsubscribe from a channel.
+
+  # Sorted Sets
+  - slug: "ct1"
+    primary_extension_slug: "sorted-sets"
+    name: "Create a sorted set"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for creating a [sorted set](https://redis.io/docs/latest/develop/data-types/sorted-sets/) using the `ZADD` command.
+
+  - slug: "hf1"
+    primary_extension_slug: "sorted-sets"
+    name: "Add members"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for adding elements to an existing sorted set.
+
+  - slug: "lg6"
+    primary_extension_slug: "sorted-sets"
+    name: "Retrieve member rank"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for retrieving the rank of a sorted set member using the `ZRANK` command.
+
+  - slug: "ic1"
+    primary_extension_slug: "sorted-sets"
+    name: "List sorted set members"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for listing the members of a sorted set using the `ZRANGE` command.
+
+  - slug: "bj4"
+    primary_extension_slug: "sorted-sets"
+    name: "ZRANGE with negative indexes"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for negative indexes for the `ZRANGE` command.
+
+  - slug: "kn4"
+    primary_extension_slug: "sorted-sets"
+    name: "Count sorted set members"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for counting the number of members in a sorted set using the `ZCARD` command.
+
+  - slug: "gd7"
+    primary_extension_slug: "sorted-sets"
+    name: "Retrieve member score"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for retrieving the score of a sorted set member using the `ZSCORE` command.
+
+  - slug: "sq7"
+    primary_extension_slug: "sorted-sets"
+    name: "Remove a member"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for removing a member of a sorted set using the `ZREM` command.
 
   # Geospatial Commands
   - slug: "zt4"

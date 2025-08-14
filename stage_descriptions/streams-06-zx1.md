@@ -33,7 +33,7 @@ XRANGE defaults to a sequence number of 0 for the start and the maximum sequence
 
 The return value of the command is not exactly what is shown in the example above. This is already formatted by redis-cli.
 
-The actual return value is a [RESP Array](https://redis.io/docs/reference/protocol-spec/#arrays) of arrays.
+The actual return value is a [RESP Array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of arrays.
 
 - Each inner array represents an entry.
 - The first item in the inner array is the ID of the entry.

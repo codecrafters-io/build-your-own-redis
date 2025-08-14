@@ -1,4 +1,4 @@
-In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/data-types/streams/) using the `XADD` command.
+In this stage, you'll add support for creating a [Redis stream](https://redis.io/docs/latest/develop/data-types/streams/) using the `XADD` command.
 
 ### Redis Streams & Entries
 
@@ -34,7 +34,7 @@ $ redis-cli XADD stream_key 1526919030474-0 temperature 36 humidity 95
 "1526919030474-0" # (ID of the entry created)
 ```
 
-The return value is the ID of the entry created, encoded as a [bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
+The return value is the ID of the entry created, encoded as a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
 `XADD` supports other optional arguments, but we won't deal with them in this challenge.
 
@@ -56,7 +56,7 @@ $ redis-cli XADD stream_key 0-1 foo bar
 "0-1"
 ```
 
-Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a [RESP bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings).
+Your server should respond with `$3\r\n0-1\r\n`, which is `0-1` encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
 The tester will then send a `TYPE` command to your server.
 
@@ -65,7 +65,7 @@ $ redis-cli TYPE stream_key
 "stream"
 ```
 
-Your server should respond with `+stream\r\n`, which is `stream` encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
+Your server should respond with `+stream\r\n`, which is `stream` encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 ### Notes
 

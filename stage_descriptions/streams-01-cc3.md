@@ -22,7 +22,7 @@ $ redis-cli TYPE missing_key
 "none"
 ```
 
-The return value is encoded as a [simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
+The return value is encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 ### Tests
 
@@ -44,7 +44,7 @@ It'll then send a `TYPE` command to your server.
 $ redis-cli TYPE some_key
 ```
 
-Your server should respond with `+string\r\n`, which is `string` encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
+Your server should respond with `+string\r\n`, which is `string` encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 It'll then send another `TYPE` command with a missing key.
 
@@ -52,7 +52,7 @@ It'll then send another `TYPE` command with a missing key.
 $ redis-cli TYPE missing_key
 ```
 
-Your server should respond with `+none\r\n`, which is `none` encoded as a [RESP simple string](https://redis.io/docs/reference/protocol-spec/#simple-strings).
+Your server should respond with `+none\r\n`, which is `none` encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 ### Notes
 

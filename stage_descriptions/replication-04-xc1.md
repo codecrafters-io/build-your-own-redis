@@ -32,7 +32,7 @@ It'll then send the `INFO` command with `replication` as an argument to your ser
 $ redis-cli INFO replication
 ```
 
-Your program should respond with a [Bulk string](https://redis.io/docs/reference/protocol-spec/#bulk-strings) where each line
+Your program should respond with a [Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) where each line
 is a key value pair separated by `:`. The tester will look for the following keys:
 
 - `master_replid`, which should be a 40 character alphanumeric string

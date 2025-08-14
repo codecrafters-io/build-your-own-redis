@@ -33,7 +33,7 @@ The tester will then send a `LLEN` command specifying the list that was just cre
 
 ```bash
 > LLEN list_key
-# Expect: list_length (RESP Encoded Integer) 
+# Expect: list_length (RESP Encoded Integer)
 ```
 
 It will expect the response to be length of the list encoded as a RESP integer.
@@ -41,8 +41,8 @@ It will expect the response to be length of the list encoded as a RESP integer.
 It will also verify the response of `LLEN` command for a non-existent list.
 
 ```bash
-> LLEN non_existent_list_key
+> LLEN missing_list_key
 # Expect:  (integer) 0
 ```
 
-The tester expects 0, which is RESP Encoded as `:0\r\n `. 
+The tester expects 0, which is RESP Encoded as `:0\r\n `.

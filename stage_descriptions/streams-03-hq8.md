@@ -90,7 +90,7 @@ $ redis-cli XADD stream_key 1-2 baz foo
 ```
 
 Your server should respond with "-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n", which is the error message above encoded as a
-[simple error](https://redis.io/docs/reference/protocol-spec/#simple-errors).
+[simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors).
 
 The tester will then send another `XADD` command with a smaller value for the time and a larger value for the sequence number.
 
@@ -108,4 +108,4 @@ $ redis-cli XADD stream_key 0-0 baz foo
 ```
 
 Your server should respond with "-ERR The ID specified in XADD must be greater than 0-0\r\n", which is the error message above encoded as a
-[RESP simple error](https://redis.io/docs/reference/protocol-spec/#simple-errors).
+[RESP simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors).
