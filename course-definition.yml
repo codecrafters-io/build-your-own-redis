@@ -138,6 +138,17 @@ extensions:
       [redis-zset]: https://redis.io/docs/latest/develop/data-types/sorted-sets/
       [zadd-command]: https://redis.io/docs/latest/commands/zadd/
       [zrange-command]: https://redis.io/docs/latest/commands/zrange/
+  
+  - slug: "geospatial"
+    name: "Geospatial Commands"
+    description_markdown: |
+      In this challenge extension you'll add support for [Geospatial Commands][geospatial-commands] to your Redis implementation.
+
+      Along the way, you'll learn commands like [GEOADD][geoadd-command], [GEOSEARCH][geosearch-command], and more.
+
+      [geospatial-commands]: https://redis.io/docs/latest/develop/data-types/geospatial/
+      [geoadd-command]: https://redis.io/docs/latest/commands/geoadd/
+      [geosearch-command]: https://redis.io/docs/latest/commands/geosearch/
 
 stages:
   - slug: "jm1"
@@ -745,3 +756,52 @@ stages:
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for removing a member of a sorted set using the `ZREM` command.
+
+  # Geospatial Commands
+  - slug: "zt4"
+    primary_extension_slug: "geospatial"
+    name: "Respond to GEOADD"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for responding to the `GEOADD` command.
+
+  - slug: "ck3"
+    primary_extension_slug: "geospatial"
+    name: "Validate coordinates"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for validating the latitude and longitude provided in the `GEOADD` command.
+
+  - slug: "tn5"
+    primary_extension_slug: "geospatial"
+    name: "Store a location"
+    difficulty: medium
+    marketing_md: In this stage, you'll add support for storing a location in a sorted set.
+
+  - slug: "cr3"
+    primary_extension_slug: "geospatial"
+    name: "Calculate location score"
+    difficulty: hard
+    marketing_md: In this stage, you'll add support for calculating the score of a location.
+
+  - slug: "xg4"
+    primary_extension_slug: "geospatial"
+    name: "Respond to GEOPOS"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for responding to the `GEOPOS` command.
+
+  - slug: "hb5"
+    primary_extension_slug: "geospatial"
+    name: "Decode coordinates"
+    difficulty: hard
+    marketing_md: In this stage, you'll add support for decoding the coordinates of a location.
+
+  - slug: "ek6"
+    primary_extension_slug: "geospatial"
+    name: "Calculate distance"
+    difficulty: medium
+    marketing_md: In this stage, you'll add support for calculating the distance between two locations using the `GEODIST` comamnd.
+
+  - slug: "rm9"
+    primary_extension_slug: "geospatial"
+    name: "Search within radius"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for searching locations near a coordinate within a given radius using the `GEOSEARCH` command.
