@@ -21,11 +21,15 @@ Example usage:
 
 It returns an array with one entry for each location requested.
 
-- If the key does not exist, an empty array is returned `(*0\r\n)`
+- If no locations are specified, an empty array is returned `(*0\r\n)`
 - If a location exists under the key, its entry is an array of two items:
   - Longitude (Encoded as a [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
   - Latitude (Encoded as a [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
 - If a location doesn’t exist, the entry is a [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) `($-1\r\n)`.
+- If the key does not exist:
+  - If no locations are specified, an empty array is returned `(*0\r\n)`.
+  - For each location specified, a [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) `($-1\r\n)` is returned.
+
 
 To return the latitude and longitude values, Redis decodes the "score" back to latitude and longitude values. We'll cover this process in later stages, for now you can hardcode the returned latitude and longitude values to be 0 (or any number).
 
@@ -54,6 +58,8 @@ The tester will then send multiple `GEOPOS` commands:
 # Expecting: [["0", "0"], ["0", "0"]], encoded as "*2\r\n$1\r\n0\r\n$1\r\n0\r\n$1\r\n0\r\n$1\r\n0\r\n"
 > GEOPOS location_key missing_location
 # Expecting: [nil], encoded as "*1\r\n$-1\r\n"
+> GEOPOS location_key
+# Expecting: [] encoded as "*0\r\n"
 ```
 
 The tester will assert that:
@@ -69,11 +75,15 @@ The tester will assert that:
 The tester will also send a `GEOPOS` command using a key that doesn't exist:
 
 ```bash
-> GEOPOS missing_key Foo
+> GEOPOS missing_key
 # Expecting: [], encoded as "*0\r\n"
+
+> GEOPOS missing_key location
+# Expecting [nil], encoded as "*1\r\n$-1\r\n"
 ```
 
-It will expect the response to be an empty RESP array, which is encoded as `*0\r\n`.
+The tester will assert that:
+- The response is a RESP array that contains as many null bulk string (`$-1\r\n`) as the number of locations requested
 
 ### Notes
 
