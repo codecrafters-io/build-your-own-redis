@@ -128,7 +128,7 @@ It'll send another `XREAD` command to your server with the `BLOCK` command but t
 $ redis-cli XREAD block 1000 streams stream_key 0-2
 ```
 
-Your server should respond with `$-1\r\n` which is a `null` representation of a RESP bulk string.
+Your server should respond with [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) (`*-1\r\n`), which is a `null` representation of a RESP array.
 
 ### Notes
 - In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
