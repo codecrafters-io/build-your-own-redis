@@ -50,7 +50,8 @@ The tester will then send multiple `GEOPOS` commands:
 
 ```bash
 > GEOPOS location_key London Munich
-# Expecting: [["0", "0"], ["0", "0"]], encoded as "*2\r\n$1\r\n0\r\n$1\r\n0\r\n$1\r\n0\r\n$1\r\n0\r\n"
+# Expecting: [["0", "0"], ["0", "0"]], encoded as "*2\r\n*2\r\n$1\r\n0\r\n$1\r\n0\r\n*2\r\n$1\r\n0\r\n$1\r\n0\r\n"
+
 > GEOPOS location_key missing_location
 # Expecting: [nil], encoded as "*1\r\n*-1\r\n"
 ```
