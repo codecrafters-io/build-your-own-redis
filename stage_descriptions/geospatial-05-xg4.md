@@ -24,7 +24,7 @@ It returns an array with one entry for each location requested.
 - If a location exists under the key, its entry is an array of two items:
   - Longitude (Encoded as a [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
   - Latitude (Encoded as a [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
-- If either the location or key don’t exist, the corresponding entry is a [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) `($-1\r\n)`.
+- If either the location or key don’t exist, the corresponding entry is a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) `(*-1\r\n)`.
 
 To return the latitude and longitude values, Redis decodes the "score" back to latitude and longitude values. We'll cover this process in later stages, for now you can hardcode the returned latitude and longitude values to be 0 (or any number).
 
@@ -52,7 +52,7 @@ The tester will then send multiple `GEOPOS` commands:
 > GEOPOS location_key London Munich
 # Expecting: [["0", "0"], ["0", "0"]], encoded as "*2\r\n$1\r\n0\r\n$1\r\n0\r\n$1\r\n0\r\n$1\r\n0\r\n"
 > GEOPOS location_key missing_location
-# Expecting: [nil], encoded as "*1\r\n$-1\r\n"
+# Expecting: [nil], encoded as "*1\r\n*-1\r\n"
 ```
 
 The tester will assert that:
@@ -63,19 +63,19 @@ The tester will assert that:
     - The corresponding element is a RESP array with two elements (i.e. longitude and latitude)
     - Both elements are "0" (or any other valid floating point number), encoded as a RESP bulk string
   - If the location doesn't exist:
-    - The corresponding element is a [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) `($-1\r\n)`.
+    - The corresponding element is a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) `(*-1\r\n)`.
 
 The tester will also send a `GEOPOS` command using a key that doesn't exist:
 
 ```bash
 > GEOPOS missing_key London Munich
-# Expecting [nil, nil], encoded as "*2\r\n$-1\r\n$-1\r\n"
+# Expecting [nil, nil], encoded as "*2\r\n*-1\r\n*-1\r\n"
 ```
 
 The tester will assert that:
 
 - The response is a RESP array that contains as many elements as the number of locations requested
-- Each element of the array is a [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) `($-1\r\n)`
+- Each element of the array is a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) `(*-1\r\n)`
 
 ### Notes
 
