@@ -1,6 +1,6 @@
 In this stage, you'll add support for executing an empty transaction.
 
-### Empty trasactions
+### Empty transactions
 
 If [EXEC](https://redis.io/docs/latest/commands/exec/) is executed soon after [MULTI](https://redis.io/docs/latest/commands/multi/),
 it returns an empty array.
