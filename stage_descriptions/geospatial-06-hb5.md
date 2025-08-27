@@ -7,7 +7,7 @@ The algorithm to get back the latitude and longitude is essentially the reverse 
 The [GitHub repository](https://github.com/codecrafters-io/redis-geocoding-algorithm) we referenced earlier explains how this conversion is done. It includes:
 
 - A description of the algorithm used, along with pseudocode
-- Python code that implements the algorithm
+- Code examples of the algorithm for all the languages on this track.
 - A set of locations & scores to test against
 
 Here's the [repository link](https://github.com/codecrafters-io/redis-geocoding-algorithm).
