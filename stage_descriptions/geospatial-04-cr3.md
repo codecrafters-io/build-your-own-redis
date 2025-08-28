@@ -7,7 +7,7 @@ To store locations in a sorted set, Redis converts latitude and longitude values
 We've created a [GitHub repository](https://github.com/codecrafters-io/redis-geocoding-algorithm) that explains how this conversion is done. It includes:
 
 - A description of the algorithm used, along with pseudocode
-- Code examples of the algorithm for all the languages on this track.
+- Code samples in multiple languages.
 - A set of locations & scores to test against
 
 Here's the [repository link](https://github.com/codecrafters-io/redis-geocoding-algorithm).
