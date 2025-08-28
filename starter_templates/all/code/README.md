@@ -60,6 +60,6 @@ might be running an older version.
 
 You can fix this by installing Python 3.8 locally and using that.
 
-If you'd like to use a different version of Python, change the `language_pack`
+If you'd like to use a different version of Python, change the `buildpack`
 value in `codecrafters.yml`.
 {{/language_is_python}}

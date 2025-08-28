@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: bun-1.2
-language_pack: bun-1.2
+buildpack: bun-1.2

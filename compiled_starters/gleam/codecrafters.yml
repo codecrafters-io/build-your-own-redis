@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: gleam-1.11
-language_pack: gleam-1.11
+buildpack: gleam-1.11

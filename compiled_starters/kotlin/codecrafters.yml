@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: kotlin-2.0
-language_pack: kotlin-2.0
+buildpack: kotlin-2.0
