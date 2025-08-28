@@ -13,9 +13,7 @@ Example usage:
 
 The distance is returned in meters, encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
-Redis uses the [Haversine's Formula](https://rosettacode.org/wiki/Haversine_formula) to calculate the distance between two points. You can see how this is done in the Redis source code here.
-
-You can also see how the distance calculation is implemented in the Redis source code [here](https://github.com/redis/redis/blob/4322cebc1764d433b3fce3b3a108252648bf59e7/src/geohash_helper.c#L228C1-L228C72).
+Redis uses the [Haversine's Formula](https://rosettacode.org/wiki/Haversine_formula) to calculate the distance between two points. You can see how this is done in the Redis source code [here](https://github.com/redis/redis/blob/4322cebc1764d433b3fce3b3a108252648bf59e7/src/geohash_helper.c#L228C1-L228C72).
 
 ### Tests
 
