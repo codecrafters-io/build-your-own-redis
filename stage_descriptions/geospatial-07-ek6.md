@@ -13,7 +13,7 @@ Example usage:
 
 The distance is returned in meters, encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
-Redis uses the [Haversine's Formula](https://en.wikipedia.org/wiki/Haversine_formula#Example) to calculate the distance between two points. Please note that the linked example on Wikipedia uses degree as the unit of arguments for `sin()` and `cos()`. Most math libraries use radian as the unit for trigonometric functions like `sin()` and `cos()`. So, make sure to make appropriate conversions wherever necessary.
+Redis uses the [Haversine's Formula](https://rosettacode.org/wiki/Haversine_formula) to calculate the distance between two points. You can see how this is done in the Redis source code here.
 
 You can also see how the distance calculation is implemented in the Redis source code [here](https://github.com/redis/redis/blob/4322cebc1764d433b3fce3b3a108252648bf59e7/src/geohash_helper.c#L228C1-L228C72).
 
@@ -48,7 +48,7 @@ $11\r\n682477.7582\r\n
 
 ### Notes
 
-- For the maximum precision, please keep set the value of Earth radius's to 6372797.560856 meters. This is is the exact value used by [Redis](https://github.com/redis/redis/blob/35aacdf80a0871c933047fc46655b98a73a9374e/src/geohash_helper.c#L52), and also the tester.
+- When computing distance, set the value of Earth's radius to 6372797.560856 meters. This is the exact value [used by Redis](https://github.com/redis/redis/blob/35aacdf80a0871c933047fc46655b98a73a9374e/src/geohash_helper.c#L52).
 
 - The distance should match the actual distance between the provided locations with a precision of **up to 2 decimal places after rounding**. For example, if the expected distance is `12345.67`, any of the following returned values will be accepted:
   - `12345.67001`
