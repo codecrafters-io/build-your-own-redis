@@ -7,5 +7,5 @@ debug: false
 # Use this to change the {{language_name}} version used to run your code
 # on Codecrafters.
 #
-# Available versions: {{language_pack_with_version}}
-language_pack: {{language_pack_with_version}}
+# Available versions: {{buildpack_with_version}}
+buildpack: {{buildpack_with_version}}

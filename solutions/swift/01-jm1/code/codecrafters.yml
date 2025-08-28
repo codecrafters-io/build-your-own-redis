@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: swift-6.0
-language_pack: swift-6.0
+buildpack: swift-6.0

@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: scala-3.7
-language_pack: scala-3.7
+buildpack: scala-3.7

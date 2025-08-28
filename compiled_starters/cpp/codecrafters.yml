@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: cpp-23
-language_pack: cpp-23
+buildpack: cpp-23

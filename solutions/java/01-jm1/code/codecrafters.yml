@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: java-24
-language_pack: java-24
+buildpack: java-24
