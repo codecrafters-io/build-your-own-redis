@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: zig-0.14
-language_pack: zig-0.14
+buildpack: zig-0.14

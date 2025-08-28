@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: elixir-1.18
-language_pack: elixir-1.18
+buildpack: elixir-1.18

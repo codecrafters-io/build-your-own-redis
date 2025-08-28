@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: nodejs-21
-language_pack: nodejs-21
+buildpack: nodejs-21

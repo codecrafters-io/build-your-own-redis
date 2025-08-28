@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: odin-2025.7
-language_pack: odin-2025.7
+buildpack: odin-2025.7

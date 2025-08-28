@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: crystal-1.1
-language_pack: crystal-1.1
+buildpack: crystal-1.1

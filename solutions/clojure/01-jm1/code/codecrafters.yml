@@ -8,4 +8,4 @@ debug: false
 # on Codecrafters.
 #
 # Available versions: clojure-1.12.0
-language_pack: clojure-1.12.0
+buildpack: clojure-1.12.0
