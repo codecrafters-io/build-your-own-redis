@@ -50,8 +50,7 @@ $17\r\n
 
 ### Notes
 
-- The conversion from latitude/longitude to score and back is lossy, so the tester will be lenient in checking the coordinates provided - it will accept any coordinates that are within 4 decimal places of the original values. For example, for the example shown above, any of the following values will be accepted:
-  - `["2.2945", "48.8585"]`
-  - `["2.2945001", "48.8585002"]`
-  - `["2.29447156190", "48.858462550"]`
-  - `["2.29449", "48.858453"]`
+- The conversion from latitude/longitude to score and back is lossy, so the tester will be lenient in checking the coordinates provided - it will accept any coordinates that are within 6 decimal places of the original values. For example, for the example shown above, any of the following values will be accepted:
+  - `["2.2944715", "48.8584625"]`
+  - `["2.294472", "48.858463"]`
+  - `["2.294471594", "48.858462987"]`
