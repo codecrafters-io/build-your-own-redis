@@ -48,9 +48,7 @@ $11\r\n682477.7582\r\n
 
 - When computing distance, set the value of Earth's radius to 6372797.560856 meters. This is the exact value [used by Redis](https://github.com/redis/redis/blob/35aacdf80a0871c933047fc46655b98a73a9374e/src/geohash_helper.c#L52).
 
-- The distance should match the actual distance between the provided locations with a precision of **up to 2 decimal places after rounding**. For example, if the expected distance is `12345.67`, any of the following returned values will be accepted:
-  - `12345.67001`
-  - `12345.674`
-  - `12345.6659`
-  - `12345.6666`
-  - `12345.669`
+- The distance should match the actual distance between the provided locations with a precision of up to 4 decimal places after rounding. For example, if the expected distance is 12345.6789, any of the following returned values will be accepted:
+  - `12345.67891`
+  - `12345.6789`
+  - `12345.67889`
