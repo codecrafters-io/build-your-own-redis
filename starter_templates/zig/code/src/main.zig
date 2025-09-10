@@ -2,10 +2,13 @@ const std = @import("std");
 const net = std.net;
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
+    var stderr_buffer: [1024]u8 = undefined;
+    var stderr_writer = std.fs.File.stderr().writer(&stderr_buffer);
+    const stderr = &stderr_writer.interface;
 
     // You can use print statements as follows for debugging, they'll be visible when running tests.
-    try stdout.print("Logs from your program will appear here!", .{});
+    try stderr.print("Logs from your program will appear here!", .{});
+    try stderr.flush();
 
     // Uncomment this block to pass the first stage
     //
@@ -19,7 +22,7 @@ pub fn main() !void {
     // while (true) {
     //     const connection = try listener.accept();
     //
-    //     try stdout.print("accepted new connection", .{});
+    //     try stderr.print("accepted new connection", .{});
     //     connection.stream.close();
     // }
 }

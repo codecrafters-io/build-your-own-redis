@@ -2,7 +2,11 @@ const std = @import("std");
 const net = std.net;
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
+    var stderr_buffer: [1024]u8 = undefined;
+    var stderr_writer = std.fs.File.stderr().writer(&stderr_buffer);
+    const stderr = &stderr_writer.interface;
+
+    try stderr.flush();
 
     const address = try net.Address.resolveIp("127.0.0.1", 6379);
 
@@ -14,7 +18,7 @@ pub fn main() !void {
     while (true) {
         const connection = try listener.accept();
 
-        try stdout.print("accepted new connection", .{});
+        try stderr.print("accepted new connection", .{});
         connection.stream.close();
     }
 }
