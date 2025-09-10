@@ -1,15 +1,12 @@
-@@ -1,28 +1,24 @@
+@@ -1,24 +1,19 @@
  const std = @import("std");
+ const stdout = std.fs.File.stdout();
  const net = std.net;
 
  pub fn main() !void {
-     var stderr_buffer: [1024]u8 = undefined;
-     var stderr_writer = std.fs.File.stderr().writer(&stderr_buffer);
-     const stderr = &stderr_writer.interface;
-
 -    // You can use print statements as follows for debugging, they'll be visible when running tests.
--    try stderr.print("Logs from your program will appear here!", .{});
-     try stderr.flush();
+-    try stdout.writeAll("Logs from your program will appear here!");
++    const address = try net.Address.resolveIp("127.0.0.1", 6379);
 
 -    // Uncomment this block to pass the first stage
 -    //
@@ -23,11 +20,9 @@
 -    // while (true) {
 -    //     const connection = try listener.accept();
 -    //
--    //     try stderr.print("accepted new connection", .{});
+-    //     try stdout.writeAll("accepted new connection");
 -    //     connection.stream.close();
 -    // }
-+    const address = try net.Address.resolveIp("127.0.0.1", 6379);
-+
 +    var listener = try address.listen(.{
 +        .reuse_address = true,
 +    });
@@ -36,7 +31,7 @@
 +    while (true) {
 +        const connection = try listener.accept();
 +
-+        try stderr.print("accepted new connection", .{});
++        try stdout.writeAll("accepted new connection");
 +        connection.stream.close();
 +    }
  }
