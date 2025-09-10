@@ -15,7 +15,7 @@ defer listener.deinit();
 while (true) {
     const connection = try listener.accept();
 
-    try stdout.print("accepted new connection", .{});
+    try stderr.print("accepted new connection", .{});
     connection.stream.close();
 }
 ```
