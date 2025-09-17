@@ -15,7 +15,7 @@ It accepts a single argument and sends it back as a [RESP bulk string](https://r
 
 To pass this stage, your program will need to:
 - Parse the client's input to extract the argument from the `ECHO` command
-- Then encode that argument as a bulk string for the response.
+- Then encode that argument as a bulk string for the response
 
 ### Tests
 
