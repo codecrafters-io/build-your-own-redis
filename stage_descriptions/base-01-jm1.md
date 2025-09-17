@@ -4,6 +4,8 @@ In this stage, you'll implement a TCP server that listens on port 6379.
 
 [TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) is the underlying protocol used by protocols like HTTP, SSH, and others you're probably familiar with. Redis also uses TCP for communication between its clients and servers.
 
+Don't worry if you're unfamiliar with the TCP protocol, or what Redis clients & servers are. You'll learn more about this in the next stages.
+
 For this stage, your program should act as a basic TCP server that listens for incoming connections on port 6379.
 
 ### Tests
