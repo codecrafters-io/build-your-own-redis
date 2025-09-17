@@ -1,5 +1,4 @@
-In this stage, you'll respond to multiple
-[PING](https://redis.io/commands/ping) commands sent by the same connection.
+In this stage, you'll respond to multiple [PING](https://redis.io/commands/ping) commands sent by the same connection.
 
 ### Handling Multiple Commands
 
@@ -26,11 +25,12 @@ $ echo -e "PING\nPING" | redis-cli
 The tester will expect to receive a `+PONG\r\n` response for each command sent.
 
 {{#lang_is_javascript}}
-In most languages, you'd need to run a loop that reads input from a connection and sends a
-response back. In JavaScript however, if you're listening to the
-[`data`](https://nodejs.org/api/net.html#net_event_data) event, this should be automatically handled for you. **It
-is very likely that the code you had for the previous stage will pass this stage without any changes!**
+In most languages, you'd need to run a loop that reads input from a connection and sends a response back. In JavaScript, however, if you're listening to the [`data`](https://nodejs.org/api/net.html#net_event_data) event, this should be automatically handled for you. **It is very likely that the code you had for the previous stage will pass this stage without any changes!**
 {{/lang_is_javascript}}
+
+{{#lang_is_typescript}}
+In most languages, you'd need to run a loop that reads input from a connection and sends a response back. In JavaScript, however, if you're listening to the [`data`](https://nodejs.org/api/net.html#net_event_data) event, this should be automatically handled for you. **It is very likely that the code you had for the previous stage will pass this stage without any changes!**
+{{/lang_is_typescript}}
 
 ### Notes
 
