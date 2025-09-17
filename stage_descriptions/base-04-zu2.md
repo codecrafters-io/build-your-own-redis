@@ -2,7 +2,7 @@ In this stage, you'll add support for multiple concurrent clients.
 
 ### Handling Multiple Clients
 
-Besides handling multiple commands from the same client, Redis servers can also handle multiple clients at once.
+In addition to handling multiple commands from the same client, Redis servers can also handle multiple clients at once.
 
 {{#lang_is_javascript}}
 In most languages, you'd need to either use threads or implement an
