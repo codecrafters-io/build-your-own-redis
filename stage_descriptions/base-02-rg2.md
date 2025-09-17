@@ -6,10 +6,11 @@ Redis clients communicate with Redis servers by sending [commands](https://redis
 
 For example:
 ```bash
-redis> SET name "Alice"
-"OK"
+$ redis-cli SET name Alice
+OK
 ```
-Here, the client sends a [`SET`](https://redis.io/docs/latest/commands/set/) command to store a key-value pair where `name` is the key, and `Alice` is the string value. The server responds with `OK`, a simple confirmation that the operation was successful.
+Here, the client sends a [`SET`](https://redis.io/docs/latest/commands/set/) command to store the key `name` with the value `Alice`. The server responds with `OK`, confirming that the action was successful.
+
 
 Both commands and responses are encoded using the [Redis serialization protocol (RESP)](https://redis.io/docs/latest/develop/reference/protocol-spec/). We'll learn more about this in later stages.
 
@@ -18,8 +19,8 @@ Both commands and responses are encoded using the [Redis serialization protocol 
 [PING](https://redis.io/commands/ping/) is one of the simplest Redis commands. It's used to check whether a Redis server is healthy.
 
 ```bash
-redis> PING
-"PONG"
+$ redis-cli PING
+PONG
 ```
 
 The response for the `PING` command is `+PONG\r\n`. This is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
