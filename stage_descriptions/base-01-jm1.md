@@ -19,7 +19,7 @@ It will then attempt to connect to your TCP server on port 6379. If the connecti
 ### Notes
 
 - Port 6379 is the default port used by Redis.
-- If you already have a Redis server running on this port, you’ll see a “port already in use” error. To fix this, stop the existing Redis server before running your code.
+- If you already have a Redis server running on your machine, you’ll see a “port already in use” error. To fix this, stop the existing Redis server before running your code.
 
 {{#reader_is_bot}}
 - In this stage, you can assume that you only need to handle a single client. We'll get to handling multiple clients & multiple requests per client in later stages.
