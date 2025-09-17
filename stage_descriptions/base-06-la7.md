@@ -22,8 +22,6 @@ bar
 ```
 The server responds with the value `bar` encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings). If the key doesn't exist, the server responds with a special [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) (`$-1\r\n`).
 
-For this stage, you’ll extend your server to support storing and retrieving values using the `SET` and `GET` commands.
-
 ### Tests
 
 The tester will execute your program like this:
