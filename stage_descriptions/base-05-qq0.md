@@ -35,7 +35,7 @@ The tester will expect to receive `$3\r\nhey\r\n` as a response. That's the stri
 
 ### Notes
 
-- We highly recommend you implement a proper RESP parser at this stage, as it will be essential for all future stages.
+- We highly recommend you implement a proper RESP parser at this stage. It'll come in handy in later stages.
 - The exact bytes you'll receive will be a [RESP Array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) that looks something like `*2\r\n$4\r\nECHO\r\n$3\r\nhey\r\n`. This is the RESP encoding of `["ECHO", "hey"]`. You'll need to parse this array to get the command and its argument. 
 - Redis command names are case-insensitive, so `ECHO`, `echo`, and `EcHo` are all valid commands.
 - The tester will send a random string as an argument to the `ECHO` command, so you won't be able to hardcode the response to pass this stage.
