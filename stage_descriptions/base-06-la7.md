@@ -3,19 +3,19 @@ In this stage, you'll add support for the [SET](https://redis.io/commands/set) &
 
 ### The `SET` Command
 
-The `SET` command is used to set a key to a value. For example, a client can set a key with a value like this:
+The `SET` command is used to set a key to a value. For example, a client can set a key `foo` to a value `bar` like this:
 ```bash
 $ redis-cli SET foo bar
 OK
 ```
-Here, the client sends a `SET` command to store the key `foo` with the value `bar`. The server then responds with `OK`, confirming that the action was successful.
+The server then responds with `OK`, confirming that the action was successful.
 
 The `SET` command supports a number of extra options like `EX` (expiry time in seconds), `PX` (expiry time in milliseconds), and more. We
 won't cover these extra options in this stage. We'll get to them in later stages.
 
 ### The `GET` Command
 
-The `GET` command is used to retrieve the value of a key. For example, to retrieve the value we just set:
+The `GET` command is used to retrieve the value of a key. For example, to retrieve the value the client set for the key `foo`:
 ```bash
 $ redis-cli GET foo
 bar
