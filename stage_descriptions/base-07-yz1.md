@@ -6,7 +6,7 @@ The [`SET`](https://redis.io/commands/set) command can take an optional `PX` arg
 
 For example:
 ```bash
-$ redis-cli SET foo bar px 100
+$ redis-cli SET foo bar PX 100
 OK
 ```
 This command sets the key `foo` to the value `bar` with an expiry of 100 milliseconds.
