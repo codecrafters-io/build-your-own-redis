@@ -4,7 +4,7 @@ In this stage, you'll add support for setting a key with an expiry.
 
 The `SET` command can accept [optional arguments](https://redis.io/docs/latest/commands/set/#options) to modify its behaviour.
 
-For example, here are a few options you might see with `SET`:
+For example, here are a few options you can use with `SET`:
 
 ```bash
 # Only set the key if it doesn't already exist.
