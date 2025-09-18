@@ -1,13 +1,22 @@
 In this stage, you'll add support for setting a key with an expiry.
 
-The expiry for a key can be provided using the "PX" argument to the [SET](https://redis.io/commands/set) command. The expiry is provided in milliseconds.
+### Key Expiry with `PX`
 
+The [`SET`](https://redis.io/commands/set) command can take an optional `PX` argument to set a key's expiry time in milliseconds. After the key expires, it should no longer be accessible.
+
+For example:
 ```bash
-$ redis-cli SET foo bar px 100 # Sets the key "foo" to "bar" with an expiry of 100 milliseconds
+$ redis-cli SET foo bar px 100
 OK
 ```
+This command sets the key `foo` to the value `bar` with an expiry of 100 milliseconds.
 
-After the key has expired, a `GET` command for that key should return a "null bulk string" (`$-1\r\n`).
+After the key expires, a `GET` command for that key should return a [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) (`$-1\r\n`).
+
+```bash
+$ redis-cli GET foo
+(nil)
+```
 
 {{#lang_is_haskell}}
 The [time](https://hackage.haskell.org/package/time) package is available
@@ -22,29 +31,29 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send a `SET` command to your server to set a key with an expiry:
+Next, it will send a `SET` command to your server to set a key with an expiry:
 
 ```bash
-$ redis-cli SET foo bar px 100
+$ redis-cli SET foo bar PX 100
 ```
 
-It'll then immediately send a `GET` command to retrieve the value:
+Immediately after that, it will send a `GET` command for that key to retrieve the value of the key:
 
 ```bash
 $ redis-cli GET foo
 ```
 
-It'll expect the response to be `bar` (encoded as a RESP bulk string).
+The tester will expect to receive `bar` (encoded as a RESP bulk string) as the response.
 
-It'll then wait for the key to expire and send another `GET` command:
+After waiting for the key to expire, it will send another `GET` command:
 
 ```bash
 $ sleep 0.2 && redis-cli GET foo
 ```
 
-It'll expect the response to be `$-1\r\n` (a "null bulk string").
+The tester will expect the response to be a null bulk string (`$-1\r\n`).
 
 ### Notes
 
-- Just like command names, command arguments are also case-insensitive. So `PX`, `px` and `pX` are all valid.
-- The keys, values and expiry times used in the tests will be random, so you won't be able to hardcode a response to pass this stage.
+- Just like command names, command arguments are also case-insensitive. So `PX`, `px`, and `pX` are all valid.
+- The keys, values, and expiry times used in the tests will be random, so you won't be able to hardcode a response to pass this stage.
