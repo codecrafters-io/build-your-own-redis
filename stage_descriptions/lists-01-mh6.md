@@ -16,7 +16,7 @@ Example usage:
 (integer) 2
 ```
 
-The return value is the number of elements in the list after appending. The number is encoded as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+The return value is the number of elements in the list after appending. This number is encoded as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Tests
 
