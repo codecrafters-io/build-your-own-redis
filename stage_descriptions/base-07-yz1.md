@@ -43,7 +43,7 @@ Immediately after that, it will send a `GET` command to retrieve the value of th
 $ redis-cli GET foo
 ```
 
-The tester will expect to receive `bar` (encoded as a RESP bulk string) as the response.
+The tester will expect to receive `$3\r\nbar\r\n` as a response. That's the string `bar` encoded as a bulk string.
 
 After waiting for the key to expire, it will send another `GET` command:
 
