@@ -37,7 +37,7 @@ Next, it will send a `SET` command to your server to set a key with an expiry:
 $ redis-cli SET foo bar PX 100
 ```
 
-Immediately after that, it will send a `GET` command for that key to retrieve the value of the key:
+Immediately after that, it will send a `GET` command to retrieve the value of the key:
 
 ```bash
 $ redis-cli GET foo
