@@ -1,10 +1,26 @@
 In this stage, you'll add support for setting a key with an expiry.
 
-### Key Expiry with `PX`
+### `SET` Command Options
 
-The [`SET`](https://redis.io/commands/set) command can take an optional `PX` argument to set a key's expiry time in milliseconds. After the key expires, it should no longer be accessible.
+The `SET` command can accept [optional arguments](https://redis.io/docs/latest/commands/set/#options) to modify its behaviour.
 
-For example:
+For example, here are a few options you might see with `SET`:
+
+```bash
+# Only set the key if it doesn't already exist.
+$ redis-cli SET mykey value NX 
+OK
+
+# Only set the key if it already exists.
+$ redis-cli SET mykey new_value XX 
+OK
+```
+
+### The `PX` Option
+
+The `PX` option is used to set a key's expiry time in milliseconds. After the key expires, it's no longer accessible.
+
+For example, a client can set a key with an expiry like this:
 ```bash
 $ redis-cli SET foo bar PX 100
 OK
