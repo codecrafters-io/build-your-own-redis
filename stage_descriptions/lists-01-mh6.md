@@ -7,7 +7,7 @@ The [`RPUSH`](https://redis.io/docs/latest/commands/rpush/) command is used to a
 Example usage:
 
 ```bash
-# Creating a new list with single element
+# Creating a new list with a single element
 > RPUSH list_key "foo"
 (integer) 1
 
@@ -16,7 +16,7 @@ Example usage:
 (integer) 2
 ```
 
-The return value is the number of elements in the list after appending. It is encoded as a RESP integer.
+The return value is the number of elements in the list after appending. The number is encoded as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Tests
 
@@ -26,13 +26,13 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 
-It will then send the following command to your program.
+It will then send the following command to your program:
 
 ```bash
 $ redis-cli RPUSH list_key "element"
 ```
 
-The tester will verify that the response to the command is `:1\r\n`, which is 1 (the number of elements in the list), encoded as a [RESP Integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+The tester will verify that the response to the command is `:1\r\n`, which is 1 (the number of elements in the list), encoded as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Notes
 
