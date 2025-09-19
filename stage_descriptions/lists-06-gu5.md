@@ -4,7 +4,7 @@ In this stage, you'll add support for the `LPUSH` command, which prepends elemen
 
 The `LPUSH` command is similar to `RPUSH`, except that it inserts elements at the head of the list instead of the tail. If the list doesn't exist, it gets created first before prepending the elements.
 
-For example, when you use `LPUSH`:
+For example:
 
 ```bash
 > LPUSH list_key "a" "b" "c"
