@@ -11,7 +11,7 @@ For example, when you use `LPUSH`:
 (integer) 3
 ```
 
-Even though the elements were listed as "a", "b", "c", the `LRANGE` command shows they were added to the list in reverse order, so the list becomes `["c", "b", "a"]`.
+Even though the elements were listed as "a", "b", "c", they are added to the list in reverse order, so the list becomes `["c", "b", "a"]`.
 
 ```bash
 > LRANGE list_key 0 -1
