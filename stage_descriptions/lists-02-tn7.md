@@ -9,7 +9,7 @@ $ redis-cli RPUSH list_key "element1"
 $ redis-cli RPUSH list_key "element2"
 (integer) 2
 ```
-The server then returns the new length of the list as a [RESP Integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+The server then returns the new length of the list as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Tests
 
