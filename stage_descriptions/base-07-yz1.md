@@ -7,12 +7,12 @@ The `SET` command can accept [optional arguments](https://redis.io/docs/latest/c
 For example, here are a few options you can use with `SET`:
 
 ```bash
-# Only set the key if it doesn't already exist.
-$ redis-cli SET mykey value NX 
+# Set a key with a 10-second expiry
+$ redis-cli SET mykey value EX 10
 OK
 
-# Only set the key if it already exists.
-$ redis-cli SET mykey new_value XX 
+# Set a key with a 1000-millisecond expiry
+$ redis-cli SET mykey value PX 1000
 OK
 ```
 
