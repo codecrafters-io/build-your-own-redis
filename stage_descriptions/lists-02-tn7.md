@@ -1,6 +1,6 @@
 In this stage, you’ll add support for `RPUSH` to append a single element to an existing list.
 
-## Appending to an Existing List
+### Appending to an Existing List
 
 When a client sends [`RPUSH`](https://redis.io/docs/latest/commands/rpush/) on a list that already exists, the new element is appended to the end of the list. 
 ```bash
