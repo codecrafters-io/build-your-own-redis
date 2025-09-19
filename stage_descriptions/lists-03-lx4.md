@@ -2,7 +2,7 @@ In this stage, you'll add support for appending multiple elements in a single `R
 
 ### `RPUSH` with multiple elements
 
-The `RPUSH` command supports adding multiple elements to a list at once. This works whether you're creating a new list or appending elements to an existing one.
+The `RPUSH` command supports adding multiple elements to a list at once.
 
 ```bash
 # Creating a new list with multiple elements
