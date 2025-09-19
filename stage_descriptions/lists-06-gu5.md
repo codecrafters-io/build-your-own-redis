@@ -47,4 +47,4 @@ It'll also use the `LRANGE` command to verify that elements are inserted in the 
 ``` 
 
 ### Notes
-- `LRANGE` should insert all elements at index `0` and shift all existing elements to higher indexes.
+- `LRANGE` should insert each element at index `0` and shift all existing elements to higher indexes.
