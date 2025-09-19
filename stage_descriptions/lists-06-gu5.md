@@ -28,7 +28,7 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 
-It will then send a series of `LPUSH` commands. For each command, the tester will expect the response to be the list length as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+It will then send a series of `LPUSH` commands. For each command, the tester will expect the response to be the list's length as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ```bash
 $ redis-cli
@@ -47,4 +47,4 @@ It'll also use the `LRANGE` command to verify that elements are inserted in the 
 ``` 
 
 ### Notes
-- Elements are inserted at index `0`, shifting all existing elements to higher indexes.
+- `LRANGE` should insert all elements at index `0` and shift all existing elements to higher indexes.
