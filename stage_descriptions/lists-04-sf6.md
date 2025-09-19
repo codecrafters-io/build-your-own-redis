@@ -2,7 +2,9 @@ In this stage, you will add support for listing the elements of a list using the
 
 ### The `LRANGE` command
 
-The `LRANGE` command is used to retrieve a range of elements from a list, given a `start` and `stop` index. The index of the first element is `0`. The `stop` index is inclusive, which means the element at that index is included in the response.
+The `LRANGE` command is used to retrieve elements from a list using a `start` index and `stop` index.
+
+The index of the first element is `0`. The `stop` index is inclusive, which means the element at that index is included in the response.
 
 For example:
 
@@ -23,7 +25,7 @@ For example:
 3) "e"
 ```
 
-The `LRANGE` command has several behaviors to consider:
+The `LRANGE` command has several behaviors to keep in mind:
 
 - If the list doesn't exist, an empty array is returned.
 - If the `start` index is greater than or equal to the list's length, an empty array is returned.
