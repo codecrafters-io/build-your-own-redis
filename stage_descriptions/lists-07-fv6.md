@@ -50,6 +50,3 @@ The tester will also verify the response for a non-existent list:
 ```
 
 In this case, your program should respond with `0`, which is encoded as `:0\r\n`.
-
-### Notes
-- `LLEN` should work with lists created by both `RPUSH` and `LPUSH` commands.
