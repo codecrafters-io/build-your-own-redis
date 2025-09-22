@@ -2,7 +2,7 @@ In this stage, you'll add support for removing multiple elements in a single `LP
 
 ### `LPOP` with multiple elements
 
-The `LPOP` command can take an optional argument to specify the number of elements to remove from a list. The command returns the removed elements in a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays).
+The `LPOP` command accepts an optional argument to specify the number of elements to remove from a list. The command returns the removed elements in a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays).
 
 For example:
 
