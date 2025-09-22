@@ -2,7 +2,7 @@ In this stage, you'll add support for querying the length of a list using the `L
 
 ### The `LLEN` Command
 
-The [`LLEN`](https://redis.io/docs/latest/commands/llen/) command is used to get the number of elements in a list. This number is encoded as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+The [`LLEN`](https://redis.io/docs/latest/commands/llen/) command is used to get the number of elements in a list. This number is returned as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 For example:
 
