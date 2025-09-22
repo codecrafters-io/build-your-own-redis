@@ -38,7 +38,7 @@ Next, it will send an `LPOP` command to your server for the list that was just c
 # Expecting: (Bulk string) "one"
 ```
 
-The tester expects the removed element to be returned as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) (`$3\r\none\r\n`).
+The tester will expect the removed element to be returned as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) (`$3\r\none\r\n`).
 
 The tester will also verify that the remaining elements are present in the list using the `LRANGE` command.
 
