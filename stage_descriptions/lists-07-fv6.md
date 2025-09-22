@@ -40,7 +40,7 @@ Next, it will send a `LLEN` command for the newly created list.
 # Expect: list_length (RESP Encoded Integer)
 ```
 
-The tester will expect the response to be the length of the list, encoded as a RESP integer.
+The tester will expect the response to be the length of the list encoded as a RESP integer.
 
 The tester will also verify the response for a non-existent list:
 
