@@ -31,7 +31,7 @@ $ redis-cli
 > RPUSH list_key "one" "two" "three" "four" "five"
 ```
 
-Next, it will send an `LPOP` command to your server for the list that was just created:
+Next, it will send an `LPOP` command to your server specifying the list that was just created:
 
 ```bash
 > LPOP list_key
