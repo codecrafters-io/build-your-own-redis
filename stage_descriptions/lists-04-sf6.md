@@ -46,7 +46,7 @@ It will then create a new list with multiple elements:
 $ redis-cli RPUSH list_key "a" "b" "c" "d" "e"
 ```
 
-After that, the tester will send your program a series of `LRANGE` commands. For each command, it will expect the response to be a [RESP Array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) or an empty array (`*0\r\n`), depending on the test case.
+After that, the tester will send your program a series of `LRANGE` commands. For each command, it will expect the response to be a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) or an empty array (`*0\r\n`), depending on the test case.
 
 As an example, the tester might send your program a command like this:
 
