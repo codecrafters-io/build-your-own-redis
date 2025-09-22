@@ -2,7 +2,7 @@ In this stage, you'll add support for querying the length of a list using the `L
 
 ### The `LLEN` Command
 
-The [`LLEN`](https://redis.io/docs/latest/commands/llen/) command is used to get the number of elements in a list. This number is returned as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+The [`LLEN`](https://redis.io/docs/latest/commands/llen/) command returns the number of elements in a list as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 For example:
 
@@ -40,7 +40,7 @@ Next, it will send a `LLEN` command for the newly created list.
 # Expect: list_length (RESP Encoded Integer)
 ```
 
-Your program is expected to respond with the length of the list, encoded as a RESP integer.
+The tester will expect the response to be the length of the list, encoded as a RESP integer.
 
 The tester will also verify the response for a non-existent list:
 
