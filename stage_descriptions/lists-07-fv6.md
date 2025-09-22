@@ -18,11 +18,6 @@ For example:
 
 If the list doesn't exist, the server returns `0` as a RESP integer.
 
-```bash
-> LLEN non_existent_key
-(integer) 0
-```
-
 ### Tests
 
 The tester will execute your program like this:
