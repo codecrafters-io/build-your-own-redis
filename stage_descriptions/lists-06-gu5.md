@@ -2,14 +2,18 @@ In this stage, you'll add support for the `LPUSH` command, which prepends elemen
 
 ### The `LPUSH` Command
 
-The `LPUSH` command is similar to `RPUSH`, except that it inserts elements from the left rather than right. If a list doesn't exist, it is created first before prepending elements.
+The `LPUSH` command is similar to `RPUSH`, except that it inserts elements at the start of the list instead of the end. If the list doesn't exist, it gets created first before prepending the elements.
 
-Example usage:
+For example:
 
 ```bash
 > LPUSH list_key "a" "b" "c"
 (integer) 3
+```
 
+Even though the elements were listed as "a", "b", "c", they are added to the list in reverse order, so the list becomes `["c", "b", "a"]`.
+
+```bash
 > LRANGE list_key 0 -1
 1) "c"
 2) "b"
@@ -24,7 +28,7 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 
-It will then send a series of `LPUSH` commands and expect the response to be the list length in each case, which is a RESP integer.
+It will then send a series of `LPUSH` commands. For each command, the tester will expect the response to be the list's length as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ```bash
 $ redis-cli
