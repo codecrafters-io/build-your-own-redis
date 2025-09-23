@@ -2,33 +2,37 @@ In this stage, you'll add support for the `BLPOP` command, which blocks until an
 
 ### The `BLPOP` Command
 
-`BLPOP` is a blocking variant of the `LPOP` command. It allows clients to wait for an element to become available on one or more lists. If the list is empty, the command blocks until:
+[`BLPOP`](https://redis.io/docs/latest/commands/blpop/) is a blocking variant of the `LPOP` command. It lets a client wait for an element to become available on a list before popping it.
 
-- An element is pushed to the list
-- Or the specified timeout is reached (in seconds)
-    - It blocks indefinitely if the timeout specified is 0.
+If the list is empty, the command blocks until:
 
-Example usage:
+- A new element is added to the list
+- Or a specified timeout is reached.
+  
+If the timeout is `0`, the command blocks indefinitely.
+
+For example, a client can block on a list with an indefinite timeout like this:
 
 ```bash
-# Here the timeout is specified as 0 (i.e. wait indefinitely)
 > BLPOP list_key 0
+```
 
-# ... this blocks until an element is added to the list
+This client will wait until an element is added to `list_key`. When an element like `"foobar"` is added, it is removed from the list, and the server responds with a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays):
 
-# As soon as an element is added, it responds with a resp array:
+```bash
 1) "list_key"
 2) "foobar"
 ```
 
-If a timeout duration is supplied, it is the number of seconds the client will wait for an element to be available for removal. If no elements were inserted during this interval, the server returns a null bulk string (`$-1\r\n`).
+The RESP array contains two bulk strings:
+1. The list name
+2. The element that was popped
 
-If an element was inserted during this interval, the server removes it from the list and responds to the blocking client with a RESP-encoded array containing two elements:
+The `BLPOP` command has a few other behaviours to keep in mind:
 
-1. The list name (as a bulk string)
-1. The element that was popped (as a bulk string)
-
-If multiple clients are blocked for `BLPOP` command, the server responds to the client which has been blocked for the longest duration.
+- If a timeout duration is supplied, it is the number of seconds the client will wait for an element. 
+- If no elements were inserted during the timeout interval, the server returns a [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) (`$-1\r\n`).
+- If multiple clients are blocked for the same list, the server responds to the client that has been waiting the longest.
 
 ### Tests
 
@@ -45,7 +49,7 @@ $ redis-cli BLPOP list_key 0
 # (Blocks)
 ```
 
-After a short while, it'll then send `RPUSH` using another client:
+After a short while, another client will push an element to the same list:
 
 ```bash
 # In another client:
@@ -53,10 +57,10 @@ $ redis-cli RPUSH list_key "foo"
 # Expect: (integer) 1
 ```
 
-The tester will then expect the following response from the first client:
+The tester expects the first client to immediately receive the response, which is the RESP-encoded array `["list_key", "foo"]`.
 
 ```bash
-# RESP encoding of ["list_key", "foo"] ->
+# RESP encoding of ["list_key", "foo"]
 *2\r\n
 $8\r\n
 list_key\r\n
@@ -64,24 +68,24 @@ $3\r\n
 foo\r\n
 ```
 
-The tester will also test `BLPOP` using multiple blocking clients. For example, it will spawn multiple clients one after another, and send `BLPOP` command from each client specifying the same list.
+The tester will also test `BLPOP` using multiple blocking clients. It will spawn several clients and have each one send a `BLPOP` command to the same list.
 
 ```bash
 # Client 1 sends BLPOP first
 $ redis-cli BLPOP another_list_key 0
 
 # Client 2 sends BLPOP second
-$ redis-cli BLPOP another_list key 0
+$ redis-cli BLPOP another_list_key 0
 ```
 
-It will then spawn a separate client which will send `RPUSH` to the server specifying the list.
+Then, a separate client will use `RPUSH` to add an element to the list.
 
 ```
 $ redis-cli RPUSH list_key "foo"
 ```
 
-The tester will expect the response to be sent to Client 1 since it has been blocked for the longest time.
+The tester will expect your server to respond to the client that sent the `BLPOP` command first (`Client 1`).
 
 ### Notes
 
-- In this stage, the timeout argument will always be 0, i.e. BLPOP should wait indefinitely. We'll get to non-zero timeouts in later stages. 
+- In this stage, the timeout argument will always be `0`, meaning `BLPOP` should wait indefinitely. We'll handle non-zero timeouts in a later stage.
