@@ -2,7 +2,7 @@ In this stage, you'll add support for a non-zero timeout for the `BLPOP` command
 
 ### The `BLPOP` Command with a Non-Zero Timeout
 
-The `BLPOP` command can take a timeout duration in seconds. 
+The `BLPOP` command can accept a timeout duration in seconds. 
 
 ```bash
 $ redis-cli BLPOP list_key 2
