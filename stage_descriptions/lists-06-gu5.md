@@ -45,6 +45,3 @@ It'll also use the `LRANGE` command to verify that elements are inserted in the 
 > LRANGE list_key 0 -1
 # Expect RESP Encoded Array: ["a", "b", "c"]
 ``` 
-
-### Notes
-- `LRANGE` should insert each element at index `0`, and shift all existing elements to higher indexes.
