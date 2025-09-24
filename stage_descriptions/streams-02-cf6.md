@@ -34,7 +34,7 @@ $ redis-cli XADD stream_key 1526919030474-0 temperature 36 humidity 95
 "1526919030474-0"
 ```
 
-The server responds with the ID of the newly added entry as a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
+The return value is the ID of the newly added entry as a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
 `XADD` supports other [optional arguments](https://redis.io/docs/latest/commands/xadd/#optional-arguments), but we won't deal with them in this challenge.
 
