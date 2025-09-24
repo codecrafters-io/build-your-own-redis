@@ -3,7 +3,7 @@ name: Test
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [test-llm-rules]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
