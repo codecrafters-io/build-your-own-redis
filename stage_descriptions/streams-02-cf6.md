@@ -2,9 +2,7 @@ In this stage, you'll add support for creating [Redis streams](https://redis.io/
 
 ### Redis Streams & Entries
 
-A Redis stream is a data type that stores a sequence of entries. Each entry consists of a unique ID and one or more key-value pairs.
-
-Streams are great for applications that need to handle real-time data, like event logs and message queues.
+A [Redis stream](https://redis.io/docs/latest/develop/data-types/streams/) is used to store a sequence of entries in chronological order at a given key. Each entry consists of a unique ID and one or more key-value pairs.
 
 For example, if you were using a Redis stream to store data for a temperature & humidity monitor, the stream might look like this:
 
@@ -12,11 +10,11 @@ For example, if you were using a Redis stream to store data for a temperature & 
 entries:
   - id: 1526985054069-0 # (ID of the first entry)
     temperature: 36 # (A key value pair in the first entry)
-    humidity: 95 # (Another key value pair in the first entry)
+    humidity: 95 # (Another key value pair)
 
   - id: 1526985054079-0 # (ID of the second entry)
-    temperature: 37 # (A key value pair in the first entry)
-    humidity: 94 # (Another key value pair in the first entry)
+    temperature: 37 # (A key value pair in the second entry)
+    humidity: 94 # (Another key value pair)
 
   # ... (and so on)
 ```
