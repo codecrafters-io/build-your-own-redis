@@ -31,7 +31,7 @@ The RESP array contains two bulk strings:
 The `BLPOP` command has a few other behaviours to keep in mind:
 
 - If a timeout duration is supplied, it is the number of seconds the client will wait for an element. 
-- If no elements were inserted during the timeout interval, the server returns a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) (`*-1\r\n`).
+- If no elements were inserted during the timeout interval, the server returns a [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) (`*-1\r\n`).
 - If multiple clients are blocked for the same list, the server responds to the client that has been waiting the longest.
 
 ### Tests
