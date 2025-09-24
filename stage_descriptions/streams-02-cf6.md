@@ -4,7 +4,7 @@ In this stage, you'll add support for creating [Redis streams](https://redis.io/
 
 A [Redis stream](https://redis.io/docs/latest/develop/data-types/streams/) is used to store a sequence of entries in chronological order at a given key. Each entry consists of a unique ID and one or more key-value pairs.
 
-For example, if you were using a Redis stream to store data for a temperature & humidity monitor, the stream might look like this:
+For example, if you were using a Redis stream to store real-time data from a temperature & humidity monitor, the stream might look like this:
 
 ```yaml
 entries:
