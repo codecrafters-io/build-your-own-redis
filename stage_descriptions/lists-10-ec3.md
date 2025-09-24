@@ -2,7 +2,7 @@ In this stage, you'll add support for the `BLPOP` command, which blocks until an
 
 ### The `BLPOP` Command
 
-[`BLPOP`](https://redis.io/docs/latest/commands/blpop/) is a blocking variant of the `LPOP` command. It lets a client wait for an element to become available on a list before popping it.
+[`BLPOP`](https://redis.io/docs/latest/commands/blpop/) is a blocking variant of the `LPOP` command. It waits for an element to become available on a list before popping it.
 
 If the list is empty, the command blocks until:
 
