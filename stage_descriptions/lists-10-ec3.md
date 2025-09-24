@@ -81,7 +81,7 @@ $ redis-cli BLPOP another_list_key 0
 Then, a separate client will use `RPUSH` to add an element to the list.
 
 ```
-$ redis-cli RPUSH list_key "foo"
+$ redis-cli RPUSH another_list_key "foo"
 ```
 
 The tester will expect your server to respond to the client that sent the `BLPOP` command first (`Client 1`).
