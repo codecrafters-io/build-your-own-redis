@@ -14,3 +14,118 @@ jobs:
     uses: codecrafters-io/course-sdk/.github/workflows/test-course-definition.yml@main
     with:
       sdkRef: main
+  llm_doc_lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      # The course repository (the PR target)
+      - uses: actions/checkout@v4
+        with:
+          path: courses/${{ github.event.repository.name }}
+
+      # The separate linter repo
+      - uses: actions/checkout@v4
+        with:
+          repository: codecrafters-io/llm-rules-test
+          ref: ${{ inputs.linterRef || 'main' }}
+          path: tools/llm-linter
+
+      # Setup Bun (instead of Node+pnpm)
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.2.2
+
+      - name: Install deps (linter repo)
+        working-directory: tools/llm-linter
+        run: bun install
+
+      # Detect changed Markdown files in stage_descriptions
+      - name: Compute changed stage files
+        id: changed
+        working-directory: courses/${{ github.event.repository.name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --prune --depth=2 origin +refs/heads/*:refs/remotes/origin/* || true
+
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          BASE_REF="${{ github.event.pull_request.base.ref }}"
+          if [ -n "${BASE_SHA}" ]; then
+            BASE="$BASE_SHA"
+          elif [ -n "${BASE_REF}" ]; then
+            BASE="origin/${BASE_REF}"
+          else
+            BASE="origin/main"
+          fi
+
+          echo "Diff base: $BASE"
+          mapfile -t FILES < <(git diff --name-only "$BASE"...HEAD -- 'stage_descriptions/**/*.md' || true)
+          if [ ${#FILES[@]} -eq 0 ]; then
+            echo "none=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PREFIXED=()
+          for f in "${FILES[@]}"; do
+            PREFIXED+=("../courses/${{ github.event.repository.name }}/${f}")
+          done
+          printf -v JOINED '%s ' "${PREFIXED[@]}"
+          echo "none=false" >> "$GITHUB_OUTPUT"
+          echo "list=${JOINED}" >> "$GITHUB_OUTPUT"
+
+      # Run your Bun-based linter
+      - name: Run LLM doc linter
+        if: steps.changed.outputs.none != 'true'
+        working-directory: tools/llm-linter
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          MODEL: gpt-4.1-mini
+          REPORT_PATH: reports/lint.json
+        run: |
+          bun run src/index.ts ${{ steps.changed.outputs.list }}
+
+      # Optional: prepare PR comment
+      - name: Prepare PR comment
+        if: steps.changed.outputs.none != 'true'
+        id: render
+        working-directory: tools/llm-linter
+        run: |
+          bun run .github/scripts/report-to-comment.mjs reports/lint.json > pr-comment.md || true
+          echo "comment<<'EOF'" >> "$GITHUB_OUTPUT"
+          cat pr-comment.md >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Post sticky PR comment
+        if: steps.changed.outputs.none != 'true' && steps.render.outputs.comment != ''
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          recreate: true
+          message: ${{ steps.render.outputs.comment }}
+
+      - name: Upload lint report
+        if: steps.changed.outputs.none != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: llm-lint-report
+          path: tools/llm-linter/reports/lint.json
+          if-no-files-found: ignore
+
+      - name: Fail on errors
+        if: steps.changed.outputs.none != 'true'
+        working-directory: tools/llm-linter
+        run: |
+          if [ -f reports/lint.json ]; then
+            FAILED=$(jq '.failed' reports/lint.json)
+            if [ "$FAILED" -gt 0 ]; then
+              echo "One or more files failed error-severity rules."
+              exit 1
+            fi
+          fi
+
+      - name: No relevant changes
+        if: steps.changed.outputs.none == 'true'
+        run: echo "No changes in stage_descriptions/**/*.md"
+
