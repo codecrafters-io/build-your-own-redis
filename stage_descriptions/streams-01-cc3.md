@@ -1,21 +1,19 @@
 In this stage, you'll add support for the `TYPE` command.
 
-### The TYPE command
+### The `TYPE` command
 
-The [TYPE](https://redis.io/commands/type/) command returns the type of value stored at a given key.
+The [TYPE](https://redis.io/commands/type/) command returns the type of value stored at a given key. These types include: `string`, `list`, `set`, `zset`, `hash`, `stream`, and `vectorset`.
 
-The possible return values are: `string`, `list`, `set`, `zset`, `hash`, `stream`, and `vectorset`.
-
-Here's an example of how it works:
+Here's an example:
 
 ```bash
 # Set a key to a string value
-$ redis-cli SET some_key foo
-OK
+$ redis-cli SET some_key "foo"
+"OK"
 
 # Check the type of value at the key
 $ redis-cli TYPE some_key
-string
+"string"
 ```
 
 The return value is encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
@@ -35,13 +33,13 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send a `SET` command to your server.
+It will send a `SET` command to your server to create a key with a string value.
 
 ```bash
-$ redis-cli SET some_key foo
+$ redis-cli SET some_key "foo"
 ```
 
-It'll then send a `TYPE` command to your server.
+It will then send a `TYPE` command for that key.
 
 ```bash
 $ redis-cli TYPE some_key
