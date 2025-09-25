@@ -33,13 +33,13 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will send a `SET` command to your server to create a key with a string value.
+It will then send a `SET` command to your server to create a key with a string value.
 
 ```bash
 $ redis-cli SET some_key "foo"
 ```
 
-It will then send a `TYPE` command for that key.
+Next, it will send a `TYPE` command for that key.
 
 ```bash
 $ redis-cli TYPE some_key
