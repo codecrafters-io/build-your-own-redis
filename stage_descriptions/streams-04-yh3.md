@@ -1,4 +1,4 @@
-In this stage, you'll extend your `XADD` command implementation to support auto-generating the sequence number of an entry ID.
+In this stage, you'll extend `XADD` to support auto-generating the sequence number of an entry ID.
 
 ### Specifying Entry IDs in `XADD` (Recap)
 
