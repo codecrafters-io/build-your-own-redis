@@ -25,13 +25,13 @@ These IDs are unique within a stream and are guaranteed to be incremental. This 
 
 ### Specifying Entry IDs in `XADD`
 
-There are multiple formats in which the ID can be specified in the `XADD` command:
+You can use three different formats to specify the ID for the `XADD` command:
 
 - Explicit (`1526919030474-0`)
 - Auto-generate only sequence number (`1526919030474-*`)
 - Auto-generate the time and sequence number (`*`)
 
-For this stage, you will only handle explicit IDs (e.g., `1526919030474-0`). We'll add support for the other two cases in the next stages.
+For this stage, you will only handle explicit IDs (e.g., `1526919030474-0`). You'll add support for the other two cases in the next stages.
 
 Your `XADD` implementation must validate the provided ID based on the following rules:
 
