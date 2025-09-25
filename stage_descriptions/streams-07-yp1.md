@@ -2,7 +2,7 @@ In this stage, you'll extend support for `XRANGE` to allow querying using `-`.
 
 ### Using `XRANGE` with `-`
 
-In the `XRANGE` command, the start argument can be specified as `-` to retrieve entries from the very beginning of the stream. This provides a simple way to get a range of entries starting from the first one without needing to know its ID.
+In the `XRANGE` command, the `start` argument can be specified as `-` to retrieve entries from the very beginning of the stream. This provides a simple way to get a range of entries starting from the first one without needing to know its ID.
 
 Here's an example of how that works:
 
