@@ -59,7 +59,7 @@ $ redis-cli XRANGE stream_key - 0-2
       2) baz
 ```
 
-Your server should respond with a RESP array containing the range of entries, from the beginning of the stream up to the entry with the `end` ID.
+Your server should respond with a RESP array containing the entries from the beginning of the stream up to the entry with the provided `end` ID.
 
 From the example above, the response should look like the following, encoded as a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays):
 
