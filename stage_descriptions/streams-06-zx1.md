@@ -1,12 +1,10 @@
 In this stage, you'll add support for querying data from a stream using the `XRANGE` command.
 
-### The XRANGE command
+### The `XRANGE` command
 
-The [XRANGE](https://redis.io/commands/xrange/) command retrieves a range of entries from a stream.
+The [`XRANGE`](https://redis.io/docs/latest/commands/xrange/) command retrieves a range of entries from a stream.
 
-It takes two arguments: `start` and `end`. Both are entry IDs. The command returns all entries in the
-stream with IDs between the `start` and `end` IDs. This range is "inclusive", which means that the response
-will includes entries with IDs that are equal to the `start` and `end` IDs.
+It takes two arguments: a `start` ID and an `end` ID, and returns all entries within that range. The range is inclusive, meaning entries with IDs equal to the `start` and `end` IDs are included.
 
 Here's an example of how it works:
 
@@ -28,17 +26,19 @@ $ redis-cli XRANGE some_key 1526985054069 1526985054079
       4) 94
 ```
 
-The sequence number doesn't need to be included in the start and end IDs provided to the command. If not provided,
-XRANGE defaults to a sequence number of 0 for the start and the maximum sequence number for the end.
+The command can accept IDs in the format `<millisecondsTime>-<sequenceNumber>`, but the sequence number is optional. If you don't provide a sequence number:
+
+- For the `start` ID, the sequence number defaults to `0`.
+- For the `end` ID, the sequence number defaults to the maximum sequence number.
 
 The return value of the command is not exactly what is shown in the example above. This is already formatted by redis-cli.
 
-The actual return value is a [RESP Array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of arrays.
+The actual return value is a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) of arrays.
 
-- Each inner array represents an entry.
-- The first item in the inner array is the ID of the entry.
-- The second item is a list of key value pairs, where the key value pairs are represented as a list of strings.
-  - The key value pairs are in the order they were added to the entry.
+Each inner array represents a single entry and contains two elements:
+
+- The entry's ID (as a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings)).
+- An array of key-value pairs (as bulk strings) in the order they were added.
 
 The return value of the example above is actually something like this:
 
@@ -65,7 +65,7 @@ The return value of the example above is actually something like this:
 ]
 ```
 
-When encoded as a RESP list, it looks like this:
+When encoded as a RESP array, it looks like this:
 
 ```text
 *2\r\n
@@ -84,9 +84,7 @@ $2\r\n37\r\n
 $8\r\nhumidity\r\n
 $2\r\n94\r\n
 ```
-
-In the code block above, the response is separated into multiple lines for readability. The actual
-return value doesn't contain any additional newlines.
+*(This response is separated into multiple lines for readability. The actual return value doesn't contain any additional newlines.)*
 
 ### Tests
 
@@ -96,7 +94,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-First, it'll add a few entries.
+It will then add a few entries to a stream.
 
 ```bash
 $ redis-cli XADD stream_key 0-1 foo bar
@@ -107,13 +105,15 @@ $ redis-cli XADD stream_key 0-3 baz foo
 "0-3"
 ```
 
-Then, it'll send an `XRANGE` command to your server.
+Next, it will send an `XRANGE` command to your server.
 
 ```bash
 $ redis-cli XRANGE stream_key 0-2 0-3
 ```
 
-Your server should respond with the following (encoded as a RESP Array):
+Your server should respond with a RESP array containing the range of entries from the IDs provided. 
+
+Based on the example above, the response should look like the following (encoded as a RESP array):
 
 ```json
 [
