@@ -1,6 +1,6 @@
 In this stage, you'll extend your `XADD` command implementation to support auto-generating the sequence number of an entry ID.
 
-### Auto-Generating Sequence Numbers
+### Specifying Entry IDs in `XADD` (Recap)
 
 As a recap, the `XADD` command accepts IDs in three formats:
 
@@ -9,6 +9,8 @@ As a recap, the `XADD` command accepts IDs in three formats:
 - Auto-generate time part and sequence number (`*`)
 
 For this stage, you'll handle the second case, where only the sequence number is auto-generated.
+
+### Auto-Generating Sequence Numbers
 
 Redis automatically assigns sequence numbers based on the following conditions:
 
@@ -48,7 +50,7 @@ Next, it will send another `XADD` command with `*` as the sequence number, but t
 $ redis-cli XADD stream_key 5-* foo bar
 ```
 
-Your server should respond with `$3\r\n5-0\r\n`, which is `5-0` encoded as a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
+Your server should respond with `$3\r\n5-0\r\n`, which is `5-0` encoded as a bulk string.
 
 After that, the tester will send the same command again.
 
@@ -56,7 +58,7 @@ After that, the tester will send the same command again.
 $ redis-cli XADD stream_key 5-* bar baz
 ```
 
-Your server should respond with `$3\r\n5-1\r\n`, which is `5-1` encoded as a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
+Your server should respond with `$3\r\n5-1\r\n`, which is `5-1` encoded as a bulk string.
 
 ### Notes
 
