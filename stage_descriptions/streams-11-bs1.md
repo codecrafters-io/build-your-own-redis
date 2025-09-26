@@ -1,4 +1,4 @@
-In this stage, you’ll extend your `XREAD` implementation to support blocking.
+ In this stage, you’ll extend your `XREAD` implementation to support blocking.
 
 ### Understanding Blocking in `XREAD`
 
@@ -87,7 +87,7 @@ Your server should respond to the first client with the following, encoded as a 
         "0-2",
         [
           "temperature",
-          "96"
+          "95"
         ]
       ]
     ]
