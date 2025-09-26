@@ -21,7 +21,7 @@ Here's how it works:
 For example, consider two separate clients. The first client sends a blocking `XREAD` command:
 
 ```bash
-$ redis-cli XREAD block 1000 streams some_key 1526985054069-0
+$ redis-cli XREAD BLOCK 1000 streams some_key 1526985054069-0
 ```
 
 This client will now block and wait for a new entry to be added.
@@ -67,7 +67,7 @@ $ redis-cli XADD stream_key 0-1 temperature 96
 Next, it will send an `XREAD` command to your server with the `BLOCK` option.
 
 ```bash
-$ redis-cli XREAD block 1000 streams stream_key 0-1
+$ redis-cli XREAD BLOCK 1000 streams stream_key 0-1
 ```
 
 In another instance of the redis-cli, the tester will add an entry within `500` milliseconds.
