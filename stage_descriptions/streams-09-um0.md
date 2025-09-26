@@ -86,7 +86,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will then send an `XADD` command to add an entry.
+It will then send an `XADD` command to add an entry to a stream.
 
 ```bash
 $ redis-cli XADD stream_key 0-1 temperature 96
@@ -98,7 +98,9 @@ Next, the tester will send an `XREAD` command to your server.
 $ redis-cli XREAD STREAMS stream_key 0-0
 ```
 
-Your server should respond with the RESP encoded representation of:
+Your server should respond with a RESP array containing the correct stream entries.
+
+From the example above, your response should look like the following, encoded as a RESP array:
 
 ```json
 [
