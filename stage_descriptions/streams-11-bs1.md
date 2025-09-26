@@ -33,7 +33,7 @@ $ other-redis-cli XADD some_key 1526985054079-0 temperature 37 humidity 94
 "1526985054079-0"
 ```
 
-If the entry is added within the `1000` milliseconds, the first client's `XREAD` command will immediately unblock and respond with the new entry:
+If the entry is added within `1000` milliseconds, the first client's `XREAD` command will immediately unblock and respond with the new entry:
 
 ```bash
 1) 1) "some_key"
