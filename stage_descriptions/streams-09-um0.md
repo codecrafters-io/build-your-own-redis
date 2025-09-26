@@ -10,7 +10,7 @@ Another difference is that `XREAD` is exclusive. This means that the command ret
 
 The basic syntax for the command is:
 ```bash
-XREAD STREAMS <stream_key> <id>
+XREAD STREAMS <key> <id>
 ```
 
 `XREAD` supports other optional arguments, but we won't deal with them at this stage.
