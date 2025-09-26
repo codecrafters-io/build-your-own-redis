@@ -2,7 +2,7 @@ In this stage, you’ll extend support for `XREAD` to handle `$` as the starting
 
 ### Understanding `$` as an Entry ID
 
-When `$` is passed as the ID, `XREAD` will only return new entries added after the command is sent. This is similar to passing in the maximum ID we currently have in the stream.
+When `$` is passed as the ID, `XREAD` will only return new entries added after the command is sent. This is similar to passing in the maximum ID currently available in a stream.
 
 For example, suppose we have two separate clients. The first client sends a blocking `XREAD` command with `1000` as the timeout and `$` as the ID:
 
@@ -51,7 +51,7 @@ $ redis-cli XADD stream_key 0-1 temperature 96
 Next, it will send an `XREAD` command to your server with the `BLOCK` command with `0` as the time and `$` as the ID.
 
 ```bash
-$ redis-cli XREAD block 0 streams stream_key $
+$ redis-cli XREAD BLOCK 0 streams stream_key $
 ```
 
 In another instance of the redis-cli, the tester will add another entry after `500` milliseconds.
@@ -82,7 +82,7 @@ Your server should respond with the following, as a RESP array:
 After that, the tester will send another `XREAD` command to your server with the `BLOCK` command, but this time, it'll wait for `1000` milliseconds before checking the response of your server.
 
 ```bash
-$ redis-cli XREAD block 1000 streams stream_key $
+$ redis-cli XREAD BLOCK 1000 streams stream_key $
 ```
 
 Your server should respond with a null array (`*-1\r\n`).
