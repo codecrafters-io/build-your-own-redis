@@ -1,4 +1,4 @@
-In this stage, you'll extend your `XREAD` implementation to support indefinite blocking.
+In this stage, you'll extend your `XREAD` implementation to support blocking indefinitely.
 
 ### Indefinite Blocking in `XREAD`
 
