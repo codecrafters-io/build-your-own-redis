@@ -32,4 +32,4 @@ $ redis-cli RPUSH list_key "element2"
 In each case, the tester will expect the response to be the length of the list encoded as a RESP integer. 
 
 ### Notes
-- You'll need to check if a list already exists for the given key and append to it, rather than creating a new list.
+- You'll need to check if a list already exists for the given key and append to it.
