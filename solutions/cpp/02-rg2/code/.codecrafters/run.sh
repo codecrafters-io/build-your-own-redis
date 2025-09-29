@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec ./build/server "$@"
+exec $(dirname "$0")/build/redis "$@"
