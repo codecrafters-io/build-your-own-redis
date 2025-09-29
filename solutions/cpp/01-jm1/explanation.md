@@ -1,4 +1,4 @@
-The entry point for your Redis implementation is in `src/Server.cpp`.
+The entry point for your Redis implementation is in `src/main.cpp`.
 
 Study and uncomment the relevant code: 
 
