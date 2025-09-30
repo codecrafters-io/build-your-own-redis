@@ -1,11 +1,22 @@
-Welcome to the Replication extension!
+In this stage, you'll add support for starting the Redis server on a custom port.
 
-In this extension, you'll extend your Redis server to support [leader-follower replication](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/). You'll be able to run
-multiple Redis servers with one acting as the "master" and the others as "replicas". Changes made to the master will be automatically replicated to replicas.
+### Leader-Follower Replication
 
-Since we'll need to run multiple instances of your Redis server at once, we can't run all of them on port 6379.
+The [leader-follower replication](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/) is a pattern where one server (the "master") handles all write operations, and one or more servers (the "replicas") maintain copies of the master's data. When the master changes data, it automatically copies those changes to the replicas. This system provides data redundancy and allows read operations to be spread across multiple servers.
 
-In this stage, you'll add support for starting the Redis server on a custom port. The port number will be passed to your program via the `--port` flag.
+### Custom Port Support
+
+Since replication requires running multiple Redis servers simultaneously, each instance needs its own port. This means a Redis server must be able to start on a port other than the default `6379`.
+
+The `--port` flag passes the port number to the Redis server:
+
+```bash
+./your_program.sh --port <port_number>
+```
+
+The server then parses this argument and starts a TCP server on the specified port.
+
+If you don’t provide a `--port` flag, the Redis server defaults to port `6379`.
 
 ### Tests
 
@@ -15,11 +26,10 @@ The tester will execute your program like this:
 ./your_program.sh --port 6380
 ```
 
-It'll then try to connect to your TCP server on the specified port number (`6380` in the example above). If the connection succeeds, you'll pass this stage.
+It'll then try to connect to your TCP server on the specified port number. If the connection succeeds, you'll pass this stage.
 
 ### Notes
 
-- Your program still needs to pass the previous stages, so if `--port` isn't specified, you should default to port 6379.
 - The tester will pass a random port number to your program, so you can't hardcode the port number from the example above.
 - If your repository was created before 5th Oct 2023, it's possible that your `./your_program.sh` script
 might not be passing arguments on to your program. You'll need to edit `./your_program.sh` to fix this, check
