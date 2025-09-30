@@ -9,12 +9,12 @@ For example, if you were using a Redis stream to store real-time data from a tem
 ```yaml
 entries:
   - id: 1526985054069-0 # (ID of the first entry)
-    temperature: 36 # (A key value pair in the first entry)
-    humidity: 95 # (Another key value pair)
+    temperature: 36 # (A key-value pair in the first entry)
+    humidity: 95 # (Another key-value pair)
 
   - id: 1526985054079-0 # (ID of the second entry)
-    temperature: 37 # (A key value pair in the second entry)
-    humidity: 94 # (Another key value pair)
+    temperature: 37 # (A key-value pair in the second entry)
+    humidity: 94 # (Another key-value pair)
 
   # ... (and so on)
 ```
