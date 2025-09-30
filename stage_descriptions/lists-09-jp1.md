@@ -34,7 +34,7 @@ It will first create a list with multiple elements.
 ```bash
 $ redis-cli
 > RPUSH list_key "one" "two" "three" "four" "five"
-# Expect: 5 (Resp Encoded Integer)
+# Expect: 5 (RESP Encoded Integer)
 ```
 
 After that, it will send your program an `LPOP` command with the number of elements to remove.
