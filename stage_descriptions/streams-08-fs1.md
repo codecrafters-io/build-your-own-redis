@@ -90,4 +90,4 @@ $3\r\nfoo\r\n
 ```
 
 ### Notes
-- In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+- In the response, the items are shown in separate lines for readability. The tester expects all of these to be in one line.
