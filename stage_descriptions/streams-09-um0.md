@@ -76,7 +76,7 @@ $2\r\n37\r\n
 $8\r\nhumidity\r\n
 $2\r\n94\r\n
 ```
-(*The lines are separated into new lines for readability. The actual return value is just one line.*)
+(*The result is shown on separate lines for readability. The actual return value is a single line.*)
 
 ### Tests
 
