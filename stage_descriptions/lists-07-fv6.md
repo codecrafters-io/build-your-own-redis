@@ -33,7 +33,7 @@ $ redis-cli
 > RPUSH list_key <random number of elements>
 ```
 
-Next, it will send a `LLEN` command for the newly created list. 
+Next, it will send an `LLEN` command for the newly created list. 
 
 ```bash
 > LLEN list_key
