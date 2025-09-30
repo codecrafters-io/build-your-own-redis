@@ -2,7 +2,7 @@ In this stage, you'll add support for starting the Redis server on a custom port
 
 ### Leader-Follower Replication
 
-The [leader-follower replication](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/) is a pattern where one server (the "master") handles all write operations, and one or more servers (the "replicas") maintain copies of the master's data. When the master changes data, it automatically copies those changes to the replicas. This system provides data redundancy and allows read operations to be spread across multiple servers.
+The [leader-follower replication](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/) is a pattern where one server (the "master") handles all write operations, and one or more servers (the "replicas") maintain copies of the master's data. When the master changes data, it automatically copies those changes to the replicas. This system provides data redundancy and improves read performance.
 
 ### Custom Port Support
 
