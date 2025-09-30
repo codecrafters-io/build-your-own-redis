@@ -34,6 +34,6 @@ The tester will expect to receive a `+PONG\r\n` response for each command sent.
 
 ### Notes
 
-- The exact bytes your program will receive won't be just `PING`, you'll receive something like this: `*1\r\n$4\r\nPING\r\n`, which is the Redis protocol encoding of the `PING` command.
+- The exact bytes your program will receive won't be just `PING`. You'll receive something like this: `*1\r\n$4\r\nPING\r\n`, which is the Redis protocol encoding of the `PING` command.
 - Just like the previous stage, you can hardcode `+PONG\r\n` as the response for this stage. We'll get to parsing client input in later stages.
 - The tester will send the `PING` commands using the same connection. We'll get to handling multiple connections in later stages.
