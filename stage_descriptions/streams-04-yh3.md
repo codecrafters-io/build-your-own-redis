@@ -5,7 +5,7 @@ In this stage, you'll extend `XADD` to support auto-generating the sequence numb
 As a recap, the `XADD` command accepts IDs in three formats:
 
 - Explicit (`1526919030473-0`) (Handled in the previous stage)
-- Auto-generate only sequence number (`1526919030474-*`)
+- Auto-generate only the sequence number (`1526919030474-*`)
 - Auto-generate time part and sequence number (`*`)
 
 For this stage, you'll handle the second case, where only the sequence number is auto-generated.
