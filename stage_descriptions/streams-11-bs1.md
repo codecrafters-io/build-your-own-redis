@@ -95,7 +95,7 @@ Your server should respond to the first client with the following, encoded as a 
 ]
 ```
 
-Next, the tester will send another blocking `XREAD` command, but this time, will allow the full timeout duration to elapse before checking the response.
+Next, the tester will send another blocking `XREAD` command, but this time, it will allow the full timeout duration to elapse before checking the response.
 
 ```bash
 $ redis-cli XREAD block 1000 streams stream_key 0-2
