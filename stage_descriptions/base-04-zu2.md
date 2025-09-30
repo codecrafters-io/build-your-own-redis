@@ -19,7 +19,7 @@ model itself is based on an event loop](https://developer.mozilla.org/en-US/docs
 
 {{^lang_is_javascript}}
   {{^lang_is_typescript}}
-To implement this, you'll need to either use threads or, if you're feeling adventurous, an [Event Loop](https://en.wikipedia.org/wiki/Event_loop) (like the official Redis implementation does).
+To implement this, you'll need to either use threads or, if you're feeling adventurous, implement an [Event Loop](https://en.wikipedia.org/wiki/Event_loop) (like the official Redis implementation does).
   {{/lang_is_typescript}}
 {{/lang_is_javascript}}
 
