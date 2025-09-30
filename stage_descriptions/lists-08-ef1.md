@@ -44,5 +44,5 @@ The tester will also verify that the remaining elements are present in the list 
 
 ```bash
 > LRANGE list_key 0 -1
-# Expect RESP Encoded Array: ["two", "three", "four", "five"]
+# Expect a RESP Encoded Array: ["two", "three", "four", "five"]
 ``` 
