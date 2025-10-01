@@ -4,7 +4,7 @@ In this stage, you'll extend your `INFO` command to return the `master_replid` a
 
 Every Redis master maintains two key pieces of information for managing replication: the **replication ID** and the **replication offset**.
 
-The replication ID is a large pseudo-random string. This ID identifies the current history of the master's dataset. When a master device is booted for the first time or restarted, it resets its ID.
+The replication ID is a large pseudo-random string. This ID identifies the current history of the master's dataset. When a master server boots for the first time or restarts, it resets its ID.
 
 The replication offset tracks the number of bytes of commands the master has streamed to its replicas. This value is used to update the state of the replicas with changes made to the dataset. The offset starts at `0` when a master boots up and no replicas have connected yet.
 
