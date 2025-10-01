@@ -1,4 +1,4 @@
-In this stage, you'll implement the first part of the handshake that happens when a replica connects to the master.
+In this stage, you'll implement the first part of the replication handshake.
 
 ### The Handshake Process: Part One
 
