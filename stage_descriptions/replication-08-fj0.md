@@ -4,7 +4,7 @@ In this stage, we'll start implementing support for receiving a replication hand
 
 Up until now, we've been implementing the handshake from the replica's perspective. Now we'll implement the same handshake on the master side.
 
-As a recap, the master receives:
+As a recap, the master receives the following for the handshake process:
 
 1. A `PING` from the replica
 2. `REPLCONF` twice from the replica
