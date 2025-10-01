@@ -12,10 +12,10 @@ For this stage, you'll handle the second part of this process.
 
 ### The `REPLCONF` Command
 
-The `REPLCONF` command is used to configure the replica. After receiving a response to `PING`, the replica sends the `REPLCONF` command twice to the master:
+The `REPLCONF` command is used to configure the replica. After receiving a response to `PING`, the replica sends two `REPLCONF` commands to the master:
 
 1. `REPLCONF listening-port <PORT>`: This tells the master which port the replica is listening on. This value is used for [monitoring and logging](https://github.com/redis/redis/blob/90178712f6eccf1e5b61daa677c5c103114bda3a/src/replication.c#L107-L130), not for replication itself.
-2. `REPLCONF capa psync2`: This notifies the master of the replica's capabilities. `capa` stands for "capabilities," and `psync2` specifies the protocol version. You can safely hardcode `capa psync2` for now.
+2. `REPLCONF capa psync2`: This notifies the master of the replica's capabilities. `capa` stands for "capabilities," while `psync2` is the replication protocol version the replica supports. You can safely hardcode `capa psync2` for now.
 
 Both commands should be sent as RESP arrays, so the exact bytes will look something like this:
 
