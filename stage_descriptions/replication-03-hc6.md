@@ -30,11 +30,11 @@ The tester will execute your program like this:
 It will then send the `INFO` command with a `replication` argument to your server.
 
 ```bash
-$ redis-cli -p <PORT> info replication
+$ redis-cli -p <PORT> INFO replication
 ```
 
 Your program should respond with a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) where each line
-is a key-value pair separated by a colon (`:`). The tester will only look for the `role` key, and assert that the value is `slave`.
+is a key-value pair separated by a colon (`:`). The tester will only look for the `role` key and assert that the value is `slave`.
 
 ### Notes
 
