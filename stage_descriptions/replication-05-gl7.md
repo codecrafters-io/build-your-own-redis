@@ -1,6 +1,6 @@
 In this stage, you'll implement the first part of the handshake that happens when a replica connects to the master.
 
-### The Handshake Process
+### The Handshake Process: Part One
 
 When a replica connects to a master, it needs to go through a handshake process before receiving updates from the master.
 
