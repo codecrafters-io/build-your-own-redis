@@ -1,15 +1,17 @@
-In this stage, you'll extend your `INFO` command to return two additional values: `master_replid` and `master_repl_offset`.
+In this stage, you'll extend your `INFO` command to return the `master_replid` and `master_repl_offset` values.
 
 ### The Replication ID and Offset
 
-Every Redis master has a **replication ID**: a 40-character pseudo-random alphanumeric string that identifies the replication stream. This ID is generated when the master starts and resets each time the master restarts from scratch.
+Every Redis master maintains two key pieces of information for managing replication: the **replication ID** and the **replication offset**.
 
-Each master also maintains a **replication offset** that tracks how many bytes of commands have been sent to replicas. The offset starts at `0` when a master boots up and no replicas have connected yet.
+The replication ID is a large pseudo-random string. This ID identifies the current history of the master's dataset. When a master device is booted for the first time or restarted, it resets its ID.
 
-In this stage, you'll initialize a replication ID and replication offset for the master server:
+The replication offset tracks the number of bytes of commands the master has streamed to its replicas. This value is used to update the state of the replicas with changes made to the dataset. The offset starts at `0` when a master boots up and no replicas have connected yet.
 
-- The ID can be any pseudo-random alphanumeric string of 40 characters.
-  - For the purposes of this challenge, you don't need to generate a random string. You can hardcode it instead.
+In this stage, you'll initialize a replication ID and offset for the master server:
+
+- The ID can be any pseudo-random alphanumeric string of `40` characters.
+  - For this challenge, you don't need to generate a random string. You can hardcode it instead.
   - As an example, you can hardcode `8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb` as the replication ID.
 - The offset should be `0`.
 
