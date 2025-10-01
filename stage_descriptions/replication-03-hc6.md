@@ -1,4 +1,4 @@
-In this stage, you'll extend your [INFO](https://redis.io/commands/info/) command to run as a replica server.
+In this stage, you'll extend the [INFO](https://redis.io/commands/info/) command to reflect a server's role as a replica.
 
 ### The `--replicaof` Flag
 
