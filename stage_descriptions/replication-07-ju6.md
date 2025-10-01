@@ -20,7 +20,7 @@ PSYNC <replication_id> <offset>
 
 The command takes two arguments: the master's current replication ID and the replica's current offset.
 
-Since this is the replica's first connection to the master:
+For the replica's first connection to the master:
 
 - The replication ID will be `?` because the replica doesn't know the master's ID yet.
 - The offset will be `-1` since the replica has no data from the master yet.
