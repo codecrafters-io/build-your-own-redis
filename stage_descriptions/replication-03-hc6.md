@@ -14,7 +14,7 @@ Here, we use the `--replicaof` flag to start a Redis server as a replica. The se
 
 We'll learn more about how this replication works in later stages. 
 
-For this stage, your primary task is to update the `INFO replication` command handler to check the server's runtime configuration:
+For this stage, your primary task is to update the `INFO replication` command handler to check the server's configuration:
 
 - If the user does not include the `--replicaof` flag, respond with `role:master`.
 - If the user includes the `--replicaof` flag, respond with `role:slave`.
