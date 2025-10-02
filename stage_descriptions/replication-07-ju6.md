@@ -8,7 +8,7 @@ As a recap, there are three steps to the handshake process:
 - The replica sends `REPLCONF` twice to the master (Handled in the previous stage)
 - The replica sends `PSYNC` to the master
 
-### The `EOF` Capability
+### The `eof` Capability
 
 In the previous stage, we sent the second `REPLCONF` command like this:
 
@@ -16,15 +16,15 @@ In the previous stage, we sent the second `REPLCONF` command like this:
 REPLCONF capa psync2
 ```
 
-This command is often extended to include support for `EOF`, making the full command:
+This command is often extended to include support for `eof`, making the full command:
 
 ```bash
 REPLCONF capa eof capa psync2
 ```
 
-The `eof` capability signals that the replica supports [diskless replication](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/#diskless-replication). This feature uses a special marker ("EOF") to signal the end of an RDB file transfer over a replication stream.
+The `eof` capability signals that the replica supports [diskless replication](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/#diskless-replication).
 
-For this stage, you can simply include `eof` in the capabilities list. We'll get to handling the feature and RDB files in later stages.
+For this stage, you can simply include `eof` in the capabilities list. We'll get to handling the feature in later stages.
 
 ### The `PSYNC` Command
 
