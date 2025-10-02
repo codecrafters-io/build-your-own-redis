@@ -2,7 +2,7 @@ In this stage, you'll extend the [INFO](https://redis.io/commands/info/) command
 
 ### The `--replicaof` Flag
 
-By default, your Redis server assumes the master role. When you pass the `--replicaof` flag, the server assumes the slave role instead.
+By default, your Redis server assumes the master role. When you pass the `--replicaof` flag, the server assumes the replica role instead.
 
 For example:
 
