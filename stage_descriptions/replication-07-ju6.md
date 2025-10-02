@@ -1,4 +1,4 @@
-In this stage, you'll implement the third step of the replication handshake.
+In this stage, you'll add support for the `eof` capability and implement the third step of the replication handshake.
 
 ### The Handshake Process (Recap)
 
@@ -7,6 +7,24 @@ As a recap, there are three steps to the handshake process:
 - The replica sends a `PING` to the master (Handled in an earlier stage)
 - The replica sends `REPLCONF` twice to the master (Handled in the previous stage)
 - The replica sends `PSYNC` to the master
+
+### The `EOF` Capability
+
+In the previous stage, we sent the second `REPLCONF` command like this:
+
+```bash
+REPLCONF capa psync2
+```
+
+This command is often extended to include support for `EOF`, making the full command:
+
+```bash
+REPLCONF capa eof capa psync2
+```
+
+The `eof` capability signals that the replica supports [diskless replication](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/#diskless-replication). This feature uses a special marker ("EOF") to signal the end of an RDB file transfer over a replication stream.
+
+For this stage, you can simply include `eof` in the capabilities list. We'll get to handling the feature and RDB files in later stages.
 
 ### The `PSYNC` Command
 
@@ -47,9 +65,9 @@ The tester will execute your program like this:
 ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
 ```
 
-It will then assert that the replica connects to the master and sends:
+It will then assert that the replica connects to the master and sends the following commands:
 
-1. The `PING` command
-2. The `REPLCONF` command with `listening-port` and `<PORT>` as arguments
-3. The `REPLCONF` command with `capa psync2` as arguments
-4. The `PSYNC` command with `? -1` as arguments
+1. `PING`
+2. `REPLCONF` with `listening-port` and `<PORT>` as arguments
+3. `REPLCONF` with `capa eof capa psync2` as arguments
+4. `PSYNC` with `? -1` as arguments
