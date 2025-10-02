@@ -12,7 +12,7 @@ There are three parts to this handshake:
 
 We'll learn more about `REPLCONF` and `PSYNC` in later stages. For now, we'll focus on the first part of the handshake.
 
-When your server starts in replica mode, it must immediately connect to the specified master host and port, and then send the `PING` command.
+When your server starts in replica mode, it must connect to the specified master host and port, and then send the `PING` command.
 
 The `PING` command must be sent encoded as a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays).
 
