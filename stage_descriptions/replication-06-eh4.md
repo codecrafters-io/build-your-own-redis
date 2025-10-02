@@ -1,8 +1,8 @@
-In this stage, you'll implement the second part of the replication handshake.
+In this stage, you'll implement the second step of the replication handshake.
 
 ### The Handshake Process (Recap)
 
-As a recap, there are three parts to the handshake process:
+As a recap, there are three steps to the handshake process:
 
 1. The replica sends a `PING` to the master (Handled in the previous stage)
 2. The replica sends `REPLCONF` twice to the master
