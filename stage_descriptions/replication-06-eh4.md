@@ -1,24 +1,26 @@
-In this stage, you'll implement part 2 of the handshake that happens when a replica connects to master.
+In this stage, you'll implement the second part of the replication handshake.
 
-### Handshake (continued from previous stage)
+### The Handshake Process (Recap)
 
-As a recap, there are three parts to the handshake:
+As a recap, there are three parts to the handshake process:
 
-- The replica sends a `PING` to the master (Previous stage)
-- The replica sends `REPLCONF` twice to the master (**This stage**)
-- The replica sends `PSYNC` to the master (Next stage)
+1. The replica sends a `PING` to the master (Handled in the previous stage)
+2. The replica sends `REPLCONF` twice to the master
+3. The replica sends `PSYNC` to the master
 
-After receiving a response to `PING`, the replica then sends 2 [REPLCONF](https://redis.io/commands/replconf/) commands to the master.
+For this stage, you'll handle the second part of this process.
 
-The `REPLCONF` command is used to configure replication. Replicas will send this command to the master twice:
+### The `REPLCONF` Command
 
-- The first time, it'll be sent like this: `REPLCONF listening-port <PORT>`
-  - This is the replica notifying the master of the port it's listening on (for [monitoring/logging purposes](https://github.com/redis/redis/blob/90178712f6eccf1e5b61daa677c5c103114bda3a/src/replication.c#L107-L130), not for actual propagation).
-- The second time, it'll be sent like this: `REPLCONF capa psync2`
-  - This is the replica notifying the master of its capabilities ("capa" is short for "capabilities")
-  - You can safely hardcode these capabilities for now, we won't need to use them in this challenge.
+The `REPLCONF` command is used to configure a connected replica. After receiving a response to `PING`, the replica sends two `REPLCONF` commands to the master:
 
-These commands should be sent as RESP Arrays, so the exact bytes will look something like this:
+1. `REPLCONF listening-port <PORT>`: This tells the master which port the replica is listening on. This value is used for [monitoring and logging](https://github.com/redis/redis/blob/90178712f6eccf1e5b61daa677c5c103114bda3a/src/replication.c#L107-L130), not for replication itself.
+2. `REPLCONF capa psync2`: This notifies the master of the replica's capabilities.
+   - `capa` stands for "capabilities". It indicates that the next argument is a feature the replica supports.
+   - `psync2` signals that the replica supports the PSYNC 2.0 protocol, which is an improved version of the [partial synchronization](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/) feature used to resynchronize a replica with its master.
+   - You can safely hardcode `capa psync2` for now.
+
+Both commands should be sent as RESP arrays, so the exact bytes will look something like this:
 
 ```
 # REPLCONF listening-port <PORT>
@@ -28,7 +30,7 @@ These commands should be sent as RESP Arrays, so the exact bytes will look somet
 *3\r\n$8\r\nREPLCONF\r\n$4\r\ncapa\r\n$6\r\npsync2\r\n
 ```
 
-For both commands, the master will respond with `+OK\r\n` ("OK" encoded as a RESP Simple String).
+For both commands, the master will respond with `+OK\r\n`. That's the string `OK` encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 ### Tests
 
@@ -38,12 +40,12 @@ The tester will execute your program like this:
 ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
 ```
 
-It'll then assert that the replica connects to the master and:
+It will then assert that the replica connects to the master and sends the following:
 
-- **(a)** sends the `PING` command
-- **(b)** sends the `REPLCONF` command with `listening-port` and `<PORT>` as arguments
-- **(c)** sends the `REPLCONF` command with `capa psync2` as arguments
+1. The `PING` command
+2. The `REPLCONF` command with `listening-port` and `<PORT>` as the arguments
+3. The `REPLCONF` command with `capa psync2` as the arguments
 
 **Notes**
 
-- The response to `REPLCONF` will always be `+OK\r\n` ("OK" encoded as a RESP Simple String)
+- The response to `REPLCONF` will always be `+OK\r\n`.
