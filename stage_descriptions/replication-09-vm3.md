@@ -40,12 +40,12 @@ The tester will execute your program like this:
 ./your_program.sh --port <PORT>
 ```
 
-It will then connect to your TCP server as a replica and execute the following commands:
+It will then connect to your TCP server as a replica and send the following commands:
 
-1. `PING` (expecting `+PONG\r\n` back)
-2. `REPLCONF listening-port <PORT>` (expecting `+OK\r\n` back)
-3. `REPLCONF capa eof capa psync2` (expecting `+OK\r\n` back)
-4. `PSYNC ? -1` (expecting `+FULLRESYNC <REPL_ID> 0\r\n` back)
+1. `PING` - expecting `+PONG\r\n` back
+2. `REPLCONF listening-port <PORT>` - expecting `+OK\r\n` back
+3. `REPLCONF capa eof capa psync2` - expecting `+OK\r\n` back
+4. `PSYNC ? -1` - expecting `+FULLRESYNC <REPL_ID> 0\r\n` back
 
 **Notes**:
 
