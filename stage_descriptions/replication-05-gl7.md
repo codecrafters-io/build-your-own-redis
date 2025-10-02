@@ -1,10 +1,10 @@
-In this stage, you'll implement the first part of the replication handshake.
+In this stage, you'll implement the first step of the replication handshake.
 
 ### The Handshake Process
 
 When a replica connects to a master, it needs to go through a handshake process before receiving updates from the master.
 
-There are three parts to this handshake:
+There are three steps to this handshake:
 
 1. The replica sends a `PING` to the master.
 2. The replica sends `REPLCONF` twice to the master.
