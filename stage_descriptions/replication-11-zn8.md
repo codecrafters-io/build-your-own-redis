@@ -38,7 +38,10 @@ $ redis-cli SET bar 2
 $ redis-cli SET baz 3
 ```
 
-It will then assert that these commands were propagated to the replica in the correct order. The tester will expect to receive these commands encoded as RESP arrays and sent on the replication connection (the one used for the handshake).
+It will then assert that these commands were propagated to the replica in the correct order. The tester will expect to receive these commands: 
+
+- Encoded as RESP arrays.
+- Sent on the same connection used for the handshake (replication connection).
 
 ### Notes
 
