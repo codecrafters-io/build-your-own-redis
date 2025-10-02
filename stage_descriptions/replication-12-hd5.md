@@ -14,7 +14,7 @@ The tester will execute your program like this:
 ./your_program.sh --port <PORT>
 ```
 
-It will then start **multiple** replicas that will each connect to your server, complete the handshake sequence (`PING`, `REPLCONF`, `PSYNC`), and receive the initial RDB file.
+It will then start **multiple** replicas that will each connect to your server, complete the handshake sequence, and receive the initial RDB file.
 
 Next, the tester will send `SET` commands to the master from a separate client.
 
