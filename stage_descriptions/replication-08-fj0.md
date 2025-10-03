@@ -1,10 +1,10 @@
 In this stage, we'll start implementing support for receiving a replication handshake as a master.
 
-### The Handshake Process (Recap)
+### Handshake (Recap)
 
 Up until now, we've been implementing the handshake from the replica's perspective. Now we'll implement the same handshake on the master side.
 
-As a recap, the master receives the following from the replica during the handshake process:
+As a recap, the master receives the following from the replica during the handshake:
 
 1. A `PING` command
 2. Two `REPLCONF` commands
@@ -26,6 +26,6 @@ The tester will execute your program like this:
 
 It will then send the following commands:
 
-1. `PING` — expecting `+PONG\r\n` as the response
+1. `PING` — expecting `+PONG\r\n`
 2. `REPLCONF listening-port <PORT>` — expecting `+OK\r\n`
 3. `REPLCONF capa psync2` — expecting `+OK\r\n` 
