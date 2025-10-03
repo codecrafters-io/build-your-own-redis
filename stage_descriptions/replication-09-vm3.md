@@ -1,8 +1,8 @@
 In this stage, you'll add support for receiving the [`PSYNC`](https://redis.io/commands/psync/) command from the replica.
 
-### The Handshake Process (Recap)
+### Handshake (Recap)
 
-As a recap, the master receives the following for the handshake process:
+As a recap, the master receives the following for the handshake:
 
 1. A `PING` from the replica
 2. `REPLCONF` twice from the replica
@@ -44,7 +44,7 @@ It will then connect to your TCP server as a replica and send the following comm
 
 1. `PING` - expecting `+PONG\r\n` back
 2. `REPLCONF listening-port <PORT>` - expecting `+OK\r\n` back
-3. `REPLCONF capa eof capa psync2` - expecting `+OK\r\n` back
+3. `REPLCONF capa psync2` - expecting `+OK\r\n` back
 4. `PSYNC ? -1` - expecting `+FULLRESYNC <REPL_ID> 0\r\n` back
 
 **Notes**:
