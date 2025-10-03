@@ -1,6 +1,6 @@
 In this stage, you'll extend your implementation of the master to support propagating commands to multiple replicas.
 
-### Command Propagation
+### Command Propagation (Recap)
 
 Once a replica completes the handshake and loads the RDB file, it is ready to start receiving live updates from the master. 
 
