@@ -1,30 +1,12 @@
-In this stage, you'll add support for the `eof` capability and implement the third step of the replication handshake.
+In this stage, you'll implement the third step of the replication handshake.
 
-### The Handshake Process (Recap)
+### Handshake (Recap)
 
-As a recap, there are three steps to the handshake process:
+As a recap, there are three steps to the handshake:
 
 - The replica sends a `PING` to the master (Handled in an earlier stage)
 - The replica sends `REPLCONF` twice to the master (Handled in the previous stage)
 - The replica sends `PSYNC` to the master
-
-### The `eof` Capability
-
-In the previous stage, we sent the second `REPLCONF` command like this:
-
-```bash
-REPLCONF capa psync2
-```
-
-This command is often extended to include support for `eof`, making the full command:
-
-```bash
-REPLCONF capa eof capa psync2
-```
-
-The `eof` capability signals that the replica supports [diskless replication](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/#diskless-replication).
-
-For this stage, you can simply include `eof` in the capabilities list. We'll get to handling the feature in later stages.
 
 ### The `PSYNC` Command
 
