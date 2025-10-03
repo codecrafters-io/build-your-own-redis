@@ -51,5 +51,5 @@ It will then assert that the replica connects to the master and sends the follow
 
 1. `PING`
 2. `REPLCONF` with `listening-port` and `<PORT>` as arguments
-3. `REPLCONF` with `capa eof capa psync2` as arguments
+3. `REPLCONF` with `capa psync2` as arguments
 4. `PSYNC` with `? -1` as arguments
