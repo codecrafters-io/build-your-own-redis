@@ -1,20 +1,20 @@
 In this stage, we'll start implementing support for receiving a replication handshake as a master.
 
-### Handshake (continued from previous stage)
+### Handshake (Recap)
 
-We'll now implement the same handshake we did in the previous stages, but on the master instead of the replica.
+Up until now, we've been implementing the handshake from the replica's perspective. Now we'll implement the same handshake on the master side.
 
-As a recap, there are three parts to the handshake:
+As a recap, the master receives the following from the replica during the handshake:
 
-- The master receives a `PING` from the replica
-  - Your Redis server already supports the `PING` command, so there's no additional work to do here
-- The master receives `REPLCONF` twice from the replica (**This stage**)
-- The master receives `PSYNC` from the replica (Next stage)
+1. A `PING` command
+2. Two `REPLCONF` commands
+3. A `PSYNC` command
 
-In this stage, you'll add support for receiving the `REPLCONF` command from the replica.
+Your Redis server already supports the `PING` command, so there's no additional work to do for the first step.
 
-You'll receive `REPLCONF` twice from the replica. For the purposes of this challenge, you can safely ignore the arguments for both commands and just
-respond with `+OK\r\n` ("OK" encoded as a RESP Simple String).
+In this stage, you'll add support for receiving the two `REPLCONF` commands as a master.
+
+For the purposes of this challenge, you can safely ignore the arguments for both commands and simply respond with `+OK\r\n`. That's the string `OK` encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)
 
 ### Tests
 
@@ -24,8 +24,8 @@ The tester will execute your program like this:
 ./your_program.sh --port <PORT>
 ```
 
-It'll then send the following commands:
+It will then send the following commands:
 
-1. `PING` (expecting `+PONG\r\n` back)
-2. `REPLCONF listening-port <PORT>` (expecting `+OK\r\n` back)
-3. `REPLCONF capa psync2` (expecting `+OK\r\n` back)
+1. `PING` — expecting `+PONG\r\n`
+2. `REPLCONF listening-port <PORT>` — expecting `+OK\r\n`
+3. `REPLCONF capa psync2` — expecting `+OK\r\n` 
