@@ -1,17 +1,14 @@
-In this stage you'll implement the processing of propagated commands as a replica.
+In this stage, you'll implement the processing of propagated commands as a replica.
 
-### Command processing
+### Command Processing
 
-After the replica receives a command from the master, it processes it and apply it to its own state. This
-will work exactly like a regular command sent by a client, except that the replica doesn't send a response
-back to the master.
+After the replica receives a command from the master, it processes it and applies it to its own state. This will work exactly like a regular command sent by a client, except that the replica doesn't send a response back to the master.
 
-For example, if the command `SET foo 1` is propagated to the replica by a master, the replica must update
-its database to set the value of `foo` to `1`. Unlike commands from a regular client though, it must not reply with `+OK\r\n`.
+For example, if a master propagates a `SET foo 1` command to a replica, the replica must update its database to set the value of `foo` to `1`. Unlike commands from a regular client though, it must not reply with `+OK\r\n`.
 
 ### Tests
 
-The tester will spawn a Redis master, and it'll then execute your program as a replica like this:
+The tester will spawn a Redis master and execute your program as a replica like this:
 
 ```
 ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
