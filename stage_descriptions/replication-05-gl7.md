@@ -1,8 +1,8 @@
 In this stage, you'll implement the first step of the replication handshake.
 
-### The Handshake Process
+### Handshake
 
-When a replica connects to a master, it needs to go through a handshake process before receiving updates from the master.
+When a replica connects to a master, it needs to go through a "handshake" before receiving updates from the master.
 
 There are three steps to this handshake:
 
