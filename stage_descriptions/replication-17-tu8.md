@@ -17,7 +17,7 @@ $ redis-cli WAIT 9 500
 (integer) 7
 ```
 
-In the example above, `7` replicas are connected. No matter how many replicas the client asks for, the master will reply with the number of connected replicas (`7`) once the timeout has passed.
+In the example above, `7` replicas are connected. No matter how many replicas the client asks for, the master will reply with the number of connected replicas (`7`).
 
 For this stage, you can ignore both arguments (`<numreplicas> <timeout>`) and simply return the number of connected replicas.
 
