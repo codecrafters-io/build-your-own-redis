@@ -26,6 +26,8 @@ Here, the client is asking the master to wait for `3` replicas (with a maximum t
 
 For now, we’ll handle the simplest case: when the client needs `0` replicas and the master also has no replicas connected. In this case, `WAIT` should immediately return `0`.
 
+We'll get to tracking the number of replicas and responding accordingly in later stages.
+
 ### Tests
 
 The tester will execute your program like this:
