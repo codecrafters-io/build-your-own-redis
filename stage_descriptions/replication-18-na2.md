@@ -15,7 +15,7 @@ The `WAIT` command should complete when either:
 - The required number of replicas has acknowledged the last write command, or
 - The timeout expires.
 
-Either way, the master returns the number of replicas that acknowledged the command as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers)
+Either way, the master returns the number of replicas that acknowledged the command as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Tests
 
