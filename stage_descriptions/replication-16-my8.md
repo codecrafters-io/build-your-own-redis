@@ -1,4 +1,4 @@
-In this stage, you’ll begin implementing support for the `WAIT` command on the master.
+In this stage, you’ll implement support for the `WAIT` command on the master.
 
 ### The `WAIT` command
 
