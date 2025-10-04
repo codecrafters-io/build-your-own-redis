@@ -38,22 +38,21 @@ Just like in the previous stages, your replica should complete the handshake wit
 The master will then propagate a series of commands to your replica. These commands will be interleaved with `REPLCONF GETACK *` commands.
 
 ```bash
-REPLCONF getack *    # expect: REPLCONF ACK 0
+REPLCONF GETACK *    # expect: REPLCONF ACK 0
 
 PING                 # replica processes silently
-REPLCONF getack *    # expect: REPLCONF ACK 51
+REPLCONF GETACK *    # expect: REPLCONF ACK 51
 # 51 = 37 (first REPLCONF) + 14 (PING)
 
 SET foo 1             # replica processes silently
 SET bar 2             # replica processes silently
-REPLCONF getack *    # expect: REPLCONF ACK 146
+REPLCONF GETACK *    # expect: REPLCONF ACK 146
 # 146 = 51 + 37 (second REPLCONF) + 29 (SET foo) + 29 (SET bar)
 ```
 
-Your replica must calculate and return the exact offset at each step.
+Your replica must calculate and return the exact offset at each step in the `REPLCONF ACK <offset>` response. Your response should also be encoded as a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays).
 
 ### Notes
 
 - The offset should only include the number of bytes of commands processed **before** receiving the current `REPLCONF GETACK` command.
 - Although masters don't propagate `PING` commands when received from clients (since they aren't "write" commands), they may send `PING` commands to replicas to notify replicas that the master is still alive.
-- The response should be encoded as a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays).
