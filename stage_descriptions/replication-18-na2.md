@@ -8,7 +8,7 @@ In previous stages, we handled the cases where:
 
 Now, we’ll handle the case where write commands have been sent to replicas. Since replication offsets are no longer `0`, the master needs to check which replicas have successfully processed the latest write command before replying.
 
-To do this, the master must send `REPLCONF GETACK *` to replicas to check if there are pending write commands since the last `WAIT`. Each replica will reply with its current offset (`REPLCONF ACK <offset>`).
+To do this, the master must send `REPLCONF GETACK *` to replicas if there are pending write commands since the last `WAIT`. Each replica will reply with its current offset (`REPLCONF ACK <offset>`).
 
 The `WAIT` command should complete when either:
 
