@@ -15,7 +15,7 @@ The `WAIT` command should complete when either:
 - The required number of replicas has acknowledged the last write command, or
 - The timeout expires.
 
-Either way, the master returns the number of replicas that acknowledged the command as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+Either way, the master should return the number of replicas that acknowledged the command as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Tests
 
@@ -39,5 +39,4 @@ $ redis-cli WAIT 2 500    # (must wait until either 2 replicas have processed pr
 
 ### Notes
 
-- The `WAIT` command should always return the number of replicas that have acknowledged the command, even if the timeout expires.
-- The returned number of replicas might be lesser than or greater than the expected number of replicas specified in the `WAIT` command.
+- The returned number of replicas might be less than or greater than the expected number of replicas specified in the `WAIT` command.
