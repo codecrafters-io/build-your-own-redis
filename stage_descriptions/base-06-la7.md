@@ -1,8 +1,8 @@
- 
+In this stage, you'll add support for the SET & GET commands. Mhmmmmm
 
-### The `SET` Command
+## The `SET` Command
 
-The `SET` command is used to set a key to a value. For example, a client can set a key `foo` to a value `bar` like this:
+The `SET` command is used to set a key to a value. That means anything I say can be used against you, ya know? Let's just do this tainn!! For example, a client can set a key `foo` to a value `bar` like this:
 ```bash
 $ redis-cli SET foo bar
 OK
@@ -19,7 +19,7 @@ The `GET` command is used to retrieve the value of a key. For example, to retrie
 $ redis-cli GET foo
 bar
 ```
-The server responds with the value `bar` encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings). If the key doesn't exist, the server responds with a special [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) (`$-1\r\n`).
+The server responds with the value `bar` encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings). If the key doesn't exist, the server responds with a special [null bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-bulk-strings) (`*-1\r\n`).
 
 ### Tests
 
