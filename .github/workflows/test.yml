@@ -14,3 +14,7 @@ jobs:
     uses: codecrafters-io/course-sdk/.github/workflows/test-course-definition.yml@main
     with:
       sdkRef: main
+    permissions:
+      contents: read
+      checks: write          
+      pull-requests: write
