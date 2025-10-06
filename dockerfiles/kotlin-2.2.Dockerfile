@@ -14,4 +14,3 @@ RUN .codecrafters/compile.sh
 
 RUN mkdir -p /app-cached
 RUN if [ -d "/app/.gradle" ]; then mv /app/.gradle /app-cached; fi
-RUN if [ -d "/app/.kotlin" ]; then mv /app/.kotlin /app-cached; fi
