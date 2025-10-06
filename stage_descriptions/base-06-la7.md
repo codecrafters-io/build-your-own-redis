@@ -1,5 +1,4 @@
-In this stage, you'll add support for the [SET](https://redis.io/commands/set) &
-[GET](https://redis.io/commands/get) commands.
+
 
 ### The `SET` Command
 
