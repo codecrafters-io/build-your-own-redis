@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec /tmp/codecrafters-build-redis/distributions/app/bin/app "$@"
+exec /tmp/codecrafters-build-redis-kotlin/distributions/app/bin/app "$@"

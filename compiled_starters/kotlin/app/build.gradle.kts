@@ -5,7 +5,7 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/9.1.0/userguide/building_java_projects.html in the Gradle documentation.
  */
 
-layout.buildDirectory.set(file("/tmp/codecrafters-build-redis"))
+layout.buildDirectory.set(file("/tmp/codecrafters-build-redis-kotlin"))
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -21,16 +21,6 @@ repositories {
 }
 
 dependencies {
-    // Use the Kotlin Test integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-
-    // Use the JUnit 5 integration.
-    testImplementation(libs.junit.jupiter.engine)
-
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
-    // This dependency is used by the application.
-    implementation(libs.guava)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -43,9 +33,4 @@ java {
 application {
     // Define the main class for the application.
     mainClass.set("AppKt")
-}
-
-tasks.named<Test>("test") {
-    // Use JUnit Platform for unit tests.
-    useJUnitPlatform()
 }

@@ -15,7 +15,7 @@ set -e # Exit early if any commands fail
 (
   cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
   gradle build
-  cd /tmp/codecrafters-build-redis/distributions
+  cd /tmp/codecrafters-build-redis-kotlin/distributions
   rm -rf app
   tar -xvf app.tar
 )
@@ -24,4 +24,4 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program runs locally
 # - Edit .codecrafters/run.sh to change how your program runs remotely
-exec /tmp/codecrafters-build-redis/distributions/app/bin/app "$@"
+exec /tmp/codecrafters-build-redis-kotlin/distributions/app/bin/app "$@"

@@ -9,6 +9,6 @@
 set -e # Exit on failure
 
 gradle build
-cd /tmp/codecrafters-build-redis/distributions
+cd /tmp/codecrafters-build-redis-kotlin/distributions
 rm -rf app
 tar -xvf app.tar
