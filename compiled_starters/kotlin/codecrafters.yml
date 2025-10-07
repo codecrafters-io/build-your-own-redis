@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Kotlin version used to run your code
 # on Codecrafters.
 #
-# Available versions: kotlin-2.0
-buildpack: kotlin-2.0
+# Available versions: kotlin-2.2
+buildpack: kotlin-2.2

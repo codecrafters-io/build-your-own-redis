@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec java -jar /tmp/codecrafters-build-dir/build-your-own-redis.jar "$@"
+exec /tmp/codecrafters-build-redis-kotlin/distributions/app/bin/app "$@"
