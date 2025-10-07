@@ -1,4 +1,4 @@
-In this stage, you'll add support for the SET & GET commands. 
+In this stage, you'll add support for the SET & GET commands.
 
 ### The `SET` Command
 
