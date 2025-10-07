@@ -1,4 +1,4 @@
-In this stage, you'll add support for reading the value corresponding to a key from an RDB file.
+In this stage, you'll add support for reading the value corresponding to a key from an RDB file. 
 
 Just like with the previous stage, we'll stick to supporting RDB files that contain a single key for now.
 
