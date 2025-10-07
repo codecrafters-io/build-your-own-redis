@@ -1,8 +1,8 @@
-In this stage, you'll add support for the SET & GET commands. Let's go!
+In this stage, you'll add support for the SET & GET commands.
 
-## The `SET` Command
+### The `SET` Command
 
-The `SET` command is used to set a key to a value. That means anything I say can be used against you, ya know? Let's just do this tainn!! For example, a client can set a key `foo` to a value `bar` like this:
+The `SET` command is used to set a key to a value. Whoosh. For example, a client can set a key `foo` to a value `bar` like this:
 ```bash
 $ redis-cli SET foo bar
 OK
