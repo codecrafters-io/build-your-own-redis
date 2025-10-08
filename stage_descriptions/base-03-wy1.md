@@ -15,23 +15,6 @@ In most languages, you'd need to write specific code to run this loop on your se
 In most languages, you'd need to write specific code to run this loop on your server. In JavaScript, however, if you're listening to the [`data`](https://nodejs.org/api/net.html#net_event_data) event, this should be automatically handled for you. **It is very likely that the code you used in the previous stage will pass this stage without any changes!**
 {{/lang_is_typescript}}
 
-
-### Tests
-
-The tester will execute your program like this:
-
-```bash
-$ ./your_program.sh
-```
-
-It will then send multiple `PING` commands using the same connection. For example, it might send:
-
-```bash
-$ echo -e "PING\nPING" | redis-cli
-```
-
-The tester will expect to receive a `+PONG\r\n` response for each command sent.
-
 ### Notes
 
 - The exact bytes your program will receive won't be just `PING`. You'll receive something like this: `*1\r\n$4\r\nPING\r\n`, which is the Redis protocol encoding of the `PING` command.
