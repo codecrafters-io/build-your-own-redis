@@ -15,8 +15,9 @@ In most languages, you'd need to write specific code to run this loop on your se
 In most languages, you'd need to write specific code to run this loop on your server. In JavaScript, however, if you're listening to the [`data`](https://nodejs.org/api/net.html#net_event_data) event, this should be automatically handled for you. **It is very likely that the code you used in the previous stage will pass this stage without any changes!**
 {{/lang_is_typescript}}
 
-### Notes
+## Notes
 
 - The exact bytes your program will receive won't be just `PING`. You'll receive something like this: `*1\r\n$4\r\nPING\r\n`, which is the Redis protocol encoding of the `PING` command.
 - Just like the previous stage, you can hardcode `+PONG\r\n` as the response for this stage. We'll get to parsing client input in later stages.
 - The tester will send the `PING` commands using the same connection. We'll get to handling multiple connections in later stages.
+- You'll need to handle multiple commands in this stage.
