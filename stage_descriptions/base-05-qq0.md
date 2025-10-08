@@ -1,4 +1,4 @@
-In this stage, you'll add support for the [ECHO](https://redis.io/commands/echo) command.
+In this stage, you'll add support for the [ECHO](https://redis.io/commands/echo) command. 
 
 ### The `ECHO` Command
 
