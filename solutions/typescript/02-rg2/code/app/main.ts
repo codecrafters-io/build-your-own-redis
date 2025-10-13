@@ -1,8 +1,11 @@
 import * as net from "net";
+import { Buffer } from "buffer";
 
 const server: net.Server = net.createServer((connection: net.Socket) => {
   // Handle connection
-  connection.write(`+PONG\r\n`);
+  connection.on("data", (data: Buffer) => {
+    connection.write(`+PONG\r\n`);
+  });
 });
 
 server.listen(6379, "127.0.0.1");
