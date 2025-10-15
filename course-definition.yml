@@ -159,6 +159,8 @@ stages:
         "go-tcp-server",
         "rust-tcp-server",
         "python-tcp-server",
+        "java-tcp-server",
+        "cpp-tcp-server",
       ]
     name: "Bind to a port"
     difficulty: very_easy
@@ -175,6 +177,8 @@ stages:
         "go-tcp-server",
         "rust-tcp-server",
         "python-tcp-server",
+        "java-tcp-server",
+        "cpp-tcp-server",        
       ]
     name: "Respond to PING"
     difficulty: easy
@@ -192,6 +196,8 @@ stages:
         "go-tcp-server",
         "rust-tcp-server",
         "python-tcp-server",
+        "java-tcp-server",
+        "cpp-tcp-server",
       ]
     name: "Respond to multiple PINGs"
     difficulty: easy
@@ -208,6 +214,8 @@ stages:
         "go-tcp-server",
         "rust-tcp-server",
         "python-tcp-server",
+        "java-tcp-server",
+        "cpp-tcp-server",
       ]
     name: "Handle concurrent clients"
     difficulty: medium
