@@ -1,4 +1,4 @@
-slug: "redis"
+slug: "redis" 
 name: "Build your own Redis"
 short_name: "Redis"
 release_status: "live"
