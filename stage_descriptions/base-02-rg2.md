@@ -1,59 +1,29 @@
-In this stage, you'll implement support for the [PING](https://redis.io/commands/ping) command.
+In this stage, you'll implement the Redis `PING` command.
 
-### TCP (Transmission Control Protocol)
+### What is `PING`?
 
-[TCP](https://en.wikipedia.org/wiki/Transmission_Control_Protocol) is the underlying protocol used by protocols like HTTP, SSH, and others you're probably familiar with. Redis also uses TCP for communication between its clients and servers.
-
-Don't worry if you're unfamiliar with the TCP protocol, or what Redis clients & servers are. You'll learn more about this in the next stages.
-
-### Redis Commands
-
-Redis clients communicate with Redis servers by sending [commands](https://redis.io/commands/). For each command, a Redis server sends a response back to the client.
+Redis clients talk to Redis servers by sending **commands** and receiving **responses**.
 
 For example:
 
 ```bash
-$ redis-cli SET name Alice
-OK
+redis> PING                  # client sends a PING command
+"PONG"                       # server replies with PONG
+
+redis> SET name Alice        # store the value "Alice" under the key "name"
+OK                           # server confirms success
 ```
 
-Here, the client sends a [`SET`](https://redis.io/docs/latest/commands/set/) command to store the key `name` with the value `Alice`. The server responds with `OK`, confirming that the action was successful.
+`PING` is the simplest Redis command. It’s used to check whether a Redis server is alive and responding.
 
-Both commands and responses are encoded using the [Redis serialization protocol (RESP)](https://redis.io/docs/latest/develop/reference/protocol-spec/). We'll learn more about this in later stages.
+When a Redis server replies to `PING`, the raw response it sends over the network is actually `+PONG\r\n`, which is the string `PONG` encoded using RESP, a format Redis uses to exchange messages between clients and servers.
 
-### The `PING` Command
+For this stage, your task is to simply hardcode a `+PONG\r\n` response, regardless of the incoming command.
 
-[PING](https://redis.io/commands/ping/) is one of the simplest Redis commands. It's used to check whether a Redis server is healthy.
-
-```bash
-$ redis-cli PING
-PONG
-```
-
-The response for the `PING` command is `+PONG\r\n`. This is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
-
-In this stage, you can ignore the client input and simply hardcode `+PONG\r\n` as a response. We'll get to parsing the client's input in later stages.
-
-### Tests
-
-The tester will execute your program like this:
-
-```bash
-$ ./your_program.sh
-```
-
-It'll then send a `PING` command to your server.
-
-```bash
-$ redis-cli PING
-```
-
-Your server should respond with `+PONG\r\n`, which is `PONG` encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
+You’ll learn more about RESP and how input command parsing works in future stages. 
 
 ### Notes
 
-- You can ignore the data that the tester sends you for this stage. We'll get to parsing
-  client input in later stages. For now, you can just hardcode `+PONG\r\n` as the response.
-- You can also ignore handling multiple clients and handling multiple PING commands in this stage—we'll get to that in later stages.
-- The exact bytes your program will receive won't just be `PING`. Instead, you'll receive something like this: `*1\r\n$4\r\nPING\r\n`,
-  which is the Redis protocol encoding of the `PING` command. We'll learn more about this in later stages.
+- You can ignore handling multiple clients and handling multiple PING commands in this stage. We'll get to that later.
+- The exact bytes your program will receive won't just be `PING`. Instead, you'll receive: `*1\r\n$4\r\nPING\r\n`,
+  which is the RESP encoding of `PING`.
