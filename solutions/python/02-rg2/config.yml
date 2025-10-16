@@ -12,18 +12,7 @@ hints:
 
       The above code uses `_` to ignore the second return value, which is the client's address.
 
-  - title_markdown: "How do I read the client's PING command?"
-    body_markdown: |-
-      Use the [`recv()`](https://docs.python.org/3/library/socket.html#socket.socket.recv) method to read the client's command:
-
-      ```python
-      # Read 14 bytes from the client's connection
-      connection.recv(14)
-      ```
-
-      The PING command is 14 bytes long when encoded as RESP: `*1\r\n$4\r\nPING\r\n`. You'll learn about RESP in later stages.
-
-  - title_markdown: "How do I send the response to the client?"
+  - title_markdown: "How do I send a response to the client?"
     body_markdown: |-
       Use the [`sendall()`](https://docs.python.org/3/library/socket.html#socket.socket.sendall) method on the client's connection for this:
 
