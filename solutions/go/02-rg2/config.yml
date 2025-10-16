@@ -1,7 +1,7 @@
 hints:
   - title_markdown: "How do I access the client's TCP connection?"
     body_markdown: |-
-      This is returned by the [Listerner.Accept()](https://pkg.go.dev/net#Listener.Accept) method.
+      This is returned by the [`Accept()`](https://pkg.go.dev/net#Listener.Accept) method.
 
       ```go
       # The return value value includes:
@@ -14,7 +14,7 @@ hints:
 
   - title_markdown: "How do I send a response to the client?"
     body_markdown: |-
-      Use the [Conn.Write()](https://pkg.go.dev/net#Conn.Write) method on the client's connection:
+      Use the [`Write()`](https://pkg.go.dev/net#Conn.Write) method on the client's connection:
 
       ```go
       # Send the response to the client
