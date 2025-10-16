@@ -21,7 +21,7 @@ hints:
       connection.recv(14)
       ```
 
-      The PING command is 14 bytes long when encoded as RESP: `*1\r\n$4\r\nPING\r\n` (you'll learn about RESP in later stages).
+      The PING command is 14 bytes long when encoded as RESP: `*1\r\n$4\r\nPING\r\n`. You'll learn about RESP in later stages.
 
   - title_markdown: "How do I send the response to the client?"
     body_markdown: |-
