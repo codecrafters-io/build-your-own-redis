@@ -1,0 +1,25 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      This is returned by the [Listerner.Accept()](https://pkg.go.dev/net#Listener.Accept) method.
+
+      ```go
+      # The return value value includes:
+      # 1. the client's connection (a `net.Conn` object)
+      # 2. an error (if any)
+      conn, err := listener.Accept()
+      ```
+
+      Each [`net.Conn`](https://pkg.go.dev/net#Conn) represents an active connection from a client.
+
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [Conn.Write()](https://pkg.go.dev/net#Conn.Write) method on the client's connection:
+
+      ```go
+      # Send the response to the client
+      conn.Write([]byte("+PONG\r\n"))
+      ```
+
+      - The above code uses `[]byte()` to convert the string to a [byte slice](https://go.dev/blog/slices-intro#slices).
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

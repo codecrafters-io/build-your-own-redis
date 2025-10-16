@@ -14,12 +14,12 @@ hints:
 
   - title_markdown: "How do I send a response to the client?"
     body_markdown: |-
-      Use the [`sendall()`](https://docs.python.org/3/library/socket.html#socket.socket.sendall) method on the client's connection for this:
+      Use the [`sendall()`](https://docs.python.org/3/library/socket.html#socket.socket.sendall) method on the client's connection:
 
       ```python
       # Send the response to the client
       connection.sendall(b"+PONG\r\n")
       ```
 
-      - The above code uses `b` to convert the string to a [bytes object](https://docs.python.org/3/library/stdtypes.html#bytes).
+      - The above code uses `b` to create a [bytes object](https://docs.python.org/3/library/stdtypes.html#bytes).
       - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
