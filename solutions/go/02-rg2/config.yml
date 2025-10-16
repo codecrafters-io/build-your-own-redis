@@ -4,9 +4,9 @@ hints:
       This is returned by the [`Accept()`](https://pkg.go.dev/net#Listener.Accept) method.
 
       ```go
-      # The return value value includes:
-      # 1. the client's connection (a `net.Conn` object)
-      # 2. an error (if any)
+      // The return value value includes:
+      // 1. the client's connection (a `net.Conn` object)
+      // 2. an error (if any)
       conn, err := listener.Accept()
       ```
 
@@ -17,7 +17,7 @@ hints:
       Use the [`Write()`](https://pkg.go.dev/net#Conn.Write) method on the client's connection:
 
       ```go
-      # Send the response to the client
+      // Send the response to the client
       conn.Write([]byte("+PONG\r\n"))
       ```
 
