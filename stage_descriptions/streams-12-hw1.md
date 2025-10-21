@@ -1,45 +1,29 @@
-In this stage, you'll extend support to `XREAD` to allow for the blocking command not timing out.
+In this stage, you'll extend your `XREAD` implementation to support blocking indefinitely.
 
-### Understanding blocking without timeout
+### Indefinite Blocking in `XREAD`
 
-Here's how it works.
+As a recap, the `XREAD` command supports blocking using the `BLOCK <milliseconds>` parameter. 
 
-Let's use the entries previously shown as an example.
+If the `milliseconds` value is set to `0`, the `XREAD` command will block indefinitely until a new entry is added to the stream(s).
 
-```yaml
-entries:
-  - id: 1526985054069-0 # (ID of the first entry)
-    temperature: 36 # (A key value pair in the first entry)
-    humidity: 95 # (Another key value pair in the first entry)
-
-  - id: 1526985054079-0 # (ID of the second entry)
-    temperature: 37 # (A key value pair in the first entry)
-    humidity: 94 # (Another key value pair in the first entry)
-
-  # ... (and so on)
-```
-
-On one instance of the redis-cli, we'd add an entry and send a blocking `XREAD` command with 0 as the time passed in.
+For example, consider two separate clients. The first client sends a blocking `XREAD` command with `0` as the time passed in:
 
 ```bash
-$ redis-cli XADD some_key 1526985054069-0 temperature 36 humidity 95
-"1526985054069-0"
-$ redis-cli XREAD block 0 streams some_key 1526985054069-0
+$ redis-cli XREAD BLOCK 0 streams some_key 1526985054069-0
 ```
 
-Then, on another instance of the redis-cli, we add another entry.
+This client will be blocked indefinitely until a new entry is added.
+
+If the second client adds an entry to the stream at any time:
 
 ```bash
 $ other-redis-cli XADD some_key 1526985054079-0 temperature 37 humidity 94
 "1526985054079-0"
 ```
 
-The difference now is that the first instance of the redis-cli doesn't time out and responds with null no matter how much time passes. It will wait until another entry is added. The return value after an entry is added is similar to the last stage.
+The first client's `XREAD` command will immediately unblock and respond with the new entry:
 
 ```bash
-$ redis-cli XADD some_key 1526985054069-0 temperature 36 humidity 95
-"1526985054069-0"
-$ redis-cli XREAD block 0 streams some_key 1526985054069-0
 1) 1) "some_key"
    2) 1) 1) 1526985054079-0
          2) 1) temperature
@@ -56,39 +40,25 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-First, an entry will be added to a stream.
+It will then add an entry to a stream.
 
 ```bash
 $ redis-cli XADD stream_key 0-1 temperature 96
 ```
 
-It'll then send an `XREAD` command to your server with the `BLOCK` command with the time passed in being 0.
+Next, the tester will send an indefinite blocking `XREAD` command to your server:
 
 ```bash
-$ redis-cli XREAD block 0 streams stream_key 0-1
+$ redis-cli XREAD BLOCK 0 streams stream_key 0-1
 ```
 
-It'll then wait for 1000 milliseconds before checking if there is a response. Your server should not have a new response. It'll then add another entry.
+It will then pause for `1000` milliseconds to confirm the client remains blocked and doesn't time out. After that, it will add another entry:
 
 ```bash
 $ redis-cli XADD stream_key 0-2 temperature 95
 ```
 
-Your server should respond with the following:
-
-```text
-*1\r\n
-*2\r\n
-$10\r\stream_key\r\n
-*1\r\n
-*2\r\n
-$3\r\n0-2\r\n
-*2\r\n
-$11\r\ntemperature\r\n
-$2\r\n95\r\n
-```
-
-This is the RESP encoded representation of the following.
+Your server should respond with the following, encoded as a RESP array:
 
 ```json
 [
@@ -106,6 +76,3 @@ This is the RESP encoded representation of the following.
   ]
 ]
 ```
-
-### Notes
-- In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.

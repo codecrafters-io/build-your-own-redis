@@ -1,11 +1,10 @@
 const std = @import("std");
+const stdout = std.fs.File.stdout();
 const net = std.net;
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
-
     // You can use print statements as follows for debugging, they'll be visible when running tests.
-    try stdout.print("Logs from your program will appear here!", .{});
+    try stdout.writeAll("Logs from your program will appear here!");
 
     // Uncomment this block to pass the first stage
     //
@@ -19,7 +18,7 @@ pub fn main() !void {
     // while (true) {
     //     const connection = try listener.accept();
     //
-    //     try stdout.print("accepted new connection", .{});
+    //     try stdout.writeAll("accepted new connection");
     //     connection.stream.close();
     // }
 }

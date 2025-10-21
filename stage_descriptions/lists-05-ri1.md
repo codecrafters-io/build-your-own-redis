@@ -1,27 +1,31 @@
 In this stage, you will add support for negative indexes for the `LRANGE` command.
 
-### LRANGE with negative indexes
+### `LRANGE` with negative indexes
 
-The LRANGE command can accept negative indexes too, example usage:
+The `LRANGE` command can also use negative indexes.
+
+A negative index is an offset from the end of the list: `-1` refers to the last element, `-2` refers to the second-to-last, and so on.
+
+For example:
 
 ```bash
 # Create a list with 5 items
 > RPUSH list_key "a" "b" "c" "d" "e"
 (integer) 5
 
-# List last 2 items 
+# List the last 2 items 
 > LRANGE list_key -2 -1
 1) "d"
 2) "e"
 
-# List all items expect last 2
+# List all items except the last 2
 > LRANGE list_key 0 -3
 1) "a"
 2) "b"
 3) "c"
 ```
 
-An index of -1 refers to the last element, -2 to the second last, and so on. If a negative index is out of range (i.e. >= the length of the list), it is treated as 0 (start of the list).
+If a negative index is out of range (e.g., `-6` on a list of length `5`), it should be treated as `0` (the start of the list).
 
 ### Tests
 
@@ -45,7 +49,7 @@ For example, the tester might send you this command:
 $ redis-cli LRANGE list_key 2 -1
 ```
 
-In this case, the tester will verify that the response is the array `["c", "d", "e"]`, which is RESP Encoded as:
+In this case, the tester expects the response to be the array `["c", "d", "e"]`, which is RESP encoded as:
 
 ```
 *3\r\n

@@ -2,43 +2,43 @@ In this stage, you'll add support for validating entry IDs to the `XADD` command
 
 ### Entry IDs
 
-Here's an example of stream entries from the previous stage:
+Entry IDs are crucial for maintaining the order of entries in Redis streams.
+
+Each ID is made up of two integers separated by a dash: `<millisecondsTime>-<sequenceNumber>`.
+
+Here's an example from the previous stage:
 
 ```yaml
 entries:
   - id: 1526985054069-0 # (ID of the first entry)
-    temperature: 36 # (A key value pair in the first entry)
-    humidity: 95 # (Another key value pair in the first entry)
+    temperature: 36
+    humidity: 95
 
   - id: 1526985054079-0 # (ID of the second entry)
-    temperature: 37 # (A key value pair in the first entry)
-    humidity: 94 # (Another key value pair in the first entry)
+    temperature: 37
+    humidity: 94
 
   # ... (and so on)
 ```
 
-Entry IDs are always composed of two integers: `<millisecondsTime>-<sequenceNumber>`.
+These IDs are unique within a stream and are guaranteed to be incremental. This means a new entry's ID will always be greater than the ID of any previous entry.
 
-Entry IDs are unique within a stream, and they're guaranteed to be incremental - i.e. an
-entry added later will always have an ID greater than an entry added in the past. More
-on this in the next section.
+### Specifying Entry IDs in `XADD`
 
-### Specifying entry IDs in XADD
+You can use three different formats to specify the ID for the `XADD` command:
 
-There are multiple formats in which the ID can be specified in the XADD command:
+- Explicit (`1526919030474-0`)
+- Auto-generate only sequence number (`1526919030474-*`)
+- Auto-generate the time and sequence number (`*`)
 
-- Explicit ("1526919030474-0") (**This stage**)
-- Auto-generate only sequence number ("1526919030474-*") (Next stages)
-- Auto-generate time part and sequence number ("*") (Next stages)
+For this stage, you will only handle explicit IDs (e.g., `1526919030474-0`). You'll add support for the other two cases in the next stages.
 
-In this stage, we'll only deal with explicit IDs. We'll add support for the other two cases in the next stages.
+Your `XADD` implementation must validate the provided ID based on the following rules:
 
-Your XADD implementation should validate the ID passed in.
-
-- The ID should be greater than the ID of the last entry in the stream.
-  - The `millisecondsTime` part of the ID should be greater than or equal to the `millisecondsTime` of the last entry.
-  - If the `millisecondsTime` part of the ID is equal to the `millisecondsTime` of the last entry, the `sequenceNumber` part of the ID should be greater than the `sequenceNumber` of the last entry.
-- If the stream is empty, the ID should be greater than `0-0`
+- The ID must be strictly greater than the last entry's ID.
+  - The `millisecondsTime` portion of the new ID must be greater than or equal to the last entry's `millisecondsTime`.
+  - If the `millisecondsTime` values are equal, the `sequenceNumber` of the new ID must be greater than the last entry's `sequenceNumber`.
+- If the stream is empty, the ID must be greater than `0-0`. The minimum valid ID Redis accepts is `0-1`.
 
 Here's an example of adding an entry with a valid ID followed by an invalid ID:
 
@@ -49,7 +49,9 @@ $ redis-cli XADD some_key 1-1 bar baz
 (error) ERR The ID specified in XADD is equal or smaller than the target stream top item
 ```
 
-Here's another such example:
+The second command fails because `1-1` is not strictly greater than the last ID.
+
+Here's another example:
 
 ```bash
 $ redis-cli XADD some_key 1-1 foo bar
@@ -58,7 +60,9 @@ $ redis-cli XADD some_key 0-2 bar baz
 (error) ERR The ID specified in XADD is equal or smaller than the target stream top item
 ```
 
-The minimum entry ID that Redis supports is 0-1. Passing in an ID lower than should result in an error.
+The ID `0-2` is invalid because its `millisecondsTime` is less than the last ID's `millisecondsTime`.
+
+Finally, passing `0-0` is always invalid, since IDs must be strictly greater than `0-0`:
 
 ```bash
 $ redis-cli XADD some_key 0-0 bar baz
@@ -73,7 +77,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll create a few entries usind `XADD`.
+It will then create a few entries using `XADD`.
 
 ```bash
 $ redis-cli XADD stream_key 1-1 foo bar
@@ -82,30 +86,27 @@ $ redis-cli XADD stream_key 1-2 bar baz
 "1-2"
 ```
 
-It'll send another `XADD` command with the same time and sequence number as the last entry.
+Next, it will send a few `XADD` commands with an invalid ID, such as `1-2` or `0-3`. 
 
 ```bash
+# The exact time and sequence number as the last entry
 $ redis-cli XADD stream_key 1-2 baz foo
 (error) ERR The ID specified in XADD is equal or smaller than the target stream top item
-```
 
-Your server should respond with "-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n", which is the error message above encoded as a
-[simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors).
-
-The tester will then send another `XADD` command with a smaller value for the time and a larger value for the sequence number.
-
-```bash
+# A smaller value for the time and a larger value for the sequence number
 $ redis-cli XADD stream_key 0-3 baz foo
 (error) ERR The ID specified in XADD is equal or smaller than the target stream top item
 ```
 
-Your server should also respond with the same error message.
+In each case, your server should respond with `-ERR The ID specified in XADD is equal or smaller than the target stream top item\r\n\`, encoded as a
+[simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors).
 
 After that, the tester will send another `XADD` command with `0-0` as the ID.
 
 ```bash
 $ redis-cli XADD stream_key 0-0 baz foo
+(error) ERR The ID specified in XADD must be greater than 0-0
 ```
 
-Your server should respond with "-ERR The ID specified in XADD must be greater than 0-0\r\n", which is the error message above encoded as a
-[RESP simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors).
+Your server should respond with `-ERR The ID specified in XADD must be greater than 0-0\r\n`, which is the error message above encoded as a
+[simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors).

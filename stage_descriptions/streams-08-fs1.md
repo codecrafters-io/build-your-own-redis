@@ -1,20 +1,18 @@
 In this stage, you'll extend support for `XRANGE` to allow querying using `+`.
 
-### Using XRANGE with +
+### Using `XRANGE` with `+`
 
-In the previous stage, we saw that `XRANGE` takes `start` and `end` as arguments.
+In the `XRANGE` command, the `end` argument can be specified as `+` to retrieve entries from the given `start` ID to the end of the stream.
 
-In addition to accepting an explicit entry ID, `end` can also be specified as `+`. When `+` is used, `XRANGE` retrieves entries until the end of the stream.
-
-Here's an example of how that works.
-
-We'll use our previous example for entries existing in a stream.
+Here's an example of how that works:
 
 ```bash
 $ redis-cli XADD some_key 1526985054069-0 temperature 36 humidity 95
 "1526985054069-0"
+
 $ redis-cli XADD some_key 1526985054079-0 temperature 37 humidity 94
 "1526985054079-0"
+
 $ redis-cli XRANGE some_key 1526985054069 +
 1) 1) 1526985054069-0
    2) 1) temperature
@@ -28,6 +26,8 @@ $ redis-cli XRANGE some_key 1526985054069 +
       4) 94
 ```
 
+In the example above, `XRANGE` retrieves all the entries from `some_key` starting from the entry with ID `1526985054069-0` to the very end of the stream.
+
 ### Tests
 
 The tester will execute your program like this:
@@ -36,7 +36,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then create a few entries.
+It will then create a few entries.
 
 ```bash
 $ redis-cli XADD stream_key 0-1 foo bar
@@ -44,29 +44,15 @@ $ redis-cli XADD stream_key 0-2 bar baz
 $ redis-cli XADD stream_key 0-3 baz foo
 ```
 
-It'll then send an `XRANGE` command to your server.
+Next, it will send an `XRANGE` command using `+` as the `end` ID:
 
 ```bash
 $ redis-cli XRANGE stream_key 0-2 +
 ```
 
-Your server should respond with the following:
+Your server should respond with a RESP array containing the entries from the provided `start` ID to the end of the stream.
 
-```text
-*2\r\n
-*2\r\n
-$3\r\n0-2\r\n
-*2\r\n
-$3\r\nbar\r\n
-$3\r\nbaz\r\n
-*2\r\n
-$3\r\n0-3\r\n
-*2\r\n
-$3\r\nbaz\r\n
-$3\r\nfoo\r\n
-```
-
-This is the RESP encoded representation of the following.
+From the example above, your response should look like the following, encoded as a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays):
 
 ```json
 [
@@ -87,5 +73,21 @@ This is the RESP encoded representation of the following.
 ]
 ```
 
+The raw RESP encoding looks like this:
+
+```text
+*2\r\n
+*2\r\n
+$3\r\n0-2\r\n
+*2\r\n
+$3\r\nbar\r\n
+$3\r\nbaz\r\n
+*2\r\n
+$3\r\n0-3\r\n
+*2\r\n
+$3\r\nbaz\r\n
+$3\r\nfoo\r\n
+```
+
 ### Notes
-- In the response, the items are separated onto new lines for readability. The tester expects all of these to be in one line.
+- In the response, the items are shown in separate lines for readability. The tester expects all of these to be in one line.

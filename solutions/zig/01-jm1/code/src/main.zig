@@ -1,9 +1,8 @@
 const std = @import("std");
+const stdout = std.fs.File.stdout();
 const net = std.net;
 
 pub fn main() !void {
-    const stdout = std.io.getStdOut().writer();
-
     const address = try net.Address.resolveIp("127.0.0.1", 6379);
 
     var listener = try address.listen(.{
@@ -14,7 +13,7 @@ pub fn main() !void {
     while (true) {
         const connection = try listener.accept();
 
-        try stdout.print("accepted new connection", .{});
+        try stdout.writeAll("accepted new connection");
         connection.stream.close();
     }
 }
