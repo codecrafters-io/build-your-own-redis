@@ -150,6 +150,17 @@ extensions:
       [geoadd-command]: https://redis.io/docs/latest/commands/geoadd/
       [geosearch-command]: https://redis.io/docs/latest/commands/geosearch/
 
+  - slug: "auth"
+    name: "Authentication"
+    description_markdown: |
+      In this challenge extension you'll add support for [ACL-based authentication][acl] to your Redis implementation.
+
+      Along the way you'll learn about the [AUTH][auth-command] command, Redis's [DSL for access control][acl-rules] and more.
+
+      [acl]: https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
+      [acl-rules]: https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/#acl-rules
+      [auth-command]: https://redis.io/docs/latest/commands/auth/
+
 stages:
   - slug: "jm1"
     concept_slugs:
@@ -805,3 +816,5 @@ stages:
     name: "Search within radius"
     difficulty: easy
     marketing_md: In this stage, you'll add support for searching locations near a coordinate within a given radius using the `GEOSEARCH` command.
+
+  # Authentication & ACL
