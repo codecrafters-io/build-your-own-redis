@@ -55,7 +55,7 @@ marketing:
         * Handling multiple clients concurrently
         * Implementing the `SET` and `GET` commands to store and retrieve data.
         
-        At this stage, your Redis will already feel real. You'll be able to connect with the official `redis-cli`, store data, and retrieve it. 
+        At this stage, your Redis will already feel real, and you'll be able to interact with the official `redis-cli`. 
         
         As you progress, you'll implement advanced features like:
         * Redis replication
@@ -68,7 +68,7 @@ marketing:
     - question_markdown: "What exactly will I learn?"
       answer_markdown: |-
         In the first 7 stages, you'll learn:
-        * How a TCP server binds to a port and accepts connections (it’s not magic!)
+        * How a TCP server binds to a port and accepts connections
         * What the Redis Protocol (RESP) is, and how to parse/encode messages
         * How to handle multiple clients concurrently
         * How to implement commands like `PING`, `ECHO`, `SET`, and `GET`
