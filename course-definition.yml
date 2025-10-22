@@ -818,3 +818,86 @@ stages:
     marketing_md: In this stage, you'll add support for searching locations near a coordinate within a given radius using the `GEOSEARCH` command.
 
   # Authentication & ACL
+  - slug: "jn4"
+    primary_extension_slug: "auth"
+    name: "The ACL USERS command"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL USERS` command.
+
+  - slug: "gx8"
+    primary_extension_slug: "auth"
+    name: "The ACL WHOAMI command"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL WHOAMI` command.
+
+  - slug: "ql6"
+    primary_extension_slug: "auth"
+    name: "The ACL SETUSER command"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL SETUSER` command.
+
+  - slug: "pl7"
+    primary_extension_slug: "auth"
+    name: "Create a user"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for creating a new user using the `ACL SETUSER` command.
+
+  - slug: "uv9"
+    primary_extension_slug: "auth"
+    name: "The ACL GETUSER command"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL GETUSER` command.
+
+  - slug: "hz3"
+    primary_extension_slug: "auth"
+    name: "Set user password"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for setting a user password using the `ACL SETUSER` command with the password rule.
+
+  - slug: "nm2"
+    primary_extension_slug: "auth"
+    name: "Enable a user"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for enabling a newly created user using the `ACL SETUSER` command with the `on` flag.
+
+  - slug: "ws7"
+    primary_extension_slug: "auth"
+    name: "The AUTH command"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for authenticating a user using the `AUTH` command.
+
+  - slug: "vg5"
+    primary_extension_slug: "auth"
+    name: "Grant command permissions"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for granting command permissions to users using the `+@all` ACL rule, and you'll verify that authenticated users can execute commands they have permission for.
+
+  - slug: "tq1"
+    primary_extension_slug: "auth"
+    name: "The nopass flag"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for creating users that can authenticate without a password using the `nopass` flag.
+
+  - slug: "ct2"
+    primary_extension_slug: "auth"
+    name: "The default user (1/2)"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for retrieving the `default` user's information using the `ACL GETUSER` command.
+
+  - slug: "ya4"
+    primary_extension_slug: "auth"
+    name: "The default user (2/2)"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for implementing the `default` user.

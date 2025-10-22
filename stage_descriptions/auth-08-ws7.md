@@ -65,7 +65,7 @@ OK
 The tester will validate that:
 - The response to `AUTH foo wrong_password` is an error that starts with `WRONGPASS`.
 - The response to `AUTH foo mypassword` is `+OK\r\n`.
-- After authentication, when the client tries to execute `ACL WHOAMI`, it receives an authentication error. It is because we haven't granted the user permission to run any commands. We'll get to implementing this in the later stages.
+- After authentication, when the client tries to execute `ACL WHOAMI`, it receives a `NOPERM` error. It is because we haven't granted the user permission to run any commands. We'll get to implementing this in the later stages.
 
 ### Notes
 
