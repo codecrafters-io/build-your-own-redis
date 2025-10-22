@@ -53,7 +53,7 @@ marketing:
         * Responding to basic commands like `PING` and `ECHO`
         * Parsing the Redis Protocol (RESP) from client requests
         * Handling multiple clients concurrently
-        * Implementing a key-value storage with `SET`, `GET`, and key expiry
+        * Implementing the `SET` and `GET` commands to store and retrieve data, including automatic key expiry.
         
         At this stage, your Redis will already feel real. You'll be able to connect with the official `redis-cli`, store data, and retrieve it. 
         
@@ -72,7 +72,7 @@ marketing:
         * What the Redis Serialization Protocol (RESP) is, and how to parse/encode messages
         * How to handle multiple clients concurrently
         * How to implement commands like `PING`, `ECHO`, `SET`, and `GET`
-        * How to manage an in-memory storage
+        * How to manage a key-value storage
         
         In the advanced stages, you'll discover new programming ideas, such as master-replica synchronization, atomic transactions, and specialized data structures like sorted sets and geospatial indices.
         
