@@ -1,4 +1,4 @@
-In this stage, you'll add support for setting a user password using the `ACL SETUSER` command with password rule.
+In this stage, you'll add support for setting a user password using the `ACL SETUSER` command with the password rule.
 
 ### Modifying user passwords
 
@@ -47,16 +47,16 @@ OK
  6) "-@all"
 ```
 
-The tester will validate the following for the response fo the `ACL GETUSER` command:
+The tester will validate the following for the response for the `ACL GETUSER` command:
 
-- The response complies with the response format of the`ACL GETUSER` command.
+- The response complies with the response format of the `ACL GETUSER` command.
 - The `flags` array contains the flag `off`.
 - The SHA-256 hash of the string `foospassword` is present in the passwords array.
 - The command permission rule for the user is `-@all`, meaning that the user has no permissions to run any commands.
 
 ### Notes
 
-- Redis uses SHA256 algorithm hashing for password storage. You'll need to compute the SHA256 hash of the provided password and store it.
+- Redis uses the SHA-256 hashing algorithm for password storage. You'll need to compute the SHA-256 hash of the provided password and store it.
 
 - The password hash should be stored as a lowercase hexadecimal string.
 

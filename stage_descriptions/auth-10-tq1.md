@@ -2,7 +2,7 @@ In this stage, you'll add support for creating users that can authenticate witho
 
 ### The `nopass` flag
 
-The `nopass` is one of the user flags in Redis that makes the user so that every password will work against this user. It also removes all the passwords for the user if their passwords list is non-empty.
+The `nopass` flag is one of the user flags in Redis that allows any password to work for this user. It also removes all passwords for the user if their password list is non-empty.
 
 Example usage:
 
@@ -25,7 +25,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then create a user using the `ACL SETUSER` command specifying a password. The tester will then send a `ACL SETUSER` command  with the `nopass` flag.  and verify that the user can authenticate without providing a password.
+It will then create a user using the `ACL SETUSER` command, specifying a password. The tester will then send an `ACL SETUSER` command with the `nopass` flag and verify that the user can authenticate without providing a password.
 
 ```bash
 $ redis-cli
@@ -79,9 +79,9 @@ OK
 
 The tester will validate the following for the `ACL GETUSER` command:
 
-- The response complies with the response format of the`ACL GETUSER` command.
-- The `flags` array in the response contains the flag`on`.
-- The `flags` array in the response does not conain the flag `nopass` before the `ACL SETUSER foo nopass` command is sent.
+- The response complies with the response format of the `ACL GETUSER` command.
+- The `flags` array in the response contains the flag `on`.
+- The `flags` array in the response does not contain the flag `nopass` before the `ACL SETUSER foo nopass` command is sent.
 - The `flags` array in the response contains the flag `nopass` after the `ACL SETUSER foo nopass` command is sent.
 - The passwords array contains the SHA-256 hash of the string `foospassword` before the `ACL SETUSER foo nopass` command is sent.
 - The passwords array is empty after the `ACL SETUSER foo nopass` command is sent.

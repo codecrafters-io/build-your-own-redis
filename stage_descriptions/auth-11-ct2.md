@@ -5,10 +5,10 @@ In this stage, you'll add support for retrieving the `default` user's informatio
 The `default` user is a built-in user that exists in every Redis server. Unlike regular users created with `ACL SETUSER`, the `default` user has special default properties:
 
 - It is enabled by default (`on` flag)
-- It has the `nopass` flag, allowing connections without authentication
+- It has the `nopass` flag, allowing automatic authentication without providing a password
 - It has permission to execute all commands (`+@all`)
 
-When a client connects to Redis without authenticating, it is automatically associated with the `default` user. This allows commands to be executed immediately without requiring explicit authentication. However, if the `"nopass"` flag is cleared from the default user (by setting a password for the `default` user), new connections cannot automatically be authenticated as the `default` user and `AUTH` command must be used for authentication.
+When a client connects to Redis without explicitly authenticating (`AUTH`), it is automatically authenticated as the `default` user. This allows commands to be executed immediately without requiring explicit authentication. However, if the `"nopass"` flag is cleared from the default user (by setting a password for the `default` user), new connections cannot automatically be authenticated as the `default` user and `AUTH` command must be used for authentication.
 
 Example usage:
 
@@ -62,10 +62,6 @@ The tester will validate the following for the response of the `ACL GETUSER defa
 
 ### Notes
 
-- The `default` user should always be present in your Redis implementation, even if no users have been explicitly created.
-
 - Unlike regular users created with `ACL SETUSER` (which start with `off`, no passwords, and `-@all`), the `default` user starts with `on`, `nopass`, and `+@all`.
 
 - The `nopass` flag in the response indicates that the user can authenticate without providing a password. This is why new connections can execute commands immediately.
-
-- The empty passwords array combined with the `nopass` flag means any connection is automatically authenticated as the `default` user.

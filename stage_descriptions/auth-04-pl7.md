@@ -66,8 +66,6 @@ In this case, the tester will validate that the response is the array `["bar", "
 
 - The usernames in the array must be sorted in an alphabetical order.
 
-- Running `ACL SETUSER username` on pre-existing user should have no effects, other than replying `+OK\r\n` to the client.
-
 - Even though no user with the username `default` exists, your server must respond as if a user with the username `default` exists.
 
 - You don't need to implement the default user. We'll get to that in the later stages.

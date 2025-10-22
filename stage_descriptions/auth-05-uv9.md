@@ -40,6 +40,10 @@ The `ACL GETUSER` command returns a [RESP array](https://redis.io/docs/latest/de
 
 The official Redis implementation returns other elements as well, which include key permissions, channel permission, and selectors. You can read more about it [here](https://redis.io/docs/latest/commands/acl-getuser/). In our implementation, we'll only focus on user flags, passwords, and command permissions.
 
+- The `off` string in the flags array signifies that the user is not enabled by default. In this stage, you can hardcode this value. We'll get to implementing user flags in the later stages.
+
+- The `-@all` string in the commands signifies that a newly created user has no permissions to execute. In this stage, you can hardcode this value. We'll get to implementing command permissions in the later stages.
+
 ### Tests
 
 ```bash
@@ -75,10 +79,6 @@ The tester will validate the following:
 
 
 ### Notes
-
-- The `off` string in the flags array signifies that the user is not enabled by default. In this stage, you can hardcode this value. We'll get to implementing user flags in the later stages.
-
-- The `-@all` string in the commands signifies that a newly created user has no permissions to execute. In this stage, you can hardcode this value. We'll get to implementing command permissions in the later stages.
 
 - You can always assume that the user specified in the `ACL GETUSER` exists.
 

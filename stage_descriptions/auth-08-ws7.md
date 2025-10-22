@@ -69,14 +69,8 @@ The tester will validate that:
 
 ### Notes
 
-- The tester will be lenient in checking the error in case of authentication failure. Any message starting with `WRONGPASS` will be valid. Some valid error messages are:
-    - `WRONGPASS wrong password`
-    - `WRONGPASS invalid authentication`
+- The tester will be lenient in checking error messages: any AUTH failure starting with `WRONGPASS` (e.g., `WRONGPASS wrong password`, `WRONGPASS invalid authentication`) and any permission error starting with `NOPERM` (e.g., `NOPERM insufficient permission`, `NOPERM user does not have permission to run this command`) will be valid.
 
-- The tester will be lenient in checking the error in case of invalid permissions. Any message starting with `NOPERM` will be valid. Some valid error messages are:
-    - `NOPERM insufficient permission`
-    - `NOPERM user does not have permission to run this command`
-
-- After authentication, the authenticated user (`foo` in this example) does not have permission to execute any commands (because the user was created with `-@all` by default, which denies all commands).
+- After authentication, when the client tries to execute `ACL WHOAMI`, it receives a permission error (starts with `NOPERM`). This is because we haven't granted the user permission to run any commands.
 
 - You should leave an unauthenticated connection to have every permission since we haven't implemented the default user. We'll get to implementing the default user and its permissions in the later stages.
