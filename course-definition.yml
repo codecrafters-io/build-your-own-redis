@@ -67,7 +67,7 @@ marketing:
         
     - question_markdown: "What exactly will I learn?"
       answer_markdown: |-
-        In the first 10 stages, you'll learn:
+        In the first 7 stages, you'll learn:
         * How a TCP server binds to a port and accepts connections (it’s not magic!)
         * What the Redis Serialization Protocol (RESP) is, and how to parse/encode messages
         * How to handle multiple clients concurrently
