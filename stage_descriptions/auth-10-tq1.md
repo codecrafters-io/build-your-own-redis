@@ -25,7 +25,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will then create a user using the `ACL SETUSER` command, specifying a password. The tester will then send an `ACL SETUSER` command with the `nopass` flag and verify that the user can authenticate without providing a password.
+It will then create a user using the `ACL SETUSER` command, specifying a password. The tester will then send an `ACL SETUSER` command with the `nopass` flag and verify that the user can authenticate using any password.
 
 ```bash
 $ redis-cli
