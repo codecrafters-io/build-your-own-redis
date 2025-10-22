@@ -58,9 +58,9 @@ marketing:
         At this stage, your Redis will already feel real. You'll be able to connect with the official `redis-cli`, store data, and retrieve it. 
         
         As you progress, you'll implement advanced features like:
-        * Replication (master/replica)
-        * RDB persistence (saving and restoring data)
-        * Atomic Transactions
+        * Redis replication
+        * RDB persistence
+        * Atomic transactions
         * ... and more
         
         At the end, you'll have a GitHub repo to show off.
