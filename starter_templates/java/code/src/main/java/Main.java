@@ -7,7 +7,7 @@ public class Main {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     System.out.println("Logs from your program will appear here!");
 
-    //  Uncomment the code below to pass the first stage the first stage
+    //  Uncomment the code below to pass the first stage
     //    ServerSocket serverSocket = null;
     //    Socket clientSocket = null;
     //    int port = 6379;
