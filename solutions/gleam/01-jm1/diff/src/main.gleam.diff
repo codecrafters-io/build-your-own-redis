@@ -23,7 +23,7 @@
 +    })
 +    |> glisten.serve(6379)
 
--  // Uncomment this block to pass the first stage
+-  // Uncomment the code below to pass the first stage the first stage
 -  //
 -  // let assert Ok(_) =
 -  //   glisten.handler(fn(_conn) { #(Nil, None) }, fn(_msg, state, _conn) {

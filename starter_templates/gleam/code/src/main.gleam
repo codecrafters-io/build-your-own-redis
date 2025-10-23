@@ -16,7 +16,7 @@ pub fn main() {
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   io.println("Logs from your program will appear here!")
 
-  // Uncomment this block to pass the first stage
+  // Uncomment the code below to pass the first stage the first stage
   //
   // let assert Ok(_) =
   //   glisten.handler(fn(_conn) { #(Nil, None) }, fn(_msg, state, _conn) {
