@@ -6,7 +6,7 @@ pub fn main() !void {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
     try stdout.writeAll("Logs from your program will appear here!");
 
-    // Uncomment the code below to pass the first stage the first stage
+    // Uncomment the code below to pass the first stage
     //
     // const address = try net.Address.resolveIp("127.0.0.1", 6379);
     //

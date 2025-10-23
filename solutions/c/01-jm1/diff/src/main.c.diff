@@ -18,7 +18,7 @@
 +	int server_fd, client_addr_len;
 +	struct sockaddr_in client_addr;
 
--	// Uncomment the code below to pass the first stage the first stage
+-	// Uncomment the code below to pass the first stage
 -	//
 -	// int server_fd, client_addr_len;
 -	// struct sockaddr_in client_addr;

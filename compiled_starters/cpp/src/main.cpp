@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
   // You can use print statements as follows for debugging, they'll be visible when running tests.
   std::cout << "Logs from your program will appear here!\n";
 
-  // Uncomment the code below to pass the first stage the first stage
+  // Uncomment the code below to pass the first stage
   // 
   // accept(server_fd, (struct sockaddr *) &client_addr, (socklen_t *) &client_addr_len);
   // std::cout << "Client connected\n";
