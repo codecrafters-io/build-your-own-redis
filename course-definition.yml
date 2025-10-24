@@ -4,7 +4,7 @@ short_name: "Redis"
 release_status: "live"
 
 description_md: |-
-  [Redis](https://redis.io/docs/latest/develop/get-started/data-store/) is an in-memory data structure store often used as a database, cache, message broker and streaming engine. In this challenge
+  Redis is an in-memory data structure store often used as a database, cache, message broker and streaming engine. In this challenge
   you'll build your own Redis server that is capable of serving basic commands, reading RDB files and more.
 
   Along the way, you'll learn about TCP servers, the Redis Protocol and more.
@@ -200,6 +200,17 @@ extensions:
       [geoadd-command]: https://redis.io/docs/latest/commands/geoadd/
       [geosearch-command]: https://redis.io/docs/latest/commands/geosearch/
 
+  - slug: "auth"
+    name: "Authentication"
+    description_markdown: |
+      In this challenge extension you'll add support for [ACL-based authentication][acl] to your Redis implementation.
+
+      Along the way you'll learn about the [AUTH][auth-command] command, Redis's [DSL for access control][acl-rules] and more.
+
+      [acl]: https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
+      [acl-rules]: https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/#acl-rules
+      [auth-command]: https://redis.io/docs/latest/commands/auth/
+
 stages:
   - slug: "jm1"
     concept_slugs:
@@ -209,8 +220,6 @@ stages:
         "go-tcp-server",
         "rust-tcp-server",
         "python-tcp-server",
-        "java-tcp-server",
-        "cpp-tcp-server",
       ]
     name: "Bind to a port"
     difficulty: very_easy
@@ -227,8 +236,6 @@ stages:
         "go-tcp-server",
         "rust-tcp-server",
         "python-tcp-server",
-        "java-tcp-server",
-        "cpp-tcp-server",        
       ]
     name: "Respond to PING"
     difficulty: easy
@@ -246,8 +253,6 @@ stages:
         "go-tcp-server",
         "rust-tcp-server",
         "python-tcp-server",
-        "java-tcp-server",
-        "cpp-tcp-server",
       ]
     name: "Respond to multiple PINGs"
     difficulty: easy
@@ -264,8 +269,6 @@ stages:
         "go-tcp-server",
         "rust-tcp-server",
         "python-tcp-server",
-        "java-tcp-server",
-        "cpp-tcp-server",
       ]
     name: "Handle concurrent clients"
     difficulty: medium
@@ -863,3 +866,88 @@ stages:
     name: "Search within radius"
     difficulty: easy
     marketing_md: In this stage, you'll add support for searching locations near a coordinate within a given radius using the `GEOSEARCH` command.
+
+  # Authentication & ACL
+  - slug: "jn4"
+    primary_extension_slug: "auth"
+    name: "The ACL USERS command"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL USERS` command.
+
+  - slug: "gx8"
+    primary_extension_slug: "auth"
+    name: "The ACL WHOAMI command"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL WHOAMI` command.
+
+  - slug: "ql6"
+    primary_extension_slug: "auth"
+    name: "The ACL SETUSER command"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL SETUSER` command.
+
+  - slug: "pl7"
+    primary_extension_slug: "auth"
+    name: "Create a user"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for creating a new user using the `ACL SETUSER` command.
+
+  - slug: "uv9"
+    primary_extension_slug: "auth"
+    name: "The ACL GETUSER command"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL GETUSER` command.
+
+  - slug: "hz3"
+    primary_extension_slug: "auth"
+    name: "Set user password"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for setting a user password using the `ACL SETUSER` command with the password rule.
+
+  - slug: "nm2"
+    primary_extension_slug: "auth"
+    name: "Enable a user"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for enabling a newly created user using the `ACL SETUSER` command with the `on` flag.
+
+  - slug: "ws7"
+    primary_extension_slug: "auth"
+    name: "The AUTH command"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for authenticating a user using the `AUTH` command.
+
+  - slug: "vg5"
+    primary_extension_slug: "auth"
+    name: "Grant command permissions"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for granting command permissions to users using the `+@all` ACL rule, and you'll verify that authenticated users can execute commands they have permission for.
+
+  - slug: "tq1"
+    primary_extension_slug: "auth"
+    name: "The nopass flag"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for creating users that can authenticate without a password using the `nopass` flag.
+
+  - slug: "ct2"
+    primary_extension_slug: "auth"
+    name: "The default user (1/2)"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for retrieving the `default` user's information using the `ACL GETUSER` command.
+
+  - slug: "ya4"
+    primary_extension_slug: "auth"
+    name: "The default user (2/2)"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for implementing the `default` user.
