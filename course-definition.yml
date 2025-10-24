@@ -277,6 +277,10 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L56"
 
   - slug: "qq0"
+    concept_slugs:
+      [
+        "redis-serialization-protocol"
+      ]
     name: "Implement the ECHO command"
     difficulty: medium
     marketing_md: |-
