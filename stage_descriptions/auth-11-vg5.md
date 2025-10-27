@@ -40,15 +40,20 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then perform the following sequence:
+It'll then do the following:
 
-1. Create a user with a password and enable them.
-2. Authenticate as that user on one connection
-3. Verify that the authenticated user cannot execute commands due to insufficient permissions.
-4. Grant the user permission to execute all commands using a second connection (unauthenticated connection)
-5. Verify that the authenticated user can now execute commands
+1. In the first client:
+    1. Create a new user, enable it, and set its password
+    2. Authenticate as the user using the correct password
+    3. Try to run `ACL WHOAMI` command
 
-For example, the tester may send the following commands
+2. In a second client, which is unauthenticated:
+    1. It'll use `ACL GETUSER` to retrieve the new user's properties.
+    2. Grant the new user the permission to run all commands using the `+@all` rule.
+    3. It'll use the `ACL GETUSER` to retrieve the new user's properties.
+
+3. In the first client:
+    - Run the `ACL WHOAMI` command
 
 ```bash
 # Client 1
@@ -103,15 +108,20 @@ OK
 # Expect RESP bulk string: "bar"
 > ACL WHOAMI
 "bar"
-
-# Expect: +OK\r\n
-> SET key value
-OK
-
-# Expect RESP bulk string: "value"
-> GET key
-"value"
 ```
+
+The tester will verify the following for the responses:
+
+- For the `ACL GETUSER` command:
+    - The command permission is `-@all` before granting the user permissions to run commands.
+    - The command permission is `+@all` after the user has been granteed the permission to run all commands.
+
+- For the `ACL WHOAMI` command:
+    - The response should be an error starting with `NOPERM` if the user does not have permission to run the command.
+    - The response should be the username, encoded as a RESP bulk string, after the user has been granted the permission to run the command.
+
+- For the `AUTH` command:
+    - The response should be `+OK\r\n`.
 
 
 ### Notes

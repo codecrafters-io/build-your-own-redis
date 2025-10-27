@@ -28,9 +28,6 @@ Example usage:
 # Any new connection can execute commands without authentication
 > ACL WHOAMI
 "default"
-
-> SET mykey myvalue
-OK
 ```
 
 ### Tests
@@ -57,8 +54,14 @@ $ redis-cli
  6) "+@all"
 ```
 
+The tester will verify the following for the response:
+
+- The flags array should contain `on` and `nopass` flags.
+- The passwords array is an empty array
+- The command permissions is `+@all`.
+
 ### Notes
 
 - Unlike regular users created with `ACL SETUSER` (which start with `off`, no passwords, and `-@all`), the `default` user starts with `on`, `nopass`, and `+@all`.
 
-- The `nopass` flag in the response indicates that the user can authenticate without providing a password. This is why new connections can execute commands immediately.
+- The `nopass` flag in the response indicates that the user can authenticate without providing a password. This is why new connections can execute commands immediately by authenticating as the `default` user automatically.

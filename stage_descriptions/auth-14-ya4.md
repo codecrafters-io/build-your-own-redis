@@ -39,7 +39,7 @@ OK
  6) "+@all"
 
 # New connections must now authenticate
-# (in a new connection)
+# (In a new connection)
 > ACL WHOAMI
 (error) NOAUTH Authentication required.
 
@@ -100,10 +100,15 @@ OK
 ```
 
 The tester will validate that:
-- After setting a password on the `default` user, the `nopass` flag is removed from the flags array.
-- New connections cannot execute commands without authentication.
-- The `AUTH default mypassword` command successfully authenticates the connection.
-- After authentication, `ACL WHOAMI` returns `"default"`.
+- After setting a password on the `default` user:
+    - The `nopass` flag is removed from the flags array.
+    - The SHA-256 hash of the password is listed in the passwords array.
+
+- The `AUTH` commands returns `+OK\r\n`. (The correct password will be provided for the user.)
+
+- New connections cannot execute commands without authentication, and will fail with `NOAUTH` error.
+
+
 
 ### Notes
 

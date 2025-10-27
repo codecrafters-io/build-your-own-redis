@@ -2,20 +2,20 @@ In this stage, you'll add support for authenticating a user using the `AUTH` com
 
 ### The `AUTH` command
 
-The `AUTH` command is used to authenticate the current connection using a username and password pair. A user can be authenticated under following circumstances:
+The `AUTH` command is used to authenticate the current connection using a username and password pair. A user can be authenticated if and only if both of these conditions are satisfied:
 
-1. The `"on"` flag is present for the user.
-2. At least one password should exist for the user, or the `"nopass"` flag should be enabled for the user.
+1. The `"on"` flag is present for the user
+2. At least one password exists for the user, or the `"nopass"` flag is enabled for the user.
 
-We will get to implementing the `nopass` flag in later stages. For this stage, you can assume that the user will be enabled and will have a password associated with them.
+We will get to implementing the `nopass` flag in later stages. For the tests, you can assume that the user will be enabled and will have a password associated with them.
 
 Example usage:
 
 ```bash
-> AUTH john >wrongpassword
+> AUTH john wrongpassword
 (error) WRONGPASS invalid username-password pair or user is disabled.
 
-> AUTH john >johnspassword
+> AUTH john johnspassword
 OK
 ```
 
@@ -65,7 +65,8 @@ OK
 The tester will validate that:
 - The response to `AUTH foo wrong_password` is an error that starts with `WRONGPASS`.
 - The response to `AUTH foo mypassword` is `+OK\r\n`.
-- After authentication, when the client tries to execute `ACL WHOAMI`, it receives a `NOPERM` error. It is because we haven't granted the user permission to run any commands. We'll get to implementing this in the later stages.
+- After authentication, when the client tries to execute `ACL WHOAMI`, it receives an error starting with `NOPERM`. 
+It is because we haven't granted the user permission to run any commands. We'll get to implementing this in the later stages.
 
 ### Notes
 

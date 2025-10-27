@@ -46,5 +46,3 @@ default\r\n
 - In this stage, you can hardcode the response of `ACL USERS` command to be the array `["default"]`.
 
 - Your server should respond with the `default` user even though no users have been created so far, because Redis always includes a built-in default user in its Access Control List (ACL) system.
-
-- You don't need to implement the `default` user yet. We'll get to that in the later stages.

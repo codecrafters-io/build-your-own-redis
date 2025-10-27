@@ -81,3 +81,15 @@ OK
 > ACL WHOAMI
 "foo"
 ```
+
+The tester will validate the following for the responses:
+
+- In the response of `ACL GETUSER` command:
+   - The `nopass` flag is not present before the flag has been set for the user.
+   - The `nopass` flag is present after the flag has been set for the user.
+   - The `passwords` array should contain the SHA-256 hash of the user's password before the `nopass` flag has been set.
+   - The `passwords` array should be an empty array after `nopass` flag has been set.
+
+- The response to the `AUTH` with random password should be `+OK\r\n` after `nopass` flag has been set for the user.
+
+- The response to `ACL WHOAMI` should be the username of the user, encoded as a RESP bulk string.
