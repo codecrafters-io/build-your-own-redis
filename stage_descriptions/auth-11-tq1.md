@@ -1,8 +1,8 @@
-In this stage, you'll add support for creating users that can authenticate without a password using the `nopass` flag.
+In this stage, you'll add support for creating users that can authenticate using arbitrary passwords using the `nopass` flag.
 
 ### The `nopass` flag
 
-The `nopass` flag is one of the user flags in Redis that allows any password to work for this user. It also removes all passwords for the user if their password list is non-empty.
+The `nopass` flag is one of the user flags in Redis that makes authentication succeed with any provided password (no specific password is required). It also removes all passwords for the user if their password list is non-empty.
 
 Example usage:
 
