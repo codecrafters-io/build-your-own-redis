@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec zig-out/bin/main "$@"
+exec "$(dirname "$0")"/zig-out/bin/main "$@"
