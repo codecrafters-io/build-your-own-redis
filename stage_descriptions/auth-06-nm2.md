@@ -39,32 +39,41 @@ $ redis-cli
 > ACL SETUSER foo on
 OK
 
-# Set passsword for the user
-# Expect: +OK\r\n
-> ACL SETUSER foo >foospassword
-OK
-
 # Expect RESP array:
-# ["flags", ["off"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "-@all"]
+# ["flags", ["on"], "passwords", [], "commands", "-@all"]
 > ACL 
  1) "flags"
- 2) 1) "off"
+ 2) 1) "on"
  3) "passwords"
- 4) 1) "88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"
+ 4) (empty array)
  5) "commands"
  6) "-@all"
 
 # Expect: +OK\r\n
-> ACL SETUSER foo on
+> ACL SETUSER bar
 OK
 
 # Expect RESP array:
-# ["flags", ["off"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "-@all"]
-> ACL GETUSER foo
+# ["flags", ["off"], "passwords", [], "commands", "-@all"]
+> ACL GETUSER bar
+ 1) "flags"
+ 2) 1) "off"
+ 3) "passwords"
+ 4) (empty array)
+ 5) "commands"
+ 6) "-@all"
+
+# Expect: +OK\r\n
+> ACL SETUSER bar on
+OK
+
+# Expect RESP array:
+# ["flags", ["on"], "passwords", [], "commands", "-@all"]
+> ACL GETUSER bar
  1) "flags"
  2) 1) "on"
  3) "passwords"
- 4) 1) "88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"
+ 4) (empty array)
  5) "commands"
  6) "-@all"
 ```

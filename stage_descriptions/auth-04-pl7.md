@@ -1,8 +1,10 @@
 In this stage, you'll add support for creating a new user using the `ACL SETUSER` command.
 
-### Creating a user
+### The `ACL SETUSER` command
 
-The `ACL SETUSER` command can be used to create a new user in the Redis' ACL system. If the user already exists, flags or rules are used to modify the user's properties.
+The [`ACL SETUSER`](https://redis.io/docs/latest/commands/acl-setuser/) command is used to create a new user, or modify the properties of the existing user in the Redis' ACL system. If a user does not exist, a user with the specified username is created. If the user already exists, flags or rules are used to modify the user's properties.
+
+In this stage, we'll deal with creating new users using the `ACL SETUSER` command.
 
 Example usage:
 
@@ -69,5 +71,3 @@ In this case, the tester will validate that the response is the array `["bar", "
 - The usernames in the array must be sorted in an alphabetical order.
 
 - Even though no user with the username `default` exists, your server must respond as if a user with the username `default` exists.
-
-- You don't need to implement the default user. We'll get to that in the later stages.

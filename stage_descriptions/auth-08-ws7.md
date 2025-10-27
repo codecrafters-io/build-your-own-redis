@@ -69,7 +69,7 @@ The tester will validate that:
 
 ### Notes
 
-- The tester will be lenient in checking error messages: any AUTH failure starting with `WRONGPASS` (e.g., `WRONGPASS wrong password`, `WRONGPASS invalid authentication`) and any permission error starting with `NOPERM` (e.g., `NOPERM insufficient permission`, `NOPERM user does not have permission to run this command`) will be valid.
+- The tester will be lenient in checking error messages: any authentication failure starting with `WRONGPASS` (e.g., `WRONGPASS wrong password`, `WRONGPASS invalid authentication`) and any permission error starting with `NOPERM` (e.g., `NOPERM insufficient permission`, `NOPERM user does not have permission to run this command`) will be valid.
 
 - After authentication, when the client tries to execute `ACL WHOAMI`, it receives a permission error (starts with `NOPERM`). This is because we haven't granted the user permission to run any commands.
 

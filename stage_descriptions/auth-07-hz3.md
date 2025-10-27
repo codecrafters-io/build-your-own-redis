@@ -33,6 +33,7 @@ It'll then send an `ACL SETUSER` command to create a user specifying a password.
 
 ```bash
 $ redis-cli
+# Create a user 'foo' with password 'foospassword'
 # Expect: +OK\r\n
 > ACL SETUSER foo >foospassword
 OK
@@ -46,13 +47,43 @@ OK
  4) 1) "88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"
  5) "commands"
  6) "-@all"
+
+# Create the user 'bar' with no password
+# Expect: +OK\r\n
+> ACL SETUSER bar
+OK
+
+# Expect RESP array:
+# ["flags", ["off"], "passwords", [], "commands", "-@all"]
+> ACL GETUSER bar
+ 1) "flags"
+ 2) 1) "off"
+ 3) "passwords"
+ 4) (empty array)
+ 5) "commands"
+ 6) "-@all"
+
+# Set the password of the user 'bar' to 'barspassword'
+# Expect: +OK\r\n
+> ACL SETUSER bar >barspassword
+OK
+
+# Expect RESP array:
+# ["flags", "off", "passwords", ["29286e1ef54a85f9ef040c6e6dbdc3b8d1597a6fef4995b1b1d3617950a0ae93"], "commands", "-@all"]
+> ACL GETUSER bar
+ 1) "flags"
+ 2) 1) "off"
+ 3) "passwords"
+ 4) 1) "29286e1ef54a85f9ef040c6e6dbdc3b8d1597a6fef4995b1b1d3617950a0ae93"
+ 5) "commands"
+ 6) "-@all"
 ```
 
 The tester will validate the following for the response for the `ACL GETUSER` command:
 
 - The response complies with the response format of the `ACL GETUSER` command.
 - The `flags` array contains the flag `off`.
-- The SHA-256 hash of the string `foospassword` is present in the passwords array.
+- The SHA-256 hash of the user's password is present in the passwords array after the password has been set.
 - The command permission rule for the user is `-@all`, meaning that the user has no permissions to run any commands.
 
 ### Notes
