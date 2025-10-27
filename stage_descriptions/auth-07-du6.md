@@ -58,5 +58,5 @@ The tester will validate the following:
 
 - You can always assume that the user specified in the `ACL GETUSER` exists.
 
-- The tester will not send `ACL GETUSER` command with the `default` user. We'll get that in the later stages.
+- The tester will not send `ACL GETUSER` command for the `default` user. We'll get that in the later stages.
 

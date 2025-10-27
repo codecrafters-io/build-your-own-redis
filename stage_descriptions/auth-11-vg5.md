@@ -130,4 +130,4 @@ The tester will verify the following for the responses:
 
 - You can always assume that the user specified in the `ACL GETUSER` exists.
 
-- The tester will not send `ACL GETUSER` command with the `default` user. We'll get that in the later stages.
+- The tester will not send `ACL GETUSER` command for the `default` user. We'll get that in the later stages.
