@@ -1,4 +1,4 @@
-In this stage, you'll add support for setting a user password using the `ACL SETUSER` command with the password rule.
+In this stage, you'll add support for setting a user's password using the `ACL SETUSER` command with the password rule.
 
 ### Modifying user passwords
 
@@ -39,14 +39,12 @@ $ redis-cli
 OK
 
 # Expect RESP array: 
-# ["flags", ["off"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "-@all"]
+# ["flags", ["off"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"]]
 > ACL GETUSER foo
  1) "flags"
  2) 1) "off"
  3) "passwords"
  4) 1) "88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"
- 5) "commands"
- 6) "-@all"
 
 # Create the user 'bar' with no password
 # Expect: +OK\r\n
@@ -54,14 +52,12 @@ OK
 OK
 
 # Expect RESP array:
-# ["flags", ["off"], "passwords", [], "commands", "-@all"]
+# ["flags", ["off"], "passwords", []]
 > ACL GETUSER bar
  1) "flags"
  2) 1) "off"
  3) "passwords"
  4) (empty array)
- 5) "commands"
- 6) "-@all"
 
 # Set the password of the user 'bar' to 'barspassword'
 # Expect: +OK\r\n
@@ -75,16 +71,16 @@ OK
  2) 1) "off"
  3) "passwords"
  4) 1) "29286e1ef54a85f9ef040c6e6dbdc3b8d1597a6fef4995b1b1d3617950a0ae93"
- 5) "commands"
- 6) "-@all"
 ```
 
 The tester will validate the following for the response for the `ACL GETUSER` command:
 
-- The response complies with the response format of the `ACL GETUSER` command.
-- The `flags` array contains the flag `off`.
-- The SHA-256 hash of the user's password is present in the passwords array after the password has been set.
-- The command permission rule for the user is `-@all`, meaning that the user has no permissions to run any commands.
+- The first element of the response array is the literal string `flags`, encoded as a RESP bulk string.
+- The second element of the response array is an array containing the flag `off`.
+- The third element of the response array is the literal string `passwords`, encoded as a RESP bulk string.
+- The fourth element of the response array is an empty array before setting the password.
+- After setting the user password, whether at the time of user creation, or later, the fourth element should be an array with one element. This element should be the SHA-256 hash of the user's password encoded as a RESP bulk string.
+
 
 ### Notes
 

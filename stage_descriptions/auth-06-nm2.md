@@ -1,4 +1,4 @@
-In this stage, you'll add support for enabling a newly created user using the `ACL SETUSER` command with the `on` flag.
+In this stage, you'll add support for setting the user's flag using the `ACL SETUSER` command.
 
 ### Enabling a user
 
@@ -40,52 +40,42 @@ $ redis-cli
 OK
 
 # Expect RESP array:
-# ["flags", ["on"], "passwords", [], "commands", "-@all"]
+# ["flags", ["on"]]
 > ACL 
  1) "flags"
  2) 1) "on"
- 3) "passwords"
- 4) (empty array)
- 5) "commands"
- 6) "-@all"
 
 # Expect: +OK\r\n
 > ACL SETUSER bar
 OK
 
 # Expect RESP array:
-# ["flags", ["off"], "passwords", [], "commands", "-@all"]
+# ["flags", ["off"]]
 > ACL GETUSER bar
  1) "flags"
  2) 1) "off"
- 3) "passwords"
- 4) (empty array)
- 5) "commands"
- 6) "-@all"
 
 # Expect: +OK\r\n
 > ACL SETUSER bar on
 OK
 
 # Expect RESP array:
-# ["flags", ["on"], "passwords", [], "commands", "-@all"]
+# ["flags", ["on"]]
 > ACL GETUSER bar
  1) "flags"
  2) 1) "on"
- 3) "passwords"
- 4) (empty array)
- 5) "commands"
- 6) "-@all"
 ```
 
 The tester will validate the following for the `ACL GETUSER` command:
 
-- The response complies with the response format of the`ACL GETUSER` command.
-- The `flags` array in the response contains the flag `off` before enabling the user, and `on` after enabling the user.
-- The passwords array contains the SHA-256 hash of the string `foospassword`.
-- The command permission rule is `-@all`, meaning that the user does not have permission to run any commands.
-
+- The first element of the response array is the literal string `flags`, encoded as a RESP bulk string.
+- The second element of the response array is also an array.
+- The first element of the nested array is `off` before enabling the user, and `on` after enabling the user.
 
 ### Notes
 
 - The `off` flag can be used to disable a user. However, we will not cover that in our implementation.
+
+- You can always assume that the user specified in the `ACL GETUSER` exists.
+
+- The tester will not send `ACL GETUSER` command with the `default` user. We'll get that in the later stages.

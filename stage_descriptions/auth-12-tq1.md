@@ -81,13 +81,3 @@ OK
 > ACL WHOAMI
 "foo"
 ```
-
-The tester will validate the following for the `ACL GETUSER` command:
-
-- The response complies with the response format of the `ACL GETUSER` command.
-- The `flags` array in the response contains the flag `on`.
-- The `flags` array in the response does not contain the flag `nopass` before the `ACL SETUSER foo nopass` command is sent.
-- The `flags` array in the response contains the flag `nopass` after the `ACL SETUSER foo nopass` command is sent.
-- The passwords array contains the SHA-256 hash of the string `foospassword` before the `ACL SETUSER foo nopass` command is sent.
-- The passwords array is empty after the `ACL SETUSER foo nopass` command is sent.
-- The command permission rule is `+@all`, meaning that the user has permissions to run any commands.

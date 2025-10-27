@@ -874,84 +874,91 @@ stages:
   # Authentication & ACL
   - slug: "jn4"
     primary_extension_slug: "auth"
-    name: "The ACL USERS command"
+    name: "List users"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for responding to the `ACL USERS` command.
 
   - slug: "gx8"
     primary_extension_slug: "auth"
-    name: "The ACL WHOAMI command"
+    name: "Return current user"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for responding to the `ACL WHOAMI` command.
 
-  - slug: "ql6"
-    primary_extension_slug: "auth"
-    name: "The ACL SETUSER command"
-    difficulty: easy
-    marketing_md: |
-      In this stage, you'll add support for responding to the `ACL SETUSER` command.
-
   - slug: "pl7"
     primary_extension_slug: "auth"
     name: "Create a user"
-    difficulty: medium
+    difficulty: easy
     marketing_md: |
       In this stage, you'll add support for creating a new user using the `ACL SETUSER` command.
 
   - slug: "uv9"
     primary_extension_slug: "auth"
-    name: "The ACL GETUSER command"
-    difficulty: medium
+    name: "Retrieve user flags"
+    difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for responding to the `ACL GETUSER` command.
-
-  - slug: "hz3"
-    primary_extension_slug: "auth"
-    name: "Set user password"
-    difficulty: medium
-    marketing_md: |
-      In this stage, you'll add support for setting a user password using the `ACL SETUSER` command with the password rule.
+      In this stage, you'll add support for retrieving the user flags using the `ACL GETUSER` command.
 
   - slug: "nm2"
     primary_extension_slug: "auth"
-    name: "Enable a user"
+    name: "Set user flags"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for setting the user's flag using the `ACL SETUSER` command.
+
+  - slug: "du6"
+    primary_extension_slug: "auth"
+    name: "Retrieve user passwords"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for extending the `ACL GETUSER` command to retrieve user passwords.
+
+  - slug: "hz3"
+    primary_extension_slug: "auth"
+    name: "Set user passwords"
     difficulty: medium
     marketing_md: |
-      In this stage, you'll add support for enabling a newly created user using the `ACL SETUSER` command with the `on` flag.
+      In this stage, you'll add support for setting a user's password using the `ACL SETUSER` command with the password rule.
+
+  - slug: "qp3"
+    primary_extension_slug: "auth"
+    name: "Retrieve command permissions"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for extending the `ACL GETUSER` to retrieve user's command permissions.
 
   - slug: "ws7"
     primary_extension_slug: "auth"
-    name: "The AUTH command"
-    difficulty: hard
+    name: "Authenticate users"
+    difficulty: medium
     marketing_md: |
       In this stage, you'll add support for authenticating a user using the `AUTH` command.
 
   - slug: "vg5"
     primary_extension_slug: "auth"
-    name: "Grant command permissions"
+    name: "Set command permissions"
     difficulty: hard
     marketing_md: |
-      In this stage, you'll add support for granting command permissions to users using the `+@all` ACL rule, and you'll verify that authenticated users can execute commands they have permission for.
+      In this stage, you'll add support for setting a user's command permissions to users using the `+@all` ACL rule,
 
   - slug: "tq1"
     primary_extension_slug: "auth"
-    name: "The nopass flag"
+    name: "Password-less authentication"
     difficulty: medium
     marketing_md: |
       In this stage, you'll add support for creating users that can authenticate without a password using the `nopass` flag.
 
   - slug: "ct2"
     primary_extension_slug: "auth"
-    name: "The default user (1/2)"
+    name: "Query default user"
     difficulty: medium
     marketing_md: |
       In this stage, you'll add support for retrieving the `default` user's information using the `ACL GETUSER` command.
 
   - slug: "ya4"
     primary_extension_slug: "auth"
-    name: "The default user (2/2)"
+    name: "Enforce default user authentication"
     difficulty: hard
     marketing_md: |
-      In this stage, you'll add support for implementing the `default` user.
+      In this stage, you'll add support for enforcing authentication for the `default` user.

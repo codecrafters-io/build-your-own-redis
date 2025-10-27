@@ -54,7 +54,7 @@ OK
 # The user has no permissions to execute any permissions by default
 # Expect error beginning with: NOPERM
 > ACL WHOAMI
-(error) NOPERM User ctrl has no permissions to run the 'acl|whoami' command
+(error) NOPERM User foo has no permissions to run the 'acl|whoami' command
 
 # In another client (Because it is an unauthenticated connection)
 # Expect RESP bulk string: "default" 
@@ -73,4 +73,4 @@ The tester will validate that:
 
 - After authentication, when the client tries to execute `ACL WHOAMI`, it receives a permission error (starts with `NOPERM`). This is because we haven't granted the user permission to run any commands.
 
-- You should leave an unauthenticated connection to have every permission since we haven't implemented the default user. We'll get to implementing the default user and its permissions in the later stages.
+- You should leave an unauthenticated connection to have every permission since we haven't implemented the authentication mechanism for the default user. We'll get to implementing this in the later stages.

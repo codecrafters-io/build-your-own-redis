@@ -8,7 +8,9 @@ The `default` user is a built-in user that exists in every Redis server. Unlike 
 - It has the `nopass` flag, allowing automatic authentication without providing a password
 - It has permission to execute all commands (`+@all`)
 
-When a client connects to Redis without explicitly authenticating (`AUTH`), it is automatically authenticated as the `default` user. This allows commands to be executed immediately without requiring explicit authentication. However, if the `"nopass"` flag is cleared from the default user (by setting a password for the `default` user), new connections cannot automatically be authenticated as the `default` user and `AUTH` command must be used for authentication.
+When a client connects to Redis without explicitly authenticating (`AUTH`), it is automatically authenticated as the `default` user. This is because of the `nopass` flag set for the `default` user. This allows commands to be executed immediately without requiring explicit authentication.
+
+However, if the `nopass` flag is cleared from the default user (by setting a password for the `default` user), new connections cannot automatically be authenticated as the `default` user and `AUTH` command must be used for authentication.
 
 Example usage:
 
@@ -54,13 +56,6 @@ $ redis-cli
  5) "commands"
  6) "+@all"
 ```
-
-The tester will validate the following for the response of the `ACL GETUSER default` command:
-
-- The response complies with the response format of the`ACL GETUSER` command.
-- The `flags` array contains the flag `on` and `nopass`.
-- The passwords array is an empty array.
-- The command permission rule for the user is `+@all`, meaning that the user has permissions to run every command.
 
 ### Notes
 

@@ -1,6 +1,6 @@
-In this stage, you'll add support for implementing the `default` user.
+In this stage, you'll add support for enforcing authentication for the `default` user.
 
-### Implementing the `default` user
+### Enforcing `default` user authentication
 
 In redis, every new connection is automatically authenticated as the `default` user.
 

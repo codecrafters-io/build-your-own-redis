@@ -1,7 +1,6 @@
-In this stage, you'll add support for responding to the `ACL GETUSER` command.
+In this stage, you'll add support for retrieving the user flags using the `ACL GETUSER` command.
 
 ### The `ACL GETUSER` command
-
 The [`ACL GETUSER`](redis.io/docs/latest/commands/acl-getuser/) command is used to list all the ACL rules defined for an existing ACL user.
 
 Example usage:
@@ -44,6 +43,8 @@ The official Redis implementation returns other elements as well, which include 
 
 - The `-@all` string in the commands signifies that a newly created user has no permissions to execute. In this stage, you can hardcode this value. We'll get to implementing command permissions in the later stages.
 
+In this stage, we'll only deal with retrieving the `flags` field of a user.
+
 ### Tests
 
 ```bash
@@ -59,26 +60,17 @@ $ redis-cli
 OK
 
 # Expect RESP array:
-# ["flags", ["off"], "passwords", [], "commands", "-@all"]
+# ["flags", ["off"]]
 > ACL GETUSER username
  1) "flags"
  2) 1) "off"
- 3) "passwords"
- 4) (empty array)
- 5) "commands"
- 6) "-@all"
 ```
 
 The tester will validate the following:
 
 - The first element of the response array is the literal string `flags`, encoded as a RESP bulk string.
-- The second element of the response array is an array.
-- The first element of this array is `off`, encoded as a RESP bulk string.
-- The third element of the response array is the literal string `passwords`, encoded as a RESP bulk string.
-- The fourth element of the response array is an empty array.
-- The fifth element of the response array is the literal string `commands`, encoded as a RESP bulk string.
-- The sixth element is the string `-@all`, encoded as a RESP bulk string.
-
+- The second element of the response array is also an array.
+- The first element of the nested array is `off`, encoded as a RESP bulk string.
 
 ### Notes
 
