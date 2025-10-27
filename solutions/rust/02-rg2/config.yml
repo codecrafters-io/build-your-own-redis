@@ -1,24 +1,36 @@
 hints:
   - title_markdown: "How do I access the client's TCP connection?"
     body_markdown: |-
-      This is returned by the [`incoming()`](https://doc.rust-lang.org/std/net/struct.TcpListener.html#method.incoming) method.
+      Use the [`incoming()`](https://doc.rust-lang.org/std/net/struct.TcpListener.html#method.incoming) method on the listener to get the client connection:
 
       ```rust
       // The return value is an iterator that provides a sequence of `TcpStream` objects.
-      for stream in listener.incoming()
+      for stream in listener.incoming() {
+        match stream {
+            Ok(mut stream) => {
+                // Handle the connection here
+            }
+            Err(e) => {
+                println!("Error: {}", e);
+            }
+        }
+      }
       ```
 
       Each [`TcpStream`](https://doc.rust-lang.org/std/net/struct.TcpStream.html) represents an active connection from a client.
 
-  - title_markdown: "How do I send a response to the client?"
+  - title_markdown: 'How do I send a response to the client?'
     body_markdown: |-
       Use the [`write_all()`](https://doc.rust-lang.org/std/io/trait.Write.html#method.write_all) method on the client's connection:
 
       ```rust
+      use std::io::Write;
+
+      // Inside your match Ok(mut stream) => { ... } block
       // Send the response to the client
       stream.write_all(b"+PONG\r\n").unwrap();
       ```
 
-      - The above code uses `b` to create a [byte string literal](https://doc.rust-lang.org/reference/tokens.html#byte-string-literals).
+      - To use `write_all()`, you need to import the [Write](https://doc.rust-lang.org/std/io/trait.Write.html) trait and mark the `TcpStream` as [mutable](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html).
+      - The `b` prefix converts the string to a [byte string literal](https://doc.rust-lang.org/reference/tokens.html#byte-string-literals).
       - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
-      - To satisfy the Rust compiler, you also need to import the [Write](https://doc.rust-lang.org/std/io/trait.Write.html) trait and mark the TcpStream as [mutable](https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html) in order to use `write_all()`.
