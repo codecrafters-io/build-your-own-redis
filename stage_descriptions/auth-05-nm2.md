@@ -2,7 +2,7 @@ In this stage, you'll add support for setting the user's flag using the `ACL SET
 
 ### Enabling a user
 
-The `ACL SETUSER` command can also be used to modify a user's status. The `on` flag can be used with this command to enable the user. If the user does not exist and the 'on' flag is provided, the specified user will be created and enabled; otherwise it will be created disabled. If the user already exists and the 'on' flag is provided, the user's status will be set to enabled.
+The `ACL SETUSER` command can also be used to modify a user's status. The `on` flag can be used with this command to enable the user. If the user does not exist and the 'on' flag is provided, the specified user will be created and enabled, otherwise it will be created disabled. If the user already exists and the 'on' flag is provided, the user's status will be set to enabled.
 
 Authenticating using a user is possible only if the user is enabled.
 
