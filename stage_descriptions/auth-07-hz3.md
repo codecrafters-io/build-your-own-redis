@@ -2,7 +2,7 @@ In this stage, you'll add support for setting a user's password using the `ACL S
 
 ### Setting user password
 
-The `ACL SETUSER` command can also be used to modify a user's properties. The `>` rule can be used with this command to add a new password for a user. If the user does not exist, the specified user will be created with the specified password. If the user already exists, the password will be added to the list of passwords for that user.
+The `ACL SETUSER` command can also be used to modify a user's properties. The `>` rule can be used with this command to add a new password for a user. If the user does not exist, the specified user will be created with the specified password. If the user already exists, the password will be added to the password array for that user.
 
 Redis does not store the raw password specified in the `ACL SETUSER` command. Instead, it stores the [SHA-256](https://blog.boot.dev/cryptography/how-sha-2-works-step-by-step-sha-256/) hash of the password. While validating the password during authentication, the SHA-256 hash of the input password is calculated and matched against the stored list of SHA-256 password hashes. This is done because storing raw passwords is a security vulnerability.
 
@@ -88,4 +88,4 @@ The tester will validate the following for the response for the `ACL GETUSER` co
 
 - The password hash should be stored as a lowercase hexadecimal string.
 
-- A user can have multiple passwords. The `passwords` field should be an array of hashes. However, we will only deal  with one password per user.
+- A user can have multiple passwords. The `passwords` field should be an array of hashes. However, the tester will only use one password per user.

@@ -1,8 +1,8 @@
-In this stage, you'll add support for setting a user's command permissions to users using the `+@all` ACL rule,
+In this stage, you'll add support for setting a user's command permissions using the `+@all` ACL rule.
 
 ### The `+@all` rule
 
-The `ACL SETUSER` can be used to grant a user to run every command using the `+@all` rule.
+The `ACL SETUSER` command can be used to grant a user permission to run every command using the `+@all` rule.
 
 Example usage:
 
@@ -43,9 +43,9 @@ $ ./your_program.sh
 It'll then do the following:
 
 1. In the first client:
-    1. Create a new user, enable it, and set its password
-    2. Authenticate as the user using the correct password
-    3. Try to run `ACL WHOAMI` command
+    1. Create a new user, enable it, and set its password.
+    2. Authenticate as the user using the correct password.
+    3. Try to run the `ACL WHOAMI` command.
 
 2. In a second client, which is unauthenticated:
     1. It'll use `ACL GETUSER` to retrieve the new user's properties.
@@ -114,7 +114,7 @@ The tester will verify the following for the responses:
 
 - For the `ACL GETUSER` command:
     - The command permission is `-@all` before granting the user permissions to run commands.
-    - The command permission is `+@all` after the user has been granteed the permission to run all commands.
+    - The command permission is `+@all` after the user has been granted the permission to run all commands..
 
 - For the `ACL WHOAMI` command:
     - The response should be an error starting with `NOPERM` if the user does not have permission to run the command.
@@ -126,8 +126,8 @@ The tester will verify the following for the responses:
 
 ### Notes
 
-- You should leave an unauthenticated connection to have every permission since we haven't implemented the authentication mechanism for the default user. We'll get to this in the later stages.
+- You should leave an unauthenticated connection with all permissions since we haven't implemented the authentication mechanism for the default user. We'll get to this in the later stages.
 
 - You can always assume that the user specified in the `ACL GETUSER` exists.
 
-- The tester will not send `ACL GETUSER` command for the `default` user. We'll get that in the later stages.
+- The tester will not send the `ACL GETUSER` command for the `default` user. We'll get to that in later stages.
