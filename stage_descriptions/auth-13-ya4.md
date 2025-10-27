@@ -2,7 +2,7 @@ In this stage, you'll add support for enforcing authentication for the `default`
 
 ### Enforcing `default` user authentication
 
-In redis, every new connection is automatically authenticated as the `default` user.
+In Redis, every new connection is automatically authenticated as the `default` user.
 
 The `default` user can be modified just like any other user using the `ACL SETUSER` command. When you add a password to the `default` user, it changes the authentication behavior for all new connections:
 
@@ -104,7 +104,7 @@ The tester will validate that:
     - The `nopass` flag is removed from the flags array.
     - The SHA-256 hash of the password is listed in the passwords array.
 
-- The `AUTH` commands returns `+OK\r\n`. (The correct password will be provided for the user.)
+- The `AUTH` command returns `+OK\r\n`. (The correct password will be provided for the user.)
 
 - New connections cannot execute commands without authentication, and will fail with `NOAUTH` error.
 
@@ -112,7 +112,7 @@ The tester will validate that:
 
 ### Notes
 
-- The tester is lenient in checking the error message in case of unauthenticated connection. Any error message that begins with `NOAUTH` is valid. For example, the error messages the tester will accept are:
+- The tester is lenient in checking the error message in case of an unauthenticated connection. Any error message that begins with `NOAUTH` is valid. For example, the error messages the tester will accept are:
     - `NOAUTH Authentication required`
     - `NOAUTH Not authenticated`
 
