@@ -21,8 +21,8 @@ OK
 
 # List the existing users
 > ACL USERS
-1) "default"
-2) "john"
+1) "eric"
+2) "layla"
 ```
 
 If the user already exists, the `ACL SETUSER username` command without any options or flags does not change anything for the user.

@@ -41,15 +41,12 @@ OK
 # New connections must now authenticate
 # (in a new connection)
 > ACL WHOAMI
-# Expect NOAUTH error
 (error) NOAUTH Authentication required.
 
 > AUTH default mypassword
-# Expect: +OK\r\n
 OK
 
 > ACL WHOAMI
-# Expect RESP bulk string: "default"
 "default"
 
 ```

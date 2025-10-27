@@ -7,6 +7,7 @@ The `ACL SETUSER` can be used to grant a user to run every command using the `+@
 Example usage:
 
 ```bash
+# In the first client
 # Create a user john and enable it
 > ACL SETUSER john on
 OK
@@ -22,9 +23,10 @@ OK
 > ACL WHOAMI
 (error) NOPERM User john has no permissions to run the 'acl|whoami' command
 
-# In another client (using the default user)
+# In the second client (using the default user)
 > ACL SETUSER john +@all
 
+# In the first client
 # Run 'ACL WHOAMI' after granting permission to run all commands
 > ACL WHOAMI
 "john"

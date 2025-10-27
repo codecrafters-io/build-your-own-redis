@@ -15,6 +15,9 @@ OK
 # When 'nopass' flag is enabled, it is possible to authenticate as this user using any password
 > AUTH newuser random_string
 OK
+
+> ACL WHOAMI
+"newuser"
 ```
 
 ### Tests
