@@ -29,8 +29,8 @@ $ ./your_program.sh
 It'll then send a `ACL SETUSER` command specifying a random username.
 
 ```bash
-$ redis-cli ACL SETUSER username-101 
 # Expect: +OK\r\n
+$ redis-cli ACL SETUSER username-101 
 OK
 ```
 

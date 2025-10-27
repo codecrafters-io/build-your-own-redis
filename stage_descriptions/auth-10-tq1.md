@@ -30,23 +30,24 @@ It will then create a user using the `ACL SETUSER` command, specifying a passwor
 ```bash
 $ redis-cli
 # Create a user and enable it
-> ACL SETUSER foo on
 # Expect: +OK\r\n
+> ACL SETUSER foo on
 OK
 
 # Add a password for the user
-> ACL SETUSER foo >foospassword
 # Expect: +OK\r\n
+> ACL SETUSER foo >foospassword
 OK
 
 # Provide all permissions for the user
-> ACL SETUSER foo +@all
 # Expect: +OK\r\n
+> ACL SETUSER foo +@all
 OK
 
 
+# Expect RESP array:
+# ["flags", ["on"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "+@all"]
 > ACL GETUSER foo
-# Expect RESP array
  1) "flags"
  2) 1) "on"
  3) "passwords"
@@ -54,12 +55,13 @@ OK
  5) "commands"
  6) "+@all"
 
+# Expect: +OK\r\n
 > ACL SETUSER foo nopass
-# Expect +OK\r\n
 OK
 
-> ACL GETUSER foo
 # Expect RESP array:
+# ["flags", ["on", "nopass"], "passwords", [], "commands", "+@all"]
+> ACL GETUSER foo
  1) "flags"
  2) 1) "on"
     2) "nopass"
@@ -68,12 +70,12 @@ OK
  5) "commands"
  6) "+@all"
 
-> AUTH foo "random-password"
 # Expect: +OK\r\n
+> AUTH foo "random-password"
 OK
 
+# Expect RESP bulk string: "foo"
 > ACL WHOAMI
-# Expect: "foo"
 "foo"
 ```
 

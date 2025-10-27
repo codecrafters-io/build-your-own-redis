@@ -32,33 +32,33 @@ It'll then create a new user with a password and the `on` flag, and attempt to a
 ```bash
 $ redis-cli
 # Create a user
-> ACL SETUSER foo on
 # Expect: +OK\r\n
+> ACL SETUSER foo on
 OK
 
 # Set the user's password
-> ACL SETUSER foo >mypassword
 # Expect: +OK\r\n
+> ACL SETUSER foo >mypassword
 OK
 
 # Usage of wrong password
+# Expect error beginning with: WRONGPASS
 > AUTH foo wrong_password
-# Expect error WRONGPASS
 (error) WRONGPASS invalid username-password pair or user is disabled.
 
 # Usage of correct password
+# Expect: +OK\r\n
 > AUTH foo mypassword
-# Expect +OK\r\n
 OK
 
 # The user has no permissions to execute any permissions by default
+# Expect error beginning with: NOPERM
 > ACL WHOAMI
-# Expect: NOPERM error
 (error) NOPERM User ctrl has no permissions to run the 'acl|whoami' command
 
 # In another client (Because it is an unauthenticated connection)
-> ACL WHOAMI
 # Expect RESP bulk string: "default" 
+> ACL WHOAMI
 "default"
 ```
 

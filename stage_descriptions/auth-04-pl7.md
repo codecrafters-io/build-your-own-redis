@@ -39,22 +39,24 @@ Then, it will send multiple `ACL SETUSER` commands specifying a username each ti
  
 ```bash
 $ redis-cli
-> ACL SETUSER foo
 # Expect: +OK\r\n
+> ACL SETUSER foo
 OK
+
+# Expect: +OK\r\n
 > ACL SETUSER bar
-# Expect: +OK\r\n
 OK
-> ACL SETUSER foo
+
 # Expect: +OK\r\n
+> ACL SETUSER foo
 OK
 ```
 
 The tester will then send an `ACL USERS` command.
 
 ```bash
+# Expect: ["bar", "default", "foo"]
 > ACL USERS
-# Expect ["bar", "default", "foo"]
 1) "bar"
 2) "default"
 3) "foo"

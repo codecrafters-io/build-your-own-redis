@@ -49,7 +49,7 @@ OK
 OK
 
 > ACL WHOAMI
-# Expect bulk string: "default"
+# Expect RESP bulk string: "default"
 "default"
 
 ```
@@ -67,15 +67,18 @@ It'll then set a password on the `default` user and verify that new connections 
 ```bash
 # Client 1
 $ redis-cli
-> ACL SETUSER default >mypassword
+
 # Expect: +OK\r\n
+> ACL SETUSER default >mypassword
 OK
 
+# Expect RESP bulk string: "default"
 > ACL WHOAMI
-# Expect bulk string: "default"
+"default"
 
-> ACL GETUSER default
 # Expect RESP array:
+# ["flags", ["on"], "passwords", ["89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8"], "commands", "+@all"]
+> ACL GETUSER default
  1) "flags"
  2) 1) "on"
  3) "passwords"
@@ -85,10 +88,16 @@ OK
 
 # Client 2 (new connection)
 $ redis-cli
+
+# Expect error starting with: NOAUTH
 > ACL WHOAMI
 (error) NOAUTH Authentication required.
+
+# Expect: +OK\r\n
 > AUTH default mypassword
 OK
+
+# Expect RESP bulk string: "default"
 > ACL WHOAMI
 "default"
 ```

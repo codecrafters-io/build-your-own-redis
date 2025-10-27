@@ -28,8 +28,8 @@ $ ./your_program.sh
 It'll then send send an `ACL USERS` command.
 
 ```bash
+# Expect RESP array: ["default"]
 $ redis-cli ACL USERS
-# Expect: ["default"] encoded as a RESP array
 1) "default"
 ```
 

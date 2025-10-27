@@ -27,8 +27,8 @@ $ ./your_program.sh
 It'll then send an `ACL WHOAMI` command.
 
 ```bash
-$ redis-cli ACL WHOAMI
 # Expect RESP bulk string: "default"
+$ redis-cli ACL WHOAMI
 "default"
 ```
 

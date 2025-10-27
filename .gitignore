@@ -1,3 +1,6 @@
 course_definition_tester
 .history/
 .idea/
+
+# MacOS
+.DS_Store

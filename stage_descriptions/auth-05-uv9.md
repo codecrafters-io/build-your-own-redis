@@ -54,11 +54,13 @@ It'll then send an `ACL SETUSER` command to create a user, followed by an `ACL G
 
 ```bash
 $ redis-cli
-> ACL SETUSER username
 # Expect: +OK\r\n
+> ACL SETUSER username
 OK
-> ACL GETUSER username
+
 # Expect RESP array:
+# ["flags", ["off"], "passwords", [], "commands", "-@all"]
+> ACL GETUSER username
  1) "flags"
  2) 1) "off"
  3) "passwords"

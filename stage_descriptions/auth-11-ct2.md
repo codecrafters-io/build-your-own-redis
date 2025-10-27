@@ -43,6 +43,8 @@ It'll then send an `ACL GETUSER` command to retrieve the `default` user's inform
 
 ```bash
 $ redis-cli
+# Expect RESP array:
+# ["flags", ["on", "nopass"], "passwords", [], "commands", "+@all"]
 > ACL GETUSER default
  1) "flags"
  2) 1) "on"

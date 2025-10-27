@@ -35,16 +35,18 @@ It'll then send an `ACL SETUSER` command to create a user. The tester will then 
 ```bash
 $ redis-cli
 # Create the user and enable it using the 'on' flag
+# Expect: +OK\r\n
 > ACL SETUSER foo on
-# Expect +OK\r\n
 OK
 
 # Set passsword for the user
+# Expect: +OK\r\n
 > ACL SETUSER foo >foospassword
-# Expect +OK\r\n
+OK
 
-> ACL 
 # Expect RESP array:
+# ["flags", ["off"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "-@all"]
+> ACL 
  1) "flags"
  2) 1) "off"
  3) "passwords"
@@ -52,12 +54,13 @@ OK
  5) "commands"
  6) "-@all"
 
+# Expect: +OK\r\n
 > ACL SETUSER foo on
-# Expect +OK\r\n
 OK
 
-> ACL GETUSER foo
 # Expect RESP array:
+# ["flags", ["off"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "-@all"]
+> ACL GETUSER foo
  1) "flags"
  2) 1) "on"
  3) "passwords"

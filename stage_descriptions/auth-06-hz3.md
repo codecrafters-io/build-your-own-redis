@@ -33,12 +33,13 @@ It'll then send an `ACL SETUSER` command to create a user specifying a password.
 
 ```bash
 $ redis-cli
-> ACL SETUSER foo >foospassword
 # Expect: +OK\r\n
+> ACL SETUSER foo >foospassword
 OK
 
+# Expect RESP array: 
+# ["flags", ["off"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "-@all"]
 > ACL GETUSER foo
-# Expect RESP array:
  1) "flags"
  2) 1) "off"
  3) "passwords"

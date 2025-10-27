@@ -51,25 +51,26 @@ For example, the tester may send the following commands
 ```bash
 ## Client 1
 $ redis-cli
+# Expect: +OK\r\n
 > ACL SETUSER foo on
-# Expect: +OK\r\n
 OK
 
+# Expect: +OK\r\n
 > ACL SETUSER foo >mypassword
-# Expect: +OK\r\n
 OK
 
+# Expect: +OK\r\n
 > AUTH foo mypassword
-# Expect: +OK\r\n
 OK
 
+# Expect error beginning with: NOPERM
 > ACL WHOAMI
-# Expect: NOAUTH error
 (error) NOPERM User ctrl has no permissions to run the 'acl|whoami' command
 
 ## Client 2 (unauthenticated => should have all permissions)
-> ACL GETUSER foo
 # Expect RESP array:
+# ["flags", ["on"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "-@all"]
+> ACL GETUSER foo
  1) "flags"
  2) 1) "on"
  3) "passwords"
@@ -78,11 +79,13 @@ OK
  6) "-@all"
 
 $ redis-cli
+# Expect: +OK\r\n
 > ACL SETUSER foo +@all
 OK
 
-> ACL GETUSER foo
 # Expect RESP array:
+# ["flags", ["on"], "passwords", ["88c032bf637c58e7c5446b254aa30cb63bffd2a8ea1983920ec72997872441c1"], "commands", "+@all"]
+> ACL GETUSER foo
  1) "flags"
  2) 1) "on"
  3) "passwords"
@@ -91,19 +94,21 @@ OK
  6) "+@all"
 
 ## Client 1 (authenticated as foo)
+# Expect RESP bulk string: "foo"
 > ACL WHOAMI
-# Expect bulk string: "foo"
 "foo"
-> SET key value
+
 # Expect: +OK\r\n
+> SET key 34
 OK
+
+# Expect RESP bulk string: "34"
 > GET key
-# Expect bulk string: "value"
 "34"
 
 ## Client 2 (unauthenticated connection)
+# Expect RESP bulk string: "default"
 > ACL WHOAMI
-# Expect bulk string: "default"
 "default"
 ```
 
