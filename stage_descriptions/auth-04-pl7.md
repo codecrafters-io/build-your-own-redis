@@ -2,7 +2,7 @@ In this stage, you'll add support for responding to the `ACL GETUSER` command wi
 
 ### The `passwords` property
 
-A user in the Redis ACL system can have one or more passwords associated with them. The `ACL GETUSER` command also returns the `passwords` property of the specified user.
+A user in the Redis ACL system can have zero or more passwords associated with them. The `ACL GETUSER` command also returns the `passwords` property of the specified user.
 
 Example usage:
 ```bash
