@@ -68,4 +68,4 @@ The tester will validate the following:
 
 2. The `AUTH` command returns `OK` upon successful authentication.
 
-3. The client can execute `ACK WHOAMI` successfully after authentication.
+3. The client can execute `ACL WHOAMI` successfully after authentication.
