@@ -1,7 +1,7 @@
 hints:
   - title_markdown: "How do I access the client's TCP connection?"
     body_markdown: |-
-      This is returned by the [`accept()`](https://docs.python.org/3/library/socket.html#socket.socket.accept) method.
+      Use the [`accept()`](https://docs.python.org/3/library/socket.html#socket.socket.accept) method to get the client connection:
 
       ```python
       # The return value includes:
@@ -10,9 +10,9 @@ hints:
       connection, _ = server_socket.accept()
       ```
 
-      The above code uses `_` to ignore the second return value, which is the client's address.
+      The code above uses `_` to ignore the second return value, which is the client's address.
 
-  - title_markdown: "How do I send a response to the client?"
+  - title_markdown: 'How do I send a response to the client?'
     body_markdown: |-
       Use the [`sendall()`](https://docs.python.org/3/library/socket.html#socket.socket.sendall) method on the client's connection:
 
@@ -21,5 +21,5 @@ hints:
       connection.sendall(b"+PONG\r\n")
       ```
 
-      - The above code uses `b` to create a [bytes object](https://docs.python.org/3/library/stdtypes.html#bytes).
+      - The `b` prefix converts the string to a [bytes object](https://docs.python.org/3/library/stdtypes.html#bytes). 
       - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
