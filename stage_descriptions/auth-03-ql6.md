@@ -4,7 +4,7 @@ In this stage, you'll add support for responding to the `ACL GETUSER` command wi
 
 The `nopass` flag is one of the user flags in Redis.
 
-- If the `nopass` flag is set for a user, the authentication succeed with an arbitrary password for the user.
+- If the `nopass` flag is set for a user, the authentication succeeds with an arbitrary password for the user.
 - Setting the `nopass` flag clears the associated passwords for the given user.
 - The default user has the `nopass` flag set. Due to this, new connections are automatically authenticated as the `default` user. (This behavior can be changed, and we'll get to this in the later stages.)
 
@@ -15,7 +15,7 @@ Example usage:
 2) 1) "nopass"
 ```
 
-The flags are encoded as a RESP bulk string. We'll get to enforcing the behavior of `nopass` flag in the later stages.
+The flags are encoded as a RESP bulk string. We'll get to enforcing the behavior of the `nopass` flag in later stages.
 
 In this stage, you only need to respond to the `ACL GETUSER` command with the `nopass` flag set.
 
