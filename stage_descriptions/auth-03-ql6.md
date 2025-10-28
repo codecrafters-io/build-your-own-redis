@@ -15,7 +15,7 @@ Example usage:
 2) 1) "nopass"
 ```
 
-The flags are encoded as a RESP bulk string. We'll get to enforcing the behavior of the `nopass` flag in later stages.
+The flags are encoded as a RESP array of bulk strings; each flag is a bulk string (e.g., nopass). We'll get to enforcing the behavior of the `nopass` flag in later stages.
 
 In this stage, you only need to respond to the `ACL GETUSER` command with the `nopass` flag set.
 
