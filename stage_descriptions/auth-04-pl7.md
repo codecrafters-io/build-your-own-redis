@@ -2,7 +2,7 @@ In this stage, you'll add support for responding to the `ACL GETUSER` command wi
 
 ### The `passwords` property
 
-A user in the Redis' ACL system can have one or more passwords associated with them. The `ACL GETUSER` command also returns the `password` property of the specified user. 
+A user in the Redis ACL system can have one or more passwords associated with them. The `ACL GETUSER` command also returns the `passwords` property of the specified user.
 
 Example usage:
 ```bash
@@ -38,6 +38,6 @@ $ redis-cli
 The tester will validate the following for the response:
 
 1. The first element of the array is the string `flags`, encoded as a RESP bulk string.
-2. The second element of the array is a RESP array, and contains the `nopass` flag.
+2. The second element of the array is a RESP array and contains the `nopass` flag.
 3. The third element of the array is the string `passwords`, encoded as a RESP bulk string.
-4. The fourth element of the array is an empty array, because no passwords has been specified for the default user.
+4. The fourth element of the array is an empty array because no passwords have been specified for the default user.

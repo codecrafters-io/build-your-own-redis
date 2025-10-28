@@ -2,7 +2,7 @@ In this stage, you'll add support for enforcing authentication for the `default`
 
 ### Enforcing `default` user authentication
 
-By default, every new connection is automatically authenticated as the `default` user. This is because the `nopass` flag is set for the `default` user from the start. However, after clearing this flag (by setting a password for the `default` user), new connection are not automatically authenticated as the `default` user. Connections which have already been authenticated will remain authenticated.
+By default, every new connection is automatically authenticated as the `default` user. This is because the `nopass` flag is set for the `default` user from the start. However, after clearing this flag (by setting a password for the `default` user), new connections are not automatically authenticated as the `default` user. Connections which have already been authenticated will remain authenticated.
 
 Example usage:
 

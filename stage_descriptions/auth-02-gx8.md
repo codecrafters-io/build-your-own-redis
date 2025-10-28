@@ -4,7 +4,7 @@ In this stage, you'll add support for responding to the `ACL GETUSER` command.
 
 The [`ACL GETUSER`](https://redis.io/docs/latest/commands/acl-getuser/) is used to retrieve the properties the specified user. In Redis, the `default` user is present from the start, without having to create it explicitly.
 
-The `ACL GETUSER` returns multiple properties of the user, among which `flag` is one. In this stage, you'll add support for responding to the `ACL GETUSER` command with only the flag property.
+The `ACL GETUSER` returns multiple properties of the user, among which `flags` is one. In this stage, you'll add support for responding to the `ACL GETUSER` command with only the flags property.
 
 Example usage:
 ```bash
@@ -15,7 +15,7 @@ Example usage:
 
 The second element of the resposne is the flags array. This is because a user can have multiple flags associated with it. In this stage, you can hardcode the flags array to be an empty array.
 
-## Tests
+### Tests
 
 The tester will execute your program like this:
 
