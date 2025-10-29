@@ -18,6 +18,7 @@ OK
 
 # Client 2
 # This connection is not authenticated
+$ redis-cli
 > ACL WHOAMI
 (error) NOAUTH Authentication required.
 ```

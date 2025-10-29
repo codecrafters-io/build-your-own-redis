@@ -51,7 +51,6 @@ The tester will validate the following for the response of the `ACL GETUSER` com
 It'll then send a `ACL SETUSER` command, specifying the `default` user and a password.
 
 ```bash
-$ redis-cli
 # Expect: +OK\r\n
 > ACL SETUSER default >mypassword
 OK
@@ -62,10 +61,10 @@ The tester will validate that the response to the `ACL SETUSER` command is `+OK\
 It'll then send a `ACL GETUSER` command, specifying the `default` user.
 
 ```bash
-# Expect RESP array: ["flags", [], "passwords", ["89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8"]]
+# Expect RESP array: ["flags", ["nopass"], "passwords", ["89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8"]]
 > ACL GETUSER default
 1) "flags"
-2) (empty array)
+2) 1) "nopass"
 3) "passwords"
 4) 1) "89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8"
 ```
