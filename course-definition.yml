@@ -200,6 +200,17 @@ extensions:
       [geoadd-command]: https://redis.io/docs/latest/commands/geoadd/
       [geosearch-command]: https://redis.io/docs/latest/commands/geosearch/
 
+  - slug: "auth"
+    name: "Authentication"
+    description_markdown: |
+      In this challenge extension you'll add support for [ACL-based authentication][acl] to your Redis implementation.
+
+      Along the way you'll learn about the [AUTH][auth-command] command, Redis's [DSL for access control][acl-rules] and more.
+
+      [acl]: https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
+      [acl-rules]: https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/#acl-rules
+      [auth-command]: https://redis.io/docs/latest/commands/auth/
+
 stages:
   - slug: "jm1"
     concept_slugs:
@@ -867,3 +878,95 @@ stages:
     name: "Search within radius"
     difficulty: easy
     marketing_md: In this stage, you'll add support for searching locations near a coordinate within a given radius using the `GEOSEARCH` command.
+
+  # Authentication & ACL
+  - slug: "jn4"
+    primary_extension_slug: "auth"
+    name: "List users"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL USERS` command.
+
+  - slug: "gx8"
+    primary_extension_slug: "auth"
+    name: "Return current user"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL WHOAMI` command.
+
+  - slug: "pl7"
+    primary_extension_slug: "auth"
+    name: "Create a user"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for creating a new user using the `ACL SETUSER` command.
+
+  - slug: "uv9"
+    primary_extension_slug: "auth"
+    name: "Retrieve user flags"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for retrieving the user flags using the `ACL GETUSER` command.
+
+  - slug: "nm2"
+    primary_extension_slug: "auth"
+    name: "Set user flags"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for setting the user's flag using the `ACL SETUSER` command.
+
+  - slug: "du6"
+    primary_extension_slug: "auth"
+    name: "Retrieve user passwords"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for extending the `ACL GETUSER` command to retrieve user passwords.
+
+  - slug: "hz3"
+    primary_extension_slug: "auth"
+    name: "Set user passwords"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for setting a user's password using the `ACL SETUSER` command with the password rule.
+
+  - slug: "qp3"
+    primary_extension_slug: "auth"
+    name: "Retrieve command permissions"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for extending the `ACL GETUSER` to retrieve user's command permissions.
+
+  - slug: "ws7"
+    primary_extension_slug: "auth"
+    name: "Authenticate users"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for authenticating a user using the `AUTH` command.
+
+  - slug: "vg5"
+    primary_extension_slug: "auth"
+    name: "Set command permissions"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for setting a user's command permissions to users using the `+@all` ACL rule,
+
+  - slug: "tq1"
+    primary_extension_slug: "auth"
+    name: "Password-less authentication"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for creating users that can authenticate without a password using the `nopass` flag.
+
+  - slug: "ct2"
+    primary_extension_slug: "auth"
+    name: "Query default user"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for retrieving the `default` user's information using the `ACL GETUSER` command.
+
+  - slug: "ya4"
+    primary_extension_slug: "auth"
+    name: "Enforce default user authentication"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for enforcing authentication for the `default` user.
