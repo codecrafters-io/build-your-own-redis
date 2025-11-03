@@ -200,6 +200,19 @@ extensions:
       [geoadd-command]: https://redis.io/docs/latest/commands/geoadd/
       [geosearch-command]: https://redis.io/docs/latest/commands/geosearch/
 
+  - slug: "authentication"
+    name: "Authentication"
+    description_markdown: |
+      In this challenge extension you'll add support for default user [Authentication][redis-authentication] to your Redis implementation.
+
+      Along the way, you'll learn about commands like [ACL WHOAMI][acl-whoami-command], [ACL GETUSER][acl-getuser-command], [ACL SETUSER][acl-setuser-command], and [AUTH][auth-command], and more.
+
+      [redis-authentication]: https://redis.io/docs/latest/operate/oss_and_stack/management/security/
+      [acl-whoami-command]: https://redis.io/docs/latest/commands/acl-whoami/
+      [acl-getuser-command]: https://redis.io/docs/latest/commands/acl-getuser/
+      [acl-setuser-command]: https://redis.io/docs/latest/commands/acl-setuser/
+      [auth-command]: https://redis.io/docs/latest/commands/auth/
+
 stages:
   - slug: "jm1"
     concept_slugs:
@@ -867,3 +880,60 @@ stages:
     name: "Search within radius"
     difficulty: easy
     marketing_md: In this stage, you'll add support for searching locations near a coordinate within a given radius using the `GEOSEARCH` command.
+
+  # Authentication
+  - slug: "jn4"
+    primary_extension_slug: "authentication"
+    name: "Respond to ACL WHOAMI"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL WHOAMI` command.
+
+  - slug: "gx8"
+    primary_extension_slug: "authentication"
+    name: "Respond to ACL GETUSER"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL GETUSER` command.
+
+  - slug: "ql6"
+    primary_extension_slug: "authentication"
+    name: "The nopass flag"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL GETUSER` command with the `nopass` flag set.
+
+  - slug: "pl7"
+    primary_extension_slug: "authentication"
+    name: "The passwords property"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for responding to the `ACL GETUSER` command with the passwords property.
+
+  - slug: "uv9"
+    primary_extension_slug: "authentication"
+    name: "Setting default user password"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for setting the default user's password.
+
+  - slug: "hz3"
+    primary_extension_slug: "authentication"
+    name: "The AUTH command"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for responding to the `AUTH` command.
+
+  - slug: "nm2"
+    primary_extension_slug: "authentication"
+    name: "Enforce authentication"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for enforcing authentication for the `default` user.
+
+  - slug: "ws7"
+    primary_extension_slug: "authentication"
+    name: "Authenticate using AUTH"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll implement enforcing authentication using the `AUTH` command.
