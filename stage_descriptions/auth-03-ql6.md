@@ -27,7 +27,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send an `ACL GETUSER` command specifying the `default` user.
+It will then send an `ACL GETUSER` command specifying the `default` user.
 
 ```bash
 # Expect RESP array: ["flags", ["nopass"]]
