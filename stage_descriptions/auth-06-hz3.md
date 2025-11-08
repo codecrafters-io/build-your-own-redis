@@ -1,10 +1,16 @@
-In this stage, you'll add support for responding to the `AUTH` command.
+In this stage, you'll add support for the `AUTH` command.
 
-### The `AUTH` command
+### The `AUTH` Command
 
-The [`AUTH`](https://redis.io/docs/latest/commands/auth/) command is used to authenticate the current connection with the specified user.
+The [`AUTH`](https://redis.io/docs/latest/commands/auth/) command authenticates the current connection with a specified username and password.
 
-Example usage:
+The command format is:
+
+```bash
+AUTH <username> <password>
+```
+
+For example:
 
 ```bash
 # Authentication failure
@@ -16,11 +22,11 @@ Example usage:
 OK
 ```
 
-The `AUTH` command responds with `+OK\r\n` if the specified password's hash matches with any of the hashes in the user's password list.
+The server responds with `+OK\r\n` if the specified password's hash matches any of the hashes in the user's password list.
 
-In case of wrong password, the response is a RESP simple error `WRONGPASS invalid username-password pair or user is disabled.`.
+If no match is found, the server responds with the [RESP simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors): `WRONGPASS invalid username-password pair or user is disabled.`.
 
-In this stage, you just need to respond to the `AUTH` command appropriately. You don't actually need to authenticate the connection. We'll get to that in the later stages.
+For this stage, you just need to respond to the `AUTH` command appropriately. You don't need to actually authenticate the connection. We'll get to that in later stages.
 
 ### Tests
 
@@ -30,18 +36,16 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send a `ACL SETUSER` command, specifying the `default` user and a password.
+It will then send an `ACL SETUSER` command, specifying the `default` user and a password:
 
 ```bash
-$ redis-cli
-# Expect: +OK\r\n
-> ACL SETUSER default >mypassword
+$ redis-cli ACL SETUSER default >mypassword
 OK
 ```
 
-The tester will validate that the response to the `ACL SETUSER` command is `+OK\r\n`.
+Your server should respond with `OK` encoded as a simple string (`+OK\r\n`).
 
-It'll then send two `AUTH` commands, specifying the `default` user. First, it'll send a wrong password. Next, it'll send the correct password.
+Next, the tester will send two `AUTH` commands: one with a wrong password and another with a correct password.
 
 ```bash
 # Expect error starting with: WRONGPASS
@@ -53,13 +57,12 @@ It'll then send two `AUTH` commands, specifying the `default` user. First, it'll
 OK
 ```
 
-The tester will validate the following for the responses to the `AUTH` command:
-
-- In case of incorrect password, the response is a RESP simple error starting with the string `WRONGPASS`.
-- In case of correct password, the response is `+OK\r\n`.
+The tester will verify that:
+- Wrong passwords return a [simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors) starting with `WRONGPASS`.
+- Correct passwords return `+OK\r\n`.
 
 ### Notes
 
-- The tester will be lenient in checking error messages. Any authentication failure starting with `WRONGPASS` is valid. For example,
+- The tester will be lenient in checking error messages. Any authentication failure starting with `WRONGPASS` is valid. For example:
     - `WRONGPASS wrong password`
     - `WRONGPASS invalid authentication`
