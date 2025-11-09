@@ -1,8 +1,10 @@
 In this stage, you'll add support for responding to the `ACL GETUSER` command with the `passwords` property.
 
-### The `passwords` property
+### The `passwords` Property
 
-The `passwords` property lists all hash-encoded passwords associated with the user. The `default` user does not have any associated passwords unless explicitly configured:
+The `passwords` property lists all hash-encoded passwords associated with a user. 
+
+The `default` user does not have any associated passwords unless explicitly configured:
 
 ```bash
 > ACL GETUSER default
@@ -12,10 +14,10 @@ The `passwords` property lists all hash-encoded passwords associated with the us
  4) (empty array)
 ```
 
-Your `ACL GETUSER` response must now include the `passwords` property and its value:
+Your `ACL GETUSER` response must now include the following:
 
-- The string `passwords`, encoded as a bulk string.
-- A RESP array containing the list of passwords. Since the `default` user has none, you must hardcode this to an empty array.
+1. The string `passwords`, encoded as a bulk string.
+2. A RESP array containing the list of passwords. Since the `default` user has none, you must hardcode this to be an empty array.
 
 ### Tests
 
@@ -28,9 +30,8 @@ $ ./your_program.sh
 It will then send an `ACL GETUSER` command specifying the `default` user:
 
 ```bash
-$ redis-cli
 # Expect RESP array: ["flags", ["nopass"], "passwords", []]
-> ACL GETUSER default
+$ redis-cli ACL GETUSER default
  1) "flags"
  2) 1) "nopass"
  3) "passwords"
