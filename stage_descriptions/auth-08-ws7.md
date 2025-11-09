@@ -1,8 +1,10 @@
 In this stage, you'll implement enforcing authentication using the `AUTH` command.
 
-### Enforcing authentication using `AUTH`
+### Enforcing Authentication using `AUTH`
 
-After the `AUTH` command returns success, the connection is authenticated as the specified user. For example,
+After the `AUTH` command succeeds, the connection becomes authenticated as the specified user. Once authenticated, the connection can execute commands that previously returned `NOAUTH` errors:
+
+For example:
 
 ```bash
 # Client 1
@@ -18,13 +20,15 @@ $ redis-cli
 > ACL WHOAMI
 (error) NOAUTH Authentication required.
 
-> AUTH default mypassword
+> AUTH default newpassword
 OK
 
 # Client 2 is now authenticated as the 'default' user
 > ACL WHOAMI
 "default"
 ```
+
+The authentication lasts for the entire connection, so the client does not need to re-authenticate for every command.
 
 ### Tests
 
@@ -34,7 +38,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send commands to two different clients.
+It will then send commands to two different clients:
 
 ```bash
 # Client 1
@@ -62,10 +66,8 @@ OK
 "default"
 ```
 
-The tester will validate the following:
+The tester will verify that:
 
 1. A new client receives a `NOAUTH` error when attempting to execute commands before authenticating.
-
-2. The `AUTH` command returns `OK` upon successful authentication.
-
+2. The `AUTH` command returns `OK` as a simple string on successful authentication.
 3. The client can execute `ACL WHOAMI` successfully after authentication.
