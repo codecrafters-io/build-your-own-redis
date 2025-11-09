@@ -1,19 +1,19 @@
 In this stage, you'll add support for responding to the `ACL WHOAMI` command.
 
-### The `ACL WHOAMI` command
+### The `ACL WHOAMI` Command
 
-The [`ACL WHOAMI`](https://redis.io/docs/latest/commands/acl-whoami/) command is used to return the username the current connection is authenticated with.
+The [`ACL WHOAMI`](https://redis.io/docs/latest/commands/acl-whoami/) command returns the username associated with the current connection. 
 
-In Redis, every new connection is automatically authenticated using the `default` user. This feature can be turned off, making every new connection unauthenticated at first. We'll get to that in the later stages.
-
-Example usage:
+By default, every new connection in Redis is automatically authenticated as the `default` user. For example:
 
 ```bash
 > ACL WHOAMI
 "default"
 ```
 
-It returns the username of currently authenticated user, encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
+The command returns the username of the currently authenticated user, encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
+
+This default authentication behavior can be changed so that new connections start out unauthenticated. We'll cover that in later stages.
 
 ### Tests
 
@@ -23,21 +23,15 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send an `ACL WHOAMI` command.
+It will then send an `ACL WHOAMI` command:
 
 ```bash
 # Expect RESP bulk string: "default"
-$ redis-cli
-> ACL WHOAMI
+$ redis-cli ACL WHOAMI
 "default"
 ```
 
-The tester will validate that the response is the string `default`, which is RESP encoded as:
-
-```
-$7\r\n
-default\r\n
-```
+The tester will expect to receive `$7\r\ndefault\r\n` as a response. That's the string `default` encoded as a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
 ### Notes
 
