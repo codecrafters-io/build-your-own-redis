@@ -13,7 +13,7 @@ For example:
 ...
 ```
 
-The return value is nested RESP array of property name-value pairs for a user:
+The return value is a nested RESP array of property name-value pairs for the user:
 
 ```bash
 [property_name_1, property_value_1, property_name_2, property_value_2, ...]
