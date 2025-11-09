@@ -2,22 +2,24 @@ In this stage, you'll add support for responding to the `ACL GETUSER` command wi
 
 ### The `nopass` flag
 
-The `nopass` flag is one of the user flags in Redis.
+The `nopass` flag is one of the user flags in Redis. It controls the password authentication behaviour:
 
-- If the `nopass` flag is set for a user, the authentication succeeds with an arbitrary password for the user.
-- Setting the `nopass` flag clears the associated passwords for the given user.
-- The default user has the `nopass` flag set. Due to this, new connections are automatically authenticated as the `default` user. (This behavior can be changed, and we'll get to this in the later stages.)
+- If `nopass` is set for a user, authentication succeeds with any password (or no password)
+- Setting `nopass` clears any passwords associated with the user
 
-Example usage:
+The `default` user has `nopass` set by default, which is why new connections are automatically authenticated.
+
+For example:
 ```bash
 > ACL GETUSER default
 1) "flags"
 2) 1) "nopass"
+...
 ```
 
-The flags are encoded as a RESP array of bulk strings. Each flag is a bulk string (e.g., `nopass`). We'll get to enforcing the behavior of the `nopass` flag in later stages.
+The flags are encoded as a RESP array of bulk strings. 
 
-In this stage, you only need to respond to the `ACL GETUSER` command with the `nopass` flag set.
+For this stage, you only need to respond to the `ACL GETUSER` command with the `nopass` flag set. We'll get to enforcing the behavior of the `nopass` flag in later stages.
 
 ### Tests
 
@@ -27,7 +29,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send an `ACL GETUSER` command specifying the `default` user.
+It will then send an `ACL GETUSER` command specifying the `default` user.
 
 ```bash
 # Expect RESP array: ["flags", ["nopass"]]
@@ -37,7 +39,6 @@ $ redis-cli
 2) 1) "nopass"
 ```
 
-The tester will validate the following for the response:
-
-1. The first element of the array is the string `flags`, encoded as a RESP bulk string.
-2. The second element of the array is a RESP array, and contains the `nopass` flag.
+The tester will verify that the response is a RESP array with two elements:
+1. The first element is the bulk string `flags`.
+2. The second element is a RESP array containing one element: the bulk string `nopass`.
