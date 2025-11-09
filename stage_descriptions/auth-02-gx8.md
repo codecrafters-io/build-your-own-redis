@@ -1,19 +1,41 @@
-In this stage, you'll add support for responding to the `ACL GETUSER` command.
+In this stage, you'll add support for the `ACL GETUSER` command.
 
-### The `ACL GETUSER` command
+### The `ACL GETUSER` Command
 
-The [`ACL GETUSER`](https://redis.io/docs/latest/commands/acl-getuser/) is used to retrieve the properties the specified user. In Redis, the `default` user is present from the start, without having to create it explicitly.
+The [`ACL GETUSER`](https://redis.io/docs/latest/commands/acl-getuser/) command retrieves the properties of a specified user. In Redis, the `default` user is present from the start and does not need to be created.
 
-The `ACL GETUSER` returns multiple properties of the user, among which `flags` is one. In this stage, you'll add support for responding to the `ACL GETUSER` command with only the flags property.
+For example:
 
-Example usage:
 ```bash
 > ACL GETUSER default
 1) "flags"
 2) (empty array)
+...
 ```
 
-The second element of the resposne is the flags array. This is because a user can have multiple flags associated with it. In this stage, you can hardcode the flags array to be an empty array.
+The return value is nested RESP array of property name-value pairs for a user:
+
+```bash
+[property_name_1, property_value_1, property_name_2, property_value_2, ...]
+```
+
+For this stage, you'll implement just the `flags` property. 
+
+### The `flags` Property
+
+The `flags` property represents a set of attributes that describe how a user behaves or what special permissions they have. Each flag is a short label that defines part of the user’s configuration.
+
+For example, after creating or modifying a user, the flags array might look like this:
+
+```bash
+> ACL GETUSER alice
+1) "flags"
+2) 1) "on"
+   2) "allkeys"
+   3) "allcommands"
+```
+
+For this stage, since the `default` user has no `flags` to report yet, you will hardcode the value to be an empty RESP array (`[]`). 
 
 ### Tests
 
@@ -23,7 +45,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send an `ACL GETUSER` command specifying the `default` user.
+It will then send an `ACL GETUSER` command specifying the `default` user:
 
 ```bash
 # Expect RESP array: ["flags", []]
@@ -33,13 +55,7 @@ $ redis-cli
 2) (empty array)
 ```
 
-The tester will validate the following for the response:
+The tester will verify that the response is a RESP array with two elements:
 
-1. The first element of the array is the string `flags`, encoded as a RESP bulk string.
-2. The second element of the array is a RESP array.
-
-### Notes
-
-- A user can have multiple flags. This is why the value of flags property is an array.
-
-- The second element of the array is the flags array, which contains the user flags. We'll get to this in the later stages.
+1. The first element is the bulk string `flags`.
+2. The second element is an empty RESP array.
