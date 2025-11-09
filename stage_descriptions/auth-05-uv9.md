@@ -1,6 +1,6 @@
 In this stage, you'll add support for setting the `default` user's password.
 
-### The `ACL SETUSER` command
+### The `ACL SETUSER` Command
 
 The [`ACL SETUSER`](https://redis.io/docs/latest/commands/acl-setuser/) command modifies the properties of an existing user. 
 
@@ -11,7 +11,7 @@ When the command is used with the `>` rule, it adds a password for the specified
 OK
 ```
 
-The server then responds with `OK` encoded as a RESP simple string (`+OK\r\n`).
+The server responds with `OK` encoded as a RESP simple string (`+OK\r\n`).
 
 ### Password Storage
 
@@ -47,9 +47,8 @@ $ ./your_program.sh
 It will then send an `ACL GETUSER` command, specifying the `default` user:
 
 ```bash
-$ redis-cli
 # Expect RESP array: ["flags", ["nopass"], "passwords", []]
-> ACL GETUSER default
+$ redis-cli ACL GETUSER default
 1) "flags"
 2) 1) "nopass"
 3) "passwords"
@@ -69,7 +68,7 @@ Next, the tester will send a `ACL SETUSER` command, specifying the `default` use
 OK
 ```
 
-The tester will validate that the response to the `ACL SETUSER` command is `+OK\r\n`.
+Your server must respond with `+OK\r\n`.
 
 Finally, the tester will send a `ACL GETUSER` command, specifying the `default` user:
 
