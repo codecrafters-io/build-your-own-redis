@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7-labs
-FROM gcc:14.3.0-bookworm
+FROM gcc:15.2.0-trixie
 
 # Ensures the container is re-built if dependency files change
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="CMakeLists.txt,vcpkg.json,vcpkg-configuration.json"
@@ -33,7 +33,7 @@ COPY --exclude=.git --exclude=README.md . /app
 RUN vcpkg install --no-print-usage
 RUN sed -i '1s/^/set(VCPKG_INSTALL_OPTIONS --no-print-usage)\n/' ${VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
 
+RUN .codecrafters/compile.sh
+
 RUN mkdir -p /app-cached
 RUN if [ -d "/app/build" ]; then mv /app/build /app-cached; fi
-RUN if [ -d "/app/vcpkg_installed" ]; then mv /app/vcpkg_installed /app-cached/build; fi
-
