@@ -1,0 +1,19 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept()`](https://ruby-doc.org/stdlib-3.2.2/libdoc/socket/rdoc/TCPServer.html#method-i-accept) method to get the client connection:
+
+      ```ruby
+      client = server.accept
+      ```
+
+      The `accept()` method waits for a client to connect, and then returns a `TCPSocket` for that connection.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`write()`](https://ruby-doc.org/core-3.2.2/IO.html#method-i-write) method on the client's connection to send the response:
+
+      ```ruby
+      client.write("+PONG\r\n")
+      ```
+
+      `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

@@ -1,0 +1,21 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`serve`](https://hackage.haskell.org/package/network-simple/docs/Network-Simple-TCP.html#v:serve) callback parameter to access the client's TCP connection:
+
+      ```haskell
+      -- Inside your 'serve' handler
+      \(socket, _addr) -> do
+        -- 'socket' is the client's TCP connection
+      ```
+
+      The `serve` function accepts connections and passes a `(Socket, SockAddr)` to your handler.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`send`](https://hackage.haskell.org/package/network-simple/docs/Network-Simple-TCP.html#v:send) function to send the response:
+
+      ```haskell
+      send socket "+PONG\r\n"
+      ```
+
+      `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

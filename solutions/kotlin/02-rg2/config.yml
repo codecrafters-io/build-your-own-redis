@@ -1,0 +1,23 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept()`](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html#accept--) method to get the client connection:
+
+      ```kotlin
+      // The return value is the client's connection (a Socket)
+      val client = serverSocket.accept()
+      ```
+
+      The `accept()` method waits for a client to connect and then returns a `Socket` for that connection.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`write()`](https://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html#write-byte:A-) method on the client's output stream:
+
+      ```kotlin
+      // 'client' is the Socket returned by accept()
+      val out = client.getOutputStream()
+      out.write("+PONG\r\n".toByteArray())
+      ```
+
+      - The `toByteArray()` call converts the string to a byte array.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

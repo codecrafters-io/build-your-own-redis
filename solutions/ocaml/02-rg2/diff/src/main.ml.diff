@@ -1,0 +1,18 @@
+@@ -1,12 +1,16 @@
+ open Unix
+
+ let () =
+   (* Create a TCP server socket *)
+   let server_socket = socket PF_INET SOCK_STREAM 0 in
+   setsockopt server_socket SO_REUSEADDR true;
+   bind server_socket (ADDR_INET (inet_addr_of_string "127.0.0.1", 6379));
+   listen server_socket 1;
+
+   let (client_socket, _) = accept server_socket in
++
++  let response = "+PONG\r\n" in
++  ignore (write_substring client_socket response 0 (String.length response));
++
+   close client_socket;
+-  close server_socket
++  close server_socket;

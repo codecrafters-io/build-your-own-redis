@@ -1,0 +1,20 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept_tcp()`](https://pkg.odin-lang.org/core/net/#accept_tcp) function to get the client connection:
+
+      ```odin
+      client_socket, _, err := net.accept_tcp(listen_socket)
+      ```
+
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`send_tcp()`](https://pkg.odin-lang.org/core/net/#send_tcp) function to send the response:
+
+      ```odin
+      response := "+PONG\r\n"
+      _, _ = net.send_tcp(client_socket, transmute([]u8) response)
+      ```
+
+      - `transmute([]u8)` casts the string to a byte slice.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

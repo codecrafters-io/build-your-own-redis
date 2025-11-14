@@ -1,0 +1,20 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`:gen_tcp.accept`](https://www.erlang.org/doc/man/gen_tcp.html#accept-1) function to get the client connection:
+
+      ```elixir
+      # 'socket' is the listening socket
+      {:ok, client} = :gen_tcp.accept(socket)
+      ```
+
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`:gen_tcp.send`](https://www.erlang.org/doc/man/gen_tcp.html#send-2) function to send the response:
+
+      ```elixir
+      # Send the response to the client
+      :gen_tcp.send(client, "+PONG\r\n")
+      ```
+
+      `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

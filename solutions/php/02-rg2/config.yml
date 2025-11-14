@@ -1,0 +1,18 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`socket_accept()`](https://www.php.net/manual/en/function.socket-accept.php) function to get the client connection:
+
+      ```php
+      $client = socket_accept($sock);
+      ```
+
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`socket_write()`](https://www.php.net/manual/en/function.socket-write.php) function on the client's connection:
+
+      ```php
+      socket_write($client, "+PONG\r\n");
+      ```
+
+      `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
