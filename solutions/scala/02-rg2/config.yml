@@ -1,0 +1,20 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept()`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/ServerSocket.html#accept()) method to get the client connection:
+
+      ```scala
+      val clientSocket = serverSocket.accept()
+      ```
+
+      The `accept()` method waits for a client to connect, and then returns a `Socket` representing the connection.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`write(byte[])`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/OutputStream.html#write(byte%5B%5D)) method on the client's output stream to send a response:
+
+      ```scala
+      clientSocket.getOutputStream.write("+PONG\r\n".getBytes())
+      ```
+
+      - The `getBytes()` method converts the string to a byte array.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

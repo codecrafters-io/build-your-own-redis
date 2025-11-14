@@ -1,0 +1,21 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept()`](https://ocaml.org/api/Unix.html#VALaccept) function to get the client socket:
+
+      ```ocaml
+      let (client_socket, _) = accept server_socket in
+      ```
+
+      The `accept()` function waits for an incoming connection, and then returns the client socket and its address.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`write_substring()`](https://ocaml.org/api/Unix.html#VALwrite_substring) function on the client socket:
+
+      ```ocaml
+      let response = "+PONG\r\n" in
+      ignore (write_substring client_socket response 0 (String.length response));
+      ```
+
+      - The `write_substring()` function writes from the string starting at the given offset for the given length.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

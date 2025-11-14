@@ -1,0 +1,14 @@
+name = "codecrafters_redis"
+version = "1.0.0"
+
+# For a full reference of all the available options, you can have a look at
+# https://gleam.run/writing-gleam/gleam-toml/.
+
+[dependencies]
+gleam_stdlib = "~> 0.34 or ~> 1.0"
+gleam_erlang = "~> 0.25"
+gleam_otp = "~> 0.10"
+glisten = "~> 2.0"
+
+[dev-dependencies]
+gleeunit = "~> 1.0"

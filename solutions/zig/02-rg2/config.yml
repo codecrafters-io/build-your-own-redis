@@ -1,0 +1,18 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept()`](https://ziglang.org/documentation/master/std/#std;net.Server) method on the listener to get the client connection:
+
+      ```zig
+      const connection = try listener.accept();
+      ```
+
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`writeAll()`](https://ziglang.org/documentation/master/std/#std;io.Writer.writeAll) method on the client's stream writer:
+
+      ```zig
+      try connection.stream.writer().writeAll("+PONG\r\n");
+      ```
+
+      `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

@@ -1,0 +1,25 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use `childChannelInitializer(...)` to access the client's TCP connection:
+      
+      ```swift
+      .childChannelInitializer { channel in
+        // 'channel' is the client's TCP connection
+        return channel.eventLoop.makeSucceededFuture(())
+      }
+      ```
+      
+      The `childChannelInitializer(...)` method registers a closure for each accepted connection, and then passes the client's `Channel` into it.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use `writeAndFlush()` to send the PONG response:
+      
+      ```swift
+      // inside .childChannelInitializer { channel in ... }
+      var buffer = channel.allocator.buffer(string: "+PONG\r\n")
+      channel.writeAndFlush(buffer, promise: nil)
+      ```
+      
+      - `channel.allocator.buffer(string:)` creates a `ByteBuffer` containing the string's UTF-8 bytes.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

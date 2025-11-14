@@ -1,0 +1,23 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept?()`](https://crystal-lang.org/api/latest/TCPServer.html#accept%3F-instance-method) method to get the client connection:
+
+      ```crystal
+      client = server.accept?
+      ```
+
+      The `accept?()` method waits for a client to connect, and then returns a `TCPSocket` for that client or `nil`.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`<<`](https://crystal-lang.org/api/latest/IO.html#%3C%3C%28obj%29-instance-method) operator on the client's connection:
+
+      ```crystal
+      # Send the response to the client
+      client << "+PONG\r\n"
+      client.flush
+      ```
+
+      - The `<<` operator writes data to the socket.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
+      - `flush` ensures the data is sent immediately.

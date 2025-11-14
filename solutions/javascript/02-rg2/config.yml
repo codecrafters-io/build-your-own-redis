@@ -1,0 +1,20 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`createServer()`](https://nodejs.org/api/net.html#netcreateserveroptions-connectionlistener) connection listener to get the client connection:
+
+      ```js
+      const server = net.createServer((connection) => {
+        // 'connection' is the client's TCP connection
+      });
+      ```
+
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`write()`](https://nodejs.org/api/net.html#socketwritechunk-encoding-callback) method on the client's connection to send the response:
+
+      ```js
+      connection.write('+PONG\r\n')
+      ```
+
+      `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

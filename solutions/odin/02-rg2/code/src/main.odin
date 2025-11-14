@@ -1,0 +1,23 @@
+package main
+
+import "core:fmt"
+import "core:net"
+import "core:strings"
+import "core:bytes"
+
+main :: proc (){
+    listen_socket, listen_err := net.listen_tcp(net.Endpoint{
+        port = 6379,
+        address = net.IP4_Loopback
+    })
+    if listen_err != nil {
+        fmt.panicf("%s", listen_err)
+    }
+    client_socket, _, accept_err := net.accept_tcp(listen_socket)
+    if accept_err != nil {
+        fmt.panicf("%s", accept_err)
+    }
+
+    response := "+PONG\r\n"
+    _, _ = net.send(client_socket, transmute([]u8) response)
+}

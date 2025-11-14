@@ -1,0 +1,22 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept()`](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html#accept--) method to get the client connection:
+
+      ```java
+      // The returned Socket is the client's TCP connection
+      Socket clientSocket = serverSocket.accept();
+      ```
+
+      The `accept()` method waits for a client to connect, and then returns a `Socket` for that client.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use [`getOutputStream()`](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html#getOutputStream--) to send a response to the client:
+
+      ```java
+      // Send the response to the client
+      clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
+      ```
+
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
+      - `getBytes()` converts the string to bytes.
