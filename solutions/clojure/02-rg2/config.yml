@@ -1,0 +1,26 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`accept()`](https://docs.oracle.com/javase/8/docs/api/java/net/ServerSocket.html#accept--) method to get the client connection:
+
+      ```clojure
+      ;; 'server-sock' is your ServerSocket
+      (with-open [sock (.accept server-sock)]
+        ;; 'sock' is the client's TCP connection
+      )
+      ```
+
+      The `accept()` method waits for a client to connect, and then returns a `Socket` for the active connection.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`write()`](https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html#write-java.lang.String-) method on a writer to send the `+PONG\r\n` response:
+
+      ```clojure
+      ;; 'sock' is the client's TCP connection
+      (let [writer (io/writer sock)]
+        (.write writer "+PONG\r\n")
+        (.flush writer))
+      ```
+
+      - The [`flush()`](https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html#flush--) method forces buffered data to be sent immediately.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

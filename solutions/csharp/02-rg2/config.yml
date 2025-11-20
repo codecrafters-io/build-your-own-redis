@@ -1,0 +1,22 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`AcceptSocket()`](https://learn.microsoft.com/dotnet/api/system.net.sockets.tcplistener.acceptsocket) method on the listener to get the client connection:
+
+      ```csharp
+      Socket client = server.AcceptSocket();
+      ```
+
+      The `AcceptSocket()` method waits for a client to connect and returns a `Socket` for the connection.
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`Send()`](https://learn.microsoft.com/dotnet/api/system.net.sockets.socket.send) method on the client's socket:
+
+      ```csharp
+      using System.Text;
+
+      client.Send(Encoding.UTF8.GetBytes("+PONG\r\n"));
+      ```
+
+      - `Encoding.UTF8.GetBytes()` converts the string to a byte array.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).

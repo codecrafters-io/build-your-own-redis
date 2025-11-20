@@ -1,6 +1,5 @@
-@@ -1,7 +1,11 @@
+@@ -1,7 +1,10 @@
  import * as net from "net";
-+import { Buffer } from "buffer";
 
  const server: net.Server = net.createServer((connection: net.Socket) => {
    // Handle connection

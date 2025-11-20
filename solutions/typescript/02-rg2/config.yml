@@ -1,0 +1,21 @@
+hints:
+  - title_markdown: "How do I access the client's TCP connection?"
+    body_markdown: |-
+      Use the [`createServer()`](https://nodejs.org/api/net.html#netnetcreateserveroptions-connectionlistener) callback to get the client's connection:
+
+      ```ts
+      const server = net.createServer((connection) => {
+        // 'connection' is the client's TCP connection
+      });
+      ```
+
+  - title_markdown: "How do I send a response to the client?"
+    body_markdown: |-
+      Use the [`write()`](https://nodejs.org/api/net.html#socketwritechunk-encoding-callback) method on the client's connection:
+
+      ```ts
+      connection.write('+PONG\r\n')
+      ```
+
+      - Strings are sent as UTF-8 by default.
+      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
