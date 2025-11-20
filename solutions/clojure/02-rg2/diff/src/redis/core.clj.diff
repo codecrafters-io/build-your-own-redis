@@ -1,10 +1,4 @@
-@@ -1,38 +1,36 @@
- (ns redis.core
-   (:gen-class))
-
- (require '[clojure.java.io :as io])
- (import '[java.net ServerSocket])
-
+@@ -7,32 +7,32 @@
  (defn receive-message
    "Read a line of textual data from the given socket"
    [socket]
@@ -24,10 +18,9 @@
      (. server-sock (setReuseAddress true))
 
     (with-open [sock (.accept server-sock)]
--    (let [msg-in (receive-message sock)
--          msg-out (handler msg-in)]
--      (send-message sock msg-out)))))
-+    (send-message sock (handler)))))
+     (let [msg-in (receive-message sock)
+           msg-out (handler msg-in)]
+       (send-message sock msg-out)))))
 
  (defn handler
    [& args]

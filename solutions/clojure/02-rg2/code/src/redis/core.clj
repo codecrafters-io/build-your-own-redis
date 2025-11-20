@@ -23,7 +23,9 @@
     (. server-sock (setReuseAddress true))
 
    (with-open [sock (.accept server-sock)]
-    (send-message sock (handler)))))
+    (let [msg-in (receive-message sock)
+          msg-out (handler msg-in)]
+      (send-message sock msg-out)))))
 
 (defn handler
   [& args]
