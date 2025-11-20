@@ -16,6 +16,5 @@ hints:
       ```ts
       connection.write('+PONG\r\n')
       ```
-
-      - Strings are sent as UTF-8 by default.
-      - `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
+      
+      `+PONG\r\n` is the string "PONG" encoded as a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
