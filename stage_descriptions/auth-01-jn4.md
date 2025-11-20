@@ -4,7 +4,9 @@ In this stage, you'll add support for responding to the `ACL WHOAMI` command.
 
 The [`ACL WHOAMI`](https://redis.io/docs/latest/commands/acl-whoami/) command returns the username associated with the current connection. 
 
-By default, every new connection in Redis is automatically authenticated as the `default` user. For example:
+By default, every new connection in Redis is automatically authenticated as the `default` user. 
+
+For example:
 
 ```bash
 > ACL WHOAMI
