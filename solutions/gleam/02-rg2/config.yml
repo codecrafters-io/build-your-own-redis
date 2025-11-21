@@ -2,7 +2,7 @@ hints:
   - title_markdown: "How do I access the client's TCP connection?"
     body_markdown: |-
       Use the [`handler()`](https://hexdocs.pm/glisten/glisten.html#handler) callbacks to access the client's connection:
-      
+
       ```gleam
       glisten.handler(
         fn(_conn) { #(Nil, None) },  // Connection handler
@@ -11,18 +11,18 @@ hints:
         }
       )
       ```
-      
+
       The second callback receives messages from the client along with the `conn` (connection) parameter.n`.
   - title_markdown: "How do I send a response to the client?"
     body_markdown: |-
       Use the [`send()`](https://hexdocs.pm/glisten/glisten.html#send) function to send a response to the client:
-      
+
       ```gleam
       import gleam/bytes_builder
-      
+
       let assert Ok(_) = glisten.send(conn, bytes_builder.from_string("+PONG\r\n"))
       ```
-      
-     - Use `bytes_builder.from_string()` to convert the string to bytes.
+
+      - Use `bytes_builder.from_string()` to convert the string to bytes.
       - `+PONG\r\n` is the string "PONG" encodedOptionalas a [RESP simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
       - Send the response inside the message handler (second callback), not the connection handler.
