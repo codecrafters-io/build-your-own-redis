@@ -47,6 +47,6 @@ It will then connect to your TCP server as a replica and send the following comm
 3. `REPLCONF capa psync2` - expecting `+OK\r\n` back
 4. `PSYNC ? -1` - expecting `+FULLRESYNC <REPL_ID> 0\r\n` back
 
-**Notes**:
+### Notes
 
 - In the response, `<REPL_ID>` needs to be replaced with the replication ID of the master, which you've initialized in previous stages.
