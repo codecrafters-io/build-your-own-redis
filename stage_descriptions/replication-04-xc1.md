@@ -39,4 +39,4 @@ Your program should respond with a [bulk string](https://redis.io/docs/latest/de
 
 ### Notes
 
-- Your code must pass previous stage tests, meaning you should still return the correct `role` key.
+- Your code must pass the tests for previous stages, meaning you should still return the correct `role` key.

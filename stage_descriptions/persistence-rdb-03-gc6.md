@@ -1,6 +1,6 @@
 In this stage, you'll add support for reading the value corresponding to a key from an RDB file.
 
-Just like with the previous stage, we'll stick to supporting RDB files that contain a single key for now.
+Just like with previous stages, we'll stick to supporting RDB files that contain a single key for now.
 
 The tester will create an RDB file with a single key and execute your program like this:
 

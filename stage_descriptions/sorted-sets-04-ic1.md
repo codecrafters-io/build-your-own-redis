@@ -71,4 +71,4 @@ The tester will issue multiple such commands and verify their responses.
 
 ### Notes
 
-- In this stage, you will only implement `ZRANGE` with non-negative indexes. We will get to handling `ZRANGE` with negative indexes in the next stage.
+- In this stage, you will only implement `ZRANGE` with non-negative indexes. We will get to handling `ZRANGE` with negative indexes in later stages.

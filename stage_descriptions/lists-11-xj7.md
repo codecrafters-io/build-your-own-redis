@@ -9,7 +9,7 @@ $ redis-cli BLPOP list_key 0.5
 # (Blocks for 0.5 seconds)
 ```
 
-If an element is not available on the list within this time, the server returns a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) (`*-1\r\n`). If an element is pushed to the list before the timeout, the command unblocks and returns the list key and the popped element as a RESP array, just as in the previous stage.
+If an element is not available on the list within this time, the server returns a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) (`*-1\r\n`). If an element is pushed to the list before the timeout, the command unblocks and returns the list key and the popped element as a RESP array, just like with previous stages.
 
 ### Tests
 

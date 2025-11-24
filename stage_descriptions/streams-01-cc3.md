@@ -57,4 +57,4 @@ Your server should respond with `+none\r\n`, which is `none` encoded as a [simpl
 
 ### Notes
 
-- For now, you only need to handle the `string` and `none` types. We'll add support for the `stream` type in the next stage.
+- For now, you only need to handle the `string` and `none` types. We'll add support for the `stream` type in later stages.

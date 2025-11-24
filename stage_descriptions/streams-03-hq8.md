@@ -6,7 +6,7 @@ Entry IDs are crucial for maintaining the order of entries in Redis streams.
 
 Each ID is made up of two integers separated by a dash: `<millisecondsTime>-<sequenceNumber>`.
 
-Here's an example from the previous stage:
+For example:
 
 ```yaml
 entries:
@@ -31,7 +31,7 @@ You can use three different formats to specify the ID for the `XADD` command:
 - Auto-generate only sequence number (`1526919030474-*`)
 - Auto-generate the time and sequence number (`*`)
 
-For this stage, you will only handle explicit IDs (e.g., `1526919030474-0`). You'll add support for the other two cases in the next stages.
+For this stage, you will only handle explicit IDs (e.g., `1526919030474-0`). You'll add support for the other two cases in the later stages.
 
 Your `XADD` implementation must validate the provided ID based on the following rules:
 
