@@ -1,4 +1,4 @@
-In this stage, you'll add support for sending an empty RDB file as a master. 
+In this stage, you'll add support for sending an empty RDB file as a master.
 
 ### Full Resynchronization
 
@@ -21,7 +21,7 @@ The file is sent using the following format:
 $<length_of_file>\r\n<binary_contents_of_file>
 ```
 
-This is similar to how [bulk strings](https://redis.io/topics/protocol#resp-bulk-strings) are encoded, but without the trailing `\r\n`.
+This is similar to how [bulk strings](https://redis.io/topics/protocol#resp-bulk-strings) are encoded, but **without the trailing `\r\n`**.
 
 ### Tests
 
