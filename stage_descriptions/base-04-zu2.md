@@ -9,12 +9,12 @@ In most languages, you'd need to either use threads or implement an
 [Event Loop](https://en.wikipedia.org/wiki/Event_loop) to do this. In JavaScript, however, since [the concurrency
 model itself is based on an event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop), most
 standard library functions are designed to support this kind of concurrent behaviour out of the box. **It is very
-likely that the code you had for the previous stage will pass this stage without any changes!**
+likely that the code you had for previous stages will pass this stage without any changes!**
 {{/lang_is_javascript}}
 
 {{#lang_is_typescript}}
 In most languages, you'd need to either use threads or implement an [Event Loop](https://en.wikipedia.org/wiki/Event_loop) to do this. In JavaScript, however, since [the concurrency
-model itself is based on an event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop), most standard library functions are designed to support this kind of concurrent behaviour out of the box. **It is very likely that the code you had for the previous stage will pass this stage without any changes!**
+model itself is based on an event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop), most standard library functions are designed to support this kind of concurrent behaviour out of the box. **It is very likely that the code you had for previous stages will pass this stage without any changes!**
 {{/lang_is_typescript}}
 
 {{^lang_is_javascript}}
