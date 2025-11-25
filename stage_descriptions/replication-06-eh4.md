@@ -4,7 +4,7 @@ In this stage, you'll implement the second step of the replication handshake.
 
 As a recap, there are three steps to the handshake:
 
-1. The replica sends a `PING` to the master (Handled in the previous stage)
+1. The replica sends a `PING` to the master (Handled in previous stages)
 2. The replica sends `REPLCONF` twice to the master
 3. The replica sends `PSYNC` to the master
 

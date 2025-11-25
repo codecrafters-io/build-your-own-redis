@@ -8,7 +8,7 @@ If the list is empty, the command blocks until:
 
 - A new element is added to the list
 - Or a specified timeout is reached.
-  
+
 If the timeout is `0`, the command blocks indefinitely.
 
 For example, a client can block on a list with an indefinite timeout like this:
@@ -88,4 +88,4 @@ The tester will expect your server to respond to the client that sent the `BLPOP
 
 ### Notes
 
-- In this stage, the timeout argument will always be `0`, meaning `BLPOP` should wait indefinitely. We'll handle non-zero timeouts in a later stage.
+- In this stage, the timeout argument will always be `0`, meaning `BLPOP` should wait indefinitely. We'll handle non-zero timeouts in later stages.

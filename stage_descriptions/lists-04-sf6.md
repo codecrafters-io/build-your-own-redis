@@ -69,5 +69,5 @@ c\r\n
 
 ### Notes
 
-- In this stage, you will only implement `LRANGE` with non-negative indexes. We will get to handling `LRANGE` for negative indexes in the next stage.
+- In this stage, you will only implement `LRANGE` with non-negative indexes. We will get to handling `LRANGE` for negative indexes in later stages.
 - If a list doesn't exist, `LRANGE` should respond with an empty RESP array (`*0\r\n`). 

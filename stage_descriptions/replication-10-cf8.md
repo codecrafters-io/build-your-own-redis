@@ -6,7 +6,7 @@ When a replica connects to a master for the first time, it sends a `PSYNC ? -1` 
 
 The master responds in two steps:
 
-- It acknowledges with a `FULLRESYNC` response (Handled in a previous stage)
+- It acknowledges with a `FULLRESYNC` response (Handled in previous stages)
 - It sends a snapshot of its current state as an [RDB file](https://rdb.fnordig.de/file_format.html).
 
 The replica is expected to load the file into memory and replace its current state with the master's data.

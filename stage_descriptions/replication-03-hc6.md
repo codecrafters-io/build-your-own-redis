@@ -38,6 +38,6 @@ is a key-value pair separated by a colon (`:`). The tester will only look for th
 
 ### Notes
 
-- Your program still needs to pass the previous stage tests, so if `--replicaof` isn't specified, you should default to the `master` role.
-- Just like the last stage, you only need to support the `role` key in the response for this stage. We'll add support for the other keys in later stages.
+- Your program still needs to pass the tests for previous stages, so if `--replicaof` isn't specified, you should default to the `master` role.
+- Just like the previous stages, you only need to support the `role` key in the response for this stage. We'll add support for the other keys in later stages.
 - You don't need to actually connect to the master server specified via `--replicaof` in this stage. We'll get to that in later stages.

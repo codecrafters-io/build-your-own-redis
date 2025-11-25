@@ -24,8 +24,8 @@ That's `["PSYNC", "?", "-1"]` encoded as a RESP array.
 The master needs to respond with `+FULLRESYNC <REPL_ID> 0\r\n`, which is `FULLRESYNC <REPL_ID> 0` encoded as a simple string. Here's what the response means:
 
 - `FULLRESYNC` means that the master cannot perform an incremental update to the replica, and will start a full resynchronization.
-- `<REPL_ID>` is the replication ID of the master (the 40-character string you initialized in a previous stage).
-- `0` is the replication offset of the master (which you initialized in a previous stage).
+- `<REPL_ID>` is the replication ID of the master.
+- `0` is the replication offset of the master.
 
 For example, if your replication ID is `8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb`, you'd respond with:
 ```bash
@@ -47,6 +47,6 @@ It will then connect to your TCP server as a replica and send the following comm
 3. `REPLCONF capa psync2` - expecting `+OK\r\n` back
 4. `PSYNC ? -1` - expecting `+FULLRESYNC <REPL_ID> 0\r\n` back
 
-**Notes**:
+### Notes
 
 - In the response, `<REPL_ID>` needs to be replaced with the replication ID of the master, which you've initialized in previous stages.

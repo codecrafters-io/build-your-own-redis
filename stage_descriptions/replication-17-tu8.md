@@ -2,7 +2,7 @@ In this stage, you’ll extend your `WAIT` implementation to handle the case whe
 
 ### `WAIT` with connected replicas
 
-In a previous stage, we handled the case where no replicas were connected, and the master could safely return `0`.
+In previous stages, we handled the case where no replicas were connected, and the master could safely return `0`.
 
 Now, we’ll consider the case where some replicas are connected. Each replica will have completed the handshake and received the empty RDB file. But since no write commands have been sent yet, the replication offset is still `0`.
 

@@ -35,4 +35,4 @@ $ redis-cli
 
 ### Notes
 
-- Your implementation still needs to pass the tests in the previous stage.
+- Your implementation still needs to pass the tests in previous stages.
