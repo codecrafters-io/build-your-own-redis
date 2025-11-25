@@ -24,7 +24,9 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will then send multiple `PING` commands using the same connection. For example, it might send:
+It will then send multiple `PING` commands using the same connection. 
+
+For example, it might send:
 
 ```bash
 $ echo -e "PING\nPING" | redis-cli
