@@ -7,5 +7,5 @@ debug: false
 # Use this to change the PHP version used to run your code
 # on Codecrafters.
 #
-# Available versions: php-8.3
-buildpack: php-8.3
+# Available versions: php-8.5
+buildpack: php-8.5
