@@ -1,3 +1,3 @@
 attributes:
-  required_executable: ruby (2.7)
+  required_executable: ruby (3.4)
   user_editable_file: app/server.rb
