@@ -14,8 +14,9 @@ XREAD BLOCK <milliseconds> STREAMS <key> <id>
 
 Here's how it works:
 - The client sends the command and specifies a timeout in milliseconds.
-- If the list of entries is empty, the command blocks and waits.
-- If a new entry is added to the stream before the timeout expires, the command unblocks and returns the new entry (or entries).
+- If there are already entries with IDs greater than the specified ID, the command returns them immediately.
+- If there are no new entries available, the command blocks and waits.
+- If a new entry is added before the timeout expires, the command unblocks and returns the new entry (or entries).
 - If the timeout expires and no new data has arrived, the server responds with a null array (`*-1\r\n`).
 
 For example, consider two separate clients. The first client sends a blocking `XREAD` command:
