@@ -3,6 +3,7 @@ In this stage, you’ll extend your `WAIT` implementation to handle the case whe
 ### `WAIT` with propagated commands
 
 In previous stages, we handled the cases where:
+
 - No replicas were connected, and the master could safely return `0`.
 - Replicas were connected, but hadn't received any write commands.
 
@@ -12,10 +13,10 @@ To do this, the master must send `REPLCONF GETACK *` to replicas if there are pe
 
 The `WAIT` command should complete when either:
 
-- The required number of replicas has acknowledged the last write command, or
+- The required number of replicas has acknowledged all previous write commands, or
 - The timeout expires.
 
-Either way, the master should return the number of replicas that acknowledged the command as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+Either way, the master should return the number of replicas that acknowledged all previous write commands as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Tests
 

@@ -2,9 +2,9 @@ In this stage, you’ll implement support for the `WAIT` command on the master.
 
 ### The `WAIT` command
 
-The `WAIT` command is used to check how many replicas have acknowledged a write command. This allows a client to measure the durability of a write command before considering it successful.
+The `WAIT` command is used to check how many replicas have acknowledged all previous write commands. This allows a client to measure the durability of a write command before considering it successful.
 
-The command format is: 
+The command format is:
 
 ```bash
 WAIT <numreplicas> <timeout>
@@ -12,7 +12,7 @@ WAIT <numreplicas> <timeout>
 
 Here's what each argument means:
 
-- `<numreplicas>`: The minimum number of replicas that must acknowledge the write command.
+- `<numreplicas>`: The minimum number of replicas that must acknowledge all previous write commands.
 - `<timeout>`: The maximum time (in milliseconds) the client is willing to wait.
 
 For example:
