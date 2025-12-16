@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Elixir version used to run your code
 # on Codecrafters.
 #
-# Available versions: elixir-1.18
-buildpack: elixir-1.18
+# Available versions: elixir-1.19
+buildpack: elixir-1.19
