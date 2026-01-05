@@ -38,7 +38,7 @@ languages:
   - slug: "scala"
   - slug: "swift"
     release_status: "alpha"
-    alpha_tester_usernames: ["JWShroyer"]
+    alpha_tester_usernames: ["JWShroyer", "defmacro-jam"]
   - slug: "zig"
 
 marketing:
@@ -54,17 +54,17 @@ marketing:
         * Parsing the Redis Protocol (RESP) from client requests
         * Handling multiple clients concurrently
         * Implementing the `SET` and `GET` commands to store and retrieve data.
-        
-        At this stage, your Redis will already feel real, and you'll be able to interact with the official `redis-cli`. 
-        
+
+        At this stage, your Redis will already feel real, and you'll be able to interact with the official `redis-cli`.
+
         As you progress, you'll implement advanced features like:
         * Redis replication
         * RDB persistence
         * Atomic transactions
         * ... and more
-        
+
         At the end, you'll have a GitHub repo to show off.
-        
+
     - question_markdown: "What exactly will I learn?"
       answer_markdown: |-
         In the first 7 stages, you'll learn:
@@ -73,27 +73,27 @@ marketing:
         * How to handle multiple clients concurrently
         * How to implement commands like `PING`, `ECHO`, `SET`, and `GET`
         * How to manage a key-value store with automatic key expiry
-        
+
         In the advanced stages, you'll discover new programming ideas, such as master-replica synchronization, atomic transactions, and specialized data structures like sorted sets and geospatial indices.
-        
+
         As your code gets complex, you'll be forced to structure and refactor it - to avoid regressions and to make adding new features easier.
-        
+
     - question_markdown: "Why should I build such a project?"
       answer_markdown: |-
-        Building your own Redis blends network programming, concurrent computing, and system design. If you've mostly built websites or apps, this project takes you a layer deeper to understand how caching and distributed systems work. 
-        
+        Building your own Redis blends network programming, concurrent computing, and system design. If you've mostly built websites or apps, this project takes you a layer deeper to understand how caching and distributed systems work.
+
         You’ll also be building a core piece of infrastructure that applications rely on, such as [Twitter's timeline](https://blog.x.com/engineering/en_us/topics/infrastructure/2017/the-infrastructure-behind-twitter-scale#cache) and [Uber's integrated cache](https://www.uber.com/en-GB/blog/how-uber-serves-over-40-million-reads-per-second-using-an-integrated-cache/).
-        
+
         Beyond technical depth, there's something uniquely satisfying about understanding a tool used by millions of developers every day. You'll come out of it as a more confident and interesting developer.
-        
+
     - question_markdown: "What are the prerequisites for this challenge?"
       answer_markdown: |-
         You should be comfortable writing code in any one language and using Git. No prior experience with databases or network programming is required.
-        
+
         Most learners pick up required concepts (e.g, TCP servers) as they go.
-        
+
         What matters most is curiosity and persistence. You'll develop intuition by exploring, debugging, and discovering solutions yourself.
-        
+
         While we will make it extremely simple to get started, don't expect this to be a follow-along tutorial.
   testimonials:
     - author_name: "Charles Guo"
@@ -169,7 +169,7 @@ extensions:
 
   - slug: "pub-sub"
     name: "Pub/Sub"
-    description_markdown : |-
+    description_markdown: |-
       In this challenge extension you'll add support for [Publish/Subscribe (Pub/Sub)][redis-pub-sub] to your Redis implementation.
 
       Along the way, you'll learn commands like [SUBSCRIBE][subscribe-command], [PUBLISH][publish-command], and more.
@@ -180,7 +180,7 @@ extensions:
 
   - slug: "sorted-sets"
     name: "Sorted Sets"
-    description_markdown : |-
+    description_markdown: |-
       In this challenge extension you'll add support for [Sorted Sets (zsets)][redis-zset] to your Redis implementation.
 
       Along the way, you'll learn commands like [ZADD][zadd-command], [ZRANGE][zrange-command], and more.
@@ -188,7 +188,7 @@ extensions:
       [redis-zset]: https://redis.io/docs/latest/develop/data-types/sorted-sets/
       [zadd-command]: https://redis.io/docs/latest/commands/zadd/
       [zrange-command]: https://redis.io/docs/latest/commands/zrange/
-  
+
   - slug: "geospatial"
     name: "Geospatial Commands"
     description_markdown: |
@@ -241,7 +241,7 @@ stages:
         "rust-tcp-server",
         "python-tcp-server",
         "java-tcp-server",
-        "cpp-tcp-server",        
+        "cpp-tcp-server",
       ]
     name: "Respond to PING"
     difficulty: easy
@@ -290,10 +290,7 @@ stages:
     tester_source_code_url: "https://github.com/codecrafters-io/redis-tester/blob/a58b9d58b33870fe26a164c0e323f809275a7250/internal/test_ping_pong.go#L56"
 
   - slug: "qq0"
-    concept_slugs:
-      [
-        "redis-serialization-protocol"
-      ]
+    concept_slugs: ["redis-serialization-protocol"]
     name: "Implement the ECHO command"
     difficulty: medium
     marketing_md: |-
