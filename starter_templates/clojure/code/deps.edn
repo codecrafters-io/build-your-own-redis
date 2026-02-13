@@ -1,0 +1,15 @@
+{
+  :paths ["src"]
+
+  :deps {
+    org.clojure/clojure {:mvn/version "1.12.0"}
+    org.clojure/tools.cli {:mvn/version "1.1.230"}
+  }
+
+  :aliases {
+    :build {
+      :extra-deps {io.github.clojure/tools.build {:mvn/version "0.10.9"}}
+      :exec-fn build/uber
+    }
+  }
+}

@@ -1,0 +1,18 @@
+@@ -1,14 +1,9 @@
+ (ns redis.core
+   (:import [java.net ServerSocket])
+   (:gen-class))
+
+ (defn -main [& args]
+-  ;; You can use print statements as follows for debugging, they'll be visible when running tests.
+-  (println "Logs from your program will appear here!")
+-
+-  ;; Uncomment the code below to pass the first stage
+-  ;;
+-  ;; (let [server-socket (ServerSocket. 6379)]
+-  ;;   (.setReuseAddress server-socket true)
+-  ;;   (.accept server-socket))
++  (let [server-socket (ServerSocket. 6379)]
++    (.setReuseAddress server-socket true)
++    (.accept server-socket))
+   )
