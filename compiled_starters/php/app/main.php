@@ -1,0 +1,14 @@
+<?php
+error_reporting(E_ALL);
+
+// You can use print statements as follows for debugging, they'll be visible when running tests.
+fwrite(STDERR, "Logs from your program will appear here!\n");
+
+// Uncomment the code below to pass the first stage
+//
+// $server = stream_socket_server("tcp://0.0.0.0:6379", $errno, $errstr);
+// if (!$server) {
+//     fwrite(STDERR, "Failed to bind to port 6379\n");
+//     exit(1);
+// }
+// $client = stream_socket_accept($server, -1); // wait for client
