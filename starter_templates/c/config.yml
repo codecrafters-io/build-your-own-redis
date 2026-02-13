@@ -1,0 +1,3 @@
+attributes:
+  required_executable: cmake
+  user_editable_file: src/main.c
