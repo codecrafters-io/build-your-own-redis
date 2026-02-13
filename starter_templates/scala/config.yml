@@ -1,3 +1,0 @@
-attributes:
-  required_executable: sbt (1.11.2)
-  user_editable_file: src/main/scala/codecrafters_redis/App.scala

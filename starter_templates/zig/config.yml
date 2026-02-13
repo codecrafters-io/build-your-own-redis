@@ -1,3 +1,0 @@
-attributes:
-  required_executable: zig (0.15)
-  user_editable_file: src/main.zig

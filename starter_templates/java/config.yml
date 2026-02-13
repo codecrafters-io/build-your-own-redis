@@ -1,3 +1,0 @@
-attributes:
-  required_executable: mvn
-  user_editable_file: src/main/java/Main.java

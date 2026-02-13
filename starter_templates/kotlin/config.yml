@@ -1,3 +1,0 @@
-attributes:
-  required_executable: "gradle (9.1.0)"
-  user_editable_file: app/src/main/kotlin/App.kt

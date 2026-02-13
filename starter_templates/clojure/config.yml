@@ -1,3 +1,0 @@
-attributes:
-  required_executable: clj
-  user_editable_file: src/redis/core.clj

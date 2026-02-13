@@ -1,3 +1,0 @@
-attributes:
-  required_executable: gleam (1.11.1)
-  user_editable_file: src/main.gleam
