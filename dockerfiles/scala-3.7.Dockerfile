@@ -13,7 +13,7 @@ RUN curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E4
     chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends sbt=1.11.2 -yqq && \
+    apt-get install --no-install-recommends sbt=1.11.7 -yqq && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
