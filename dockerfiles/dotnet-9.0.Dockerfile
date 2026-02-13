@@ -7,14 +7,9 @@ WORKDIR /app
 COPY --exclude=.git --exclude=README.md . /app
 
 # This saves nuget packages to ~/.nuget
-RUN dotnet build --configuration Release .
+RUN dotnet build --configuration Release . \
+    && rm -rf /app/obj /app/bin \
+    && echo "cd \${CODECRAFTERS_REPOSITORY_DIR} && dotnet build --configuration Release ." > /codecrafters-precompile.sh \
+    && chmod +x /codecrafters-precompile.sh
 
-# This seems to cause a caching issue with the dotnet build command, where old contents are used
-# TODO: See if this needs to be brought back?
-# RUN rm -rf /app/obj
-# RUN rm -rf /app/bin
-
-RUN echo "cd \${CODECRAFTERS_REPOSITORY_DIR} && dotnet build --configuration Release ." > /codecrafters-precompile.sh
-RUN chmod +x /codecrafters-precompile.sh
-
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="codecrafters-redis.csproj,codecrafters-redis.sln"
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="CodeCrafters.Redis.csproj,CodeCrafters.Redis.sln"
