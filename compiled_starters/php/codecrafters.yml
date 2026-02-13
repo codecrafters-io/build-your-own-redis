@@ -1,0 +1,11 @@
+# Set this to true if you want debug logs.
+#
+# These can be VERY verbose, so we suggest turning them off
+# unless you really need them.
+debug: false
+
+# Use this to change the PHP version used to run your code
+# on Codecrafters.
+#
+# Available versions: php-8.5
+buildpack: php-8.5
