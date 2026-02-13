@@ -6,7 +6,6 @@ ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="CMakeLists.txt,vcpkg.json,vcpkg-configur
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y zip=3.* && \ 
-    apt-get install --no-install-recommends -y g++=4:* && \
     apt-get install --no-install-recommends -y build-essential=12.* && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -36,4 +35,5 @@ RUN sed -i '1s/^/set(VCPKG_INSTALL_OPTIONS --no-print-usage)\n/' ${VCPKG_ROOT}/s
 RUN .codecrafters/compile.sh
 
 RUN mkdir -p /app-cached
+RUN if [ -d "/app/vcpkg_installed" ]; then mv /app/vcpkg_installed /app-cached; fi
 RUN if [ -d "/app/build" ]; then mv /app/build /app-cached; fi
