@@ -1,6 +1,6 @@
 import gleam/io
 
-type Socket
+pub type Socket
 
 @external(erlang, "gen_tcp", "listen")
 fn listen(port: Int, options: List(Nil)) -> Result(Socket, Nil)
