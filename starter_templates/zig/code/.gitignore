@@ -1,0 +1,18 @@
+# Zig build artifacts
+main
+zig-cache/
+.zig-cache/
+zig-out/
+
+# Compiled binary output
+bin/
+!bin/.gitkeep
+
+# Ignore any .o or .h files generated during build
+*.o
+*.h
+
+# Ignore OS and editor specific files
+**/.DS_Store
+*.swp
+*~
