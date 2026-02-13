@@ -1,0 +1,11 @@
+# Set this to true if you want debug logs.
+#
+# These can be VERY verbose, so we suggest turning them off
+# unless you really need them.
+debug: false
+
+# Use this to change the Kotlin version used to run your code
+# on Codecrafters.
+#
+# Available versions: kotlin-2.2
+buildpack: kotlin-2.2
