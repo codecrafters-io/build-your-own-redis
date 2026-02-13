@@ -10,7 +10,7 @@ main :: proc() {
         fmt.eprintln("Failed to bind to port 6379")
         os.exit(1)
     }
-    client, _, accept_err := net.accept(listener)
+    client, _, accept_err := net.accept_tcp(listener)
     if accept_err != nil {
         fmt.eprintln("Error accepting connection")
         os.exit(1)
