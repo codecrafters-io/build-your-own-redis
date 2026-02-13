@@ -1,0 +1,3 @@
+attributes:
+  required_executable: "swift (>=6.0)"
+  user_editable_file: Sources/main.swift
