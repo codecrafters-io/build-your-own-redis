@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Rust version used to run your code
 # on Codecrafters.
 #
-# Available versions: rust-1.92
-buildpack: rust-1.92
+# Available versions: rust-1.93
+buildpack: rust-1.93
