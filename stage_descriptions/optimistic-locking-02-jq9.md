@@ -30,7 +30,7 @@ $ redis-cli
 > WATCH key
 # Expect: (error) ERR WATCH inside MULTI is not allowed
 ```
-The response is a RESP simple string, which is encoded as:
+The response is a RESP error, which is encoded as:
 ```
 -ERR WATCH inside MULTI is not allowed\r\n
 ```

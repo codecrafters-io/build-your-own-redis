@@ -101,8 +101,8 @@ Using the first client, the tester will retrieve the value of the unwatched key 
 
 ### Notes
 
-- In this stage, you will only implement aborting a transaction if the client has issued a `WATCH` command for a key. Assume that the watched variable is guaranteed to be modified by another client.
+- In this stage, implement aborting a transaction only when a watched key has been modified by another client. It is guaranteed that the tester will modify the watched variable using another client.
 
-- We will get to implementing failing transactions in case of modified watched key in the next stage.
+- We will get to implementing failing transactions based on the condition that the watched variable is actually modified, in the later stages.
 
 - If no keys are watched by the client, the transaction execution should continue with its usual operation.

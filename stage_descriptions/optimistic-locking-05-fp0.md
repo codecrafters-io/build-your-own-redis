@@ -61,7 +61,7 @@ Using the first client, the tester will attempt to execute the ongoing transacti
 
 The response to `EXEC` should be a RESP null array. 
 
-Using the second client, the tester will retrieve the value of the unwatched key to check if the transaction was aborted.
+Using the second client, the tester will retrieve the value of the key (bar) to check if the transaction was aborted.
 
 ```bash
 # Client 2

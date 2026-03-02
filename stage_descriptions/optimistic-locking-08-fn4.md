@@ -101,5 +101,5 @@ Using the second client, the tester will check for the values of variables that 
 
 ### Notes
 
-- In this stage, you'll only implement clearing the watched keys on `EXEC`. We'll get to clearing the watched keys on `DISCARD` in the next stage.
+- In this stage, you'll only implement clearing the watched keys on `EXEC`. We'll get to clearing the watched keys on `DISCARD` in the later stages.
 
