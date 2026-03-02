@@ -42,12 +42,13 @@ Using the second client, the tester will modify the watched key.
 ```
 
 Using the first client, the tester will issue a `UNWATCH` command, so that the first client stops watching the keys that were being previously watched.
+
 ```bash
 # Client 1
 > UNWATCH (Expecting "+OK\r\n")
 ```
 
-Using the first client, the tester will then try to execute a transaction
+Using the first client, the tester will then try to execute a transaction.
 
 ```bash
 # Client 1

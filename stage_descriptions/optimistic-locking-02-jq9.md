@@ -35,7 +35,7 @@ The response is a RESP simple string, which is encoded as:
 -ERR WATCH inside MULTI is not allowed\r\n
 ```
 
-The tester will then abort the transaction using the `DISCARD` command, and again send a `WATCH` command. It will expect the response to be `"+OK\r\n` in this case. 
+The tester will then abort the transaction using the `DISCARD` command, and again send a `WATCH` command. It will expect the response to be `+OK\r\n` in this case. 
 
 ```bash
 > DISCARD (expecting "+OK\r\n" as the response)

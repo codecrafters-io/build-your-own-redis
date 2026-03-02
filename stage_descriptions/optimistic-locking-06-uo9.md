@@ -2,7 +2,7 @@ In this stage, you'll add support for watching a non-existent key.
 
 ### Watching Non-existent Keys
 
-The `WATCH` command enables optimistic locking by monitoring non-existent exist keys at the time of the `WATCH` call. Example Usage:
+The `WATCH` command enables optimistic locking by monitoring non-existent keys at the time of the `WATCH` call. Example Usage:
 
 ```bash
 # Client A

@@ -60,7 +60,7 @@ Using the second client, the tester will update the value of the watched variabl
 
 ```bash
 # Client 2
-> SET foo 200 (Expecing "+OK\r\n")
+> SET foo 200 (Expecting "+OK\r\n")
 ```
 
 Using the first client, the tester will attempt to execute the ongoing transaction.
@@ -71,7 +71,7 @@ Using the first client, the tester will attempt to execute the ongoing transacti
 
 The response to `EXEC` should be a RESP null array. 
 
-Using the first client, the tester will retrieve the value of unwatched key to check if the transaction was aborted.
+Using the first client, the tester will retrieve the value of the unwatched key to check if the transaction was aborted.
 
 ```bash
 # Client 1
@@ -90,9 +90,9 @@ Using the second client, the tester will attempt to execute a new transaction.
 > EXEC (Expecting an array of responses for the queued commands)
 ```
 
-The response to the `EXEC` command should be its usual response because no key were watched using this client.
+The response to the `EXEC` command should be its usual response because no keys were watched using this client.
 
-Using the first client, the tester will retrieve the value of unwatched key to check if the transaction succeeded.
+Using the first client, the tester will retrieve the value of the unwatched key to check if the transaction succeeded.
 
 ```bash
 # Client 1

@@ -46,7 +46,7 @@ Using the first client, it will set the value of two keys and, issue a `WATCH` c
 > SET bar 300 (Expecting "+QUEUED\r\n")
 ```
 
-Using the second client, the tester will modify one of the watched key.
+Using the second client, the tester will modify one of the watched keys.
 
 ```bash
 # Client 2
@@ -61,7 +61,7 @@ Using the first client, the tester will attempt to execute the ongoing transacti
 
 The response to `EXEC` should be a RESP null array. 
 
-Using the second client, the tester will retrieve the value of unwatched key to check if the transaction was aborted.
+Using the second client, the tester will retrieve the value of the unwatched key to check if the transaction was aborted.
 
 ```bash
 # Client 2
