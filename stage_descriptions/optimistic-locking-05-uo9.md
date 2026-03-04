@@ -1,4 +1,4 @@
-In this stage, you'll add support for watching a non-existent key.
+In this stage, you'll add support for watching a missing key.
 
 ### Watching Non-existent Keys
 

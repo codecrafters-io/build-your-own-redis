@@ -690,7 +690,7 @@ stages:
 
   - slug: "mh8"
     primary_extension_slug: "optimistic-locking"
-    name: "Failing on watched key modification"
+    name: "Tracking key modifications"
     difficulty: medium
     marketing_md: |
       In this stage, you'll add support for failing transactions based on the modification of watched keys.
@@ -704,10 +704,10 @@ stages:
 
   - slug: "uo9"
     primary_extension_slug: "optimistic-locking"
-    name: "Watching non-existent keys"
+    name: "Watching missing keys"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll add support for watching a non-existent key.
+      In this stage, you'll add support for watching a missing key.
 
   - slug: "bn1"
     primary_extension_slug: "optimistic-locking"
@@ -718,14 +718,14 @@ stages:
 
   - slug: "fn4"
     primary_extension_slug: "optimistic-locking"
-    name: "Clearing watched keys on EXEC"
+    name: "Unwatch on EXEC"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support clearing watched keys on `EXEC`.
 
   - slug: "hq1"
     primary_extension_slug: "optimistic-locking"
-    name: "Clearing watched keys on DISCARD"
+    name: "Unwatch on DISCARD"
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support clearing watched keys on `DISCARD`.
