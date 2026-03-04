@@ -688,13 +688,6 @@ stages:
     marketing_md: |
       In this stage, you'll add support for disallowing the `WATCH` command in a transaction.
 
-  - slug: "tr5"
-    primary_extension_slug: "optimistic-locking"
-    name: "Failing transactions after WATCH"
-    difficulty: medium
-    marketing_md: |
-      In this stage, you'll add support for failing transactions after a `WATCH` command is issued.
-
   - slug: "mh8"
     primary_extension_slug: "optimistic-locking"
     name: "Failing on watched key modification"

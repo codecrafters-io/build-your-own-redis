@@ -91,4 +91,4 @@ Using the fourth client, the tester will retrieve the value of modified variable
 
 - The transaction should fail if the watched key was modified before the execution of `EXEC`.
 
-- It is not enough to check the equality of values of watched keys at the time of `WATCH` and `EXEC`. If the watched key was modified, it should be marked as modified, even if its value was restored to its original value.
+- It is not enough to check the equality of values of watched keys at the time of `WATCH` and `EXEC`. If the watched key was *touched*, it should be marked as modified, even if its value was restored to its original value.
