@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-exec node app/main.js "$@"
+NODE_PATH="$(dirname "$0")/node_modules" \
+exec node "$(dirname "$0")/app/main.js" "$@"

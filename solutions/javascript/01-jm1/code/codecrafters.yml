@@ -7,5 +7,5 @@ debug: false
 # Use this to change the JavaScript version used to run your code
 # on Codecrafters.
 #
-# Available versions: nodejs-21
-buildpack: nodejs-21
+# Available versions: nodejs-25
+buildpack: nodejs-25
