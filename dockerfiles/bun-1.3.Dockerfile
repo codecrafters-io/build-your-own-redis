@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.7-labs
 FROM oven/bun:1.3-alpine
 
-ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="package.json,bun.lockb"
+ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="package.json,bun.lock"
 
 RUN apk add --no-cache --upgrade 'bash>=5.2'
 
