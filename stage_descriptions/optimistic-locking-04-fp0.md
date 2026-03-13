@@ -35,7 +35,7 @@ $ ./your_program.sh
 
 The tester will spawn two clients.
 
-Using the first client, it will set the value of two keys and, issue a `WATCH` command specifying both the keys:
+Using the first client, it will set the value of two keys and, issue a `WATCH` command specifying both the keys, and begin a transaction to modify one of the watched keys:
 
 ```bash
 # Client 1

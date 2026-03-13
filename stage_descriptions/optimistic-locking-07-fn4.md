@@ -46,57 +46,49 @@ $ ./your_program.sh
 
 The tester will spawn two clients.
 
-Using the first client, it will set the value of two keys and, issue a `WATCH` command specifying both keys.
+Using the first client, it will set the value of two keys and, issue a `WATCH` command specifying one of the keys, and begin a transaction.
 
 ```bash
 # Client 1
 > SET foo 100 (Expecting "+OK\r\n")
 > SET bar 200 (Expecting "+OK\r\n")
-> WATCH foo bar
+> WATCH foo (Expecting "+OK\r\n")
+> MULTI (Expecting "+OK\r\n")
+> SET bar 300 (Expecting "+QUEUED\r\n")
 ```
 
-Using the second client, the tester will modify one of the watched keys.
+Using the second client, the tester will modify the watched key.
 
 ```bash
 # Client 2
 > SET foo 200 (Expecting "+OK\r\n")
 ```
 
-Using the first client, the tester will then try to execute a transaction.
+Using the first client, the tester will then try to execute the transaction.
 
 ```bash
 # Client 1
-> MULTI (Expecting "+OK\r\n")
-
-> SET bar 300 (Expecting "+QUEUED\r\n")
-
 > EXEC (Expecting "*-1\r\n")
 ```
 
 The transaction should abort with a RESP null array response to the `EXEC` command.
 
-Now, using the first client, the tester will then try to execute a transaction.
+Now, using the first client, the tester will again execute the transaction.
 
 ```bash
 # Client 1
 > MULTI (Expecting "+OK\r\n")
-
-> SET foo 1000 (Expecting "+QUEUED\r\n")
-
-> SET bar 2000 (Expecting "+QUEUED\r\n")
-
+> SET bar 300 (Expecting "+QUEUED\r\n")
 > EXEC (Expecting an array of responses for the queued commands)
 ```
 
 The transaction should succeed.
 
-Using the second client, the tester will check for the values of variables that were modified in the transaction.
+Using the second client, the tester will check for the values of the key that was modified in the transaction.
 
 ```bash
-# Client 2
-> GET foo (Expecting "1000")
-
-> GET bar (Expecting "2000")
+# Client 1
+> GET bar (Expecting "300")
 ```
 
 ### Notes

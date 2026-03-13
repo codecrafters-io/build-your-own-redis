@@ -6,7 +6,7 @@ The `UNWATCH` command is used to flush all the previously watched keys.
 
 Example Usage:
 
-```
+```bash
 $ redis-cli
 > WATCH foo
 OK
@@ -34,7 +34,7 @@ Using the first client, it will set the value of two keys and, issue a `WATCH` c
 > WATCH foo bar
 ```
 
-Using the second client, the tester will modify the watched key.
+Using the second client, the tester will modify one of the watched keys.
 
 ```bash
 # Client 2
@@ -48,20 +48,18 @@ Using the first client, the tester will issue a `UNWATCH` command, so that the f
 > UNWATCH (Expecting "+OK\r\n")
 ```
 
-Using the first client, the tester will then try to execute a transaction.
+Using the first client, the tester will then execute a transaction.
 
 ```bash
 # Client 1
 > MULTI (Expecting "+OK\r\n")
-> SET bar 300 (Expecting "+QUEUED\r\n")
 > SET foo 400 (Expecting "+QUEUED\r\n")
 > EXEC (Expecting an array of responses for the queued commands)
 ```
 
-Using the second client, the tester will retrieve the values of the variables to check if the transaction was executed successfully.
+Using the second client, the tester will retrieve the value of the key to check if the transaction was executed successfully.
 
 ```bash
 # Client 2
 > GET foo (Expecting "400")
-> GET bar (Expecting "300")
 ```
