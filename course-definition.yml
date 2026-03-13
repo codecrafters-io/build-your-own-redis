@@ -147,6 +147,16 @@ extensions:
       [exec-command]: https://redis.io/commands/exec/
       [discard-command]: https://redis.io/commands/discard/
 
+  - slug: "optimistic-locking"
+    name: "Optimistic Locking"
+    description_markdown: |
+      In this challenge extension you'll add support for [Optimistic Locking][redis-optimistic-locking] to your Redis implementation.
+
+      Along the way you'll learn about the [WATCH][watch-command] command and how it works in synergy with the `MULTI`, `EXEC`, and `DISCARD` commands to achieve optimistic locking.
+
+      [redis-optimistic-locking]: https://redis.io/docs/latest/develop/using-commands/transactions/#cas
+      [watch-command]: https://redis.io/docs/latest/commands/watch/
+
   - slug: "replication"
     name: "Replication"
     description_markdown: |
@@ -661,6 +671,64 @@ stages:
     difficulty: medium
     marketing_md: |
       In this stage, you'll implement multiple concurrent transactions.
+
+  # Optimistic Locking
+
+  - slug: "jb7"
+    primary_extension_slug: "optimistic-locking"
+    name: "The WATCH command"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for the `WATCH` command.
+
+  - slug: "jq9"
+    primary_extension_slug: "optimistic-locking"
+    name: "WATCH inside transaction"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for disallowing the `WATCH` command in a transaction.
+
+  - slug: "mh8"
+    primary_extension_slug: "optimistic-locking"
+    name: "Tracking key modifications"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for failing transactions based on the modification of watched keys.
+
+  - slug: "fp0"
+    primary_extension_slug: "optimistic-locking"
+    name: "Watching multiple keys"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for watching multiple keys.
+
+  - slug: "uo9"
+    primary_extension_slug: "optimistic-locking"
+    name: "Watching missing keys"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for watching a missing key.
+
+  - slug: "bn1"
+    primary_extension_slug: "optimistic-locking"
+    name: "The UNWATCH command"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for the `UNWATCH` command.
+
+  - slug: "fn4"
+    primary_extension_slug: "optimistic-locking"
+    name: "Unwatch on EXEC"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support clearing watched keys on `EXEC`.
+
+  - slug: "hq1"
+    primary_extension_slug: "optimistic-locking"
+    name: "Unwatch on DISCARD"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support clearing watched keys on `DISCARD`.
 
   # Lists
   - slug: "mh6"
