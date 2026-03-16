@@ -3,7 +3,7 @@ In this stage, you'll add support for the `WATCH` command.
 ### The `WATCH` command
 
 [The `WATCH` command](https://redis.io/docs/latest/commands/watch/) marks a key to be monitored for changes.
-If the watched key is modified by another client before the transaction is executed, the transaction will be aborted. This enables simple optimistic locking behavior in Redis.
+If the watched key is modified by another client before a transaction is executed, the transaction will be aborted. This enables simple optimistic locking behavior in Redis.
 
 Example Usage:
 ```bash

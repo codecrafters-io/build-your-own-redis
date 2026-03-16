@@ -37,6 +37,12 @@ The response is a RESP error, which is encoded as:
 ```
 
 ### Notes
+
+- The tester is lenient in checking error messages so you don't have to stick to the exact format Redis uses. It is enough for the error message to satisfy the following conditions: 
+    - Start with `ERR`
+    - Must include `WATCH`
+    - Must include `inside multi`
+    - Must include `not allowed`
  
 - In this stage, you'll only need to disallow the `WATCH` command inside a transaction. We'll get to its implementation details in the later stages.
 

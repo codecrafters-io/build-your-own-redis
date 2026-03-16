@@ -68,7 +68,7 @@ Using the fourth client, the tester will modify the value of the variable that w
 
 ```bash
 # Client 4
-> SET caz 200 (Expecing "+OK\r\n")
+> SET caz 300 (Expecing "+OK\r\n")
 ```
 
 Using the third client, the tester will attempt to execute the ongoing transaction.
