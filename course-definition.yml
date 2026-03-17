@@ -177,6 +177,15 @@ extensions:
       [redis-persistence]: https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/
       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
 
+  - slug: "persistence-aof"
+    name: "AOF Persistence"
+    description_markdown: |
+      In this challenge extension, you'll add [AOF persistence][aof-persistence] support to your Redis implementation.
+
+      Along the way, you'll learn about Redis' AOF file format, and how Redis restores its database after crash.
+
+      [aof-persistence]: https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/#aof-advantages
+
   - slug: "pub-sub"
     name: "Pub/Sub"
     description_markdown: |-
@@ -371,6 +380,57 @@ stages:
     difficulty: medium
     marketing_md: |
       In this stage, you'll add support for reading values that have an expiry set.
+
+  # AOF Persistence
+
+  - slug: "uj3"
+    primary_extension_slug: "persistence-aof"
+    name: "AOF config defaults"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll implement the default values for three AOF-related options.
+
+  - slug: "vd9"
+    primary_extension_slug: "persistence-aof"
+    name: "AOF config from flags"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll accept the values of AOF configuration options from the command line flags.
+
+  - slug: "fm0"
+    primary_extension_slug: "persistence-aof"
+    name: "Create AOF directory"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for creating append-only directory when append-only mode is enabled.
+
+  - slug: "dw4"
+    primary_extension_slug: "persistence-aof"
+    name: "Create append-only file"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for creating the append-only file when append-only mode is enabled.
+
+  - slug: "pb9"
+    primary_extension_slug: "persistence-aof"
+    name: "Create AOF manifest"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for creating the metadata file when append-only mode is enabled.
+
+  - slug: "dc8"
+    primary_extension_slug: "persistence-aof"
+    name: "Replay append-only file"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for restoring the database by replaying the append-only file.
+
+  - slug: "fi1"
+    primary_extension_slug: "persistence-aof"
+    name: "Replay multiple commands"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll extend replay of the append-only file to support multiple commands.
 
   # Replication
 
