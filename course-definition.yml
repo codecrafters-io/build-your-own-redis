@@ -388,7 +388,7 @@ stages:
     name: "AOF config defaults"
     difficulty: easy
     marketing_md: |
-      In this stage, you'll implement the default values for three AOF-related options.
+      In this stage, you'll implement the default values for AOF-related options.
 
   - slug: "vd9"
     primary_extension_slug: "persistence-aof"
