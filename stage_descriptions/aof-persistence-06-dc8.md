@@ -40,3 +40,5 @@ The value returned should be the value specified in the append-only file.
 ### Notes
 
 - You should not directly read the file `<dir>/<appenddirname>/<appendfilename>.1.incr.aof`. You should read and replay commands from the file which is specified in the `<appendfilename>.manifest`.
+
+- Redis always uses the format `file <appendfilename>.1.incr.aof seq 1 type i` in the manifest file. The tester will, however, use a different file name `file <random_file_name>.1.incr.aof seq 1 type i` to ensure that the file mentioned in the manifest is read, and not the one complying with the default format.
