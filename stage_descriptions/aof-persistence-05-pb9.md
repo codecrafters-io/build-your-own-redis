@@ -13,7 +13,7 @@ file <appendfilename>.1.incr.aof seq 1 type i
 ```
 
 - `file <appendfilename>.1.incr.aof` — Literal `file` followed by the base name of the append-only file.
-- `seq 1` — Sequence number for this file; You can hardcode this to `1` for now
+- `seq 1` — Sequence number for this file. You can hardcode this to `1` for now
 - `type i` - Specifying that the file is an `incremental` file, or append-only file, from which the command is to be replayed.
 
 You can hardcode the sequence and format for this stage.
@@ -29,6 +29,6 @@ $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_nam
 It will then check the following
 
 - The directory `<dir>/<append_dir_name>` is created
-- The empty file `<dir>/<append_dir_name>/<append_file_name>` is created
+- The empty file `<dir>/<append_dir_name>/<append_file_name>.1.incr.aof` is created
 - The manifest file `<dir>/<append_dir_name>/<appendfilename>.manifest` is created
 - The manifest file contains the line `file <appendfilename>.1.incr.aof seq 1 type i`

@@ -17,7 +17,7 @@ $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_nam
 It will then check the following:
 
 - The directory `<dir>/<append_dir_name>` is created
-- An empty file `<dir>/<append_dir_name>/<append_file_name>` is created
+- An empty file `<dir>/<append_dir_name>/<append_file_name>.1.incr.aof` is created
 
 ### Notes
 

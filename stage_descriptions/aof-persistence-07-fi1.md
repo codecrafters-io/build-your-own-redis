@@ -1,6 +1,6 @@
 In this stage, you'll extend replay of the append-only file to support multiple commands.
 
-## Replaying the append-only file
+### Replaying the append-only file
 
 On startup with `--appendonly yes`, Redis reads the manifest file, finds the append-only file listed with type `i`, and replays its commands one by one as if they were sent by a client.
 

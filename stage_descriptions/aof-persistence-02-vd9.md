@@ -31,4 +31,4 @@ If the program is started with `--appendonly yes --appenddirname myaofdir --appe
 
 ### Notes
 
-- You do not need to implement any AOF persistence logic in this stage; only parse the flags and return the values from `CONFIG GET`.
+- You do not need to implement any AOF persistence logic in this stage. Only parse the flags and return the values from `CONFIG GET`.

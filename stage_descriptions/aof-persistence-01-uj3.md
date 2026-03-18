@@ -1,10 +1,10 @@
-In this stage, you'll implement the default values for three AOF-related options.
+In this stage, you'll implement the default values for AOF-related options.
 
 ### AOF Persistence
 
 AOF (Append Only File) persistence records every write operation received by the server in a log file. When AOF is enabled, Redis appends each modifying command to the end of the file. On restart, the server replays the file to rebuild the in-memory state. This is useful for recovery if the server restarts or crashes.
 
-- The `dir` option - Controls the path where the data files for Redis will be persisted. Its default value is the working directory under which Redis is started.
+- The `dir` option - Controls the path where the data files for Redis will be persisted. Its default value is the directory under which Redis is started.
 
 - The `appendonly` option - Controls whether AOF persistence is enabled or disabled. Its default value is `no`.
 
@@ -39,4 +39,4 @@ For example, the expected response for `CONFIG GET appendonly` is:
 
 ### Notes
 
-- You don't need to set up anything related to AOF persistence at this stage, except for the default values of `appendonly`, `appenddirname`, and `appendfilename`. You will use these values when implementing AOF in later stages.
+- You don't need to set up anything related to AOF persistence at this stage. You'll only need to set up the default values of `dir`, `appendonly`, `appenddirname`, and `appendfilename`.
