@@ -8,7 +8,7 @@ On startup with `--appendonly yes`, Redis reads the manifest file at `dir/append
 
 The tester will create a directory `<dir>/<appenddirname>`.
 
-Inside the directory, it'll create an append-only file `<appendfilename>.1.incr.aof` that will contain one RESP-encoded command, `SET <key> <value>`
+Inside the directory, it'll create an append-only file `<random_file_name>.1.incr.aof` that will contain one RESP-encoded command, `SET <key> <value>`
 
 It will also create a metadata file `<appendfilename>.manifest`, which will contain the following line:
 
