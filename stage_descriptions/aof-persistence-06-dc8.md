@@ -2,7 +2,7 @@ In this stage, you'll add support for restoring the database by replaying the ap
 
 ### Replaying the append-only file
 
-On startup with `--appendonly yes`, Redis reads the manifest file at `dir/appenddirname/appendfilename.manifest`. It parses each line to find the file entry whose type is `i` (incremental). That entry gives the name of the append-only file in the same directory. Redis opens that file and parses it as a sequence of RESP-encoded commands, replaying each command in order as if the client had sent it. After replaying all the commands, the database is restored.
+On startup with `--appendonly yes`, if the append-only directory is already present inside `dir`, Redis reads the manifest file at `dir/appenddirname/appendfilename.manifest`. It parses each line to find the file entry whose type is `i` (incremental). That entry gives the name of the append-only file in the same directory. Redis opens that file and parses it as a sequence of RESP-encoded commands, replaying each command in order as if the client had sent it. After replaying all the commands, the database is restored.
 
 ### Tests
 
