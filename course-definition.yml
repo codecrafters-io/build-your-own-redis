@@ -432,6 +432,34 @@ stages:
     marketing_md: |
       In this stage, you'll extend replay of the append-only file to support multiple commands.
 
+  - slug: "ep6"
+    primary_extension_slug: "persistence-aof"
+    name: "appendfsync config default"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll implement the default value of `appendfsync` configuration.
+
+  - slug: "xz2"
+    primary_extension_slug: "persistence-aof"
+    name: "appendfsync from flags"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll accept the value of `appendfsync` from the command line argument.
+
+  - slug: "kn2"
+    primary_extension_slug: "persistence-aof"
+    name: "Write single command to AOF"
+    difficulty: hard
+    marketing_md: |
+      In this stage, you'll add support for writing a single modifying command to the append-only file after it is processed.
+
+  - slug: "oc8"
+    primary_extension_slug: "persistence-aof"
+    name: "Write multiple commands to AOF"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for writing multiple modifying commands to the append-only file.
+
   # Replication
 
   - slug: "bw1"
