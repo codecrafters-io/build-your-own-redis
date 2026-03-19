@@ -25,7 +25,7 @@ The tester will kill your program, then start it again with the same arguments.
 
 ```bash
 $ kill -9 <pid_of_your_program>
-$ ./your_program.sh
+$ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name> --appendfsync always
 ```
 
 On startup, your program should read the manifest, replay the append-only file, and restore keys from the replayed commands.
