@@ -28,7 +28,7 @@ $ kill -9 <pid_of_your_program>
 $ ./your_program.sh
 ```
 
-On startup, your program should read the manifest, replay the incremental file, and restore keys from the replayed commands.
+On startup, your program should read the manifest, replay the append-only file, and restore keys from the replayed commands.
 
 The tester will then send `GET` commands for the keys that were set, and expect the values to be loaded from the replayed commands.
 
