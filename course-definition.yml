@@ -420,7 +420,7 @@ stages:
 
   - slug: "dc8"
     primary_extension_slug: "persistence-aof"
-    name: "Replay append-only file"
+    name: "Replay a single command"
     difficulty: hard
     marketing_md: |
       In this stage, you'll add support for restoring the database by replaying the append-only file.
