@@ -397,37 +397,37 @@ stages:
 
   - slug: "fm0"
     primary_extension_slug: "persistence-aof"
-    name: "Append-only directory"
+    name: "Create append-only directory"
     difficulty: easy
     marketing_md: In this stage, you'll add support for creating an append-only directory when append-only mode is enabled.
 
   - slug: "dw4"
     primary_extension_slug: "persistence-aof"
-    name: "Append-only file"
+    name: "Create append-only file"
     difficulty: easy
     marketing_md: In this stage, you'll add support for creating the append-only file when append-only mode is enabled.
 
   - slug: "pb9"
     primary_extension_slug: "persistence-aof"
-    name: "AOF manifest"
+    name: "Create AOF manifest file"
     difficulty: easy
     marketing_md: In this stage, you'll add support for creating the metadata file when append-only mode is enabled.
 
   - slug: "dc8"
     primary_extension_slug: "persistence-aof"
-    name: "Write to the AOF"
+    name: "Write single command"
     difficulty: hard
     marketing_md: In this stage, you'll add support for writing a single modifying command to the append-only file after it is processed.
 
   - slug: "fi1"
     primary_extension_slug: "persistence-aof"
-    name: "Multiple AOF writes"
+    name: "Write multiple commands"
     difficulty: medium
     marketing_md: In this stage, you'll add support for writing multiple commands to the append-only file.
 
   - slug: "ep6"
     primary_extension_slug: "persistence-aof"
-    name: "Filter AOF writes"
+    name: "Filter commands to write"
     difficulty: easy
     marketing_md: In this stage, you'll add support for writing only the modifying commands to the append-only file.
 
