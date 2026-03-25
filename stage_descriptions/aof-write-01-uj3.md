@@ -1,6 +1,6 @@
 In this stage, you'll implement the default values for AOF-related options.
 
-### AOF Persistence
+### AOF Persistence Options
 
 AOF (Append Only File) persistence records every write operation received by the server in a log file. When AOF is enabled, Redis appends each modifying command to the end of the file. On restart, the server replays the file to rebuild the in-memory state. This is useful for recovery if the server restarts or crashes.
 

@@ -1,6 +1,6 @@
 In this stage, you'll accept the values of AOF configuration options from the command line flags.
 
-### AOF Persistence
+### AOF Persistence Flags
 
 When the `--dir`, `--appendonly`, `--appenddirname`, `--appendfilename`, and `--appendfsync` flags are provided, these override the default value of the corresponding options.
 
