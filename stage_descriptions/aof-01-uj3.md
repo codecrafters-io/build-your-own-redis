@@ -8,7 +8,7 @@ AOF (Append Only File) persistence records every write operation received by the
 
 - The `appendonly` option - Controls whether AOF persistence is enabled or disabled. Its default value is `no`.
 
-- The `appenddirname` option - Specifies the directory name under `dir` where AOF files are stored. Its default value is `appendonlydir`.
+- The `appenddirname` option - Specifies the directory name under `dir` where the append-only file and the manifest file are stored. Its default value is `appendonlydir`.
 
 - The `appendfilename` option - Sets the name of the AOF file. Its default value is `appendonly.aof`.
 
@@ -42,4 +42,4 @@ For example, the expected response for `CONFIG GET appendonly` is:
 
 ### Notes
 
-- You don't need to set up anything related to AOF persistence at this stage. You'll only need to set up the default values of `dir`, `appendonly`, `appenddirname`, `appendfilename`, and `appendfsync`.
+- You don't need to set up anything related to AOF persistence at this stage. You only need to set up the default values of `dir`, `appendonly`, `appenddirname`, `appendfilename`, and `appendfsync`.

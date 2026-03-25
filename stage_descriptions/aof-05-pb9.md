@@ -2,11 +2,11 @@ In this stage, you'll add support for creating the manifest file when append-onl
 
 ### The manifest file
 
-If the `--appendonly yes` flag has been specified, and the `appenddirname` does not exist inside the `dir` directory, Redis creates the directory. Inside the directory, the append-only file with the name `<appendfilename>.1.incr.aof` is also created. Along with the append-only file, Redis also creates a metadata file that stores details about the append-only file.
+If the `--appendonly yes` flag has been specified, and the `appenddirname` does not exist inside the `dir` directory, Redis creates the directory. Inside the directory, the append-only file with the name `<appendfilename>.1.incr.aof` is also created. Along with the append-only file, Redis also creates a manifest file that stores details about the append-only file.
 
-The metadata file is named `<appendfilename>.manifest`.
+The manifest file is named `<appendfilename>.manifest`.
 
-The metadata file contains one line, which is:
+The manifest file contains one line, which is:
 
 ```
 file <appendfilename>.1.incr.aof seq 1 type i

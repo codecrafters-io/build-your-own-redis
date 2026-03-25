@@ -2,7 +2,7 @@ In this stage, you'll add support for creating the append-only file when append-
 
 ### The append-only file
 
-If the `--appendonly yes` flag has been specified, and the `appenddirname` does not exist inside the `dir` directory, Redis creates the directory. Inside that directory, Redis creates an empty file named `<appendfilename>.1.incr.aof`.
+If the `--appendonly yes` flag has been specified, and the directory `appenddirname` does not exist inside the `dir` directory, Redis creates the directory. Inside that directory, Redis creates an empty file named `<appendfilename>.1.incr.aof`.
 
 This file is the append-only file which Redis uses to store the command logs, which can be used later for restoring the key-value pairs.
 

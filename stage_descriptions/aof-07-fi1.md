@@ -78,7 +78,9 @@ mylist\r\n
 
 Commands should not be directly byte-copied from the client's buffer to the append-only file.
 
-Each command should be parsed, and at the time of writing to the append-only file, should be re-encoded as RESP and written to the file. This is because some commands are transformed before being written to the append-only file, e.g. the `BLPOP key timeout` command is transformed to `LPOP key` before being written to the file.
+Each command should be parsed, and at the time of writing to the append-only file, should be re-encoded as RESP and written to the file.
+
+This is because some commands are transformed before being written to the append-only file, e.g. the `BLPOP key timeout` command is transformed to `LPOP key` before being written to the file.
 
 ### Notes
 
