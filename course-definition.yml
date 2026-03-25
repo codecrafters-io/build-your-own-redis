@@ -434,7 +434,7 @@ stages:
   - slug: "xz2"
     primary_extension_slug: "persistence-aof"
     name: "Replay a single command"
-    difficulty: 
+    difficulty: easy
     marketing_md: In this stage, you'll add support for restoring the database by replaying a single command from the append-only file.
 
   - slug: "kn2"
