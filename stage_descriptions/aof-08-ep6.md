@@ -16,7 +16,36 @@ $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_nam
 
 It will then send several commands, including non-modifying commands such as `PING`, `GET` on a key (whether or not the key exists), and `CONFIG GET` for an arbitrary option, interleaved with at least one modifying command (for example `SET <key> <value>`).
 
-The tester will inspect the append-only file and verify that it contains only the RESP-encoded modifying command(s), in the correct order. None of the bytes for `PING`, `GET`, or `CONFIG GET` should appear in the file.
+For example, if the client sends these commands in order:
+
+```bash
+$ redis-cli SET foo 1
+$ redis-cli GET foo
+$ redis-cli PING
+$ redis-cli ECHO hello
+$ redis-cli SET bar 2
+```
+
+Only the two `SET` commands change the dataset. Nothing from `GET`, `PING`, or `ECHO` is written to the append-only file. The file ends up containing exactly two RESP-encoded commands, in order, back-to-back—the first `SET`, then the second `SET`:
+
+```
+*3\r\n
+$3\r\n
+SET\r\n
+$3\r\n
+foo\r\n
+$1\r\n
+1\r\n
+*3\r\n
+$3\r\n
+SET\r\n
+$3\r\n
+bar\r\n
+$1\r\n
+2\r\n
+```
+
+The tester will inspect the append-only file and verify that it contains only the RESP-encoded modifying command(s), in the correct order. None of the bytes for `PING`, `GET`, `ECHO`, or `CONFIG GET` should appear in the file.
 
 ### Notes
 
