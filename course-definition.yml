@@ -409,13 +409,13 @@ stages:
 
   - slug: "pb9"
     primary_extension_slug: "persistence-aof"
-    name: "Create AOF manifest file"
+    name: "Create manifest file"
     difficulty: easy
     marketing_md: In this stage, you'll add support for creating the manifest file when append-only mode is enabled.
 
   - slug: "dc8"
     primary_extension_slug: "persistence-aof"
-    name: "Write single command"
+    name: "Write a single command"
     difficulty: hard
     marketing_md: In this stage, you'll add support for writing a single modifying command to the append-only file after it is processed.
 
@@ -427,7 +427,7 @@ stages:
 
   - slug: "ep6"
     primary_extension_slug: "persistence-aof"
-    name: "Filter commands to write"
+    name: "Filter write commands"
     difficulty: easy
     marketing_md: In this stage, you'll add support for writing only the modifying commands to the append-only file.
 
