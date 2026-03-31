@@ -2,7 +2,7 @@ In this stage, you'll add support for writing only the modifying commands to the
 
 ### Filtering commands
 
-When `--appendonly yes` is set, the server appends only commands that change the dataset. Commands that only read data or perform housekeeping must not be written to the append-only file. Examples of commands that must not be appended include `PING`, `GET`, `CONFIG GET`, and similar non-modifying commands. Examples of commands that must be appended include `SET`, `LPUSH`, `BLPOP` (after any rewriting rules from earlier stages), and other commands that mutate keys or data.
+When `--appendonly yes` is set, the server appends only commands that change the dataset. Commands that only read data or perform housekeeping must not be written to the append-only file. Examples of commands that must not be appended include `PING`, `GET`, `CONFIG GET`, and similar non-modifying commands.
 
 If a client sends a mix of read and write commands, the append-only file should contain only the write commands, in order, each encoded as RESP after parsing and any required transformation.
 
