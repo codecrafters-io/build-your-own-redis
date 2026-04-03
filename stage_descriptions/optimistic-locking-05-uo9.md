@@ -1,26 +1,28 @@
-In this stage, you'll add support for watching a missing key.
+In this stage, you'll add support for watching keys that don't exist yet.
 
 ### Watching Non-existent Keys
 
-The `WATCH` command enables optimistic locking by monitoring non-existent keys at the time of the `WATCH` call. Example Usage:
+So far, you've only watched keys that already have values. But `WATCH` also works on keys that don't exist at the time of the call. If a watched key is created by another client before `EXEC`, the transaction should still abort.
 
 ```bash
 # Client A
 > WATCH foo
-+OK
+OK
 
 # Client B
-> SET foo "300"
-+OK
+> SET foo 300
+OK
 
 # Client A
 > MULTI
-+OK
-> SET bar "500"
-+QUEUED
+OK
+> SET bar 500
+QUEUED
 > EXEC
-*-1   # Transaction aborts because "foo" was created after WATCH
+*-1\r\n                # transaction aborted, foo was created after WATCH
 ```
+
+The key didn't exist when Client A watched it, but Client B created it before `EXEC`. That counts as a modification.
 
 ### Tests
 
@@ -30,38 +32,42 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will spawn two clients.
-
-Using the first client, it will issue a `WATCH` command specifying a key:
+The tester will then spawn two clients. Using the first client, it will watch a key that doesn't exist:
 
 ```bash
 # Client 1
 > WATCH foo
+OK
 ```
 
-Using the second client, the tester will set the value of the watched key.
+Using the second client, it will create the watched key:
 
 ```bash
 # Client 2
-> SET foo 200 (Expecting "+OK\r\n")
+> SET foo 200
+OK
 ```
 
-Using the first client, the tester will attempt to execute a transaction involving setting the watched key's value.
+Back on the first client, the tester will start a transaction and attempt to execute it:
 
 ```bash
 # Client 1
-> MULTI (Expecting "+OK\r\n")
-
-> SET foo 300 (Expecting "+QUEUED\r\n")
-
-> EXEC (Expecting "*-1\r\n")
+> MULTI
+OK
+> SET foo 300
+QUEUED
+> EXEC
+*-1\r\n                # transaction aborted
+> GET foo
+"200"                  # unchanged, transaction had no effect
 ```
 
-The response to `EXEC` should be a RESP null array. 
+The tester will verify that:
 
-Using the first client, the tester will retrieve the value of the watched key to check if the transaction was aborted.
+- `EXEC` returns a RESP null array (`*-1\r\n`) when a watched key was created by another client
+- The aborted transaction's queued commands had no effect
 
-```bash
-# Client 1
-> GET foo (Expecting bulk string "200")
-```
+### Notes
+
+- If your implementation already tracks modifications by flagging watched keys on any write command, this stage may already pass without changes.
+- The key insight is that "modified" includes going from non-existent to existing. A key doesn't need to have a prior value to be considered touched.
