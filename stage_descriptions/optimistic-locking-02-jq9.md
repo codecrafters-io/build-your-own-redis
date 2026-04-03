@@ -8,7 +8,7 @@ Redis transactions allow clients to execute multiple commands as a single atomic
 2. `SET key value`, `INCR counter`, etc. - Commands are queued
 3. `EXEC` - Execute all queued commands atomically
 
-For this stage, you'll implement a basic `MULTI` command and make `WATCH` check whether it's being called inside a transaction.
+We'll learn more about `EXEC` in later stages. For this stage, you'll implement a basic `MULTI` command and make `WATCH` check whether it's being called inside a transaction.
 
 ### The `MULTI` Command
 
