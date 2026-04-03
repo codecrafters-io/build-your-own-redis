@@ -50,5 +50,5 @@ The tester will verify that:
 - Your program doesn't crash or produce errors
 
 ### Notes
-- `WATCH` can accept multiple keys in a single command (e.g., `WATCH key1 key2 key3`), but you only need to handle a single key for now.
+- `WATCH` can accept multiple keys in a single command (e.g., `WATCH key1 key2 key3`), but you only need to handle a single key for now. We'll handle multiple keys in later stages.
 - The actual watch tracking and transaction abort behavior will come in later stages.
