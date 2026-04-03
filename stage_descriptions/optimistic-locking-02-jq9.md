@@ -2,19 +2,19 @@ In this stage, you'll implement `MULTI` and update `WATCH` to reject calls insid
 
 ### Redis Transactions
 
-Redis transactions allow clients to execute multiple commands as a single atomic operation. The basic flow is:
+In previous stages, you saw how `WATCH` fits into a larger flow: watch a key, start a transaction with `MULTI`, queue some commands, and execute with `EXEC`. Now you'll start building the transaction side.
+
+Redis transactions allow clients to execute multiple commands as a single operation. The basic flow is:
 
 1. `MULTI` - Enter transaction mode (commands get queued instead of executing immediately)
 2. `SET key value`, `INCR counter`, etc. - Commands are queued
-3. `EXEC` - Execute all queued commands atomically
+3. `EXEC` - Execute all queued commands
 
-We'll learn more about `EXEC` in later stages. For this stage, you'll implement a basic `MULTI` command and make `WATCH` check whether it's being called inside a transaction.
+We'll implement `EXEC` in later stages. For this stage, you'll implement the `MULTI` command and make `WATCH` check whether it's being called inside a transaction.
 
 ### The `MULTI` Command
 
 The [`MULTI` command](https://redis.io/docs/latest/commands/multi/) is used to start a transaction.
-
-For example:
 
 ```bash
 > MULTI
@@ -25,9 +25,11 @@ When `MULTI` is called, the server:
 1. Marks the connection as being inside a transaction
 2. Returns `OK` as a simple string
 
-### The WATCH Command (Updated)
+### The `WATCH` Command (Updated)
 
-Now that you have transaction state, `WATCH` needs to behave differently depending on whether the connection is inside a transaction:
+`WATCH` is meant to be called before a transaction starts. Calling it inside a transaction doesn't make sense because the transaction has already begun, and commands are already being queued.
+
+Now that you have the transaction state, `WATCH` needs to enforce this:
 
 - If the connection is outside a transaction:
     1. Add the key to the connection's collection of watched keys
@@ -52,7 +54,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will then spawn a client, and begin a transaction using the `MULTI` command, and send a `WATCH` command with a random key:
+It will then spawn a client, begin a transaction using the `MULTI` command, and send a `WATCH` command with a random key:
 ```bash
 > MULTI
 OK
