@@ -21,7 +21,7 @@ $ redis-cli MULTI
 OK
 ```
 
-When `MULTI` is called, the server:
+When a client uses `MULTI`, the server:
 1. Marks the connection as being inside a transaction
 2. Returns `OK` as a simple string
 
@@ -35,7 +35,7 @@ Now that you have the transaction state, `WATCH` needs to enforce this:
     1. Add the key to the connection's collection of watched keys
     2. Return `OK` as a simple string
 - If the connection is inside a transaction (after `MULTI`):
-    1. Return a RESP error: `-ERR WATCH inside MULTI is not allowed\r\n`
+    1. Return a RESP error like: `-ERR WATCH inside MULTI is not allowed\r\n`. The exact wording is flexible but should include: `ERR`, `WATCH`, `inside MULTI`, and `not allowed`.
 
 For example:
 ```bash
