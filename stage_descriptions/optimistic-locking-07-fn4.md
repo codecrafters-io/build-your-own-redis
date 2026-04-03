@@ -2,7 +2,7 @@ In this stage, you'll verify that watched keys are cleared after `EXEC`.
 
 ### Clearing Watched Keys on `EXEC`
 
-`WATCH` is meant to protect a single transaction. Once `EXEC` runs (whether the transaction succeeds or aborts), the connection's watch state should be cleared. Without this cleanup, stale watch state would leak into future transactions on the same connection, causing them to fail for reasons that have nothing to do with them.
+`WATCH` is meant to protect a single transaction. Once `EXEC` runs (whether the transaction succeeds or aborts), the connection's watch state should be cleared. Without this cleanup, stale watch state could leak into future transactions on the same connection, causing them to fail for reasons unrelated to them.
 
 ```bash
 $ redis-cli
@@ -92,4 +92,4 @@ The tester will verify that:
 ### Notes
 
 - If you have already cleared the watch state after `EXEC` (as suggested in an earlier stage), this stage should pass without additional changes.
-- Clearing watched keys on `DISCARD` will be handled in a later stage.
+- Clearing watched keys on `DISCARD` will be handled in later stages.
