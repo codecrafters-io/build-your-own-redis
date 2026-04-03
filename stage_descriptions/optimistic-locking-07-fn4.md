@@ -91,5 +91,5 @@ The tester will verify that:
 
 ### Notes
 
-- If you have already cleared the watch state after `EXEC` (as suggested in an earlier stage), this stage should pass without additional changes.
+- If you have already cleared the watch state after `EXEC` (as suggested in earlier stages), this stage should pass without additional changes.
 - Clearing watched keys on `DISCARD` will be handled in later stages.
