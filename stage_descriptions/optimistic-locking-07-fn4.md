@@ -1,97 +1,95 @@
-In this stage, you'll add support for clearing watched keys on `EXEC`.
+In this stage, you'll verify that watched keys are cleared after `EXEC`.
 
 ### Clearing Watched Keys on `EXEC`
 
-After a client issues a `WATCH` command, the watched keys must be automatically cleared when `EXEC` is called.
-
-This means that any future transaction from the same client should not be affected by key modifications that occurred prior to the new transaction.
-
-This behavior ensures that `WATCH` only affects a single transaction and does not persist across multiple transaction cycles.
-
-Example Usage:
+`WATCH` is meant to protect a single transaction. Once `EXEC` runs (whether the transaction succeeds or aborts), the connection's watch state should be cleared. Without this cleanup, stale watch state could leak into future transactions on the same connection, causing them to fail for reasons unrelated to them.
 
 ```bash
+$ redis-cli
 # Client A
 > WATCH foo
-+OK
+OK
 
 # Client B
 > SET foo 100
-+OK
+OK
 
 # Client A
 > MULTI
-+OK
+OK
 > SET bar 200
-+QUEUED
+QUEUED
 > EXEC
-*-1   # Transaction aborts because "foo" was created after WATCH
+*-1\r\n                # transaction aborted, foo was modified
 
+# Client A starts a new transaction (no WATCH this time)
 > MULTI
 OK
 > SET bar 200
-OK
-> SET foo 1000
-OK
+QUEUED
 > EXEC
-1) OK
-2) OK # Transaction succeeds because the previous EXEC clears watched keys
+1) OK                  # succeeds, previous EXEC cleared the watch state
 ```
 
 ### Tests
+
+The tester will execute your program like this:
 
 ```bash
 $ ./your_program.sh
 ```
 
-The tester will spawn two clients.
-
-Using the first client, it will set the value of two keys and, issue a `WATCH` command specifying one of the keys, and begin a transaction.
+The tester will spawn two clients. Using the first client, it will set two keys, watch one of them, and begin a transaction:
 
 ```bash
 # Client 1
-> SET foo 100 (Expecting "+OK\r\n")
-> SET bar 200 (Expecting "+OK\r\n")
-> WATCH foo (Expecting "+OK\r\n")
-> MULTI (Expecting "+OK\r\n")
-> SET bar 300 (Expecting "+QUEUED\r\n")
+> SET foo 100
+OK
+> SET bar 200
+OK
+> WATCH foo
+OK
+> MULTI
+OK
+> SET bar 300
+QUEUED
 ```
 
-Using the second client, the tester will modify the watched key.
+Using the second client, it will modify the watched key:
 
 ```bash
 # Client 2
-> SET foo 200 (Expecting "+OK\r\n")
+> SET foo 200
+OK
 ```
 
-Using the first client, the tester will then try to execute the transaction.
+Back on the first client, the tester will execute the transaction (expecting it to abort), then immediately start and execute a second transaction:
 
 ```bash
 # Client 1
-> EXEC (Expecting "*-1\r\n")
+> EXEC
+*-1\r\n                # first transaction aborted
+
+# Client 1 starts a new transaction
+> MULTI
+OK
+> SET bar 300
+QUEUED
+> EXEC
+1) OK                  # second transaction succeeds
+
+# Client 2
+> GET bar
+"300"                  # confirms the second transaction's write took effect
 ```
 
-The transaction should abort with a RESP null array response to the `EXEC` command.
+The tester will verify that:
 
-Now, using the first client, the tester will again execute the transaction.
-
-```bash
-# Client 1
-> MULTI (Expecting "+OK\r\n")
-> SET bar 300 (Expecting "+QUEUED\r\n")
-> EXEC (Expecting an array of responses for the queued commands)
-```
-
-The transaction should succeed.
-
-Using the second client, the tester will check for the values of the key that was modified in the transaction.
-
-```bash
-# Client 1
-> GET bar (Expecting "300")
-```
+- The first `EXEC` returns a RESP null array (`*-1\r\n`) because the watched key was modified
+- The second `EXEC` succeeds because the first `EXEC` cleared the watch state
+- The second transaction's queued commands were applied
 
 ### Notes
 
-- In this stage, you'll only implement clearing the watched keys on `EXEC`. We'll get to clearing the watched keys on `DISCARD` in the later stages.
-
+- If you have already cleared the watch state after `EXEC` (as suggested in earlier stages), this stage should pass without additional changes.
+- Clearing watched keys on `DISCARD` will be handled in later stages.
