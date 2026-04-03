@@ -1,4 +1,4 @@
-In this stage, you'll implement the `EXEC` command and add support for failing transactions when watched keys have been modified.
+In this stage, you'll implement the `EXEC` command and add support for aborting transactions.
 
 ### Redis Transactions (Recap)
 
