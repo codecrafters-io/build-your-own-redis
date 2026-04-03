@@ -1,16 +1,16 @@
 In this stage, you'll add support for the `WATCH` command.
 
-### Optimistic Locking in Redis
+<!-- ### Optimistic Locking in Redis
 
 Say two clients both want to increment a counter that's currently set to `10`. Client A reads `10`, Client B reads `10`. Client A writes `11`. Client B also writes `11`. The second write overwrites the first, so only one increment sticks while the other update gets lost.
 
 This is the "lost update problem", and it shows up whenever multiple clients read-then-write the same key. The classic fix is to lock the key before reading it so nobody else can touch it until you're done (pessimistic locking). That works, but locks are expensive. If most updates don't actually collide, you're paying the cost of locking every time for conflicts that rarely happen.
 
-Optimistic locking flips the approach. Instead of locking upfront, you let every client read and write freely, but you keep track of what they read. Right before a client commits its changes, you check: did any of those values change since the client read them? If so, the commit is rejected, and the client can retry with fresh data.
+Optimistic locking flips the approach. Instead of locking upfront, you let every client read and write freely, but you keep track of what they read. Right before a client commits its changes, you check: did any of those values change since the client read them? If so, the commit is rejected, and the client can retry with fresh data. -->
 
 ### The `WATCH` Command
 
-The [`WATCH` command](https://redis.io/docs/latest/commands/watch/) is how Redis implements optimistic locking. It tells the server to monitor a key for changes. Later, when the client executes a group of commands as a [transaction](https://redis.io/docs/latest/develop/using-commands/transactions/), the server checks whether any watched keys were modified in the meantime. If they were, the whole transaction is discarded.
+Redis uses the [`WATCH`](https://redis.io/docs/latest/commands/watch/) command to implement [optimistic locking](https://redis.io/docs/latest/develop/using-commands/transactions/#optimistic-locking-using-check-and-set). It tells the server to monitor a key for changes. Later, when the client executes a group of commands as a [transaction](https://redis.io/docs/latest/develop/using-commands/transactions/), the server checks whether any watched keys were modified in the meantime. If they were, the whole transaction is discarded.
 
 Here's what that looks like in practice:
 
