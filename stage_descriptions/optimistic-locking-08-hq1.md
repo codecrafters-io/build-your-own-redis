@@ -2,7 +2,7 @@ In this stage, you'll implement the `DISCARD` command and verify that it clears 
 
 ### The `DISCARD` Command
 
-The [`DISCARD` command](https://redis.io/docs/latest/commands/discard/) aborts a transaction. It throws away all queued commands and exits transaction mode. The response is always `+OK\r\n`.
+The [`DISCARD` command](https://redis.io/docs/latest/commands/discard/) aborts a transaction. It throws away all queued commands and exits transaction mode:
 
 ```bash
 $ redis-cli
@@ -16,7 +16,7 @@ QUEUED
 OK
 ```
 
-None of the queued commands are executed.
+The response is always `+OK\r\n`.
 
 ### Clearing Watch State
 
