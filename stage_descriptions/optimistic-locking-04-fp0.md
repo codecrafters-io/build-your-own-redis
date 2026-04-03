@@ -1,28 +1,23 @@
 In this stage, you'll add support for watching multiple keys.
 
-### Multiple Keys in `WATCH` Command
+### Watching Multiple Keys
 
-The `WATCH` command can be used to watch multiple keys. After the watch command is issued, a transaction will fail if any one of the watched keys was modified before the execution of the `EXEC` command.
-
-Example Usage:
+In previous stages, you only needed to handle `WATCH` with a single key. However, the `WATCH` command also accepts multiple keys at once:
 
 ```bash
-# Client A
-> WATCH foo bar
-+OK
+$ redis-cli
+> WATCH foo bar baz
+OK
+```
 
-# Client B
-> SET bar "300"
-+OK
+All the keys are monitored for changes. If any one of them is modified by another client before `EXEC`, the transaction aborts:
 
-# Client A
-> MULTI
-+OK
-> SET foo "400"
-+QUEUED
-
-> EXEC
-*-1     # Transaction aborts due to watched key being modified
+```
+Client A: WATCH foo bar          # Monitor both keys
+Client B: SET bar 300            # Modifies one of the watched keys
+Client A: MULTI
+Client A: SET foo 400            # Queued
+Client A: EXEC                   # Transaction aborted, bar was modified
 ```
 
 ### Tests
@@ -33,37 +28,36 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will spawn two clients.
-
-Using the first client, it will set the value of two keys and, issue a `WATCH` command specifying both the keys, and begin a transaction to modify one of the watched keys:
+The tester will spawn two clients. Using the first client, it will set two keys, watch both of them, and begin a transaction:
 
 ```bash
 # Client 1
-> SET foo 100 (Expecting "+OK\r\n")
-> SET bar 200 (Expecting "+OK\r\n")
-> WATCH foo bar (Expecting "+OK\r\n") 
-> MULTI (Expecting "+OK\r\n")
-> SET bar 300 (Expecting "+QUEUED\r\n")
+> SET foo 100        # → OK
+> SET bar 200        # → OK
+> WATCH foo bar      # → OK
+> MULTI              # → OK
+> SET bar 300        # → QUEUED
 ```
 
-Using the second client, the tester will modify one of the watched keys.
+Using the second client, it will modify one of the watched keys:
 
 ```bash
 # Client 2
-> SET foo 200 (Expecting "+OK\r\n")
+> SET foo 200        # → OK
 ```
 
-Using the first client, the tester will attempt to execute the ongoing transaction.
+Back on the first client, the tester will execute the transaction and verify the abort:
+
 ```bash
 # Client 1
-> EXEC (Expecting "*-1\r\n")
-```
+> EXEC               # → *-1\r\n (transaction aborted)
 
-The response to `EXEC` should be a RESP null array. 
-
-Using the second client, the tester will retrieve the value of the key (bar) to check if the transaction was aborted.
-
-```bash
 # Client 2
-> GET bar (Expecting bulk string "200")
+> GET bar            # → "200" (unchanged, transaction had no effect)
 ```
+
+The tester will verify that:
+
+- `WATCH` with multiple keys returns `+OK\r\n`
+- `EXEC` returns a RESP null array (`*-1\r\n`) when any one of the watched keys was modified
+- The aborted transaction's queued commands had no effect
