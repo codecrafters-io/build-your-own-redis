@@ -1,65 +1,74 @@
 In this stage, you'll add support for the `UNWATCH` command.
 
-### The `UNWATCH` command
+### The `UNWATCH` Command
 
-The `UNWATCH` command is used to flush all the previously watched keys.
-
-Example Usage:
+The [`UNWATCH` command](https://redis.io/docs/latest/commands/unwatch/) clears all watched keys for the current connection. Any keys previously registered with `WATCH` are no longer monitored, so future transactions won't be affected by changes to those keys.
 
 ```bash
 $ redis-cli
-> WATCH foo
+> WATCH foo bar
 OK
 > UNWATCH
 OK
 ```
 
-After issuing the `UNWATCH` command, any transaction that is executed after it should not fail if the previously watched key was modified.
+The response is always `+OK\r\n`.
+
+After `UNWATCH`, even if the previously watched keys are modified by another client, the next transaction will execute normally.
 
 ### Tests
+
 The tester will execute your program like this:
 
 ```bash
 $ ./your_program.sh
 ```
 
-The tester will spawn two clients.
-
-Using the first client, it will set the value of two keys and, issue a `WATCH` command specifying both the keys.
+The tester will spawn two clients. Using the first client, it will set two keys and watch them:
 
 ```bash
 # Client 1
-> SET foo 100 (Expecting "+OK\r\n")
-> SET bar 200 (Expecting "+OK\r\n")
+> SET foo 100
+OK
+> SET bar 200
+OK
 > WATCH foo bar
+OK
 ```
 
-Using the second client, the tester will modify one of the watched keys.
+Using the second client, it will modify one of the watched keys:
 
 ```bash
 # Client 2
-> SET foo 200 (Expecting "+OK\r\n")
+> SET foo 200
+OK
 ```
 
-Using the first client, the tester will issue a `UNWATCH` command, so that the first client stops watching the keys that were being previously watched.
+Back on the first client, the tester will unwatch all keys, then start and execute a transaction:
 
 ```bash
 # Client 1
-> UNWATCH (Expecting "+OK\r\n")
-```
+> UNWATCH
+OK
+> MULTI
+OK
+> SET foo 400
+QUEUED
+> EXEC
+1) OK                  # transaction succeeds, keys were unwatched
 
-Using the first client, the tester will then execute a transaction.
-
-```bash
-# Client 1
-> MULTI (Expecting "+OK\r\n")
-> SET foo 400 (Expecting "+QUEUED\r\n")
-> EXEC (Expecting an array of responses for the queued commands)
-```
-
-Using the second client, the tester will retrieve the value of the key to check if the transaction was executed successfully.
-
-```bash
 # Client 2
-> GET foo (Expecting "400")
+> GET foo
+"400"                  # confirms the transaction's write took effect
 ```
+
+The tester will verify that:
+
+- `UNWATCH` returns `+OK\r\n`
+- `EXEC` succeeds even though a previously watched key was modified, because `UNWATCH` cleared the watch state
+- The transaction's queued commands were applied
+
+### Notes
+
+- `UNWATCH` takes no arguments. It always clears all watched keys for the connection.
+- `UNWATCH` should work even if no keys were previously watched (it just returns `+OK\r\n`).
