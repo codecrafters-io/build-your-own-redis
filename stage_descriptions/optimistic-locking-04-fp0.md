@@ -2,7 +2,7 @@ In this stage, you'll add support for watching multiple keys.
 
 ### Watching Multiple Keys
 
-In previous stages, you only needed to handle `WATCH` with a single key. The command also accepts multiple keys at once:
+In previous stages, you only needed to handle `WATCH` with a single key. However, the `WATCH` command also accepts multiple keys at once:
 
 ```bash
 $ redis-cli
