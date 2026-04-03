@@ -4,7 +4,7 @@ In this stage, you'll implement `MULTI` and update `WATCH` to reject calls insid
 
 In previous stages, you saw how `WATCH` fits into a larger flow: watch a key, start a transaction with `MULTI`, queue some commands, and execute with `EXEC`. Now you'll start building the transaction side.
 
-Redis transactions allow clients to execute multiple commands as a single operation. The basic flow is:
+[Redis transactions](https://redis.io/docs/latest/develop/using-commands/transactions/) allow clients to execute multiple commands as a single operation. The basic flow is:
 
 1. `MULTI` - Enter transaction mode (commands get queued instead of executing immediately)
 2. `SET key value`, `INCR counter`, etc. - Commands are queued
@@ -17,7 +17,7 @@ We'll implement `EXEC` in later stages. For this stage, you'll implement the `MU
 The [`MULTI` command](https://redis.io/docs/latest/commands/multi/) is used to start a transaction.
 
 ```bash
-> MULTI
+$ redis-cli MULTI
 OK
 ```
 
@@ -27,7 +27,7 @@ When `MULTI` is called, the server:
 
 ### The `WATCH` Command (Updated)
 
-`WATCH` is meant to be called before a transaction starts. Calling it inside a transaction doesn't make sense because the transaction has already begun, and commands are already being queued.
+`WATCH` is meant to be called **before** a transaction starts. Calling it inside a transaction doesn't make sense because the transaction has already begun, and commands are already being queued.
 
 Now that you have the transaction state, `WATCH` needs to enforce this:
 
@@ -35,15 +35,16 @@ Now that you have the transaction state, `WATCH` needs to enforce this:
     1. Add the key to the connection's collection of watched keys
     2. Return `OK` as a simple string
 - If the connection is inside a transaction (after `MULTI`):
-    1. Return an error: `-ERR WATCH inside MULTI is not allowed\r\n`
+    1. Return a RESP error: `-ERR WATCH inside MULTI is not allowed\r\n`
 
 For example:
 ```bash
+$ redis-cli
 > WATCH counter
 OK
 > MULTI
 OK
-> WATCH another_key
+(TX)> WATCH another_key
 (error) ERR WATCH inside MULTI is not allowed
 ```
 
@@ -56,6 +57,7 @@ $ ./your_program.sh
 
 It will then spawn a client, begin a transaction using the `MULTI` command, and send a `WATCH` command with a random key:
 ```bash
+$ redis-cli
 > MULTI
 OK
 > WATCH key
@@ -63,7 +65,7 @@ OK
 ```
 
 The tester will verify that:
-- `MULTI` returns `+OK\r\n`
+- `MULTI` returns `OK` as a simple string
 - `WATCH` inside a transaction returns a RESP error containing: `ERR`, `WATCH`, `inside MULTI`, and `not allowed`
 
 ### Notes
