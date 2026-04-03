@@ -27,7 +27,7 @@ When `MULTI` is called, the server:
 
 ### The `WATCH` Command (Updated)
 
-`WATCH` is meant to be called **before** a transaction starts. Calling it inside a transaction doesn't make sense because the transaction has already begun, and commands are already being queued.
+`WATCH` is meant to be called **before** a transaction starts. Calling it inside a transaction is not allowed because the transaction has already begun, and commands are already being queued.
 
 Now that you have the transaction state, `WATCH` needs to enforce this:
 
