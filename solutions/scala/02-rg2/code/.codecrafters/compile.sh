@@ -8,5 +8,6 @@
 
 set -e # Exit on failure
 
-# The option is needed for Java 17+ to allow native memory access operations.
-SBT_OPTS="--enable-native-access=ALL-UNNAMED" sbt assembly
+scala-cli package src/main/scala/ \
+  -q --power --assembly --force --server=false --scala-version=3.8.3 \
+  -o /tmp/codecrafters-build-redis-scala
