@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Scala version used to run your code
 # on Codecrafters.
 #
-# Available versions: scala-3.7
-buildpack: scala-3.7
+# Available versions: scala-3.8
+buildpack: scala-3.8

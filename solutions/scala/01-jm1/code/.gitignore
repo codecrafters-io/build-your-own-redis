@@ -1,2 +1,17 @@
-debug/
+out/
+.bloop/
+.metals/
+.vscode/
+.idea/
+.cursor/
+
+.bsp
+.scala-build
+dest/
 target/
+
+*/scoverage.coverage
+
+# ignore vim backup files
+*.sw[op]
+.DS_Store
