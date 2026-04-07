@@ -2,7 +2,7 @@ In this stage, you'll accept AOF configuration values from command-line flags.
 
 ### Overriding Defaults With Flags
 
-In the previous stage, you set up default values for AOF options. Now you'll allow those defaults to be overridden by command-line flags: `--dir`, `--appendonly`, `--appenddirname`, `--appendfilename`, and `--appendfsync`.
+In previous stages, you set up default values for AOF options. Now you'll allow those defaults to be overridden by command-line flags: `--dir`, `--appendonly`, `--appenddirname`, `--appendfilename`, and `--appendfsync`.
 
 When a flag is provided, its value takes precedence over the default. When a flag is omitted, the default from the previous stage still applies.
 
