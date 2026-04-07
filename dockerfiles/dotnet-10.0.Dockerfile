@@ -9,12 +9,9 @@ WORKDIR /app
 # .git & README.md are unique per-repository. We ignore them on first copy to prevent cache misses
 COPY --exclude=.git --exclude=README.md . /app
 
-# This saves nuget packages to ~/.nuget
-RUN dotnet build --configuration Release .
+RUN .codecrafters/compile.sh
 
 # This seems to cause a caching issue with the dotnet build command, where old contents are used
 # TODO: See if this needs to be brought back?
 # RUN rm -rf /app/obj
 # RUN rm -rf /app/bin
-
-RUN .codecrafters/compile.sh
