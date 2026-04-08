@@ -7,5 +7,5 @@ debug: false
 # Use this to change the Odin version used to run your code
 # on Codecrafters.
 #
-# Available versions: odin-2025.7
-buildpack: odin-2025.7
+# Available versions: odin-2026.3
+buildpack: odin-2026.3
