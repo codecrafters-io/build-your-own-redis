@@ -2,9 +2,9 @@ In this stage, you'll create a manifest file alongside the append-only file.
 
 ### The Manifest File
 
-In earlier stages, you created the append-only directory and an empty AOF file inside it. Now you'll also create a manifest file that tells Redis which AOF files exist and in what order they should be replayed.
+The manifest file tells Redis which AOF files exist and in what order they should be replayed during recovery. It follows the naming convention `<appendfilename>.manifest` and lives in the same directory as the AOF file. 
 
-The manifest file is named `<appendfilename>.manifest` and lives in the same directory as the AOF file. It contains a single line describing the AOF file you created earlier:
+The manifest file contains a single line describing the AOF file you created earlier:
 
 ```
 file <appendfilename>.1.incr.aof seq 1 type i
