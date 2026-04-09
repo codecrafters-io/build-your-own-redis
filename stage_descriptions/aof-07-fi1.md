@@ -45,7 +45,12 @@ The tester will execute your program like this:
 $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name> --appendfsync always
 ```
 
-It will then send two write commands with different keys.
+It will then send two write commands with different keys:
+
+```bash
+$ redis-cli SET <key1> <value1>
+$ redis-cli SET <key2> <value2>
+```
 
 The tester will verify that:
 
