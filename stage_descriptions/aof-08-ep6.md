@@ -2,7 +2,7 @@ In this stage, you'll ensure that only write commands are logged to the append-o
 
 ### Filtering Non-Modifying Commands
 
-In earlier stages, you appended write commands to the AOF file. But your server also handles commands that don't modify data, like `PING`, `GET`, `ECHO`, and `CONFIG GET`. These should never be written to the append-only file since they don't change any state, and replaying them would be pointless.
+Commands that don't modify data, like `PING`, `GET`, and `ECHO`, should never be written to an AOF file since they don't change any state.
 
 If the server receives a mix of read and write commands, only the write commands should appear in the AOF file, in the order they were received.
 
