@@ -14,7 +14,20 @@ $ redis-cli SET bar 200
 The append-only file should contain both commands in order:
 
 ```
-*3\r\n$3\r\nSET\r\n$3\r\nfoo\r\n$3\r\n100\r\n*3\r\n$3\r\nSET\r\n$3\r\nbar\r\n$3\r\n200\r\n
+*3\r\n
+$3\r\n
+SET\r\n
+$3\r\n
+foo\r\n
+$3\r\n
+100\r\n
+*3\r\n
+$3\r\n
+SET\r\n
+$3\r\n
+bar\r\n
+$3\r\n
+200\r\n
 ```
 
 Each command is appended immediately after the previous one with no separators between them. On replay, the RESP framing (`*3\r\n...`) is enough to tell where one command ends and the next begins.
