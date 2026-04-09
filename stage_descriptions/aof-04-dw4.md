@@ -2,7 +2,7 @@ In this stage, you'll create the append-only file when AOF persistence is enable
 
 ### Creating the Append-Only File
 
-In earlier stages, you created the append-only directory at startup. Now you'll also create an empty AOF file inside that directory.
+Along with the append-only directory, your server also needs to create an empty AOF file inside it at startup.
 
 The file follows a specific naming convention: `<appendfilename>.1.incr.aof`. The `.1.incr` suffix indicates this is the first incremental AOF file. Redis uses incremental files to record commands as they come in, which it can replay later to restore state after a restart.
 
