@@ -1,8 +1,18 @@
-In this stage, you'll add support for creating an append-only directory when append-only mode is enabled.
+In this stage, you'll create the append-only directory when AOF persistence is enabled.
 
-### The append-only directory
+### Creating the Append-Only Directory
 
-If the `--appendonly yes` flag has been specified, and the `appenddirname` does not exist inside the `dir` directory, Redis creates the directory.
+Now that your server can accept AOF configuration from command-line flags, it's time to start acting on them. When the server starts with `--appendonly yes`, it needs a directory to store its AOF files in. This directory lives inside the `dir` path and is named according to the `appenddirname` option.
+
+For example, if the server is started with:
+
+```bash
+$ ./your_program.sh --dir /tmp/redis-data --appendonly yes --appenddirname appendonlydir
+```
+
+It should create the directory `/tmp/redis-data/appendonlydir/` if it doesn't already exist.
+
+If `--appendonly` is not set to `yes`, the directory should not be created.
 
 ### Tests
 
@@ -12,10 +22,12 @@ The tester will execute your program like this:
 $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name>
 ```
 
-It will then check whether the following directory has been created:
+The tester will verify that:
 
-- `<dir>/<append_dir_name>`
+- The directory `<dir>/<append_dir_name>` has been created
+- The directory exists before any client commands are sent (it should be created at startup)
 
 ### Notes
 
-- You don't have to create the contents inside the directory in this stage. We'll get to that in the later stages.
+- You don't need to create any files inside the directory yet. That comes in later stages.
+- If the directory already exists, your server should not return an error.
