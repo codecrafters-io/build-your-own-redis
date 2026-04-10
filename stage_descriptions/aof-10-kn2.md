@@ -1,19 +1,22 @@
-In this stage, you'll extend replay of the append-only file to support multiple commands.
+In this stage, you'll extend replay to handle append-only files with multiple commands.
 
-### Replaying the append-only file
+### Replaying Multiple Commands
 
-On startup with `--appendonly yes`, Redis reads the manifest file, finds the append-only file listed with type `i`, and replays its commands one by one as if they were sent by a client.
+An append-only file typically contains many commands, not just one. Your server needs to parse the file as a sequence of RESP-encoded commands and replay each one in order, just as if a client had sent them live.
+
+Since RESP is self-framing (each command starts with `*<n>\r\n` indicating its length), you can read commands one after another until you reach the end of the file. Each command you parse should be executed against your server's state before moving on to the next.
+
+After replaying all commands, your database should reflect the cumulative effect of every write in the file.
 
 ### Tests
 
-The tester will create a directory `dir/appenddirname`.
+The tester will create a directory `<dir>/<append_dir_name>` containing:
 
-Inside the directory, it will create an append-only file (the name is given in the manifest) that contains multiple RESP-encoded commands (e.g. several `SET` commands for different keys).
-
-It will also create a manifest file `appendfilename.manifest`, which will contain a line such as:
+- An AOF file `<random_file_name>.1.incr.aof` with multiple RESP-encoded commands (e.g., several `SET` commands for different keys)
+- A manifest file `<append_file_name>.manifest` pointing to that AOF file:
 
 ```
-file <filename>.1.incr.aof seq 1 type i
+file <random_file_name>.1.incr.aof seq 1 type i
 ```
 
 The tester will execute your program like this:
@@ -22,15 +25,21 @@ The tester will execute your program like this:
 $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name>
 ```
 
-Your program should do the following:
+After startup, the tester will send several `GET` commands to verify each key was restored:
 
-- Read the manifest file at `dir/append_dir_name/append_file_name.manifest`.
-- Find the file entry with type `i` and open that append-only file from the AOF directory.
-- Read the append-only file and parse it as a sequence of RESP-encoded commands.
-- Replay each command in order as if it was sent by a client.
+```bash
+$ redis-cli GET <key1>
+$ redis-cli GET <key2>
+...
+```
 
-The tester will then create a client and send several `GET` commands. It'll expect the value of the keys to be set as if the commands in the `.aof` file were sent by a client earlier.
+The tester will verify that:
+
+- Each `GET` returns the value from the corresponding command in the AOF file
+- All commands from the AOF file were replayed, not just the first one
 
 ### Notes
 
-- You should read and replay from the file whose name is specified in the manifest, not from the hardcoded filename `dir/append_dir_name/append_file_name.1.incr.aof`.
+- If your implementation from earlier stages already loops through the file until EOF, this stage may already pass without changes.
+- You must read and replay from the file named in the manifest, not from the hardcoded filename `<append_file_name>.1.incr.aof`.
+- RESP is self-framing, so you don't need any separator between commands. Just keep parsing until you run out of bytes.
