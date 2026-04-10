@@ -1,19 +1,17 @@
-In this stage, you'll add support for writing multiple commands to the append-only file.
+In this stage, you'll extend AOF logging to handle multiple write commands.
 
-### Writing to the append-only file
+### Appending Multiple Commands
 
-When `--appendonly yes` is set, the manifest at `dir/appenddirname/appendfilename.manifest` lists the append-only file (type `i`) where commands must be stored.
+Each write command should be appended to the file in the order it was received, so the file builds up a complete log of all modifications. This applies to any command that modifies data (like `SET`, `DEL`, `INCR`, `LPUSH`, etc.), not just `SET`.
 
-After the server executes a write command, it appends that command to the append-only file in [RESP](https://redis.io/docs/latest/develop/reference/protocol-spec/) form. When several write commands are executed one after another, each should be appended so the file contains all of them, in order.
-
-If the following commands are sent to the server:
+For example, if the server receives:
 
 ```bash
 $ redis-cli SET foo 100
 $ redis-cli SET bar 200
 ```
 
-the append-only file contains both commands, in order, as RESP-encoded data—for example:
+The append-only file should contain both commands in order:
 
 ```
 *3\r\n
@@ -32,14 +30,16 @@ $3\r\n
 200\r\n
 ```
 
-If `appendfsync` is `always`, each command is written to the append-only file before sending the response back to the client.
+*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes with `\r\n` as delimiters.)*
+
+Each command is appended immediately after the previous one with no separators between them. On replay, the RESP framing (`*3\r\n...`) is enough to tell where one command ends and the next begins.
 
 ### Tests
 
-The tester will create the following under `dir/appenddirname`:
+The tester will create the following under `<dir>/<append_dir_name>`:
 
-- A manifest whose type `i` entry names a file `<random_file_name>.1.incr.aof`
-- The append-only file mentioned in the manifest file: `<random_file_name>.1.incr.aof`.
+- A manifest whose `type i` entry names a file `<random_file_name>.1.incr.aof`
+- The corresponding empty AOF file: `<random_file_name>.1.incr.aof`
 
 The tester will execute your program like this:
 
@@ -47,36 +47,21 @@ The tester will execute your program like this:
 $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name> --appendfsync always
 ```
 
-It will then send two modifying commands in order. For example, it may send `SET <key1> <value1>` and then `SET <key2> <value2>` for two different keys. Both commands should appear in the append-only file, in the same order, as RESP-encoded commands.
-
-For example, if the tester sent:
+It will then send two write commands with different keys:
 
 ```bash
-$ redis-cli SET foo 100
-$ redis-cli SET bar 200
+$ redis-cli SET <key1> <value1>
+$ redis-cli SET <key2> <value2>
 ```
 
-The content of the append-only file should be:
+The tester will verify that:
 
-```
-*3\r\n
-$3\r\n
-SET\r\n
-$3\r\n
-foo\r\n
-$3\r\n
-100\r\n
-*3\r\n
-$3\r\n
-SET\r\n
-$3\r\n
-bar\r\n
-$3\r\n
-200\r\n
-```
+- Both commands appear in the append-only file in the order they were sent
+- Each command is encoded in a valid RESP format
+- The writes are flushed to disk before the client receives a response (since `appendfsync` is `always`)
 
 ### Notes
 
-- You must read the manifest to determine which file to open for writes. The tester uses a non-default filename to ensure you follow the manifest and not only `<appendfilename>.1.incr.aof`.
-
-- You don't need to implement the behavior of `--appendfsync everysec`.
+- If your implementation from earlier stages already appends (rather than overwrites), this stage may already pass without changes.
+- You must read the manifest to determine which file to write to. The tester uses a non-default filename.
+- You don't need to handle `--appendfsync everysec` in this stage.
