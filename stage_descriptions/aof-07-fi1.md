@@ -2,7 +2,7 @@ In this stage, you'll extend AOF logging to handle multiple write commands.
 
 ### Appending Multiple Commands
 
-In earlier stages, you wrote a single command to the append-only file. Now you'll handle multiple commands in sequence. Each write command should be appended to the file in the order it was received, so the file builds up a complete log of all modifications. This applies to any command that modifies data (like `SET`, `DEL`, `INCR`, `LPUSH`, etc.), not just `SET`.
+Each write command should be appended to the file in the order it was received, so the file builds up a complete log of all modifications. This applies to any command that modifies data (like `SET`, `DEL`, `INCR`, `LPUSH`, etc.), not just `SET`.
 
 For example, if the server receives:
 
@@ -29,6 +29,8 @@ bar\r\n
 $3\r\n
 200\r\n
 ```
+
+*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes with `\r\n` as delimiters.)*
 
 Each command is appended immediately after the previous one with no separators between them. On replay, the RESP framing (`*3\r\n...`) is enough to tell where one command ends and the next begins.
 
