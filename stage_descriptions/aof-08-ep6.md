@@ -1,22 +1,12 @@
-In this stage, you'll add support for writing only the modifying commands to the append-only file.
+In this stage, you'll ensure that only write commands are logged to the append-only file.
 
-### Filtering commands
+### Filtering Non-Modifying Commands
 
-When `--appendonly yes` is set, the server appends only commands that change the dataset. Commands that only read data or perform housekeeping must not be written to the append-only file. Examples of commands that must not be appended include `PING`, `GET`, `CONFIG GET`, and similar non-modifying commands.
+Commands that don't modify data, like `PING`, `GET`, and `ECHO`, should never be written to an AOF file since they don't change any state.
 
-If a client sends a mix of read and write commands, the append-only file should contain only the write commands, in order, each encoded as RESP after parsing and any required transformation.
+If the server receives a mix of read and write commands, only the write commands should appear in the AOF file, in the order they were received.
 
-### Tests
-
-The tester will execute your program like this:
-
-```bash
-$ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name> --appendfsync always
-```
-
-It will then send several commands, including non-modifying commands such as `PING`, `GET` on a key (whether or not the key exists), and `CONFIG GET` for an arbitrary option, interleaved with at least one modifying command (for example `SET <key> <value>`).
-
-For example, if the client sends these commands in order:
+For example, if a client sends:
 
 ```bash
 $ redis-cli SET foo 1
@@ -26,7 +16,7 @@ $ redis-cli ECHO hello
 $ redis-cli SET bar 2
 ```
 
-Only the two `SET` commands change the dataset. Nothing from `GET`, `PING`, or `ECHO` is written to the append-only file. The file ends up containing exactly two RESP-encoded commands, in order, back-to-back—the first `SET`, then the second `SET`:
+The append-only file should contain only the two `SET` commands:
 
 ```
 *3\r\n
@@ -45,10 +35,28 @@ $1\r\n
 2\r\n
 ```
 
-The tester will inspect the append-only file and verify that it contains only the RESP-encoded modifying command(s), in the correct order. None of the bytes for `PING`, `GET`, `ECHO`, or `CONFIG GET` should appear in the file.
+*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes with `\r\n` as delimiters.)*
+
+No trace of `GET`, `PING`, or `ECHO` should appear in the file.
+
+### Tests
+
+The tester will execute your program like this:
+
+```bash
+$ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name> --appendfsync always
+```
+
+It will send a mix of modifying and non-modifying commands, including `PING`, `GET`, `ECHO`, and `CONFIG GET` interleaved with at least one write command.
+
+The tester will verify that:
+
+- The append-only file contains only the write commands, in order
+- No bytes from non-modifying commands appear in the file
+- Each logged command is in valid RESP format
 
 ### Notes
 
-- You must read the manifest to determine which file to open for writes. The tester uses a non-default filename to ensure you follow the manifest and not only `<appendfilename>.1.incr.aof`.
-
-- You don't need to implement the behavior of `--appendfsync everysec`.
+- If you already have a way to distinguish write commands from read commands (e.g., for replication), you can reuse that logic here.
+- You must read the manifest to determine which file to write to. The tester uses a non-default filename.
+- You don't need to handle `--appendfsync everysec` in this stage.
