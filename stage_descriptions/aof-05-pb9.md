@@ -1,22 +1,30 @@
-In this stage, you'll add support for creating the manifest file when append-only mode is enabled.
+In this stage, you'll create a manifest file alongside the append-only file.
 
-### The manifest file
+### The Manifest File
 
-If the `--appendonly yes` flag has been specified, and the `appenddirname` does not exist inside the `dir` directory, Redis creates the directory. Inside the directory, the append-only file with the name `<appendfilename>.1.incr.aof` is also created. Along with the append-only file, Redis also creates a manifest file that stores details about the append-only file.
+The manifest file tells Redis which AOF files exist and in what order they should be replayed during recovery. It follows the naming convention `<appendfilename>.manifest` and lives in the same directory as the AOF file. 
 
-The manifest file is named `<appendfilename>.manifest`.
-
-The manifest file contains one line, which is:
+The manifest file contains a single line describing the AOF file you created earlier:
 
 ```
 file <appendfilename>.1.incr.aof seq 1 type i
 ```
 
-- `file <appendfilename>.1.incr.aof` — Literal `file` followed by the base name of the append-only file.
-- `seq 1` — Sequence number for this file. You can hardcode this to `1` for now.
-- `type i` — Indicates that the file is an `incremental` file, or append-only file, from which commands are to be replayed.
+Here's what each part means:
 
-You can hardcode the sequence and format for this stage.
+| Field | Value | Meaning |
+|---|---|---|
+| `file` | `<appendfilename>.1.incr.aof` | The name of the AOF file |
+| `seq` | `1` | Sequence number for this file |
+| `type` | `i` | An incremental file, meaning it contains write commands appended one by one |
+
+For example, if the server is started with `--appendfilename appendonly.aof`, the manifest file would be named `appendonly.aof.manifest` and should contain:
+
+```
+file appendonly.aof.1.incr.aof seq 1 type i
+```
+
+You can hardcode the sequence number and type for this stage.
 
 ### Tests
 
@@ -26,9 +34,15 @@ The tester will execute your program like this:
 $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name>
 ```
 
-It will then check the following:
+It will then verify that:
 
-- The directory `<dir>/<append_dir_name>` is created
-- The empty file `<dir>/<append_dir_name>/<append_file_name>.1.incr.aof` is created
-- The manifest file `<dir>/<append_dir_name>/<append_file_name>.manifest` is created
+- The directory `<dir>/<append_dir_name>` exists
+- The empty AOF file `<dir>/<append_dir_name>/<append_file_name>.1.incr.aof` exists
+- The manifest file `<dir>/<append_dir_name>/<append_file_name>.manifest` exists
 - The manifest file contains the line `file <append_file_name>.1.incr.aof seq 1 type i`
+
+### Notes
+
+- The manifest file should be created at startup alongside the AOF file.
+- Each token in the manifest line is separated by a single space. No tabs or extra spaces.
+- Make sure the manifest line ends with a newline character.
