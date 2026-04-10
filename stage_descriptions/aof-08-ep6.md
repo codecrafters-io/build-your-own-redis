@@ -35,7 +35,7 @@ $1\r\n
 2\r\n
 ```
 
-(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes with `\r\n` as delimiters.)
+*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes with `\r\n` as delimiters.)*
 
 No trace of `GET`, `PING`, or `ECHO` should appear in the file.
 
