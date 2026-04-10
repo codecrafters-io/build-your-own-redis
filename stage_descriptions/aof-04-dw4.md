@@ -22,10 +22,10 @@ The tester will execute your program like this:
 $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name>
 ```
 
-The tester will verify that:
+The tester will then verify that:
 
 - The directory `<dir>/<append_dir_name>` exists
-- An empty file `<dir>/<append_dir_name>/<append_file_name>.1.incr.aof` has been created
+- An empty file `<dir>/<append_dir_name>/<append_file_name>.1.incr.aof` is created
 
 ### Notes
 
