@@ -11,7 +11,7 @@ $ redis-cli SET foo 100
 $ redis-cli SET bar 200
 ```
 
-The append-only file should contain both commands in order:
+The AOF file should contain both commands in order:
 
 ```
 *3\r\n
@@ -30,7 +30,7 @@ $3\r\n
 200\r\n
 ```
 
-*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes with `\r\n` as delimiters.)*
+*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes.)*
 
 Each command is appended immediately after the previous one with no separators between them. On replay, the RESP framing (`*3\r\n...`) is enough to tell where one command ends and the next begins.
 
