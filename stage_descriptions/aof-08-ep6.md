@@ -4,7 +4,7 @@ In this stage, you'll ensure that only write commands are logged to the append-o
 
 Commands that don't modify data, like `PING`, `GET`, and `ECHO`, should never be written to an AOF file since they don't change any state.
 
-If the server receives a mix of read and write commands, only the write commands should appear in the AOF file, in the order they were received.
+If the server receives a mix of read and write commands, only the write commands should appear in the AOF file in the order they were received.
 
 For example, if a client sends:
 
@@ -16,7 +16,7 @@ $ redis-cli ECHO hello
 $ redis-cli SET bar 2
 ```
 
-The append-only file should contain only the two `SET` commands:
+The AOF file should contain only the two `SET` commands:
 
 ```
 *3\r\n
@@ -35,7 +35,7 @@ $1\r\n
 2\r\n
 ```
 
-*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes with `\r\n` as delimiters.)*
+*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes.)*
 
 No trace of `GET`, `PING`, or `ECHO` should appear in the file.
 
