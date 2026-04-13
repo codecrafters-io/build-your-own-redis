@@ -2,7 +2,7 @@ In this stage, you'll extend AOF logging to handle multiple write commands.
 
 ### Appending Multiple Commands
 
-Each write command should be appended to the file in the order it was received, so the file builds up a complete log of all modifications. This applies to any command that modifies data (like `SET`, `DEL`, `INCR`, `LPUSH`, etc.), not just `SET`.
+Each write command should be appended to the AOF file in the order it was received, so the file builds up a complete log of all modifications. This applies to any command that modifies data (like `SET`, `DEL`, `INCR`, `LPUSH`, etc.), not just `SET`.
 
 For example, if the server receives:
 
