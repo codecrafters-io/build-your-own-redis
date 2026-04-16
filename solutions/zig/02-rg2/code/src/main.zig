@@ -1,20 +1,18 @@
 const std = @import("std");
-const stdout = std.fs.File.stdout();
-const net = std.net;
 
-pub fn main() !void {
-    const address = try net.Address.resolveIp("127.0.0.1", 6379);
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
 
-    var listener = try address.listen(.{
+    const address = try std.Io.net.IpAddress.parseIp4("127.0.0.1", 6379);
+
+    var server = try address.listen(io, .{
         .reuse_address = true,
     });
-    defer listener.deinit();
+    defer server.deinit(io);
 
-    while (true) {
-        const connection = try listener.accept();
+    const connection = try server.accept(io);
+    defer connection.close(io);
 
-        try stdout.writeAll("accepted new connection");
-        try connection.stream.writeAll("+PONG\r\n");
-        connection.stream.close();
-    }
+    var connection_writer = connection.writer(io, &.{});
+    try connection_writer.interface.writeAll("+PONG\r\n");
 }
