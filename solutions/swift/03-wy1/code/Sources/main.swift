@@ -1,0 +1,35 @@
+import Foundation
+import NIO
+
+final class PingHandler: ChannelInboundHandler {
+    typealias InboundIn = ByteBuffer
+    typealias OutboundOut = ByteBuffer
+
+    func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        let buffer = context.channel.allocator.buffer(string: "+PONG\r\n")
+        context.writeAndFlush(self.wrapOutboundOut(buffer), promise: nil)
+    }
+}
+
+// Create an event loop group to manage network events
+let group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
+
+// Shut down the event loop group
+defer {
+    try? group.syncShutdownGracefully()
+}
+
+// Set up a channel for the server to listen on port 6379
+let serverBootstrap = ServerBootstrap(group: group)
+// Set SO_REUSEADDR to true
+    .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
+// Handle incoming connections
+    .childChannelInitializer { channel in
+        channel.pipeline.addHandler(PingHandler())
+    }
+
+// Bind the server to port 6379 and start accepting connections
+let channel = try serverBootstrap.bind(host: "localhost", port: 6379).wait()
+print("Server started and listening on \(channel.localAddress!)")
+try channel.closeFuture.wait()
+print("Server closed")
