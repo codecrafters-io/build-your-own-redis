@@ -1,0 +1,26 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`recv()`](https://docs.python.org/3/library/socket.html#socket.socket.recv) method on the client's connection to read data:
+
+      ```python
+      data = connection.recv(1024)
+      ```
+
+      The `1024` argument specifies the maximum number of bytes to receive at once.
+
+      `recv()` returns an empty bytes object (`b""`) when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `recv()` and `sendall()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `recv()` returns an empty bytes object):
+
+      ```python
+      while True:
+          data = connection.recv(1024)
+          if not data:
+              break
+          connection.sendall(b"+PONG\r\n")
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
