@@ -7,9 +7,8 @@ hints:
       data = connection.recv(1024)
       ```
 
-      The `1024` argument specifies the maximum number of bytes to receive at once.
-
-      `recv()` returns an empty bytes object (`b""`) when the client has closed the connection.
+      - The `1024` argument specifies the maximum number of bytes to receive at once.
+      - `recv()` returns an empty bytes object (`b""`) when the client has closed the connection.
 
   - title_markdown: "How do I handle multiple commands?"
     body_markdown: |-
