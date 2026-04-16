@@ -1,0 +1,26 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`readpartial()`](https://ruby-doc.org/core-3.2.2/IO.html#method-i-readpartial) method on the client's connection to read data:
+
+      ```ruby
+      data = client.readpartial(1024)
+      ```
+
+      - The `1024` argument specifies the maximum number of bytes to read at once.
+      - `readpartial()` raises an `EOFError` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `readpartial()` and `write()` calls in a loop. Rescue `EOFError` to break out of the loop when the client disconnects:
+
+      ```ruby
+      loop do
+        data = client.readpartial(1024)
+        client.write("+PONG\r\n")
+      rescue EOFError
+        break
+      end
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
