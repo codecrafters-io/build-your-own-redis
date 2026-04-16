@@ -1,0 +1,30 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`recv()`](https://pkg.odin-lang.org/core/net/#recv) function with a buffer to read data from the client:
+
+      ```odin
+      buf: [1024]u8
+      bytes_read, recv_err := net.recv(client_socket, buf[:])
+      ```
+
+      - `buf[:]` converts the fixed-size array into a slice.
+      - `recv()` returns the number of bytes read and an error value. A return of `0` bytes or a non-nil error indicates the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `recv()` and `send()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `recv()` returns `0` bytes or an error):
+
+      ```odin
+      buf: [1024]u8
+      for {
+          bytes_read, recv_err := net.recv(client_socket, buf[:])
+          if recv_err != nil || bytes_read == 0 {
+              break
+          }
+          response := "+PONG\r\n"
+          _, _ = net.send(client_socket, transmute([]u8) response)
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
