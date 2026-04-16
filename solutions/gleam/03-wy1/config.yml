@@ -1,0 +1,23 @@
+hints:
+  - title_markdown: "How does Glisten handle multiple messages?"
+    body_markdown: |-
+      Glisten uses an event-driven model based on OTP actors. The message handler callback you pass to [`handler()`](https://hexdocs.pm/glisten/glisten.html#handler) is invoked **each time** data arrives on the connection:
+
+      ```gleam
+      glisten.handler(fn(_conn) { #(Nil, None) }, fn(_msg, state, conn) {
+        // This callback runs for every incoming message
+        actor.continue(state)
+      })
+      ```
+
+      Unlike languages that require an explicit loop, Glisten handles looping for you automatically. **Your code from the previous stage should already pass this stage without changes.**
+
+  - title_markdown: "Do I need to add a loop to handle multiple PINGs?"
+    body_markdown: |-
+      No. In most languages you'd wrap your read/write calls in a `while` loop. In Gleam with Glisten, the actor model takes care of this:
+
+      - Each time a client sends data, the message handler callback fires.
+      - `actor.continue(state)` tells the actor to keep listening for the next message.
+      - The connection stays open until the client disconnects.
+
+      So your existing `glisten.send(conn, bytes_builder.from_string("+PONG\r\n"))` call inside the message handler will respond to every `PING` the client sends.
