@@ -1,0 +1,31 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`read()`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html#read-byte:A-) method on the client's input stream to read data:
+
+      ```kotlin
+      val input = client.getInputStream()
+      val buffer = ByteArray(1024)
+      val bytesRead = input.read(buffer)
+      ```
+
+      - The `ByteArray(1024)` creates a buffer to hold up to 1024 bytes.
+      - `read()` returns the number of bytes read, or `-1` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `read()` and `write()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `read()` returns `-1`):
+
+      ```kotlin
+      val input = client.getInputStream()
+      val out = client.getOutputStream()
+      val buffer = ByteArray(1024)
+      while (true) {
+          val bytesRead = input.read(buffer)
+          if (bytesRead == -1) break
+          out.write("+PONG\r\n".toByteArray())
+          out.flush()
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
