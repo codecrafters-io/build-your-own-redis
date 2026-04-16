@@ -1,24 +1,22 @@
 const std = @import("std");
-const stdout = std.fs.File.stdout();
-const net = std.net;
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
+
     // You can use print statements as follows for debugging, they'll be visible when running tests.
-    try stdout.writeAll("Logs from your program will appear here!");
+    try std.Io.File.writeStreamingAll(std.Io.File.stderr(), io, "Logs from your program will appear here!");
 
     // Uncomment the code below to pass the first stage
     //
-    // const address = try net.Address.resolveIp("127.0.0.1", 6379);
+    // const address = try std.Io.net.IpAddress.parseIp4("127.0.0.1", 6379);
     //
-    // var listener = try address.listen(.{
+    // var server = try address.listen(io, .{
     //     .reuse_address = true,
     // });
-    // defer listener.deinit();
+    // defer server.deinit(io);
     //
-    // while (true) {
-    //     const connection = try listener.accept();
+    // const connection = try server.accept(io);
+    // defer connection.close(io);
     //
-    //     try stdout.writeAll("accepted new connection");
-    //     connection.stream.close();
-    // }
+    // try std.Io.File.writeStreamingAll(std.Io.File.stdout(), io, "accepted new connection");
 }
