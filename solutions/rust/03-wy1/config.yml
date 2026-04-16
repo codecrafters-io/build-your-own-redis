@@ -1,0 +1,31 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`read()`](https://doc.rust-lang.org/std/io/trait.Read.html#tymethod.read) method on the `TcpStream` to read data into a buffer:
+
+      ```rust
+      use std::io::Read;
+
+      let mut buf = [0; 512];
+      let bytes_read = stream.read(&mut buf).unwrap();
+      ```
+
+      - To use `read()`, you need to import the [Read](https://doc.rust-lang.org/std/io/trait.Read.html) trait.
+      - `read()` returns the number of bytes read. It returns `0` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `read()` and `write_all()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `read()` returns `0`):
+
+      ```rust
+      let mut buf = [0; 512];
+      loop {
+          let bytes_read = stream.read(&mut buf).unwrap();
+          if bytes_read == 0 {
+              break;
+          }
+          stream.write_all(b"+PONG\r\n").unwrap();
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
