@@ -1,0 +1,26 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`read()`](https://crystal-lang.org/api/latest/IO.html#read%28slice%3ABytes%29-instance-method) method on the client's connection to read data into a buffer:
+
+      ```crystal
+      buf = Bytes.new(1024)
+      bytes_read = client.read(buf)
+      ```
+
+      - `Bytes.new(1024)` creates a buffer to hold up to 1024 bytes.
+      - `read()` returns the number of bytes read, or `0` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your read and write calls in a loop. Break out of the loop when the client disconnects (i.e., when `read()` returns `0`):
+
+      ```crystal
+      buf = Bytes.new(1024)
+      while (bytes_read = client.read(buf)) > 0
+        client << "+PONG\r\n"
+        client.flush
+      end
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
