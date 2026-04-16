@@ -1,0 +1,20 @@
+@@ -1,12 +1,18 @@
+ package codecrafters_redis
+
+ import java.net.{InetSocketAddress, ServerSocket}
+
+ object Server {
+   def main(args: Array[String]): Unit = {
+     val serverSocket = new ServerSocket()
+     serverSocket.bind(new InetSocketAddress("localhost", 6379))
+     val clientSocket = serverSocket.accept() // wait for client
+-    clientSocket.getOutputStream.write("+PONG\r\n".getBytes())
++    val inputStream = clientSocket.getInputStream
++    val buffer = new Array[Byte](1024)
++    var bytesRead = inputStream.read(buffer)
++    while (bytesRead != -1) {
++      clientSocket.getOutputStream.write("+PONG\r\n".getBytes())
++      bytesRead = inputStream.read(buffer)
++    }
+   }
+ }
