@@ -1,0 +1,30 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`read()`](https://ocaml.org/api/Unix.html#VALread) function to read data from the client socket into a buffer:
+
+      ```ocaml
+      let buffer = Bytes.create 1024 in
+      let bytes_read = read client_socket buffer 0 1024 in
+      ```
+
+      - `Bytes.create 1024` allocates a 1024-byte buffer.
+      - `read` returns the number of bytes read, or `0` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Use a recursive function to loop over `read()` and `write_substring()` calls. Stop when `read()` returns `0` (the client has disconnected):
+
+      ```ocaml
+      let rec loop () =
+        let bytes_read = read client_socket buffer 0 1024 in
+        if bytes_read > 0 then begin
+          let response = "+PONG\r\n" in
+          ignore (write_substring client_socket response 0 (String.length response));
+          loop ()
+        end
+      in
+      loop ()
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
