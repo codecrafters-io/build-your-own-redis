@@ -1,0 +1,30 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`:gen_tcp.recv`](https://www.erlang.org/doc/man/gen_tcp.html#recv-2) function to read data from the client:
+
+      ```elixir
+      {:ok, data} = :gen_tcp.recv(client, 0)
+      ```
+
+      - The second argument `0` means receive all available bytes.
+      - `:gen_tcp.recv` returns `{:ok, data}` on success, or `{:error, :closed}` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Use a recursive function to keep reading commands and sending responses. Use pattern matching on the result of `:gen_tcp.recv` to decide whether to continue or stop:
+
+      ```elixir
+      defp serve(client) do
+        case :gen_tcp.recv(client, 0) do
+          {:ok, _data} ->
+            :gen_tcp.send(client, "+PONG\r\n")
+            serve(client)
+
+          {:error, :closed} ->
+            :ok
+        end
+      end
+      ```
+
+      This function will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
