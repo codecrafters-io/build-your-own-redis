@@ -4,6 +4,11 @@
 (require '[clojure.java.io :as io])
 (import '[java.net ServerSocket])
 
+(defn receive-message
+  "Read a line of textual data from the given socket"
+  [socket]
+  (.readLine (io/reader socket)))
+
 (defn send-message
   "Send the given string message out over the given socket"
   [socket msg]
@@ -11,22 +16,24 @@
     (.write writer msg)
     (.flush writer)))
 
+(defn serve [port handler]
+  (with-open [server-sock (ServerSocket. port)]
+    ;; Since the tester restarts your program quite often, setting SO_REUSEADDR
+    ;; ensures that we don't run into 'Address already in use' errors
+    (. server-sock (setReuseAddress true))
+
+   (with-open [sock (.accept server-sock)]
+    (let [in (.getInputStream sock)
+          buf (byte-array 1024)]
+      (loop []
+        (let [n (.read in buf)]
+          (when (pos? n)
+            (send-message sock (handler))
+            (recur))))))))
+
 (defn handler
   [& args]
   "+PONG\r\n")
-
-(defn serve [port handler]
-  (with-open [server-sock (ServerSocket. port)]
-    (. server-sock (setReuseAddress true))
-
-    (with-open [sock (.accept server-sock)]
-      (let [in (.getInputStream sock)
-            buf (byte-array 1024)]
-        (loop []
-          (let [n (.read in buf)]
-            (when (pos? n)
-              (send-message sock (handler))
-              (recur))))))))
 
 (defn -main
   "I don't do a whole lot ... yet."
