@@ -4,11 +4,6 @@
 (require '[clojure.java.io :as io])
 (import '[java.net ServerSocket])
 
-(defn receive-message
-  "Read a line of textual data from the given socket"
-  [socket]
-  (.readLine (io/reader socket)))
-
 (defn send-message
   "Send the given string message out over the given socket"
   [socket msg]
