@@ -1,0 +1,30 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`recv()`](https://man7.org/linux/man-pages/man2/recv.2.html) function to read data from the client socket:
+
+      ```cpp
+      char buffer[1024];
+      int bytes_received = recv(client_fd, buffer, sizeof(buffer), 0);
+      ```
+
+      - The `sizeof(buffer)` argument specifies the maximum number of bytes to receive at once.
+      - `recv()` returns `0` when the client has closed the connection, or `-1` on error.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `recv()` and `send()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `recv()` returns `0` or a negative value):
+
+      ```cpp
+      char buffer[1024];
+      while (true) {
+          int bytes_received = recv(client_fd, buffer, sizeof(buffer), 0);
+          if (bytes_received <= 0) {
+              break;
+          }
+          const char *response = "+PONG\r\n";
+          send(client_fd, response, strlen(response), 0);
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
