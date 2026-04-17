@@ -1,0 +1,27 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`read(byte[])`](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/InputStream.html#read(byte%5B%5D)) method on the client's input stream to read data:
+
+      ```scala
+      val buffer = new Array[Byte](1024)
+      val bytesRead = inputStream.read(buffer)
+      ```
+
+      - The `1024` size specifies the maximum number of bytes to read at once.
+      - `read()` returns `-1` when the client has closed the connection.
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `read()` and `write()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `read()` returns `-1`):
+
+      ```scala
+      val inputStream = clientSocket.getInputStream
+      val buffer = new Array[Byte](1024)
+      var bytesRead = inputStream.read(buffer)
+      while (bytesRead != -1) {
+        clientSocket.getOutputStream.write("+PONG\r\n".getBytes())
+        bytesRead = inputStream.read(buffer)
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
