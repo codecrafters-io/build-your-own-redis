@@ -1,0 +1,29 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`Receive()`](https://learn.microsoft.com/dotnet/api/system.net.sockets.socket.receive) method on the client's socket to read data:
+
+      ```csharp
+      byte[] buffer = new byte[1024];
+      int bytesRead = client.Receive(buffer);
+      ```
+
+      - The `buffer` is a byte array that will hold the received data.
+      - `Receive()` returns `0` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `Receive()` and `Send()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `Receive()` returns `0`):
+
+      ```csharp
+      byte[] buffer = new byte[1024];
+      while (true)
+      {
+          int bytesRead = client.Receive(buffer);
+          if (bytesRead == 0)
+              break;
+          client.Send(Encoding.UTF8.GetBytes("+PONG\r\n"));
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
