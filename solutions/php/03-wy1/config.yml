@@ -1,0 +1,26 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`socket_read()`](https://www.php.net/manual/en/function.socket-read.php) function on the client's connection to read data:
+
+      ```php
+      $data = socket_read($client, 1024);
+      ```
+
+      - The `1024` argument specifies the maximum number of bytes to read at once.
+      - `socket_read()` returns an empty string (`""`) when the client has closed the connection, or `false` on error.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `socket_read()` and `socket_write()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `socket_read()` returns an empty string):
+
+      ```php
+      while (($data = socket_read($client, 1024)) !== false) {
+          if ($data === "") {
+              break;
+          }
+          socket_write($client, "+PONG\r\n");
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
