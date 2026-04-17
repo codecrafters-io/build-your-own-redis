@@ -1,0 +1,28 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use [`getInputStream()`](https://docs.oracle.com/javase/8/docs/api/java/net/Socket.html#getInputStream--) and [`read()`](https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html#read-byte:A-) to read data from the client:
+
+      ```java
+      InputStream inputStream = clientSocket.getInputStream();
+      byte[] buffer = new byte[1024];
+      int bytesRead = inputStream.read(buffer);
+      ```
+
+      - The `read()` method reads up to 1024 bytes into the buffer.
+      - It returns `-1` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `read()` and `write()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `read()` returns `-1`):
+
+      ```java
+      InputStream inputStream = clientSocket.getInputStream();
+      byte[] buffer = new byte[1024];
+      int bytesRead;
+      while ((bytesRead = inputStream.read(buffer)) != -1) {
+        clientSocket.getOutputStream().write("+PONG\r\n".getBytes());
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
