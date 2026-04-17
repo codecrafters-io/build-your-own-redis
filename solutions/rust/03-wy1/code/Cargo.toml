@@ -1,0 +1,11 @@
+[package]
+name = "codecrafters-redis"
+version = "0.1.0"
+authors = ["Codecrafters <hello@codecrafters.io>"]
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.59"                                   # error handling
+bytes = "1.3.0"                                     # helps manage buffers
+thiserror = "1.0.32"                                # error handling
+tokio = { version = "1.23.0", features = ["full"] } # async networking
