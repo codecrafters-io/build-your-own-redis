@@ -1,0 +1,29 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`Read()`](https://pkg.go.dev/net#Conn.Read) method on the client's connection to read data into a byte slice:
+
+      ```go
+      buf := make([]byte, 1024)
+      n, err := conn.Read(buf)
+      ```
+
+      - `buf` is a [byte slice](https://go.dev/blog/slices-intro#slices) that acts as a buffer to hold the incoming data.
+      - `Read()` returns the number of bytes read and an error. The error will be non-nil when the client closes the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Wrap your `Read()` and `Write()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `Read()` returns an error):
+
+      ```go
+      buf := make([]byte, 1024)
+      for {
+          _, err := conn.Read(buf)
+          if err != nil {
+              break
+          }
+          conn.Write([]byte("+PONG\r\n"))
+      }
+      ```
+
+      This loop will keep reading commands and responding with `+PONG\r\n` until the client closes the connection.
