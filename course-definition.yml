@@ -124,6 +124,18 @@ extensions:
       [rpush-command]: https://redis.io/docs/latest/commands/rpush/
       [lrange-command]: https://redis.io/docs/latest/commands/lrange/
 
+  - slug: "hashes"
+    name: "Hashes"
+    description_markdown: |-
+      In this challenge extension you'll add support for [Hashes][redis-hashes] to your Redis implementation.
+
+      Along the way, you'll learn commands like [HSET][hset-command], [HGET][hget-command], [HMGET][hmget-command], and more.
+
+      [redis-hashes]: https://redis.io/docs/latest/develop/data-types/hashes/
+      [hset-command]: https://redis.io/docs/latest/commands/hset/
+      [hget-command]: https://redis.io/docs/latest/commands/hget/
+      [hmget-command]: https://redis.io/docs/latest/commands/hmget/
+
   - slug: "streams"
     name: "Streams"
     description_markdown: |-
@@ -867,6 +879,61 @@ stages:
     name: "Blocking retrieval with timeout"
     difficulty: medium
     marketing_md: In this stage, you will add support for a non-zero timeout duration for the `BLPOP` command.
+
+  # Hashes
+  - slug: "ch7"
+    primary_extension_slug: "hashes"
+    name: "HSET (stub)"
+    difficulty: very_easy
+    marketing_md: In this stage, you'll add a minimal stub for the `HSET` command that always replies with `1`.
+
+  - slug: "cm9"
+    primary_extension_slug: "hashes"
+    name: "HSET with one pair"
+    difficulty: easy
+    marketing_md: In this stage, you'll make `HSET` actually store the field/value, returning `1` for new fields and `0` for updates.
+
+  - slug: "fv3"
+    primary_extension_slug: "hashes"
+    name: "HSET with multiple pairs"
+    difficulty: easy
+    marketing_md: In this stage, you'll extend `HSET` to accept multiple field/value pairs in a single call.
+
+  - slug: "hu7"
+    primary_extension_slug: "hashes"
+    name: "HSET on a wrong-typed key"
+    difficulty: easy
+    marketing_md: In this stage, you'll add type checking to the `HSET` command.
+
+  - slug: "sj6"
+    primary_extension_slug: "hashes"
+    name: "The HEXISTS command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for the `HEXISTS` command, which checks whether a field is present in a hash.
+
+  - slug: "gv5"
+    primary_extension_slug: "hashes"
+    name: "The HLEN command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for the `HLEN` command, which returns the number of fields in a hash.
+
+  - slug: "by1"
+    primary_extension_slug: "hashes"
+    name: "The HGET command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for reading a single field from a hash using the `HGET` command.
+
+  - slug: "qi7"
+    primary_extension_slug: "hashes"
+    name: "The HMGET command"
+    difficulty: medium
+    marketing_md: In this stage, you'll add support for fetching multiple fields in one call using the `HMGET` command.
+
+  - slug: "jk5"
+    primary_extension_slug: "hashes"
+    name: "The HSETNX command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for the `HSETNX` command, which sets a field only if it does not already exist.
 
   # Pub-Sub
   - slug: "mx3"
