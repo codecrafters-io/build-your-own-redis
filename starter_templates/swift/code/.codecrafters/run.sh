@@ -8,4 +8,4 @@
 
 set -e # Exit on failure
 
-exec swift run -c release --skip-build --build-path /tmp/codecrafters-build-redis-swift build-your-own-redis "$@"
+exec /tmp/codecrafters-build-redis-swift/release/build-your-own-redis "$@"

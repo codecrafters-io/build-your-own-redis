@@ -21,4 +21,4 @@ set -e # Exit early if any commands fail
 #
 # - Edit this to change how your program runs locally
 # - Edit .codecrafters/run.sh to change how your program runs remotely
-exec swift run -c release --skip-build --build-path /tmp/codecrafters-build-redis-swift build-your-own-redis "$@"
+exec /tmp/codecrafters-build-redis-swift/release/build-your-own-redis "$@"

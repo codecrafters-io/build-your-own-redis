@@ -1,5 +1,5 @@
 hints:
-  - title_markdown: "How do I handle incoming data from a client?"
+  - title_markdown: "How do I read data from a client connection?"
     body_markdown: |-
       Instead of writing a response immediately in `childChannelInitializer`, create a custom `ChannelInboundHandler` to process incoming data:
 
@@ -18,7 +18,7 @@ hints:
       - `InboundIn` and `OutboundOut` tell SwiftNIO how to unwrap/wrap the `NIOAny` data.
       - The `channelRead` method is called each time data is received from the client.
 
-  - title_markdown: "How do I respond to multiple PINGs?"
+  - title_markdown: "How do I handle multiple commands?"
     body_markdown: |-
       Add your handler to the channel pipeline in `childChannelInitializer`, and respond with `+PONG\r\n` inside `channelRead`:
 
