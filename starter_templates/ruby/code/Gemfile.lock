@@ -6,10 +6,12 @@ GEM
 PLATFORMS
   aarch64-linux-musl
   arm64-darwin-21
+  arm64-darwin-25
   x86_64-linux
+  x86_64-linux-musl
 
 DEPENDENCIES
   bindata (~> 2.4)
 
 BUNDLED WITH
-   2.4.18
+  4.0.10

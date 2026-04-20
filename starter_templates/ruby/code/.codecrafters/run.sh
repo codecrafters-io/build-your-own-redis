@@ -8,4 +8,5 @@
 
 set -e # Exit on failure
 
-exec bundle exec ruby app/server.rb "$@"
+export BUNDLE_GEMFILE="$(dirname "$0")/Gemfile"
+exec bundle exec ruby "$(dirname "$0")/app/main.rb" "$@"
