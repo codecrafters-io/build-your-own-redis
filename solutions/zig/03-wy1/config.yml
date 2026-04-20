@@ -1,26 +1,30 @@
 hints:
   - title_markdown: "How do I read data from a client connection?"
     body_markdown: |-
-      Use the [`read()`](https://ziglang.org/documentation/master/std/#std;net.Stream) method on the connection's stream to read data into a buffer:
+      Use the [`netRead()`](https://ziglang.org/documentation/0.16.0/std/#std.Io.VTable.netRead) function on the IO vtable to read data from the connection into a buffer:
 
       ```zig
       var buf: [1024]u8 = undefined;
-      const bytes_read = try connection.stream.read(&buf);
+      var data = [_][]u8{&buf};
+      const bytes_read = io.vtable.netRead(io.userdata, connection.socket.handle, &data) catch break;
       ```
 
-      - The `read()` method returns the number of bytes read.
+      - `netRead()` returns the number of bytes read.
       - It returns `0` when the client has closed the connection.
 
   - title_markdown: "How do I handle multiple commands?"
     body_markdown: |-
-      Wrap your `read()` and `writeAll()` calls in a loop. Break out of the loop when the client disconnects (i.e., when `read()` returns `0`):
+      Wrap your read and write calls in a loop. Break out of the loop when the client disconnects (i.e., when `netRead()` returns `0`):
 
       ```zig
+      var connection_writer = connection.writer(io, &.{});
+
       var buf: [1024]u8 = undefined;
+      var data = [_][]u8{&buf};
       while (true) {
-          const bytes_read = try connection.stream.read(&buf);
+          const bytes_read = io.vtable.netRead(io.userdata, connection.socket.handle, &data) catch break;
           if (bytes_read == 0) break;
-          try connection.stream.writeAll("+PONG\r\n");
+          try connection_writer.interface.writeAll("+PONG\r\n");
       }
       ```
 

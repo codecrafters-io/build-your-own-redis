@@ -1,26 +1,25 @@
 const std = @import("std");
-const stdout = std.fs.File.stdout();
-const net = std.net;
 
-pub fn main() !void {
-    const address = try net.Address.resolveIp("127.0.0.1", 6379);
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
 
-    var listener = try address.listen(.{
+    const address = try std.Io.net.IpAddress.parseIp4("127.0.0.1", 6379);
+
+    var server = try address.listen(io, .{
         .reuse_address = true,
     });
-    defer listener.deinit();
+    defer server.deinit(io);
 
+    const connection = try server.accept(io);
+    defer connection.close(io);
+
+    var connection_writer = connection.writer(io, &.{});
+
+    var buf: [1024]u8 = undefined;
+    var data = [_][]u8{&buf};
     while (true) {
-        const connection = try listener.accept();
-        defer connection.stream.close();
-
-        try stdout.writeAll("accepted new connection");
-
-        var buf: [1024]u8 = undefined;
-        while (true) {
-            const bytes_read = try connection.stream.read(&buf);
-            if (bytes_read == 0) break;
-            try connection.stream.writeAll("+PONG\r\n");
-        }
+        const bytes_read = io.vtable.netRead(io.userdata, connection.socket.handle, &data) catch break;
+        if (bytes_read == 0) break;
+        try connection_writer.interface.writeAll("+PONG\r\n");
     }
 }
