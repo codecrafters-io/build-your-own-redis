@@ -1,6 +1,16 @@
 import Foundation
 import NIO
 
+final class PingHandler: ChannelInboundHandler {
+    typealias InboundIn = ByteBuffer
+    typealias OutboundOut = ByteBuffer
+
+    func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+        let buffer = context.channel.allocator.buffer(string: "+PONG\r\n")
+        context.writeAndFlush(self.wrapOutboundOut(buffer), promise: nil)
+    }
+}
+
 // Create an event loop group to manage network events
 let group = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
 
@@ -15,10 +25,7 @@ let serverBootstrap = ServerBootstrap(group: group)
     .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
 // Handle incoming connections
     .childChannelInitializer { channel in
-        // You can add channel handlers here if needed
-        var buffer = channel.allocator.buffer(string: "+PONG\r\n")
-        channel.writeAndFlush(buffer, promise: nil)
-        return channel.eventLoop.makeSucceededFuture(())
+        channel.pipeline.addHandler(PingHandler())
     }
 
 // Bind the server to port 6379 and start accepting connections

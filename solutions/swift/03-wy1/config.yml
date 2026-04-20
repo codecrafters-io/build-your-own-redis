@@ -1,0 +1,40 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Instead of writing a response immediately in `childChannelInitializer`, create a custom `ChannelInboundHandler` to process incoming data:
+
+      ```swift
+      final class PingHandler: ChannelInboundHandler {
+          typealias InboundIn = ByteBuffer
+          typealias OutboundOut = ByteBuffer
+
+          func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+              // Handle each incoming message here
+          }
+      }
+      ```
+
+      - `ChannelInboundHandler` is a SwiftNIO protocol for handling inbound I/O events.
+      - `InboundIn` and `OutboundOut` tell SwiftNIO how to unwrap/wrap the `NIOAny` data.
+      - The `channelRead` method is called each time data is received from the client.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Add your handler to the channel pipeline in `childChannelInitializer`, and respond with `+PONG\r\n` inside `channelRead`:
+
+      ```swift
+      .childChannelInitializer { channel in
+          channel.pipeline.addHandler(PingHandler())
+      }
+      ```
+
+      In the handler:
+
+      ```swift
+      func channelRead(context: ChannelHandlerContext, data: NIOAny) {
+          var buffer = context.channel.allocator.buffer(string: "+PONG\r\n")
+          context.writeAndFlush(self.wrapOutboundOut(buffer), promise: nil)
+      }
+      ```
+
+      Since `channelRead` is called for each incoming message, this will automatically handle multiple `PING` commands on the same connection.
