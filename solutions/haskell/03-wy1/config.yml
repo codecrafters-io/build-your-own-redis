@@ -1,0 +1,28 @@
+hints:
+  - title_markdown: "How do I read data from a client connection?"
+    body_markdown: |-
+      Use the [`recv`](https://hackage.haskell.org/package/network-simple/docs/Network-Simple-TCP.html#v:recv) function to read data from the client:
+
+      ```haskell
+      msg <- recv socket 1024
+      ```
+
+      - The `1024` argument specifies the maximum number of bytes to receive at once.
+      - `recv` returns `Maybe ByteString` — `Just data` when data is available, or `Nothing` when the client has closed the connection.
+
+  - title_markdown: "How do I handle multiple commands?"
+    body_markdown: |-
+      Use a recursive function that calls `recv` and `send` in a loop. Stop when `recv` returns `Nothing` (client disconnected):
+
+      ```haskell
+      handleClient :: Socket -> IO ()
+      handleClient socket = do
+          msg <- recv socket 1024
+          case msg of
+              Just _ -> do
+                  send socket "+PONG\r\n"
+                  handleClient socket
+              Nothing -> return ()
+      ```
+
+      This function keeps reading commands and responding with `+PONG\r\n` until the client closes the connection.
