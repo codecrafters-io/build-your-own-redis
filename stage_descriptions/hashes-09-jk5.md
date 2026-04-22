@@ -1,4 +1,4 @@
-In this stage, you'll add support for the [`HSETNX`](https://redis.io/docs/latest/commands/hsetnx/) command, which sets a field only if it does not already exist.
+In this stage, you'll add support for the [`HSETNX`](https://redis.io/docs/latest/commands/hsetnx/) command.
 
 ### The `HSETNX` Command
 
@@ -52,7 +52,3 @@ The tester will verify that:
 - The first `HSETNX` returns `:1\r\n` and the value is stored.
 - The second `HSETNX` returns `:0\r\n`, and `HGET myhash field1` still returns the bulk string `Hello` (the value was not overwritten).
 - `HSETNX freshhash field1 v` returns `:1\r\n` — the missing key is created as a new hash with the single field.
-
-### Notes
-
-- `HSETNX` only ever takes one field/value pair (unlike `HSET`).

@@ -2,7 +2,7 @@ In this stage, you'll extend `HSET` to accept multiple field/value pairs in a si
 
 ### `HSET` with multiple pairs
 
-`HSET` can take any number of `field value` pairs after the key:
+The `HSET` command can take any number of `field value` pairs after the key:
 
 ```
 HSET key field value [field value ...]
@@ -33,16 +33,19 @@ The tester will execute your program like this:
 It will then send commands such as:
 
 ```bash
-$ redis-cli HSET myhash field1 Hello field2 World field3 bang
+$ redis-cli HSET myhash field1 Hello field2 World field3 bigbang
+(integer) 3
 $ redis-cli HSET myhash field2 Universe field4 dot
+(integer) 1
 $ redis-cli HSET myhash a 1 b
+(error) ERR wrong number of arguments for 'hset' command
 ```
 
 The tester will verify that:
 
 - The first `HSET` returns `:3\r\n` — three new fields were added.
 - The second `HSET` returns `:1\r\n` — only `field4` is new; updating `field2` does not count.
-- The last `HSET` returns a RESP error reply. The error message must (case-insensitively) start with `wrong number of arguments` and contain `hset`. The exact wording is not asserted.
+- The last `HSET` returns a RESP error reply.
 
 ### Notes
 

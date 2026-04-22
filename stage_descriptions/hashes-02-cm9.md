@@ -1,8 +1,8 @@
-In this stage, you'll implement the `HSET` command.
+In this stage, you'll write the implementation for the `HSET` command.
 
 ### `HSET` with one pair
 
-`HSET` returns the number of fields newly added to the hash. With a single field/value pair:
+The `HSET` command returns the number of fields newly added to the hash. With a single field/value pair:
 
 - If the field did not exist before, the reply is `1`.
 - If the field already existed and is being overwritten, the reply is `0`.
@@ -33,7 +33,7 @@ It will then send commands such as:
 ```bash
 $ redis-cli HSET myhash field1 Hello
 $ redis-cli HSET myhash field1 World
-$ redis-cli HSET myhash field2 bang
+$ redis-cli HSET myhash field2 bigbang
 ```
 
 The tester will verify that:

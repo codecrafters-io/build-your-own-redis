@@ -1,14 +1,14 @@
-In this stage, you'll add support for the [`HSET`](https://redis.io/docs/latest/commands/hset/) command.
+In this stage, you'll add support for the `HSET` command.
 
 ### The `HSET` Command
 
-`HSET` sets the value of a field in a hash stored at a key. Its syntax is:
+The [`HSET`](https://redis.io/docs/latest/commands/hset/) command is used to set the value of a field in a hash stored at a key. Its syntax is:
 
 ```
 HSET key field value
 ```
 
-The reply is a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of fields that were newly added by the call.
+The reply is a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers): the number of fields that are newly added by the call.
 
 In this stage, you only need to acknowledge the command. The tester will only call `HSET` with a single field/value pair on a fresh key, so the correct reply is always `1`.
 

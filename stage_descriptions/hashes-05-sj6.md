@@ -2,7 +2,7 @@ In this stage, you'll add support for the [`HEXISTS`](https://redis.io/docs/late
 
 ### The `HEXISTS` Command
 
-`HEXISTS` checks whether a field is present in a hash. The reply is a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers):
+The `HEXISTS` command checks whether a field is present in a hash. The reply is a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers):
 
 - `1` if the field exists in the hash.
 - `0` if the field is missing, or the key itself does not exist.
@@ -12,7 +12,7 @@ In this stage, you'll add support for the [`HEXISTS`](https://redis.io/docs/late
 (integer) 1
 > HEXISTS myhash field1
 (integer) 1
-> HEXISTS myhash nofield
+> HEXISTS myhash missing_field
 (integer) 0
 > HEXISTS nokey field1
 (integer) 0
@@ -31,7 +31,7 @@ It will then send commands such as:
 ```bash
 $ redis-cli HSET myhash field1 Hello
 $ redis-cli HEXISTS myhash field1
-$ redis-cli HEXISTS myhash nofield
+$ redis-cli HEXISTS myhash missing_field
 $ redis-cli HEXISTS nokey field1
 ```
 

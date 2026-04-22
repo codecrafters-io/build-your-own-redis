@@ -885,13 +885,13 @@ stages:
     primary_extension_slug: "hashes"
     name: "HSET (stub)"
     difficulty: very_easy
-    marketing_md: In this stage, you'll add a minimal stub for the `HSET` command that always replies with `1`.
+    marketing_md: In this stage, you'll add support for the `HSET` command.
 
   - slug: "cm9"
     primary_extension_slug: "hashes"
     name: "HSET with one pair"
     difficulty: easy
-    marketing_md: In this stage, you'll make `HSET` actually store the field/value, returning `1` for new fields and `0` for updates.
+    marketing_md: In this stage, you'll write the implementation for the `HSET` command.
 
   - slug: "fv3"
     primary_extension_slug: "hashes"
@@ -901,7 +901,7 @@ stages:
 
   - slug: "hu7"
     primary_extension_slug: "hashes"
-    name: "HSET on a wrong-typed key"
+    name: "WRONGTYPE error"
     difficulty: easy
     marketing_md: In this stage, you'll add type checking to the `HSET` command.
 
@@ -909,7 +909,7 @@ stages:
     primary_extension_slug: "hashes"
     name: "The HEXISTS command"
     difficulty: easy
-    marketing_md: In this stage, you'll add support for the `HEXISTS` command, which checks whether a field is present in a hash.
+    marketing_md: In this stage, you'll add support for the `HEXISTS` command.
 
   - slug: "gv5"
     primary_extension_slug: "hashes"
@@ -933,7 +933,7 @@ stages:
     primary_extension_slug: "hashes"
     name: "The HSETNX command"
     difficulty: easy
-    marketing_md: In this stage, you'll add support for the `HSETNX` command, which sets a field only if it does not already exist.
+    marketing_md: In this stage, you'll add support for the `HSETNX` command.
 
   # Pub-Sub
   - slug: "mx3"

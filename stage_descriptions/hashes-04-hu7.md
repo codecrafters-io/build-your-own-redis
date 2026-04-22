@@ -10,10 +10,6 @@ WRONGTYPE Operation against a key holding the wrong kind of value
 
 The error is sent as a [RESP simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors), and crucially the error prefix is `WRONGTYPE`, not `ERR`:
 
-```
--WRONGTYPE Operation against a key holding the wrong kind of value\r\n
-```
-
 The key is left unchanged after the error — `HSET` must not overwrite the string with a hash, and must not modify it in any way.
 
 ```bash

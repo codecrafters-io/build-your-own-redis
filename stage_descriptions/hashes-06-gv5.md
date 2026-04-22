@@ -11,7 +11,7 @@ If the key does not exist, the reply is `0`.
 (integer) 2
 > HLEN myhash
 (integer) 2
-> HLEN nokey
+> HLEN missing_key
 (integer) 0
 ```
 
@@ -28,7 +28,7 @@ It will then send commands such as:
 ```bash
 $ redis-cli HSET myhash field1 Hello field2 World
 $ redis-cli HLEN myhash
-$ redis-cli HLEN nokey
+$ redis-cli HLEN missing_key
 ```
 
 The tester will verify that:
