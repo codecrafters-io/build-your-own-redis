@@ -39,9 +39,9 @@ $ redis-cli HSET myhash field2 bigbang
 The tester will verify that:
 
 - The first `HSET` returns `:1\r\n` (the field is new).
-- The second `HSET` on the same field returns `:0\r\n` (the field already exists; it is updated, not added).
+- The second `HSET` on the same field returns `:0\r\n` (the field already exists - it is updated, not added).
 - The third `HSET` on a different field on the same key returns `:1\r\n`.
 
 ### Notes
 
-- Each `HSET` in this stage still uses exactly one field/value pair. Multiple pairs in a single call are covered in a later stage.
+- Each `HSET` in this stage still uses exactly one field/value pair. Multiple pairs in a single call are covered in later stages.

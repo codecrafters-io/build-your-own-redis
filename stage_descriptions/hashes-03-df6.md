@@ -44,7 +44,7 @@ $ redis-cli HSET myhash a 1 b
 The tester will verify that:
 
 - The first `HSET` returns `:3\r\n` — three new fields were added.
-- The second `HSET` returns `:1\r\n` — only `field4` is new; updating `field2` does not count.
+- The second `HSET` returns `:1\r\n` — only `field4` is new - updating `field2` does not count.
 - The last `HSET` returns a RESP error reply.
 
 ### Notes

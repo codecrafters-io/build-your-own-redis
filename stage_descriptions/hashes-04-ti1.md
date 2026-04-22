@@ -49,4 +49,4 @@ The tester will verify that:
 
 - The error prefix is `WRONGTYPE`, not `ERR`.
 
-- `HSET` on a missing key (no existing value) must still succeed and create a hash, exactly like in the previous stage.
+- `HSET` on a missing key must still succeed and create a hash, exactly like in earlier stages.
