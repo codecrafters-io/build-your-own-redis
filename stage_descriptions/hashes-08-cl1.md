@@ -5,9 +5,9 @@ In this stage, you'll add support for fetching multiple fields in one call using
 The [`HMGET`](https://redis.io/docs/latest/commands/hmget/) command returns the values of the specified fields, in the same order they were requested. Missing fields are returned as `nil`. If the key does not exist, every position in the reply is `nil`.
 
 ```bash
-> HSET myhash field1 "Hello" field2 "World"
+> HSET hash_key field1 "Hello" field2 "World"
 (integer) 2
-> HMGET myhash field1 missing_field field2
+> HMGET hash_key field1 missing_field field2
 1) "Hello"
 2) (nil)
 3) "World"
@@ -30,14 +30,14 @@ The tester will execute your program like this:
 It will then send commands such as:
 
 ```bash
-$ redis-cli HSET myhash field1 Hello field2 World
-$ redis-cli HMGET myhash field1 missing_field field2
+$ redis-cli HSET hash_key field1 Hello field2 World
+$ redis-cli HMGET hash_key field1 missing_field field2
 $ redis-cli HMGET missing_key f1 f2
 ```
 
 The tester will verify that:
 
-- The reply to `HMGET myhash field1 missing_field field2` is a RESP array of length `3`, in this exact order: `Hello`, nil bulk string, `World`.
+- The reply to `HMGET hash_key field1 missing_field field2` is a RESP array of length `3`, in this exact order: `Hello`, nil bulk string, `World`.
 - The reply to `HMGET missing_key f1 f2` is a RESP array of length `2`, with both elements as nil bulk strings (`$-1\r\n`).
 - Missing fields are encoded as nil bulk strings, not as empty bulk strings (`$0\r\n\r\n`) and not omitted from the array.
 

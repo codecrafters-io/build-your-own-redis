@@ -12,15 +12,15 @@ Each pair is applied in order. If a field already exists, its value is overwritt
 
 ```bash
 # All three fields are new
-> HSET myhash field1 Hello field2 World field3 Foo
+> HSET hash_key field1 Hello field2 World field3 Foo
 (integer) 3
 
 # field2 is updated; field4 is new
-> HSET myhash field2 Universe field4 Bar
+> HSET hash_key field2 Universe field4 Bar
 (integer) 1
 ```
 
-If the number of arguments after the key is not even (e.g. `HSET myhash a 1 b`), `HSET` must reply with a RESP error whose message indicates a wrong number of arguments for the `HSET` command.
+If the number of arguments after the key is not even (e.g. `HSET hash_key a 1 b`), `HSET` must reply with a RESP error whose message indicates a wrong number of arguments for the `HSET` command.
 
 ### Tests
 
@@ -33,18 +33,18 @@ The tester will execute your program like this:
 It will then send commands such as:
 
 ```bash
-$ redis-cli HSET myhash field1 Hello field2 World field3 bigbang
+$ redis-cli HSET hash_key field1 Hello field2 World field3 bigbang
 (integer) 3
-$ redis-cli HSET myhash field2 Universe field4 dot
+$ redis-cli HSET hash_key field2 Universe field4 dot
 (integer) 1
-$ redis-cli HSET myhash a 1 b
+$ redis-cli HSET hash_key a 1 b
 (error) ERR wrong number of arguments for 'hset' command
 ```
 
 The tester will verify that:
 
 - The first `HSET` returns `:3\r\n` — three new fields were added.
-- The second `HSET` returns `:1\r\n` — only `field4` is new - updating `field2` does not count.
+- The second `HSET` returns `:1\r\n` — only `field4` is new and `field2` is being updated.
 - The last `HSET` returns a RESP error reply.
 
 ### Notes

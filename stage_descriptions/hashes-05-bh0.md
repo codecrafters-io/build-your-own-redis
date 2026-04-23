@@ -8,11 +8,11 @@ The [`HEXISTS`](https://redis.io/docs/latest/commands/hexists/) command checks w
 - `0` if the field is missing, or the key itself does not exist.
 
 ```bash
-> HSET myhash field1 "Hello"
+> HSET hash_key field1 "Hello"
 (integer) 1
-> HEXISTS myhash field1
+> HEXISTS hash_key field1
 (integer) 1
-> HEXISTS myhash missing_field
+> HEXISTS hash_key missing_field
 (integer) 0
 > HEXISTS nokey field1
 (integer) 0
@@ -29,14 +29,14 @@ The tester will execute your program like this:
 It will then send commands such as:
 
 ```bash
-$ redis-cli HSET myhash field1 Hello
-$ redis-cli HEXISTS myhash field1
-$ redis-cli HEXISTS myhash missing_field
+$ redis-cli HSET hash_key field1 Hello
+$ redis-cli HEXISTS hash_key field1
+$ redis-cli HEXISTS hash_key missing_field
 $ redis-cli HEXISTS nokey field1
 ```
 
 The tester will verify that:
 
-- `HEXISTS myhash field1` returns `:1\r\n`.
-- `HEXISTS myhash nofield` returns `:0\r\n`.
+- `HEXISTS hash_key field1` returns `:1\r\n`.
+- `HEXISTS hash_key missing_field` returns `:0\r\n`.
 - `HEXISTS nokey field1` returns `:0\r\n`.

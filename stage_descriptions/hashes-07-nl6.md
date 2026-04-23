@@ -8,13 +8,13 @@ The [`HGET`](https://redis.io/docs/latest/commands/hget/) command returns the va
 - If the field does not exist, or the key does not exist, the reply is a [RESP nil bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) (`$-1\r\n`).
 
 ```bash
-> HSET myhash field1 "Hello"
+> HSET hash_key field1 "Hello"
 (integer) 1
 
-> HGET myhash field1
+> HGET hash_key field1
 "Hello"
 
-> HGET myhash missing_field
+> HGET hash_key missing_field
 (nil)
 
 > HGET missing_key field1
@@ -32,14 +32,14 @@ The tester will execute your program like this:
 It will then send commands such as:
 
 ```bash
-$ redis-cli HSET myhash field1 Hello
-$ redis-cli HGET myhash field1
-$ redis-cli HGET myhash missing_field
+$ redis-cli HSET hash_key field1 Hello
+$ redis-cli HGET hash_key field1
+$ redis-cli HGET hash_key missing_field
 $ redis-cli HGET missing_key field1
 ```
 
 The tester will verify that:
 
-- `HGET myhash field1` returns the bulk string `Hello` (encoded as `$5\r\nHello\r\n`).
-- `HGET myhash missing_field` returns a RESP nil bulk string (`$-1\r\n`).
+- `HGET hash_key field1` returns the bulk string `Hello` (encoded as `$5\r\nHello\r\n`).
+- `HGET hash_key missing_field` returns a RESP nil bulk string (`$-1\r\n`).
 - `HGET missing_key field1` returns a RESP nil bulk string (`$-1\r\n`).
