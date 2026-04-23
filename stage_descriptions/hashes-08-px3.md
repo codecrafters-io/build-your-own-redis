@@ -1,8 +1,8 @@
-In this stage, you'll add support for the [`HSETNX`](https://redis.io/docs/latest/commands/hsetnx/) command.
+In this stage, you'll add support for the `HSETNX` command.
 
 ### The `HSETNX` Command
 
-`HSETNX` sets a single field to a value, but only when the field does not already exist in the hash. If the key does not exist, a new hash is created.
+[`HSETNX`](https://redis.io/docs/latest/commands/hsetnx/) sets a single field to a value, but only when the field does not already exist in the hash. If the key does not exist, a new hash is created.
 
 ```bash
 > HSETNX myhash field1 Hello

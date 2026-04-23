@@ -1,8 +1,8 @@
-In this stage, you'll add support for fetching multiple fields in one call using the [`HMGET`](https://redis.io/docs/latest/commands/hmget/) command.
+In this stage, you'll add support for fetching multiple fields in one call using the `HMGET` command.
 
 ### The `HMGET` Command
 
-The `HMGET` command returns the values of the specified fields, in the same order they were requested. Missing fields are returned as `nil`. If the key does not exist, every position in the reply is `nil`.
+The [`HMGET`](https://redis.io/docs/latest/commands/hmget/) command returns the values of the specified fields, in the same order they were requested. Missing fields are returned as `nil`. If the key does not exist, every position in the reply is `nil`.
 
 ```bash
 > HSET myhash field1 "Hello" field2 "World"

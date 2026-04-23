@@ -1,8 +1,8 @@
-In this stage, you'll add support for reading a single field from a hash using the [`HGET`](https://redis.io/docs/latest/commands/hget/) command.
+In this stage, you'll add support for reading a single field from a hash using the `HGET` command.
 
 ### The `HGET` Command
 
-The `HGET` command returns the value associated with a field in a hash.
+The [`HGET`](https://redis.io/docs/latest/commands/hget/) command returns the value associated with a field in a hash.
 
 - If the field exists, the reply is a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) with the value.
 - If the field does not exist, or the key does not exist, the reply is a [RESP nil bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) (`$-1\r\n`).

@@ -883,25 +883,25 @@ stages:
   # Hashes
   - slug: "xb1"
     primary_extension_slug: "hashes"
-    name: "HSET (stub)"
+    name: "The HSET command"
     difficulty: very_easy
     marketing_md: In this stage, you'll add support for the `HSET` command.
 
   - slug: "xg0"
     primary_extension_slug: "hashes"
-    name: "HSET with one pair"
+    name: "Storing one field"
     difficulty: easy
     marketing_md: In this stage, you'll write the implementation for the `HSET` command.
 
   - slug: "df6"
     primary_extension_slug: "hashes"
-    name: "HSET with multiple pairs"
+    name: "Storing multiple fields"
     difficulty: easy
     marketing_md: In this stage, you'll extend `HSET` to accept multiple field/value pairs in a single call.
 
   - slug: "ti1"
     primary_extension_slug: "hashes"
-    name: "WRONGTYPE error"
+    name: "The WRONGTYPE error"
     difficulty: easy
     marketing_md: In this stage, you'll add type checking to the `HSET` command.
 

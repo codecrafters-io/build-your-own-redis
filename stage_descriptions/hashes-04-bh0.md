@@ -1,8 +1,8 @@
-In this stage, you'll add support for the [`HEXISTS`](https://redis.io/docs/latest/commands/hexists/) command.
+In this stage, you'll add support for the `HEXISTS` command.
 
 ### The `HEXISTS` Command
 
-The `HEXISTS` command checks whether a field is present in a hash. The reply is a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers):
+The [`HEXISTS`](https://redis.io/docs/latest/commands/hexists/) command checks whether a field is present in a hash. The reply is a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers):
 
 - `1` if the field exists in the hash.
 - `0` if the field is missing, or the key itself does not exist.

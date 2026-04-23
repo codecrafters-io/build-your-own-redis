@@ -1,8 +1,8 @@
-In this stage, you'll add support for the [`HLEN`](https://redis.io/docs/latest/commands/hlen/) command.
+In this stage, you'll add support for the `HLEN` command.
 
 ### The `HLEN` Command
 
-`HLEN` returns the number of fields contained in the hash stored at the key. The reply is a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+[`HLEN`](https://redis.io/docs/latest/commands/hlen/) returns the number of fields contained in the hash stored at the key. The reply is a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 If the key does not exist, the reply is `0`.
 
