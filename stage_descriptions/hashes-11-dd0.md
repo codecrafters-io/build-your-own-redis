@@ -51,7 +51,3 @@ The tester will verify that:
 
 - After `HDEL` removes the last field, `EXISTS hash_key` returns `0`.
 - When multiple fields are deleted in one `HDEL` call and all remaining fields are removed, the key is also deleted.
-
-### Notes
-
-- Your implementation must still pass all previous hashes stages.

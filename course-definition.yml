@@ -881,6 +881,12 @@ stages:
     marketing_md: In this stage, you will add support for a non-zero timeout duration for the `BLPOP` command.
 
   # Hashes
+  - slug: "oy3"
+    primary_extension_slug: "hashes"
+    name: "The EXISTS command"
+    difficulty: very_easy
+    marketing_md: In this stage, you'll add support for the `EXISTS` command.
+
   - slug: "xb1"
     primary_extension_slug: "hashes"
     name: "The HSET command"
@@ -898,12 +904,6 @@ stages:
     name: "Storing multiple fields"
     difficulty: easy
     marketing_md: In this stage, you'll extend `HSET` to accept multiple field/value pairs in a single call.
-
-  - slug: "ti1"
-    primary_extension_slug: "hashes"
-    name: "The WRONGTYPE error"
-    difficulty: easy
-    marketing_md: In this stage, you'll add type checking to the `HSET` command.
 
   - slug: "bh0"
     primary_extension_slug: "hashes"
@@ -934,6 +934,18 @@ stages:
     name: "The HSETNX command"
     difficulty: easy
     marketing_md: In this stage, you'll add support for the `HSETNX` command.
+
+  - slug: "dt9"
+    primary_extension_slug: "hashes"
+    name: "The HDEL command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for the `HDEL` command.
+
+  - slug: "dd0"
+    primary_extension_slug: "hashes"
+    name: "Deleting key automatically"
+    difficulty: easy
+    marketing_md: In this stage, you'll handle automatic key deletion when all fields are removed from a hash.
 
   # Pub-Sub
   - slug: "mx3"

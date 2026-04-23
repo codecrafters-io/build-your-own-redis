@@ -18,7 +18,7 @@ In this stage, you'll add support for the `HDEL` command.
 (integer) 1          # field2 removed, field3 didn't exist
 ```
 
-If the key doesn't exist at all, `HDEL` treats it returns `0`:
+If the key doesn't exist at all, `HDEL` returns `0`:
 
 ```bash
 > HDEL missing_key field1
@@ -50,7 +50,3 @@ The tester will verify that:
 - `HDEL` on a field that doesn't exist returns `:0\r\n` without error.
 - `HDEL` with multiple fields returns the count of fields actually removed (non-existent fields are not counted).
 - `HDEL` on a non-existent key returns `:0\r\n`.
-
-### Notes
-
-- Your implementation must still pass all previous hashes stages.
