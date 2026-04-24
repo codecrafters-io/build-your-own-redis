@@ -124,6 +124,18 @@ extensions:
       [rpush-command]: https://redis.io/docs/latest/commands/rpush/
       [lrange-command]: https://redis.io/docs/latest/commands/lrange/
 
+  - slug: "hashes"
+    name: "Hashes"
+    description_markdown: |-
+      In this challenge extension you'll add support for [Hashes][redis-hashes] to your Redis implementation.
+
+      Along the way, you'll learn commands like [HSET][hset-command], [HGET][hget-command], [HMGET][hmget-command], and more.
+
+      [redis-hashes]: https://redis.io/docs/latest/develop/data-types/hashes/
+      [hset-command]: https://redis.io/docs/latest/commands/hset/
+      [hget-command]: https://redis.io/docs/latest/commands/hget/
+      [hmget-command]: https://redis.io/docs/latest/commands/hmget/
+
   - slug: "streams"
     name: "Streams"
     description_markdown: |-
@@ -867,6 +879,73 @@ stages:
     name: "Blocking retrieval with timeout"
     difficulty: medium
     marketing_md: In this stage, you will add support for a non-zero timeout duration for the `BLPOP` command.
+
+  # Hashes
+  - slug: "oy3"
+    primary_extension_slug: "hashes"
+    name: "The EXISTS command"
+    difficulty: very_easy
+    marketing_md: In this stage, you'll add support for the `EXISTS` command.
+
+  - slug: "xb1"
+    primary_extension_slug: "hashes"
+    name: "The HSET command"
+    difficulty: very_easy
+    marketing_md: In this stage, you'll add support for the `HSET` command.
+
+  - slug: "xg0"
+    primary_extension_slug: "hashes"
+    name: "Storing one field"
+    difficulty: easy
+    marketing_md: In this stage, you'll write the implementation for the `HSET` command.
+
+  - slug: "df6"
+    primary_extension_slug: "hashes"
+    name: "Storing multiple fields"
+    difficulty: easy
+    marketing_md: In this stage, you'll extend `HSET` to accept multiple field/value pairs in a single call.
+
+  - slug: "bh0"
+    primary_extension_slug: "hashes"
+    name: "The HEXISTS command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for the `HEXISTS` command.
+
+  - slug: "gm0"
+    primary_extension_slug: "hashes"
+    name: "The HLEN command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for the `HLEN` command.
+
+  - slug: "nl6"
+    primary_extension_slug: "hashes"
+    name: "The HGET command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for reading a single field from a hash using the `HGET` command.
+
+  - slug: "cl1"
+    primary_extension_slug: "hashes"
+    name: "The HMGET command"
+    difficulty: medium
+    marketing_md: In this stage, you'll add support for fetching multiple fields in one call using the `HMGET` command.
+
+  - slug: "px3"
+    primary_extension_slug: "hashes"
+    name: "The HSETNX command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for the `HSETNX` command.
+
+  - slug: "dt9"
+    primary_extension_slug: "hashes"
+    name: "The HDEL command"
+    difficulty: easy
+    marketing_md: In this stage, you'll add support for the `HDEL` command.
+
+  - slug: "dd0"
+    primary_extension_slug: "hashes"
+    name: "Deleting key automatically"
+    difficulty: easy
+    marketing_md: In this stage, you'll handle automatic key deletion when all fields are removed from a hash.
 
   # Pub-Sub
   - slug: "mx3"
