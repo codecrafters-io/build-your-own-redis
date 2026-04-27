@@ -38,7 +38,7 @@ languages:
   - slug: "scala"
   - slug: "swift"
     release_status: "alpha"
-    alpha_tester_usernames: ["JWShroyer", "defmacro-jam"]
+    alpha_tester_usernames: ["JWShroyer", "defmacro-jam", "thibault-ml"]
   - slug: "zig"
 
 marketing:
@@ -176,7 +176,7 @@ extensions:
 
       [redis-persistence]: https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/
       [rdb-file-format]: https://github.com/sripathikrishnan/redis-rdb-tools/blob/548b11ec3c81a603f5b321228d07a61a0b940159/docs/RDB_File_Format.textile
-    
+
   - slug: "persistence-aof"
     name: "AOF Persistence"
     description_markdown: |
@@ -380,7 +380,7 @@ stages:
     difficulty: medium
     marketing_md: |
       In this stage, you'll add support for reading values that have an expiry set.
-    
+
   # AOF Persistence
 
   - slug: "uj3"
