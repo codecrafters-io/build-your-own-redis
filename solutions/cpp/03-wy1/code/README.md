@@ -13,11 +13,11 @@ event loops, the Redis protocol and more.
 # Passing the first stage
 
 The entry point for your Redis implementation is in `src/main.cpp`. Study and
-uncomment the relevant code, and push your changes to pass the first stage:
+uncomment the relevant code, then run the command below to execute the tests on
+our servers:
 
 ```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
+codecrafters submit
 ```
 
 That's all!
@@ -29,5 +29,5 @@ Note: This section is for stages 2 and beyond.
 1. Ensure you have `cmake` installed locally
 1. Run `./your_program.sh` to run your Redis server, which is implemented in
    `src/main.cpp`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+1. Run `codecrafters submit` to submit your solution to CodeCrafters. Test
+   output will be streamed to your terminal.
