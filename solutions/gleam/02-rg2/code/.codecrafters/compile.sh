@@ -9,3 +9,4 @@
 set -e # Exit on failure
 
 gleam build
+gleam run -m gleescript
