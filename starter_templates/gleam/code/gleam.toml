@@ -1,4 +1,4 @@
-name = "codecrafters_redis"
+name = "main"
 version = "1.0.0"
 
 # For a full reference of all the available options, you can have a look at
@@ -11,4 +11,5 @@ gleam_otp = "~> 0.10"
 glisten = "~> 2.0"
 
 [dev-dependencies]
+gleescript = ">= 1.4.0 and < 2.0.0"
 gleeunit = "~> 1.0"
