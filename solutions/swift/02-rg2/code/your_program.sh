@@ -14,6 +14,7 @@ set -e # Exit early if any commands fail
 # - Edit .codecrafters/compile.sh to change how your program compiles remotely
 (
   cd "$(dirname "$0")" # Ensure compile steps are run within the repository directory
+  .codecrafters/restore_mtimes.sh || true
   swift build -c release --build-path /tmp/codecrafters-build-redis-swift
 )
 
