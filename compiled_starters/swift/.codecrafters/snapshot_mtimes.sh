@@ -85,11 +85,12 @@ for root in "${ROOTS[@]}"; do
     continue
   fi
 
-  # -P means do not follow symlinks.
-  # -print0 includes hidden files automatically and is safe for unusual paths.
+  # `-P` means do not follow symlinks.
+  # `-type d -name '.git*' -prune` skips .git and .github directories which we don't need to snapshot.
+  # `-print0` includes hidden files automatically and is safe for unusual paths.
   while IFS= read -r -d '' path; do
     save_one_path "$path"
-  done < <(find -P "$root" -print0)
+  done < <(find -P "$root" -type d -name '.git*' -prune -o -print0)
 done
 
 mv "$tmp_out" "$OUT"
