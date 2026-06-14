@@ -19,7 +19,11 @@ set -e # Exit on failure
 # development).
 .codecrafters/restore_mtimes.sh || true
 
-swift build -c release --build-path /tmp/codecrafters-build-redis-swift
+# Build with a pinned CPU count so the Swift compile commands (and therefore
+# llbuild's command signatures) are identical between the image-build host and
+# the test runner, which have different core counts. Without this, every run
+# rebuilds the whole module graph. See swift_build.sh and cpushim.c.
+.codecrafters/swift_build.sh
 
 # Snapshot the mtimes of all source and build files after a successful build.
 # The next build—possibly in a new container created from an image of this
