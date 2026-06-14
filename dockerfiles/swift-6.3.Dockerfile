@@ -15,9 +15,14 @@ COPY .codecrafters /app/.codecrafters
 # Pre-build the dependencies (swift-nio etc.) against a stub source file. If
 # the stub doesn't match the package's target layout the build fails, which is
 # fine: compile.sh below will then do the full build instead.
+#
+# Use the same swift_build.sh as compile.sh (pinned CPU count), so this build
+# and the per-submit build emit identical compile commands. Without this,
+# Swift PM would re-derive the whole graph at a different core count, thereby
+# preventing incremental builds. See swift_build.sh / cpushim.c.
 RUN (mkdir -p Sources \
     && echo '// stub' > Sources/main.swift \
-    && swift build -c release --build-path /tmp/codecrafters-build-redis-swift) \
+    && .codecrafters/swift_build.sh) \
     || true
 RUN rm -rf Sources
 
