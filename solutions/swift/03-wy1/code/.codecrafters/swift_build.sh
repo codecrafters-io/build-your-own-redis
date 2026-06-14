@@ -22,7 +22,7 @@ set -e
 # oversubscription on the test runners. If you need to speed up the infrequent
 # dependency/image builds, you can raise it toward the image-build host's core
 # count. Test runs remain incremental either way.
-NCPUS=4
+NCPUS=1
 
 dir="$(dirname "$0")"
 SHIM=/tmp/codecrafters-cpushim.so
