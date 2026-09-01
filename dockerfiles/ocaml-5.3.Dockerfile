@@ -8,7 +8,7 @@ ENV OPAMROOT /home/opam/.opam
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="dune,dune-project"
 
 # Change to root user. All other images seem to use root, so let's do the same here
-# hadolint ignore=DL3002
+# hadolint ignore=DL3002,DL3066
 USER root
 
 # Install dune

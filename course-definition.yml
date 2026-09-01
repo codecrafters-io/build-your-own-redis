@@ -209,6 +209,19 @@ extensions:
       [zadd-command]: https://redis.io/docs/latest/commands/zadd/
       [zrange-command]: https://redis.io/docs/latest/commands/zrange/
 
+  - slug: "bitmaps"
+    name: "Bitmaps"
+    description_markdown: |
+      In this challenge extension you'll add support for [Bitmaps][redis-bitmap] to your Redis implementation.
+
+      Along the way, you'll learn commands like [SETBIT][setbit-command], [GETBIT][getbit-command], [BITCOUNT][bitcount-command], and more.
+
+      [redis-bitmap]: https://redis.io/docs/latest/develop/data-types/bitmaps/
+      [setbit-command]: https://redis.io/docs/latest/commands/setbit/
+      [getbit-command]: https://redis.io/docs/latest/commands/getbit/
+      [bitcount-command]: https://redis.io/docs/latest/commands/bitcount/
+
+
   - slug: "geospatial"
     name: "Geospatial Commands"
     description_markdown: |
@@ -968,6 +981,35 @@ stages:
     difficulty: easy
     marketing_md: |
       In this stage, you'll add support for removing a member of a sorted set using the `ZREM` command.
+
+  # Bitmaps 
+  - slug: "bq9"
+    primary_extension_slug: "bitmaps"
+    name: "Create a bitmap"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for creating a bitmap using the [`SETBIT`](https://redis.io/docs/latest/commands/setbit/) command.
+
+  - slug: "qj1"
+    primary_extension_slug: "bitmaps"
+    name: "Retrieve a bit"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for retrieving a bit in a bitmap using the [`GETBIT`](https://redis.io/docs/latest/commands/getbit/) command.
+
+  - slug: "yj2"
+    primary_extension_slug: "bitmaps"
+    name: "Read a string as bits"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for using `GETBIT` on a key created with `SET`.
+
+  - slug: "pk5"
+    primary_extension_slug: "bitmaps"
+    name: "Read bits as a string"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for using `GET` on a key created with `SETBIT`.
 
   # Geospatial Commands
   - slug: "zt4"
