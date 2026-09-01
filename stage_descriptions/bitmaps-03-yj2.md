@@ -4,7 +4,7 @@ In this stage, you'll add support for using `GETBIT` on a key created with `SET`
 
 As bitmaps are strings, bitmap commands work on any string value, including keys created with `SET`.
 
-These two views operate on the same bytes. `SET` writes the string; `GETBIT` reads one bit of it.
+These two views operate on the same bytes. `SET` writes the string. `GETBIT` reads one bit of it.
 
 For example, the ASCII character `A` is the byte `01000001`. Offset `0` is the most significant bit of that byte:
 
@@ -57,6 +57,6 @@ The tester will expect the response to be `:0\r\n`.
 
 ### Notes
 
-- In this stage, you'll only need to handle `GETBIT` on a key created with `SET`. Reading a bitmap back with `GET` is covered in the next stage.
+- In this stage, you'll only need to handle `GETBIT` on a key created with `SET`. Reading a bitmap back with `GET` is covered in the later stages.
 - Redis applies `GETBIT` to the string's bytes. Keys created with `SET` and `SETBIT` share that representation. See [the official implementation](https://github.com/redis/redis/blob/e1d7d50f9c244ce52f724b279fcb19773fffa98c/src/bitops.c#L915-L917).
 

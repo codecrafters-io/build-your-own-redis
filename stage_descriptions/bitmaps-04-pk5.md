@@ -2,7 +2,7 @@ In this stage, you'll add support for using `GET` on a key created with `SETBIT`
 
 ### Strings and bitmaps
 
-As bitmaps are strings, string commands work on keys created with `SETBIT`. `SETBIT` writes bits into the string; `GET` returns that string.
+As bitmaps are strings, string commands work on keys created with `SETBIT`. `SETBIT` writes bits into the string. `GET` returns that string.
 
 Offset `0` is the most significant bit of the first byte. Setting bit `1` produces the byte `01000000`, which is the ASCII character `@`:
 
@@ -37,6 +37,6 @@ The tester will expect the response to be `$1\r\n@\r\n`, which is `@` encoded as
 
 ### Notes
 
-- In this stage, you'll only need to handle `GET` on a key created with a single `SETBIT`. Growing the string with a larger offset is covered in the next stage. 
+- In this stage, you'll only need to handle `GET` on a key created with a single `SETBIT`. Growing the string with a larger offset is covered in the later stages. 
 - `GET` returns the string value stored at the key. `SETBIT` writes that value as bytes. Keys created with `SETBIT` and `SET` share that representation.
 

@@ -1000,7 +1000,7 @@ stages:
   - slug: "yj2"
     primary_extension_slug: "bitmaps"
     name: "Read a string as bits"
-    difficulty: easy
+    difficulty: medium
     marketing_md: |
       In this stage, you'll add support for using `GETBIT` on a key created with `SET`.
 
