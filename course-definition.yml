@@ -1011,7 +1011,7 @@ stages:
     marketing_md: |
       In this stage, you'll add support for using `GET` on a key created with `SETBIT`.
 
-  - slug: "tz1"
+  - slug: "yf6"
     primary_extension_slug: "bitmaps"
     name: "Grow a bitmap"
     difficulty: easy
