@@ -17,11 +17,11 @@ In this example, we have two bitmaps: `key1` is `10001000` and `key2` is `100000
 (integer) 1
 ```
 
-After performing a `BITOP OR` operation on `key1` and `key2`, we get another bitmap `dest` with the value `10001010`. Bits `0`, `4`, and `6` are set in at least one source.
+After performing a `BITOP OR` operation on `key1` and `key2`, we get another bitmap `dest` with the value `10001010` because bits `0`, `4`, and `6` are set in at least one source.
 
 `BITOP` returns the length of the destination string in bytes. Here that is `1`.
 
-When the source strings have different lengths, Redis treats the shorter ones as if they were padded with zeros up to the length of the longest string. 
+When the source strings have different lengths, Redis treats the shorter ones as if they were padded with zeros up to the length of the longest string.
 
 In this example, we have two bitmaps: `key1` is `01000000 00100000` (2 bytes) and `key2` is `01000000` (1 byte).
 
@@ -34,7 +34,7 @@ In this example, we have two bitmaps: `key1` is `01000000 00100000` (2 bytes) an
 (integer) 1
 ```
 
-`key2` is treated as `01000000 00000000`. Bit `10` is set in `key1` and padded to `0` in `key2`, so it is set in the destination. `dest` holds `01000000 00100000`. `BITOP` returns `2`, the length of the longest source.
+`key2` is treated as `01000000 00000000`. Bit `10` is set in `key1` and padded to `0` in `key2`, so it is set in the destination. `dest` holds `01000000 00100000`. `BITOP` returns `2`, the length of the destination.
 
 ### Tests
 
@@ -95,5 +95,5 @@ The tester will expect the response to be `:1\r\n`.
 
 ### Notes
 
-- In this stage, you'll only need to handle `BITOP OR` with two source keys. We won't deal with more than two sources in this challenge.
+- `BITOP` also supports other [operations](https://redis.io/docs/latest/commands/bitop/) like `XOR` and `NOT`, but we won't deal with them in this challenge.
 

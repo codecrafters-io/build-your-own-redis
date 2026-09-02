@@ -73,6 +73,6 @@ The tester will expect the response to be `:2\r\n`.
 
 ### Notes
 
-- In this stage, you'll only need to handle creating or growing a key by a small offset (creating the key if it does not exist). You won't need to handle out-of-range offsets, or `SETBIT` on a bit that is already `1`.
+- In this stage, you'll only need to handle creating or growing a key by a small offset (creating the key if it does not exist). You won't need to handle out-of-range offsets.
 - `STRLEN` returns the string's length in bytes. If the key does not exist, `STRLEN` returns `0`.
 

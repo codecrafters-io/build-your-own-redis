@@ -60,5 +60,5 @@ In this case, your program should also respond with `:0\r\n`.
 
 ### Notes
 
-- In this stage, you only need to handle `GETBIT` for a bit you just set with `SETBIT`, an unset offset on that key, and a missing key. Offsets beyond the current string length also return `0`
+- Using `GETBIT` with an offset beyond the current string length should return `0`.
 
