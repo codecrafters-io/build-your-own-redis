@@ -65,5 +65,5 @@ The tester will expect the response to be `:0\r\n`.
 ### Notes
 
 - In this stage, you'll only need to handle `BITOP AND` with two source keys of the same length. Combining bitmaps of different lengths is covered in later stages.
-- `BITOP` also supports other operations like `OR`, `XOR`, `NOT` as given in the [documentation](https://redis.io/docs/latest/commands/bitop/)). `BITOP OR` operation is covered in later stages.
+- `BITOP` also supports other [operations](https://redis.io/docs/latest/commands/bitop/) like `OR`, `XOR`, and `NOT`. The `BITOP OR` operation is covered in later stages. We won't deal with `XOR` and `NOT` in this challenge.
 

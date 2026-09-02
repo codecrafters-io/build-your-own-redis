@@ -2,7 +2,9 @@ In this stage, you'll add support for using `GET` on a key created with `SETBIT`
 
 ### Strings and bitmaps
 
-As bitmaps are strings, string commands work on keys created with `SETBIT`. `SETBIT` writes bits into the string. `GET` returns that string.
+As bitmaps are strings, string commands work on keys created with `SETBIT`.
+
+These two views operate on the same bytes. `SETBIT` writes bits into the string. `GET` returns that string.
 
 Offset `0` is the most significant bit of the first byte. Setting bit `1` produces the byte `01000000`, which is the ASCII character `@`:
 
