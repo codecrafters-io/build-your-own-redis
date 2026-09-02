@@ -2,7 +2,7 @@ In this stage, you'll add support for retrieving a bit from a bitmap using the `
 
 ### The `GETBIT` Command
 
-The `[GETBIT](https://redis.io/docs/latest/commands/getbit/)` command returns the bit stored at a given `offset` in a bitmap.
+The [GETBIT](https://redis.io/docs/latest/commands/getbit/) command returns the bit stored at a given `offset` in a bitmap.
 
 If the key does not exist, Redis treats the bitmap as all zeros and returns `0` for any offset.
 
@@ -60,5 +60,5 @@ In this case, your program should also respond with `:0\r\n`.
 
 ### Notes
 
-- In this stage, you only need to handle `GETBIT` for a bit you just set with `SETBIT`, an unset offset on that key, and a missing key. Offsets beyond the current string length also return `0` 
+- In this stage, you only need to handle `GETBIT` for a bit you just set with `SETBIT`, an unset offset on that key, and a missing key. Offsets beyond the current string length also return `0`
 
