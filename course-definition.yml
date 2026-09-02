@@ -1011,6 +1011,20 @@ stages:
     marketing_md: |
       In this stage, you'll add support for using `GET` on a key created with `SETBIT`.
 
+  - slug: "tz1"
+    primary_extension_slug: "bitmaps"
+    name: "Grow a bitmap"
+    difficulty: easy
+    marketing_md: |
+      In this stage, you'll add support for growing a bitmap with `SETBIT` and check its length with `STRLEN`.
+
+  - slug: "nx3"
+    primary_extension_slug: "bitmaps"
+    name: "Count set bits"
+    difficulty: medium
+    marketing_md: |
+      In this stage, you'll add support for counting set bits in a bitmap using the [`BITCOUNT`](https://redis.io/docs/latest/commands/bitcount/) command.
+
   # Geospatial Commands
   - slug: "zt4"
     primary_extension_slug: "geospatial"

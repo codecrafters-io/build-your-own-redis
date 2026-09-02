@@ -48,6 +48,6 @@ The tester will verify that the response to the command is `:0\r\n`, which is 0 
 ### Notes
 
 - In this stage, you'll only need to handle `SETBIT` on a new key with a single bit. We'll get to updating existing bitmaps in later stages.
-- Store the bitmap as a string (a byte array). Redis does not have a separate bitmap type. `SETBIT` command creates or grows a string. See `[lookupStringForBitCommand](https://github.com/redis/redis/blob/unstable/src/bitops.c)` in the official implementation.
+- Store the bitmap as a string (a byte array). Redis does not have a separate bitmap type. `SETBIT` command creates or grows a string. See [lookupStringForBitCommand](https://github.com/redis/redis/blob/unstable/src/bitops.c) in the official implementation.
 - Redis treats offset `0` as the most significant bit of the first byte. For example, `SETBIT key 1 1` stores the byte `01000000`. This will matter when you implement `GETBIT` and `BITCOUNT` in later stages.
 
