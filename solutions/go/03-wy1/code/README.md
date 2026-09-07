@@ -26,7 +26,7 @@ That's all!
 
 Note: This section is for stages 2 and beyond.
 
-1. Ensure you have `go (1.26)` installed locally
+1. Ensure you have `go (1.27)` installed locally
 1. Run `./your_program.sh` to run your Redis server, which is implemented in
    `app/main.go`.
 1. Run `codecrafters submit` to submit your solution to CodeCrafters. Test
