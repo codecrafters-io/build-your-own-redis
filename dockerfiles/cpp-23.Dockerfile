@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7-labs
-FROM gcc:15.2.0-trixie
+FROM gcc:16.2.0-trixie
 
 # Ensures the container is re-built if dependency files change
 ENV CODECRAFTERS_DEPENDENCY_FILE_PATHS="CMakeLists.txt,vcpkg.json,vcpkg-configuration.json"
