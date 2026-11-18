@@ -1,6 +1,8 @@
-In this stage, you'll implement the second step of the replication handshake.
+Your replica sends `PING` to the master. In this stage, you'll follow the
+master's response with two `REPLCONF` messages that announce the replica's
+listening port and synchronization capability.
 
-### Handshake (Recap)
+### Handshake progress
 
 As a recap, there are three steps to the handshake:
 
@@ -10,17 +12,28 @@ As a recap, there are three steps to the handshake:
 
 For this stage, you'll handle the second step of this process.
 
-### The `REPLCONF` Command
+### The `REPLCONF` command
 
-The `REPLCONF` command is used to configure a connected replica. After receiving a response to `PING`, the replica sends two `REPLCONF` commands one-by-one, waiting for a response after each.
+The `REPLCONF` command is used to configure a connected replica. After receiving
+a response to `PING`, the replica sends two `REPLCONF` commands one-by-one,
+waiting for a response after each.
 
-1. `REPLCONF listening-port <PORT>`: This tells the master which port the replica is listening on. This value is used for [monitoring and logging](https://github.com/redis/redis/blob/90178712f6eccf1e5b61daa677c5c103114bda3a/src/replication.c#L107-L130), not for replication itself.
-2. `REPLCONF capa psync2`: This notifies the master of the replica's capabilities.
-   - `capa` stands for "capabilities". It indicates that the next argument is a feature the replica supports.
-   - `psync2` signals that the replica supports the PSYNC2 protocol. PSYNC2 is an improved version of the [partial synchronization](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/) feature used to resynchronize a replica with its master.
+1. `REPLCONF listening-port <PORT>`: This tells the master which port the
+   replica is listening on. The master uses it for
+   [monitoring and logging](https://github.com/redis/redis/blob/90178712f6eccf1e5b61daa677c5c103114bda3a/src/replication.c#L107-L130).
+   Replication traffic continues over the connection the replica already opened.
+2. `REPLCONF capa psync2`: This notifies the master of the replica's
+   capabilities.
+   - `capa` stands for "capabilities". It indicates that the next argument is a
+     feature the replica supports.
+   - `psync2` signals that the replica supports the PSYNC2 protocol. PSYNC2 is
+     an improved version of the
+     [partial synchronization](https://redis.io/docs/latest/operate/oss_and_stack/management/replication/)
+     feature used to resynchronize a replica with its master.
    - You can safely hardcode `capa psync2` for now.
 
-Both commands should be sent as RESP arrays, so the exact bytes will look something like this:
+Both commands should be sent as RESP arrays, so the exact bytes will look
+something like this:
 
 ```
 # REPLCONF listening-port <PORT>
@@ -30,7 +43,10 @@ Both commands should be sent as RESP arrays, so the exact bytes will look someth
 *3\r\n$8\r\nREPLCONF\r\n$4\r\ncapa\r\n$6\r\npsync2\r\n
 ```
 
-For both commands, the master will respond with `+OK\r\n`. That's the string `OK` encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings). The replica should wait for this response before sending the next command.
+For both commands, the master will respond with `+OK\r\n`. That's the string
+`OK` encoded as a
+[simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
+The replica should wait for this response before sending the next command.
 
 ### Tests
 
@@ -40,12 +56,9 @@ The tester will execute your program like this:
 ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
 ```
 
-It will then assert that the replica connects to the master and sends the following:
+It will then assert that the replica connects to the master and sends the
+following:
 
 1. The `PING` command
 2. The `REPLCONF` command with `listening-port` and `<PORT>` as the arguments
 3. The `REPLCONF` command with `capa psync2` as the arguments
-
-**Notes**
-
-- The response to `REPLCONF` will always be `+OK\r\n`.

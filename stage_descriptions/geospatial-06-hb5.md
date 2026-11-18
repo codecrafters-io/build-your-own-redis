@@ -1,16 +1,21 @@
-In this stage, you'll add support for decoding the coordinates of a location.
+Your `GEOPOS` returns placeholder coordinates for existing members. In this
+stage, you'll decode each member's stored score so the response reports its
+geographic position.
 
 ### Decoding latitude and longitude from score
 
-The algorithm to get back the latitude and longitude is essentially the reverse of the one used to compute the score from them.
+The score combines latitude and longitude grid indexes. Separating those indexes
+identifies the cell containing the location. Return the center of that cell.
+Encoding discarded some precision, so decoding can't reproduce every original
+coordinate exactly.
 
-The [GitHub repository](https://github.com/codecrafters-io/redis-geocoding-algorithm) we referenced earlier explains how this conversion is done. It includes:
+Use the decoding specification in the
+[geocoding reference](https://github.com/codecrafters-io/redis-geocoding-algorithm).
+It includes:
 
 - A description of the algorithm used, along with pseudocode
 - Code samples in multiple languages.
 - A set of locations & scores to test against
-
-Here's the [repository link](https://github.com/codecrafters-io/redis-geocoding-algorithm).
 
 ### Tests
 
@@ -20,7 +25,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will add multiple locations using the `ZADD` command. The scores used are valid scores that can be converted back to latitude and longitude values.
+It will add multiple locations using `ZADD`, bypassing `GEOADD`. Decode the
+scores themselves rather than relying on previously saved input coordinates.
 
 ```bash
 $ redis-cli
@@ -50,7 +56,9 @@ $17\r\n
 
 ### Notes
 
-- The conversion from latitude/longitude to score and back is lossy, so the tester will be lenient in checking the coordinates provided - it will accept any coordinates that are within 6 decimal places of the original values. For example, for the example shown above, any of the following values will be accepted:
+- The tester accepts an absolute difference of up to `0.000001` degrees from
+  each decoded cell-center coordinate. For the example above, these values are
+  accepted:
   - `["2.2944715", "48.8584625"]`
   - `["2.294472", "48.858463"]`
   - `["2.294471594", "48.858462987"]`

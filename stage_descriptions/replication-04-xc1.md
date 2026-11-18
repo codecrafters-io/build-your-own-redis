@@ -1,21 +1,33 @@
-In this stage, you'll extend your `INFO` command to return the `master_replid` and `master_repl_offset` values.
+Your `INFO` response identifies the server's role. In this stage, you'll add
+`master_replid` and `master_repl_offset` to identify the master's replication
+history and the position reached within it.
 
-### The Replication ID and Offset
+### The replication ID and offset
 
-Every Redis master maintains two key pieces of information for managing replication: the **replication ID** and the **replication offset**.
+Every Redis master maintains two key pieces of information for managing
+replication: the **replication ID** and the **replication offset**.
 
-The replication ID is a large pseudo-random string. This ID identifies the current history of the master's dataset. When a master server boots for the first time or restarts, it resets its ID.
+The replication ID identifies a history of changes to the master's dataset. An
+offset is meaningful only alongside the ID of the history it belongs to. A newly
+initialized master starts a new history.
 
-The replication offset tracks the number of bytes of commands the master has streamed to its replicas. This value is used to update the state of the replicas with changes made to the dataset. The offset starts at `0` when a master boots up and no replicas have connected yet.
+The replication offset tracks the number of bytes of commands the master has
+streamed to its replicas. This value is used to update the state of the replicas
+with changes made to the dataset. The offset starts at `0` when a master boots
+up and no replicas have connected yet.
 
-In this stage, you'll initialize a replication ID and offset for the master server:
+In this stage, you'll initialize a replication ID and offset for the master
+server:
 
 - The ID can be any pseudo-random alphanumeric string of `40` characters.
-  - For this challenge, you don't need to generate a random string. You can hardcode it instead.
-  - As an example, you can hardcode `8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb` as the replication ID.
+  - For this challenge, you don't need to generate a random string. You can
+    hardcode it instead.
+  - As an example, you can hardcode `8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb`
+    as the replication ID.
 - The offset should be `0`.
 
-These two values should be returned as part of the `INFO` command output, under the `master_replid` and `master_repl_offset` keys, respectively.
+These two values should be returned as part of the `INFO` command output, under
+the `master_replid` and `master_repl_offset` keys, respectively.
 
 ### Tests
 
@@ -25,13 +37,17 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 
-It will then send the `INFO` command with the `replication` option to your server.
+It will then send the `INFO` command with the `replication` option to your
+server.
 
 ```bash
 $ redis-cli INFO replication
 ```
 
-Your program should respond with a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) where each line is a key-value pair separated by a colon (`:`). The tester will look for the following key-value pairs:
+Your program should respond with a
+[bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings)
+where each line is a key-value pair separated by a colon (`:`). Your response
+must include the following key-value pairs:
 
 - `role`: `master`
 - `master_replid`: A 40-character alphanumeric string
@@ -39,4 +55,5 @@ Your program should respond with a [bulk string](https://redis.io/docs/latest/de
 
 ### Notes
 
-- Your code must pass the tests for previous stages, meaning you should still return the correct `role` key.
+- Your code must pass the tests for previous stages, meaning you should still
+  return the correct `role` key.

@@ -1,8 +1,11 @@
-In this stage, you'll add support for watching multiple keys.
+Your transaction can depend on one watched key. In this stage, you'll let
+`WATCH` name several keys, aborting the transaction if any of those inputs is
+modified before `EXEC`.
 
-### Watching Multiple Keys
+### Watching multiple keys
 
-In previous stages, you only needed to handle `WATCH` with a single key. However, the `WATCH` command also accepts multiple keys at once:
+In previous stages, you only needed to handle `WATCH` with a single key.
+However, the `WATCH` command also accepts multiple keys at once:
 
 ```bash
 $ redis-cli
@@ -10,7 +13,8 @@ $ redis-cli
 OK
 ```
 
-All the keys are monitored for changes. If any one of them is modified by another client before `EXEC`, the transaction aborts:
+All the keys are monitored for changes. If any one of them is modified by
+another client before `EXEC`, the transaction aborts:
 
 ```
 Client A: WATCH foo bar          # Monitor both keys
@@ -28,7 +32,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will spawn two clients. Using the first client, it will set two keys, watch both of them, and begin a transaction:
+The tester will spawn two clients. Using the first client, it will set two keys,
+watch both of them, and begin a transaction:
 
 ```bash
 # Client 1
@@ -46,7 +51,8 @@ Using the second client, it will modify one of the watched keys:
 > SET foo 200        # → OK
 ```
 
-Back on the first client, the tester will execute the transaction and verify the abort:
+Back on the first client, the tester will execute the transaction and verify the
+abort:
 
 ```bash
 # Client 1
@@ -59,5 +65,6 @@ Back on the first client, the tester will execute the transaction and verify the
 The tester will verify that:
 
 - `WATCH` with multiple keys returns `+OK\r\n`
-- `EXEC` returns a RESP null array (`*-1\r\n`) when any one of the watched keys was modified
+- `EXEC` returns a RESP null array (`*-1\r\n`) when any one of the watched keys
+  was modified
 - The aborted transaction's queued commands had no effect

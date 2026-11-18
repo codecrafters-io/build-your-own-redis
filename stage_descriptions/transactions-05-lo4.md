@@ -1,8 +1,11 @@
-In this stage, you'll add support for the `EXEC` command when the `MULTI` command has not been called.
+Your server recognizes `MULTI`. Executing queued commands comes later. In this
+stage, you'll add the `EXEC` error response for a connection with no active
+transaction.
 
-### The EXEC command
+### The `EXEC` command
 
-The [EXEC](https://redis.io/docs/latest/commands/exec/) command executes all commands queued in a transaction.
+The [EXEC](https://redis.io/docs/latest/commands/exec/) command executes all
+commands queued in a transaction.
 
 It returns an array of the responses of the queued commands.
 
@@ -23,7 +26,8 @@ QUEUED
 
 ### EXEC without MULTI
 
-If `EXEC` is executed without having called `MULTI`, it returns an error.
+If the connection has no active transaction started by `MULTI`, `EXEC` returns
+an error.
 
 Example usage:
 
@@ -32,8 +36,9 @@ $ redis-cli EXEC
 (error) ERR EXEC without MULTI
 ```
 
-The returned value is a [Simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors), the
-exact bytes are `-ERR EXEC without MULTI\r\n`.
+The returned value is a
+[Simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors),
+the exact bytes are `-ERR EXEC without MULTI\r\n`.
 
 ### Tests
 
@@ -43,15 +48,11 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will then connect to your server as a Redis client and run the following commands:
+The tester will then connect to your server as a Redis client and run the
+following commands:
 
 ```bash
 $ redis-cli EXEC
 ```
 
-The tester will expect "-ERR EXEC without MULTI\r\n" as the response.
-
-### Notes
-
-- In this stage you only need to implement `EXEC` when `MULTI` hasn't been called.
-- We'll test handling `EXEC` after `MULTI` in later stages.
+The tester expects `-ERR EXEC without MULTI\r\n` as the response.

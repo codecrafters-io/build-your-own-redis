@@ -1,12 +1,17 @@
-In this stage, you'll add support for combining bitmaps with `BITOP AND`.
+Your server can inspect one bitmap. In this stage, you'll combine two
+equal-length bitmaps with `BITOP AND`, keeping only the positions set in both.
 
-### The `BITOP` Command
+### The `BITOP` command
 
-The [BITOP](https://redis.io/docs/latest/commands/bitop/) command runs a bitwise operation on one or more bitmaps and stores the result at a destination key.
+The [BITOP](https://redis.io/docs/latest/commands/bitop/) command runs a bitwise
+operation on one or more bitmaps and stores the result at a destination key.
 
-`BITOP AND` sets a bit in the destination only when that bit is set in every source bitmap.
+`BITOP AND` sets a bit in the destination only when that bit is set in every
+source bitmap. For subscription flags, this identifies users present in both
+groups.
 
-In this example, we have two bitmaps: `key1` is `10001000`  and `key2` is `10000010` , created using `SETBIT` commands.
+In this example, `key1` is `10001000` and `key2` is `10000010`, created using
+`SETBIT` commands.
 
 ```bash
 > BITOP AND dest key1 key2
@@ -19,9 +24,12 @@ In this example, we have two bitmaps: `key1` is `10001000`  and `key2` is `10000
 (integer) 0
 ```
 
-After performing a `BITOP AND` operation on `key1` and `key2` , we get another bitmap `dest` with the value `10000000` . Only bit `0` is set in both.
+The destination `dest` contains `10000000`, since only bit `0` is set in both
+sources.
 
-`BITOP` returns the length of the destination string in bytes, encoded as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers). Here the destination string is 1 byte, so the return value is `1`.
+`BITOP` returns the length of the destination string in bytes, encoded as a
+[RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+Here the destination string is 1 byte, so the return value is `1`.
 
 ### Tests
 
@@ -64,6 +72,10 @@ The tester will expect the response to be `:0\r\n`.
 
 ### Notes
 
-- In this stage, you'll only need to handle `BITOP AND` with two source keys of the same length. Combining bitmaps of different lengths is covered in later stages.
-- `BITOP` also supports other [operations](https://redis.io/docs/latest/commands/bitop/) like `OR`, `XOR`, and `NOT`. The `BITOP OR` operation is covered in later stages. We won't deal with `XOR` and `NOT` in this challenge.
-
+- In this stage, you'll only need to handle `BITOP AND` with two source keys of
+  the same length. Combining bitmaps of different lengths is covered in later
+  stages.
+- `BITOP` also supports other
+  [operations](https://redis.io/docs/latest/commands/bitop/) like `OR`, `XOR`,
+  and `NOT`. The `BITOP OR` operation is covered in later stages. We won't deal
+  with `XOR` and `NOT` in this challenge.

@@ -1,18 +1,26 @@
-In this stage, you'll implement the `EXEC` command and add support for aborting transactions.
+Your server accepts `WATCH` before `MULTI`. In this stage, you'll make `EXEC`
+discard the pending transaction if a watched key was modified, so stale reads
+can't lead to an outdated write.
 
-### Redis Transactions (Recap)
+### Transaction progress
 
-As a recap, [Redis transactions](https://redis.io/docs/latest/develop/using-commands/transactions/) allow clients to execute multiple commands as a single operation. The basic flow is:
+As a recap,
+[Redis transactions](https://redis.io/docs/latest/develop/using-commands/transactions/)
+allow clients to execute multiple commands as a single operation. The basic flow
+is:
 
 1. `MULTI` - Enter transaction mode (Handled in previous stages)
 2. `SET key value`, `INCR counter`, etc. - Commands are queued
 3. `EXEC` - Execute all queued commands
 
-For this stage, you'll implement the `EXEC` command and fail transactions when their watched keys have been modified.
+This stage requires queueing and `EXEC` execution. Reuse them if you completed
+the Transactions extension. The new watch check decides whether any queued
+commands may run.
 
-### The `EXEC` Command
+### The `EXEC` command
 
-The [`EXEC` command](https://redis.io/docs/latest/commands/exec/) executes all commands that were queued after `MULTI`:
+The [`EXEC` command](https://redis.io/docs/latest/commands/exec/) executes all
+commands that were queued after `MULTI`:
 
 ```bash
 $ redis-cli
@@ -29,11 +37,14 @@ QUEUED
 2) OK
 ```
 
-The response is a RESP array where each element is the result of a queued command, in the order they were queued.
+The response is a RESP array where each element is the result of a queued
+command, in the order they were queued.
 
-### Failing Transactions With `WATCH`
+### Aborting transactions with `WATCH`
 
-When a connection has watched keys, `EXEC` needs to check whether any of those keys were modified by another client between the `WATCH` and the `EXEC`. If they were, the transaction is aborted:
+When a connection has watched keys, `EXEC` needs to check whether any of those
+keys were modified by another client between the `WATCH` and the `EXEC`. If they
+were, the transaction is aborted:
 
 ```
 Client A: WATCH foo             # Server tracks "foo" for Client A
@@ -43,7 +54,8 @@ Client B: SET foo 999           # Modifies Client A's watched key
 Client A: EXEC                  # Returns *-1\r\n, queued commands discarded
 ```
 
-`EXEC` returns a RESP null array (`*-1\r\n`), and the queued commands are discarded without executing.
+`EXEC` returns a RESP null array (`*-1\r\n`), and the queued commands are
+discarded without executing.
 
 If none of the watched keys were modified, `EXEC` runs the transaction normally.
 
@@ -59,7 +71,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will spawn four clients and run two scenarios. 
+The tester will spawn four clients and run two scenarios.
 
 In the first scenario, it modifies the watched key from a different client:
 
@@ -79,7 +91,7 @@ In the first scenario, it modifies the watched key from a different client:
 > GET bar            # → "200" (unchanged, SET bar 300 was never executed)
 ```
 
-In the second scenario, it modifies a different key (not the watched one): 
+In the second scenario, it modifies a different key (not the watched one):
 
 ```bash
 # Client 3
@@ -101,12 +113,18 @@ In the second scenario, it modifies a different key (not the watched one):
 
 The tester will verify that:
 
-- `EXEC` returns a RESP null array (`*-1\r\n`) when a watched key was modified by another client
+- `EXEC` returns a RESP null array (`*-1\r\n`) when a watched key was modified
+  by another client
 - `EXEC` returns the array of command results when no watched keys were modified
-- Queued commands are not executed when the transaction is aborted, and the original values are preserved
-- Queued commands are executed when no watched keys are modified, and their writes take effect
+- Queued commands are not executed when the transaction is aborted, and the
+  original values are preserved
+- Queued commands are executed when no watched keys are modified, and their
+  writes take effect
 
 ### Notes
 
-- It's not enough to compare the value of a watched key at `WATCH` time vs `EXEC` time. If a key was modified and then set back to its original value, the transaction should still abort. Track whether the key was touched, not whether its value changed.
-- After `EXEC`, clear the connection's watch state (watched keys and dirty flag) regardless of whether the transaction succeeded or was aborted.
+- A key modified and then restored to its original value still invalidates the
+  watch. Comparing only the values at `WATCH` and `EXEC` would miss that
+  modification.
+- After `EXEC`, clear the connection's watched keys and any record that a watch
+  was invalidated, whether the transaction succeeded or aborted.

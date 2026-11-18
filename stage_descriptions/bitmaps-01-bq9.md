@@ -1,22 +1,31 @@
-In this stage, you'll add support for creating a [bitmap](https://redis.io/docs/latest/develop/data-types/bitmaps/) using the `SETBIT` command.
+This extension adds
+[bitmap](https://redis.io/docs/latest/develop/data-types/bitmaps/) operations
+for storing and combining yes/no flags. In this stage, you'll implement `SETBIT`
+to change one bit in a string and return the bit's previous value.
 
-### Redis Bitmaps
+### Redis bitmaps
 
-Bitmaps let you store individual bits (`0` or `1`). Unlike lists or sorted sets, they are not a separate Redis data type. They are strings that you can access and update at the bit level.
+Redis bitmaps are string values viewed as individual bits (`0` or `1`). Each
+byte holds eight bits. Offset `0` identifies the most significant bit of the
+first byte, the bit with value `128`. Offsets increase toward the least
+significant bit, then continue in the next byte.
 
-Because each value takes only one bit, bitmaps are extremely space-efficient. This makes them useful for use cases like tracking subscriptions, counting daily active users, or any scenario where you need a yes/no flag for a large population.
+Bitmaps can track subscriptions or daily activity with one bit per user.
 
-For example, if you were using a bitmap to track newsletter subscriptions, the contents might look like this:
+For example, if you were using a bitmap to track newsletter subscriptions, the
+contents might look like this:
 
 ```
 newsletter_subscribers: 10001010
 ```
 
-Here, user numbers `0`, `4`, and `6` have subscribed. Redis numbers bits from left to right, starting at offset `0`.
+Here, user numbers `0`, `4`, and `6` have subscribed. Redis numbers bits from
+left to right, starting at offset `0`.
 
-### The `SETBIT` Command
+### The `SETBIT` command
 
-The [SETBIT](https://redis.io/docs/latest/commands/setbit/) command is used to set a bit to `0` or `1` in the string value stored at `key`.
+The [SETBIT](https://redis.io/docs/latest/commands/setbit/) command is used to
+set a bit to `0` or `1` in the string value stored at `key`.
 
 When `key` does not exist, a new string is created and the bit is set.
 
@@ -27,7 +36,10 @@ Example usage:
 (integer) 0
 ```
 
-The `SETBIT` command takes the key, an offset, and a value (`0` or `1`) as arguments. It returns the original bit at that offset. On a new key, that is always `0`.
+The arguments are the key, an offset, and a value (`0` or `1`). Return the
+original bit at that offset as a RESP integer, encoded as `:<number>\r\n`. On a
+new key, the original bit is `0`. Setting an existing `1` bit to `0` returns
+`1`.
 
 ### Tests
 
@@ -43,10 +55,14 @@ It will then send a `SETBIT` command specifying a key, offset, and value.
 $ redis-cli SETBIT bitmap_key 3 1
 ```
 
-The tester will verify that the response to the command is `:0\r\n`, which is 0 (the original bit at that offset), encoded as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers). 
+The tester will verify that the response to the command is `:0\r\n`, which is 0
+(the original bit at that offset), encoded as a
+[RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Notes
 
-- As bitmaps are strings, we suggest that you store them using the same data structure you already use for `SET` and `GET`. It'll come in handy in later stages.
-- Redis treats offset `0` as the most significant bit of the first byte. For example, `SETBIT key 1 1` stores the byte `01000000`. This will matter when you implement `GETBIT` and `BITCOUNT` in later stages.
-
+- Bitmap and string commands operate on the same stored bytes. Later stages make
+  that shared representation visible through `SET` and `GET`.
+- Redis treats offset `0` as the most significant bit of the first byte. For
+  example, `SETBIT key 1 1` stores the byte `01000000`. This will matter when
+  you implement `GETBIT` and `BITCOUNT` in later stages.

@@ -1,14 +1,18 @@
-In this stage, you'll add support for handling the `INCR` command when a key exists but doesn't have a numerical value.
+Your `INCR` command handles integers and missing keys. In this stage, you'll
+return an error when the existing value isn't a valid integer, leaving that
+value unchanged.
 
 ### Recap
 
-The implementation of [`INCR`](https://redis.io/docs/latest/commands/incr/) is split into three stages:
+The implementation of [`INCR`](https://redis.io/docs/latest/commands/incr/) is
+split into three stages:
 
-- Key exists and has a numerical value (previous stages)
+- Key exists and has an integer value (previous stages)
 - Key doesn't exist (previous stages)
-- Key exists but doesn't have a numerical value (**This stage**)
+- Key exists but doesn't have an integer value (**This stage**)
 
-When a key exists but doesn't have a numerical value, `INCR` will return an error. Example:
+When a key's value isn't an integer, `INCR` returns a RESP simple error. For
+example:
 
 ```bash
 $ redis-cli SET foo xyz
@@ -25,7 +29,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will then connect to your server as a Redis client and run the following commands:
+The tester will then connect to your server as a Redis client and run the
+following commands:
 
 ```bash
 $ redis-cli

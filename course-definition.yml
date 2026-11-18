@@ -4,10 +4,13 @@ short_name: "Redis"
 release_status: "live"
 
 description_md: |-
-  [Redis](https://redis.io/docs/latest/develop/get-started/data-store/) is an in-memory data structure store often used as a database, cache, message broker and streaming engine. In this challenge
-  you'll build your own Redis server that is capable of serving basic commands, reading RDB files and more.
+  What lets one Redis client read a value written by another?
 
-  Along the way, you'll learn about TCP servers, the Redis Protocol and more.
+  [Redis](https://redis.io/docs/latest/develop/get-started/data-store/) keeps data in memory on a server, independently of each client connection. You'll build a Redis server that parses commands, stores and retrieves strings, and expires keys.
+
+  Extensions add lists, ordered event streams, score-ranked sets, bit-level operations, and location searches. You'll also add grouped transactions with change detection, replicated copies, snapshot loading and command-log recovery, channel messaging, and password authentication.
+
+  You'll practice TCP connection handling, protocol parsing, binary file decoding, and coordinating shared state across clients.
 
 short_description_md: |-
   Learn about TCP servers, the Redis protocol and more

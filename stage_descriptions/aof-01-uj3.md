@@ -1,20 +1,26 @@
-In this stage, you'll set up default values for AOF-related configuration options.
+This extension will let your server recover data by replaying saved write
+commands. In this stage, you'll expose the default AOF configuration through
+`CONFIG GET`, so clients can inspect how that persistence will be configured.
 
-### AOF Persistence in Redis
+### AOF persistence in Redis
 
-Redis keeps all its data in memory, which makes it fast but vulnerable. If the server crashes, everything is gone. AOF (Append Only File) is one way to solve this. When enabled, the server logs every write command to a file, and on restart, it replays the file to rebuild its state.
+Redis serves data from memory. Without a saved copy, that data is lost when the
+process stops. AOF (append-only file) persistence records commands that modify
+data and replays the saved commands on startup to rebuild the database.
 
-The AOF behavior is controlled by several configuration options. For this stage, you'll set up their default values so they can be retrieved with `CONFIG GET`. You don't need to implement any actual persistence logic yet.
+The AOF behavior is controlled by several configuration options. For this stage,
+you'll set up their default values so they can be retrieved with `CONFIG GET`.
+You don't need to implement any actual persistence logic yet.
 
 Here are the options and their defaults:
 
-| Option | Purpose | Default |
-|---|---|---|
-| `dir` | The base directory where Redis stores its data files | Current working directory at startup |
-| `appendonly` | Controls whether AOF persistence is enabled or disabled | `no` |
-| `appenddirname` | The subdirectory under `dir` where AOF and manifest files are stored | `appendonlydir` |
-| `appendfilename` | The name of the append-only file that records write operations | `appendonly.aof` |
-| `appendfsync` | How often buffered writes are flushed to the AOF file on disk | `everysec` |
+| Option           | Purpose                                                                        | Default                              |
+| ---------------- | ------------------------------------------------------------------------------ | ------------------------------------ |
+| `dir`            | The base directory where Redis stores its data files                           | Current working directory at startup |
+| `appendonly`     | Controls whether AOF persistence is enabled or disabled                        | `no`                                 |
+| `appenddirname`  | The subdirectory under `dir` where AOF and manifest files are stored           | `appendonlydir`                      |
+| `appendfilename` | The base name used for AOF and manifest filenames                              | `appendonly.aof`                     |
+| `appendfsync`    | How often Redis asks the operating system to synchronize AOF writes to storage | `everysec`                           |
 
 ### Tests
 
@@ -48,18 +54,16 @@ $ redis-cli CONFIG GET appendfsync
 2) "everysec"
 ```
 
-Each response is a RESP array with two [bulk strings](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings): the option name and its value. For example, `CONFIG GET appendonly` should return:
- 
+Each response is a RESP array with two
+[bulk strings](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings):
+the option name and its value. For example, `CONFIG GET appendonly` should
+return:
+
 ```
 *2\r\n$10\r\nappendonly\r\n$2\r\nno\r\n
 ```
 
-The tester will verify that:
-
-- Each `CONFIG GET` returns a two-element RESP array
-- The option name and default value are correct for each option
-
 ### Notes
 
-- You don't need to implement any AOF persistence logic in this stage. Just store and return the default values.
-- If you've already implemented `CONFIG GET` for other options in a previous challenge, you may just need to add these new keys to your existing configuration.
+- If you've already implemented `CONFIG GET` in the RDB extension, it can also
+  expose these options. Completing that extension isn't required for this task.

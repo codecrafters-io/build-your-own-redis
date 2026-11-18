@@ -1,6 +1,10 @@
-In this stage, you'll add support for reading multiple keys from an RDB file.
+Your snapshot reader handles one key. In this stage, you'll extend it to read
+all the keys in a file, so `KEYS "*"` describes the restored dataset.
 
-The tester will create an RDB file with multiple keys and execute your program like this:
+### Tests
+
+The tester will create an RDB file with multiple keys and execute your program
+like this:
 
 ```bash
 $ ./your_program.sh --dir <dir> --dbfilename <filename>
@@ -12,14 +16,18 @@ It'll then send a `KEYS *` command to your server.
 $ redis-cli KEYS "*"
 ```
 
-The response to `KEYS *` should be a RESP array with the keys as elements.
+The response to `KEYS *` should be a RESP array with the keys as bulk-string
+elements. The keys can appear in any order.
 
-For example, let's say the RDB file contains two keys: `foo` and `bar`. The expected response will be:
+For example, let's say the RDB file contains two keys: `foo` and `bar`. The
+expected response will be:
 
 ```
 *2\r\n$3\r\nfoo\r\n$3\r\nbar\r\n
 ```
 
 - `*2\r\n` indicates that the array has two elements
-- `$3\r\nfoo\r\n` indicates that the first element is a bulk string with the value `foo`
-- `$3\r\nbar\r\n` indicates that the second element is a bulk string with the value `bar`
+- `$3\r\nfoo\r\n` indicates that the first element is a bulk string with the
+  value `foo`
+- `$3\r\nbar\r\n` indicates that the second element is a bulk string with the
+  value `bar`

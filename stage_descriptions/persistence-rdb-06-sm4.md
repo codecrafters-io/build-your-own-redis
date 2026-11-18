@@ -1,7 +1,22 @@
-In this stage, you'll add support for reading values that have an expiry set.
+Your server restores keys and values from an RDB file. In this stage, you'll
+preserve their expiry times too, so loading a snapshot doesn't make expired data
+available again.
 
-The tester will create an RDB file with multiple keys. Some of these keys will have an expiry set, and some won't. The expiry timestamps
-will also be random, some will be in the past and some will be in the future.
+### Restoring expiry times
+
+RDB expiry values are absolute Unix timestamps, measured from 1 January 1970 at
+00:00 UTC. The `FD` marker stores seconds in four little-endian bytes, and `FC`
+stores milliseconds in eight little-endian bytes. Compare each timestamp with
+the current time in the same units. The earlier `SET ... PX` option specified a
+lifetime measured from the write, so loading must not restart that lifetime.
+
+Keys without an expiry remain available. Keys with a future expiry remain
+available only until that timestamp.
+
+### Tests
+
+The tester creates an RDB file with multiple keys and expiry timestamps in the
+past and future.
 
 The tester will execute your program like this:
 
@@ -16,6 +31,8 @@ $ redis-cli GET "foo"
 $ redis-cli GET "bar"
 ```
 
-When a key has expired, the expected response is `$-1\r\n` (a "null bulk string").
+When a key has expired, the expected response is `$-1\r\n` (a "null bulk
+string").
 
-When a key hasn't expired, the expected response is a RESP bulk string with the value corresponding to the key.
+When a key hasn't expired, the expected response is a RESP bulk string with the
+value corresponding to the key.

@@ -1,8 +1,10 @@
-In this stage, you'll add support for responding to the [INFO](https://redis.io/commands/info/) command as a master server.
+Your server can run on a chosen port. In this stage, you'll implement
+[INFO](https://redis.io/commands/info/) to report the master role to clients.
 
-### The `INFO` Command
+### The `INFO` command
 
-The `INFO` command returns information and statistics about a running Redis server. For example, a client can get information about a server like this:
+The `INFO` command returns information and statistics about a running Redis
+server. For example, a client can get information about a server like this:
 
 ```bash
 $ redis-cli INFO
@@ -20,13 +22,19 @@ role:master
 ...
 ```
 
-The server then responds with a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings), where each line is a key-value pair separated by a colon (`:`). The string can also contain section header lines (starting with `#`) and blank lines.
+The server then responds with a
+[bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings),
+where each line is a key-value pair separated by a colon (`:`). The string can
+also contain section header lines (starting with `#`) and blank lines.
 
-The `INFO` command also accepts an optional parameter to specify which section of information to display, such as `server`, `memory`, or `replication`. For this stage, we'll only focus on the `replication` section.
+The `INFO` command also accepts an optional parameter to specify which section
+of information to display, such as `server`, `memory`, or `replication`. For
+this stage, we'll only focus on the `replication` section.
 
-### The `replication` Section
+### The `replication` section
 
-When you run the `INFO` command with the `replication` argument, the server returns only the details concerning its replication setup:
+When you run the `INFO` command with the `replication` argument, the server
+returns only the details concerning its replication setup:
 
 ```
 $ redis-cli INFO replication
@@ -49,7 +57,9 @@ Here are what some of the important fields mean:
 - `master_replid`: The replication ID of the master.
 - `master_repl_offset`: The replication offset of the master.
 
-In this stage, you'll only need to support the `role` key. We'll add support for other keys in later stages.
+Only the `role` field is required now. A minimal response is
+`$11\r\nrole:master\r\n`, a bulk string containing the eleven bytes of
+`role:master`.
 
 ### Tests
 
@@ -65,12 +75,14 @@ It will then send the `INFO` command with `replication` as an argument.
 $ redis-cli -p <PORT> info replication
 ```
 
-Your server should respond with a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) where each line
-is a key value pair separated by a colon (`:`). The tester will only look for the `role` key and assert that the value is `master`.
+Your server should respond with a
+[bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings)
+where each line is a key value pair separated by a colon (`:`). The tester will
+only look for the `role` key and assert that the value is `master`.
 
 ### Notes
 
-- In the response for the `INFO` command, you only need to support the `role` key for this stage. We'll add support for the other keys in later stages.
-- The `# Replication` heading in the response is optional, and you can ignore it.
-- The response to `INFO` needs to be encoded as a bulk string.
-  - An example valid response would be `$11\r\nrole:master\r\n` (the string `role:master` encoded as a bulk string)
+- The `# Replication` heading in the response is optional, and you can ignore
+  it.
+- If you include multiple fields, separate the lines inside the bulk string with
+  CRLF and include those bytes in its length.

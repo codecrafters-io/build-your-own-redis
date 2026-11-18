@@ -1,8 +1,13 @@
-In this stage, you'll add support for retrieving the score of a sorted set member using the `ZSCORE` command.
+Clients can query a member's rank. In this stage, you'll add `ZSCORE` to
+retrieve its stored numeric score, including changes made by later `ZADD`
+commands.
 
-### The `ZSCORE` Command
+### The `ZSCORE` command
 
-The `ZSCORE` command is used to query the score of a member of a sorted set. If the sorted set and the member both exist, the score of the member is returned as a RESP bulk string.
+The `ZSCORE` command is used to query the score of a member of a sorted set. If
+the sorted set and the member both exist, the score of the member is returned as
+a RESP bulk string.
+
 ```bash
 > ZADD zset_key 24.34 "one"
 (integer) 1
@@ -12,14 +17,15 @@ The `ZSCORE` command is used to query the score of a member of a sorted set. If 
 "24.34"
 ```
 
-If the member or the sorted set specified in the argument does not exist, RESP null bulk string(`$-1\r\n`) is returned.
+If the member or the sorted set does not exist, the command returns a RESP null
+bulk string (`$-1\r\n`).
+
 ```bash
 > ZSCORE zset_key "three"
 (nil)
 > ZSCORE missing_key "member"
 (nil)
 ```
-
 
 ### Tests
 
@@ -29,7 +35,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will then send a `ZADD` command to create a sorted set and add new members to it.
+It will then send a `ZADD` command to create a sorted set and add new members to
+it.
 
 ```bash
 $ redis-cli
@@ -39,19 +46,23 @@ $ redis-cli
 > ZADD zset_key 50.3 zset_member4 (Expecting ":1\r\n")
 ```
 
-The tester will then send a `ZSCORE` command specifying one of the members. For example, the tester may send your program a command like this:
+The tester will then send a `ZSCORE` command specifying one of the members. For
+example, the tester may send your program a command like this:
 
 ```bash
 > ZSCORE zset_key zset_member2 (Expecting RESP bulk string "30.1")
 ```
 
-It will expect the response to be "30.1", which is the score of `zset_member2`. The response is encoded as a RESP bulk string:
+It will expect the response to be "30.1", which is the score of `zset_member2`.
+The response is encoded as a RESP bulk string:
+
 ```
 $4\r\n
 30.1\r\n
 ```
 
-The tester will then update the value of the member.
+The tester will then update the member's score.
+
 ```bash
 > ZADD zset_key 100.99 zset_member2 (Expecting ":0\r\n")
 ```
@@ -62,7 +73,8 @@ The tester will then send a `ZSCORE` command specifying the updated member.
 > ZSCORE zset_key zset_member2 (Expecting RESP bulk string "100.99")
 ```
 
-The tester will also send `ZSCORE` commands where either the member or the key doesn't exist.
+Also preserve the missing-member and missing-key behavior:
+
 ```bash
 > ZSCORE zset_key zset_member100 (Expecting RESP bulk string "$-1\r\n")
 > ZSCORE missing_key member (Expecting RESP bulk string "$-1\r\n")

@@ -1,8 +1,13 @@
-In this stage, you'll add support for the `TYPE` command.
+This extension adds streams, which store ordered entries that clients can read
+later. In this stage, you'll implement `TYPE` to distinguish a stored string
+from a missing key before adding the new value type.
 
 ### The `TYPE` command
 
-The [TYPE](https://redis.io/commands/type/) command returns the type of value stored at a given key. These types include: `string`, `list`, `set`, `zset`, `hash`, `stream`, and `vectorset`.
+The [TYPE](https://redis.io/commands/type/) command returns the type of value
+stored at a key. Redis supports several types, including `string`, `list`,
+`set`, `zset`, `hash`, `stream`, and `vectorset`. This stage only needs `string`
+and the missing-key result `none`.
 
 Here's an example:
 
@@ -16,7 +21,8 @@ $ redis-cli TYPE some_key
 "string"
 ```
 
-The return value is encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
+The return value is encoded as a
+[simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 If a key doesn't exist, the return value will be `none`.
 
@@ -33,7 +39,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will then send a `SET` command to your server to create a key with a string value.
+It will then send a `SET` command to your server to create a key with a string
+value.
 
 ```bash
 $ redis-cli SET some_key "foo"
@@ -45,7 +52,8 @@ Next, it will send a `TYPE` command for that key.
 $ redis-cli TYPE some_key
 ```
 
-Your server should respond with `+string\r\n`, which is `string` encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
+Your server should respond with `+string\r\n`, which is `string` encoded as a
+[simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 Next, the tester will send another `TYPE` command with a missing key.
 
@@ -53,8 +61,10 @@ Next, the tester will send another `TYPE` command with a missing key.
 $ redis-cli TYPE missing_key
 ```
 
-Your server should respond with `+none\r\n`, which is `none` encoded as a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
+Your server should respond with `+none\r\n`, which is `none` encoded as a
+[simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings).
 
 ### Notes
 
-- For now, you only need to handle the `string` and `none` types. We'll add support for the `stream` type in later stages.
+- For now, you only need to handle the `string` and `none` types. We'll add
+  support for the `stream` type in later stages.

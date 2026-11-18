@@ -1,6 +1,8 @@
-In this stage, you'll add support for the `UNSUBSCRIBE` command, which is used to unsubscribe from a channel.
+Your server delivers messages to subscribed clients. In this stage, you'll add
+`UNSUBSCRIBE` so a client can stop receiving one channel while retaining its
+other subscriptions.
 
-### The `UNSUBSCRIBE` Command
+### The `UNSUBSCRIBE` command
 
 This command removes the client from one or more channels. Example usage:
 
@@ -30,7 +32,11 @@ When unsubscribed, the server replies with a RESP Array with 3 elements:
 1. The channel name (as a RESP bulk string)
 1. Count of remaining channels the client has subscribed to (as a RESP integer)
 
-When unsubscribing from a channel that has not been subscribed yet, it returns the array with no change in the remaining channels count. For eg,
+When that count reaches `0`, the connection leaves subscribed mode and accepts
+ordinary commands again.
+
+When unsubscribing from a channel that has not been subscribed yet, it returns
+the array with no change in the remaining channels count. For eg,
 
 ```bash
 $ redis-cli
@@ -47,7 +53,7 @@ $ redis-cli
 
 ### Tests
 
-The tester will  run your program like this:
+The tester will run your program like this:
 
 ```bash
 $ ./your_program.sh
@@ -67,27 +73,31 @@ $ redis-cli
 > SUBSCRIBE bar
 ```
 
-The tester will then spawn a separate client that publishes messages to random channels.
+The tester will then spawn a separate client that publishes messages to random
+channels.
 
 ```bash
 $ redis-cli
 > PUBLISH foo "before-unsubscribe"
 ```
 
-It will verify that any clients subscribed to the channel receive the message, and that other clients don't.
+It will verify that any clients subscribed to the channel receive the message,
+and that other clients don't.
 
-The tester will then issue random `UNSUBSCRIBE` commands to the subscribed clients:
+The tester will then issue random `UNSUBSCRIBE` commands to the subscribed
+clients:
 
 ```bash
 # In client 1, which was subscribed to 'foo' and 'baz'
 > UNSUBSCRIBE foo
-# Expects ["unsubscribed", "foo", 1] as an RESP array
+# Expects ["unsubscribe", "foo", 1] as a RESP array
 ```
 
-Finally, the tester will again publish messages to random channels:.
+Finally, the tester will publish messages again:
 
 ```bash
 > PUBLISH foo "after-unsubscribe"
 ```
 
-It will verify that any clients subscribed to the channel receive the message, and that other clients don't.
+It will verify that any clients subscribed to the channel receive the message,
+and that other clients don't.

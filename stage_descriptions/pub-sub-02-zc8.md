@@ -1,8 +1,11 @@
-In this stage, you'll add support for subscribing to multiple channels using the `SUBSCRIBE` command.
+Your server can register one subscription. In this stage, you'll let a client
+subscribe to more channels without losing its existing subscriptions, and keep
+each connection's count independent.
 
-### Multiple SUBSCRIBE commands
+### Multiple `SUBSCRIBE` commands
 
-A client can send `SUBSCRIBE` multiple times to subscribe to different channels. For example:
+A client can send `SUBSCRIBE` multiple times to subscribe to different channels.
+For example:
 
 ```bash
 $ redis-cli
@@ -17,7 +20,9 @@ $ redis-cli
 3) (integer) 2
 ```
 
-A client can also subscribe to the same channel multiple times, but the total subscribed channels count (returned as the 3rd item in the response array) won't change.
+A client can also subscribe to the same channel multiple times, but the total
+subscribed channels count (returned as the 3rd item in the response array) won't
+change.
 
 For example:
 
@@ -35,17 +40,19 @@ $ redis-cli
 3) (integer) 1
 ```
 
-The subscribed channels count is per-client, i.e. how many channels the current client is subscribed to.
+The subscribed channels count is per-client, i.e. how many channels the current
+client is subscribed to.
 
 ### Tests
 
-The tester will  run your program like this:
+The tester will run your program like this:
 
 ```bash
 $ ./your_program.sh
 ```
 
-It will then spawn a client and send multiple `SUBSCRIBE` commands specifying a new channel each time.
+It will then spawn a client and send multiple `SUBSCRIBE` commands specifying a
+new channel each time.
 
 ```bash
 $ redis-cli
@@ -59,4 +66,5 @@ $ redis-cli
 # Expect ["subscribe", "bar", 2]
 ```
 
-The tester will repeat this with other clients and verify that the subscribed channel counts are maintained per-client.
+The tester will repeat this with other clients and verify that the subscribed
+channel counts are maintained per-client.

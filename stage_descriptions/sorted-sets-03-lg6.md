@@ -1,11 +1,16 @@
-In this stage, you'll add support for retrieving the rank of a sorted set member using the `ZRANK` command.
+Your server stores members and scores. In this stage, you'll implement `ZRANK`
+to report a member's zero-based position when members are ordered by score.
 
-### The `ZRANK` Command
+### The `ZRANK` command
 
-The `ZRANK` command is used to query the rank of a member in a sorted set. It returns an integer, which is 0-based index of the member when the sorted set is ordered by increasing score.
-If two members have same score, the members are ordered lexicographically.
+The `ZRANK` command is used to query the rank of a member in a sorted set. It
+returns an integer, which is 0-based index of the member when the sorted set is
+ordered by increasing score. If two members have the same score, compare their
+names lexicographically by bytes. The first differing byte determines their
+order, and a name that is a prefix of another comes first.
 
 Example usage:
+
 ```bash
 > ZADD zset_key 1.0 member_with_score_1
 (integer) 1
@@ -23,10 +28,12 @@ Example usage:
 (integer) 1
 ```
 
-The rank of `another_member_with_score_2` is 1, and `member_with_score_2` is 2. It is because though the both members have same scores, `another_member_with_score_2` preceeds `member_with_score_2` lexicographically.
+The two members with score `2.0` tie on score. `another_member_with_score_2`
+sorts before `member_with_score_2`, giving them ranks `1` and `2` respectively.
 
+If the member, or the sorted set does not exist, the command returns null bulk
+string (`$-1\r\n`).
 
-If the member, or the sorted set does not exist, the command returns null bulk string (`$-1\r\n`).
 ```bash
 # Missing sorted set and member
 > ZRANK zset_key missing_member
@@ -43,7 +50,7 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It will then send a `ZADD` command to create and add new members to it.
+It will then use `ZADD` to create a sorted set and add members.
 
 ```bash
 $ redis-cli
@@ -61,7 +68,9 @@ $ redis-cli
 # foo -> 4
 ```
 
-The tester will then send multiple `ZRANK` commands specifying the members of the sorted set.
+The tester will then send multiple `ZRANK` commands specifying the members of
+the sorted set.
+
 ```bash
 > ZRANK zset_key caz (Expecting ":1\r\n")
 > ZRANK zset_key baz (Expecting ":0\r\n")
@@ -69,7 +78,8 @@ The tester will then send multiple `ZRANK` commands specifying the members of th
 > ZRANK zset_key bar (Expecting ":3\r\n")
 ```
 
-The tester will also send `ZRANK` commands where either the member or key doesn't exist.
+The tester will also send `ZRANK` commands where either the member or key
+doesn't exist.
 
 ```bash
 > ZRANK zset_key missing_member (Expecting RESP bulk string "$-1\r\n")

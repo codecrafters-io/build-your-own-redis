@@ -1,6 +1,17 @@
-In this stage, you'll add support for reading a single key from an RDB file.
+Your server now knows where the RDB file is. Returning the saved value with
+`GET` comes later. In this stage, you'll read a single key from that snapshot
+and expose it through `KEYS "*"`.
 
 ### RDB file format
+
+RDB is a binary format. Each pair of hexadecimal digits below represents one
+byte, and the comments explain those bytes without forming part of the file. The
+reference includes later expiry support so you can keep using it throughout this
+extension.
+
+Multi-byte numbers have a byte order called **endianness**. Big-endian puts the
+most significant byte first. Little-endian puts the least significant byte
+first. The format uses both, as marked below.
 
 <details>
   <summary>Click to expand/collapse</summary>
@@ -13,22 +24,31 @@ Here are the different sections of the RDB file, in order:
 3.  Database section
 4.  End of file section
 
-RDB files use special encodings to store different types of data. The ones relevant to this stage are "size encoding" and "string encoding." These are explained near the end of this page.
+RDB files use length encoding to store sizes and string encoding to store keys
+and text. Both are explained below within this reference.
 
-The following breakdown of the RDB file format is based on [Redis RDB File Format](https://rdb.fnordig.de/file_format.html) by Jan-Erik Rediger. We’ve only included the parts that are relevant to this stage.
+The following breakdown is based on
+[Redis RDB File Format](https://rdb.fnordig.de/file_format.html) by Jan-Erik
+Rediger. It covers the parts used in this extension.
 
 #### Header section
 
 RDB files begin with a header section, which looks something like this:
+
 ```
 52 45 44 49 53 30 30 31 31  // Magic string + version number (ASCII): "REDIS0011".
 ```
 
-The header contains the magic string `REDIS`, followed by a four-character RDB version number. In this challenge, the test RDB files all use version 11. So, the header is always `REDIS0011`.
+The header contains the magic string `REDIS`, followed by a four-character RDB
+version number. In this challenge, the test RDB files all use version 11. So,
+the header is always `REDIS0011`.
 
 #### Metadata section
 
-Next is the metadata section. It contains zero or more "metadata subsections," which each specify a single metadata attribute. Here's an example of a metadata subsection that specifies `redis-ver`:
+Next is the metadata section. It contains zero or more "metadata subsections,"
+which each specify a single metadata attribute. Here's an example of a metadata
+subsection that specifies `redis-ver`:
+
 ```
 FA                             // Indicates the start of a metadata subsection.
 09 72 65 64 69 73 2D 76 65 72  // The name of the metadata attribute (string encoded): "redis-ver".
@@ -39,7 +59,10 @@ The metadata name and value are always string encoded.
 
 #### Database section
 
-Next is the database section. It contains zero or more "database subsections," which each describe a single database. Here's an example of a database subsection:
+Next is the database section. It contains zero or more "database subsections,"
+which each describe a single database. Here's an example of a database
+subsection:
+
 ```
 FE                       // Indicates the start of a database subsection.
 00                       /* The index of the database (size encoded).
@@ -84,12 +107,9 @@ FD                       /* Indicates that this key ("baz") has an expire,
 Here's a more formal description of how each key-value pair is stored:
 
 1. Optional expire information (one of the following):
-    * Timestamp in seconds:
-          1.  `FD`
-          2.  Expire timestamp in seconds (4-byte unsigned integer)
-    * Timestamp in milliseconds:
-          1.  `FC`
-          2.  Expire timestamp in milliseconds (8-byte unsigned long)
+   - `FD`, followed by an expiry timestamp in seconds (4-byte unsigned integer).
+   - `FC`, followed by an expiry timestamp in milliseconds (8-byte unsigned
+     integer).
 2. Value type (1-byte flag)
 3. Key (string encoded)
 4. Value (encoding depends on value type)
@@ -97,6 +117,7 @@ Here's a more formal description of how each key-value pair is stored:
 #### End of file section
 
 This section marks the end of the file. It looks something like this:
+
 ```
 FF                       /* Indicates that the file is ending,
                             and that the checksum follows. */
@@ -105,12 +126,19 @@ FF                       /* Indicates that the file is ending,
 
 #### Length encoding
 
-Length-encoded values specify the length or size of something. Here are some examples:
-- The database indexes and hash table sizes are length encoded.
-- String encoding begins with a length-encoded value that specifies the number of characters in the string.
-- List encoding begins with a length-encoded value that specifies the number of elements in the list.
+Length-encoded values specify the length or size of something. Here are some
+examples:
 
-The first (most significant) two bits of a length-encoded value indicate how the value should be parsed. Here's a guide (bits are shown in both hexadecimal and binary):
+- The database indexes and hash table sizes are length encoded.
+- A length-prefixed string begins with its byte count, followed by that many
+  bytes.
+- List encoding begins with a length-encoded value that specifies the number of
+  elements in the list.
+
+The first (most significant) two bits of a length-encoded value indicate how the
+value should be parsed. Here's a guide (bits are shown in both hexadecimal and
+binary):
+
 ```
 /* If the first two bits are 0b00:
    The length is the remaining 6 bits of the byte.
@@ -126,8 +154,7 @@ The first (most significant) two bits of a length-encoded value indicate how the
 42 BC
 01000010 10111100
 
-/* If the first two bits are 0b10:
-   Ignore the remaining 6 bits of the first byte.
+/* If the first byte is 0x80 (starting with 0b10):
    The length is the next 4 bytes, in big-endian (read left-to-right).
    In this example, the length is 17000: */
 80 00 00 42 68
@@ -140,18 +167,22 @@ The first (most significant) two bits of a length-encoded value indicate how the
 
 #### String encoding
 
-A string-encoded value consists of two parts:
-1.  The size of the string (size encoded).
-2.  The string.
+A length-prefixed string consists of two parts:
+
+1. The number of bytes in the string, using length encoding.
+2. The string's bytes.
 
 Here's an example:
+
 ```
-/* The 0x0D size specifies that the string is 13 characters long.
-   The remaining characters spell out "Hello, World!". */
+/* The 0x0D length specifies that the string is 13 bytes long.
+   The remaining bytes spell out "Hello, World!". */
 0D 48 65 6C 6C 6F 2C 20 57 6F 72 6C 64 21
 ```
 
-For sizes that begin with `0b11`, the remaining 6 bits indicate a type of string format:
+For sizes that begin with `0b11`, the remaining 6 bits indicate a type of string
+format:
+
 ```
 /* The 0xC0 size indicates the string is an 8-bit integer.
    In this example, the string is "123". */
@@ -171,14 +202,17 @@ C2 87 D6 12 00
    You will not encounter LZF-compressed strings in this challenge. */
 C3 ...
 ```
+
 </details>
 
-
 ### The `KEYS` command
+
 <details>
   <summary>Click to expand/collapse</summary>
 
-The [`KEYS command`](https://redis.io/docs/latest/commands/keys/) returns all the keys that match a given pattern, as a RESP array:
+The [`KEYS command`](https://redis.io/docs/latest/commands/keys/) returns all
+the keys that match a given pattern, as a RESP array:
+
 ```
 $ redis-cli SET foo bar
 OK
@@ -189,34 +223,46 @@ $ redis-cli KEYS "f*"
 ```
 
 When the pattern is `*`, the command returns all the keys in the database:
+
 ```
 $ redis-cli KEYS "*"
 1) "baz"
 2) "foo"
 ```
 
-In this stage, you must add support for the `KEYS` command. However, you only need to support the `*` pattern.
+In this stage, you must add support for the `KEYS` command. However, you only
+need to support the `*` pattern.
+
 </details>
 
 ### Tests
 
-The tester will create an RDB file with a single key and execute your program like this:
+The tester will create an RDB file with a single key and execute your program
+like this:
+
 ```
 $ ./your_program.sh --dir <dir> --dbfilename <filename>
 ```
 
 It'll then send a `KEYS "*"` command to your server.
+
 ```
 $ redis-cli KEYS "*"
 ```
 
-Your server must respond with a RESP array that contains the key from the RDB file:
+Your server must respond with a RESP array that contains the key from the RDB
+file:
+
 ```
 *1\r\n$3\r\nfoo\r\n
 ```
 
 ### Notes
 
-- The RDB file provided by `--dir` and `--dbfilename` might not exist. If the file doesn't exist, your program must treat the database as empty.
-- RDB files use both little-endian and big-endian to store numbers. See the [MDN article on endianness](https://developer.mozilla.org/en-US/docs/Glossary/Endianness) to learn more.
-- To generate an RDB file, use the [`SAVE` command](https://redis.io/docs/latest/commands/save/).
+- The RDB file provided by `--dir` and `--dbfilename` might not exist. If the
+  file doesn't exist, your program must treat the database as empty.
+- RDB files use both little-endian and big-endian to store numbers. See the
+  [MDN article on endianness](https://developer.mozilla.org/en-US/docs/Glossary/Endianness)
+  to learn more.
+- To generate an RDB file, use the
+  [`SAVE` command](https://redis.io/docs/latest/commands/save/).

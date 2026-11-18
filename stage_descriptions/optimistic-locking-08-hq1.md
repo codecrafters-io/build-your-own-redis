@@ -1,8 +1,11 @@
-In this stage, you'll implement the `DISCARD` command and verify that it clears watched keys.
+`EXEC` clears watch state when a transaction finishes. In this stage, you'll
+make `DISCARD` do the same when a client cancels a transaction, so old watches
+can't invalidate its next one.
 
-### The `DISCARD` Command
+### The `DISCARD` command
 
-The [`DISCARD` command](https://redis.io/docs/latest/commands/discard/) aborts a transaction. It throws away all queued commands and exits transaction mode:
+The [`DISCARD` command](https://redis.io/docs/latest/commands/discard/) aborts a
+transaction. It throws away all queued commands and exits transaction mode:
 
 ```bash
 $ redis-cli
@@ -16,11 +19,14 @@ QUEUED
 OK
 ```
 
-The response is always `+OK\r\n`.
+For an active transaction, return `+OK\r\n`. Calling `DISCARD` without an active
+transaction returns `-ERR DISCARD without MULTI\r\n`.
 
-### Clearing Watch State
+### Clearing watch state
 
-Just like `EXEC`, `DISCARD` also clears the connection's watched keys. This means a subsequent transaction on the same connection won't be affected by modifications that happened before the `DISCARD`.
+Just like `EXEC`, `DISCARD` also clears the connection's watched keys. This
+means a subsequent transaction on the same connection won't be affected by
+modifications that happened before the `DISCARD`.
 
 ```bash
 $ redis-cli
@@ -49,7 +55,8 @@ QUEUED
 1) OK                  # succeeds, DISCARD cleared the watch state
 ```
 
-Without this cleanup, the second transaction would incorrectly fail because `foo` was modified before the `DISCARD`.
+Without this cleanup, the second transaction would incorrectly fail because
+`foo` was modified before the `DISCARD`.
 
 ### Tests
 
@@ -59,7 +66,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will spawn two clients. Using the first client, it will set two keys, watch them, and begin a transaction:
+The tester will spawn two clients. Using the first client, it will set two keys,
+watch them, and begin a transaction:
 
 ```bash
 # Client 1
@@ -83,7 +91,8 @@ Using the second client, it will modify one of the watched keys:
 OK
 ```
 
-Back on the first client, the tester will discard the transaction, then immediately start and execute a new one:
+Back on the first client, the tester will discard the transaction, then
+immediately start and execute a new one:
 
 ```bash
 # Client 1
@@ -107,10 +116,13 @@ The tester will verify that:
 
 - `DISCARD` returns `+OK\r\n`
 - `DISCARD` clears the connection's watch state
-- The second transaction succeeds because the watched keys were cleared by `DISCARD`
+- The second transaction succeeds because the watched keys were cleared by
+  `DISCARD`
 - The second transaction's queued commands were applied
 
 ### Notes
 
-- `DISCARD` should clear both the command queue and the watch state (watched keys and dirty flag).
-- If you already handle watch state cleanup in `EXEC`, the `DISCARD` implementation should follow the same pattern.
+- `DISCARD` clears the queued commands, watched keys, and any record that a
+  watch was invalidated.
+- If you already handle watch state cleanup in `EXEC`, the `DISCARD`
+  implementation should follow the same pattern.

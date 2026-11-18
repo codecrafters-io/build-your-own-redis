@@ -1,8 +1,10 @@
-In this stage, you'll add support for responding to the `GEOPOS` command.
+Your server stores names and location scores. In this stage, you'll add `GEOPOS`
+to report which requested members exist using its nested response format.
 
 ### The `GEOPOS` command
 
-The `GEOPOS` command returns the longitude and latitude of the specified location.
+The `GEOPOS` command returns the longitude and latitude of the specified
+location.
 
 Example usage:
 
@@ -19,14 +21,22 @@ Example usage:
    2) "48.16427086232978"
 ```
 
-It returns an array with one entry for each location requested.
+It returns an array with one entry for each location requested, in the same
+order as the request.
 
 - If a location exists under the key, its entry is an array of two items:
-  - Longitude (Encoded as a [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
-  - Latitude (Encoded as a [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
-- If either the location or key don’t exist, the corresponding entry is a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) `(*-1\r\n)`.
+  - Longitude (Encoded as a
+    [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
+  - Latitude (Encoded as a
+    [RESP Bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings))
+- If either the location or key doesn't exist, the corresponding entry is a
+  [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays)
+  `(*-1\r\n)`.
 
-To return the latitude and longitude values, Redis decodes the "score" back to latitude and longitude values. We'll cover this process in later stages, for now you can hardcode the returned latitude and longitude values to be 0 (or any number).
+To return the latitude and longitude values, Redis decodes the "score" back to
+latitude and longitude values. We'll cover this process in later stages, for now
+you can hardcode the returned latitude and longitude values to be 0 (or any
+number).
 
 ### Tests
 
@@ -46,7 +56,9 @@ $ redis-cli
 # Expect: (integer) 1
 ```
 
-The tester will then send multiple `GEOPOS` commands:
+The tester will then send `GEOPOS` commands for existing and missing locations.
+It checks the response structure described above, accepting any valid
+floating-point numbers as placeholder coordinates:
 
 ```bash
 > GEOPOS location_key London Munich
@@ -56,28 +68,9 @@ The tester will then send multiple `GEOPOS` commands:
 # Expecting: [nil], encoded as "*1\r\n*-1\r\n"
 ```
 
-The tester will assert that:
-
-- The response is a RESP array that contains as many elements as the number of locations requested
-- For each location requested:
-  - If the location exists:
-    - The corresponding element is a RESP array with two elements (i.e. longitude and latitude)
-    - Both elements are "0" (or any other valid floating point number), encoded as a RESP bulk string
-  - If the location doesn't exist:
-    - The corresponding element is a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) `(*-1\r\n)`.
-
-The tester will also send a `GEOPOS` command using a key that doesn't exist:
+The tester will also query a key that doesn't exist:
 
 ```bash
 > GEOPOS missing_key London Munich
 # Expecting [nil, nil], encoded as "*2\r\n*-1\r\n*-1\r\n"
 ```
-
-The tester will assert that:
-
-- The response is a RESP array that contains as many elements as the number of locations requested
-- Each element of the array is a [null array](https://redis.io/docs/latest/develop/reference/protocol-spec/#null-arrays) `(*-1\r\n)`
-
-### Notes
-
-- In this stage, you can hardcode the returned latitude and longitude values to be 0 (or any other valid floating point number). We'll get to testing actual latitude and longitude values in later stages.
