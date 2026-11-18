@@ -1,11 +1,15 @@
-In this stage, you'll add support for adding elements to an existing sorted set.
+Your server creates a sorted set with one member. In this stage, you'll let
+`ZADD` add members to an existing set or replace a member's score without
+duplicating that member.
 
 ### Adding elements using `ZADD`
 
-The `ZADD` command can be used to add a new member to an existing sorted set, or update the score of an existing member. It returns the count of new members added to the sorted set as an integer.
-
+The `ZADD` command can be used to add a new member to an existing sorted set, or
+update the score of an existing member. It returns the count of new members
+added to the sorted set as an integer.
 
 Example usage:
+
 ```bash
 > ZADD zset_key 0.0043 foo
 (integer) 1
@@ -43,8 +47,10 @@ $ redis-cli
 The tester expects the response to be `:1\r\n` whenever a new member is added.
 
 It will then update the score of an existing member.
+
 ```bash
 > ZADD zset_key 100.0 zset_member1 (Expecting ":0\r\n")
 ```
 
-The tester expects the response to be `:0\r\n` whenever an existing member is updated.
+The tester expects the response to be `:0\r\n` whenever an existing member is
+updated.

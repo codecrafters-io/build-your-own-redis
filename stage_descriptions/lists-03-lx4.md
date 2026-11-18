@@ -1,4 +1,6 @@
-In this stage, you'll add support for appending multiple elements in a single `RPUSH` command.
+Your `RPUSH` accepts one element per request. In this stage, you'll accept
+several elements and append them in argument order, returning the list's length
+after the whole command.
 
 ### `RPUSH` with multiple elements
 
@@ -14,7 +16,8 @@ The `RPUSH` command supports adding multiple elements to a list at once.
 (integer) 5
 ```
 
-The response to each command is the new length of the list returned as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+The response to each command is the new length of the list returned as a
+[RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 ### Tests
 
@@ -24,7 +27,8 @@ The tester will execute your program like this:
 ./your_program.sh
 ```
 
-It will then send multiple `RPUSH` commands, each including more than one element to append to the list.
+It will then send multiple `RPUSH` commands, each including more than one
+element to append to the list.
 
 ```bash
 $ redis-cli RPUSH list_key "element1" "element2" "element3"
@@ -34,8 +38,10 @@ $ redis-cli RPUSH list_key "element4" "element5"
 # Expect: (integer) 5 → encoded as :5\r\n
 ```
 
-In each case, the tester will expect the response to be the length of the list encoded as a RESP integer.
+In each case, the tester will expect the response to be the length of the list
+encoded as a RESP integer.
 
 ### Notes
 
-- `RPUSH` accepts multiple elements even when creating a new list, not only when appending to an existing list. 
+- Support multiple elements both when creating a list and when appending to an
+  existing list.

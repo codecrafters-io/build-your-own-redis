@@ -1,8 +1,12 @@
-In this stage, you'll add support for marking a client as having entered Subscribed mode.
+Your server records subscriptions per client. In this stage, you'll put
+subscribed connections into a restricted mode while leaving other clients'
+command handling unchanged.
 
-### Subscribe Mode
+### Subscribed mode
 
-After a subscribe command is sent, a client enters "Subscribed mode". In this mode, only a subset of commands is allowed:
+With RESP2, the protocol used in this challenge, `SUBSCRIBE` puts the connection
+in subscribed mode. Redis limits the commands allowed on that connection. These
+include:
 
 - `SUBSCRIBE`
 - `UNSUBSCRIBE`
@@ -10,6 +14,10 @@ After a subscribe command is sent, a client enters "Subscribed mode". In this mo
 - `PUNSUBSCRIBE`
 - `PING`
 - `QUIT`
+
+This stage checks that further `SUBSCRIBE` commands work and ordinary commands
+such as `SET`, `GET`, and `ECHO` are rejected. You don't need to implement
+pattern subscriptions or other new commands from the list yet.
 
 The server will reject any other commands with an error, example:
 
@@ -26,7 +34,7 @@ $ redis-cli
 
 ### Tests
 
-The tester will  run your program like this:
+The tester will run your program like this:
 
 ```bash
 $ ./your_program.sh
@@ -40,18 +48,25 @@ $ redis-cli
 # Expecting ["subscribe", "foo", 1]
 ```
 
-The tester will then send a series of commands, which might be allowed or un-allowed for subscribed mode.
+The tester will then send a series of commands, which might be allowed or
+un-allowed for subscribed mode.
 
-For un-allowed commands (like `SET`, `GET`, and `ECHO`) the tester will verify that your server responds with the following error:
+For un-allowed commands (like `SET`, `GET`, and `ECHO`) the tester will verify
+that your server responds with the following error:
 
 ```
 > SET key value
-- ERR Can't execute 'set': only (P|S)SUBSCRIBE / (P|S)UNSUBSCRIBE / PING / QUIT / RESET are allowed in this context 
+-ERR Can't execute 'set': only (P|S)SUBSCRIBE / (P|S)UNSUBSCRIBE / PING / QUIT / RESET are allowed in this context\r\n
 ```
 
-The tester only verifies that error message starts with "ERR Can't execute '<command_name>'", so you're free to use a flexible error message and not stick to the exact format that Redis uses.
+Send a RESP simple error with the message prefix
+`ERR Can't execute '<command_name>'`. Use uppercase `ERR` followed by a space.
+The `can't execute '<command_name>'` text is checked case-insensitively. The
+rest of the message may vary.
 
-For the `SUBSCRIBE` command, the tester will verify that the response is its usual response.
+For the `SUBSCRIBE` command, the tester will verify that the response is its
+usual response.
+
 ```bash
 > SUBSCRIBE bar
 # Expecting ["subscribe", "bar", 2] as RESP-encoded array
@@ -59,8 +74,9 @@ For the `SUBSCRIBE` command, the tester will verify that the response is its usu
 
 ### Notes
 
-- For un-allowed commands, the tester is lenient in checking error messages so you don't have to stick to the exact format Redis uses. The exact format it checks for is `ERR Can't execute '<command>'` (case-insensitive). Examples of error message strings that will pass tests: 
-    - `ERR Can't execute 'set' in subscribed mode`
-    - `ERR can't execute 'SET' when one or more subscriptions exist`
+- Examples of accepted error message text are:
 
-- In subscribed mode, `PING` has a different response (it doesn't respond with `+PONG\r\n`). We'll get to this in later stages. 
+  - `ERR Can't execute 'set' in subscribed mode`
+  - `ERR can't execute 'SET' when one or more subscriptions exist`
+
+- In subscribed mode, `PING` has a different response. Later stages cover it.

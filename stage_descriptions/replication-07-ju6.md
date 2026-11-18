@@ -1,6 +1,7 @@
-In this stage, you'll implement the third step of the replication handshake.
+Your replica has announced its configuration. In this stage, you'll send
+`PSYNC ? -1` to request an initial copy of the master's dataset.
 
-### Handshake (Recap)
+### Handshake progress
 
 As a recap, there are three steps to the handshake:
 
@@ -8,21 +9,26 @@ As a recap, there are three steps to the handshake:
 - The replica sends `REPLCONF` twice to the master (Handled in previous stages)
 - The replica sends `PSYNC` to the master
 
-### The `PSYNC` Command
+### The `PSYNC` command
 
-After receiving a response to the second `REPLCONF`, the replica sends a [`PSYNC`](https://redis.io/commands/psync/) command to the master. 
+After receiving a response to the second `REPLCONF`, the replica sends a
+[`PSYNC`](https://redis.io/commands/psync/) command to the master.
 
-The `PSYNC` command is used to synchronize the state of the replica with the master. The command format is:
+The `PSYNC` command is used to synchronize the state of the replica with the
+master. The command format is:
 
 ```bash
 PSYNC <replication_id> <offset>
 ```
 
-The command takes two arguments: the master's current replication ID and the replica's current offset.
+The arguments identify the replication history the replica already knows and its
+position within that history. They let a master decide whether it can send only
+missing changes or must send a full copy.
 
 For the replica's first connection to the master:
 
-- The replication ID will be `?` because the replica doesn't know the master's ID yet.
+- The replication ID will be `?` because the replica doesn't know the master's
+  ID yet.
 - The offset will be `-1` since the replica has no data from the master yet.
 
 So the final command sent will be `PSYNC ? -1`, encoded as a RESP array:
@@ -31,7 +37,9 @@ So the final command sent will be `PSYNC ? -1`, encoded as a RESP array:
 *3\r\n$5\r\nPSYNC\r\n$1\r\n?\r\n$2\r\n-1\r\n
 ```
 
-The master will respond with a [simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings) that looks like this:
+The master will respond with a
+[simple string](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-strings)
+that looks like this:
 
 ```
 +FULLRESYNC <REPL_ID> 0\r\n
@@ -47,7 +55,8 @@ The tester will execute your program like this:
 ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
 ```
 
-It will then assert that the replica connects to the master and sends the following commands:
+It will then assert that the replica connects to the master and sends the
+following commands:
 
 1. `PING`
 2. `REPLCONF` with `listening-port` and `<PORT>` as arguments

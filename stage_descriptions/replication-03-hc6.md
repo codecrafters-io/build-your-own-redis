@@ -1,8 +1,11 @@
-In this stage, you'll extend the [INFO](https://redis.io/commands/info/) command to reflect a server's role as a replica.
+Your [INFO](https://redis.io/commands/info/) response currently reports
+`master`. In this stage, you'll let startup configuration select the replica
+role and report it as `slave`, the literal Redis uses in this response.
 
-### The `--replicaof` Flag
+### The `--replicaof` flag
 
-By default, your Redis server assumes the master role. When you pass the `--replicaof` flag, the server assumes the replica role instead.
+By default, your Redis server assumes the master role. When you pass the
+`--replicaof` flag, the server assumes the replica role instead.
 
 For example:
 
@@ -10,13 +13,16 @@ For example:
 ./your_program.sh --port 6380 --replicaof "localhost 6379"
 ```
 
-Here, we use the `--replicaof` flag to start a Redis server as a replica. The server will listen for connections on port `6380`, but it will also connect to a master (another Redis server) running on `localhost:6379` and replicate all its changes.
+Here, the server listens on port `6380`. The quoted argument after `--replicaof`
+contains the master's hostname and port separated by a space. Those identify the
+server it will replicate from in later stages. No connection to that master is
+required yet.
 
-We'll learn more about how this replication works in later stages. 
+For this stage, your primary task is to update the `INFO replication` command
+handler to check the server's configuration:
 
-For this stage, your primary task is to update the `INFO replication` command handler to check the server's configuration:
-
-- If the user does not include the `--replicaof` flag, respond with `role:master`.
+- If the user does not include the `--replicaof` flag, respond with
+  `role:master`.
 - If the user includes the `--replicaof` flag, respond with `role:slave`.
 
 ### Tests
@@ -27,17 +33,14 @@ The tester will execute your program like this:
 ./your_program.sh --port <PORT> --replicaof "<MASTER_HOST> <MASTER_PORT>"
 ```
 
-It will then send the `INFO` command with a `replication` argument to your server.
+It will then send the `INFO` command with a `replication` argument to your
+server.
 
 ```bash
 $ redis-cli -p <PORT> INFO replication
 ```
 
-Your program should respond with a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings) where each line
-is a key-value pair separated by a colon (`:`). The tester will only look for the `role` key and assert that the value is `slave`.
-
-### Notes
-
-- Your program still needs to pass the tests for previous stages, so if `--replicaof` isn't specified, you should default to the `master` role.
-- Just like the previous stages, you only need to support the `role` key in the response for this stage. We'll add support for the other keys in later stages.
-- You don't need to actually connect to the master server specified via `--replicaof` in this stage. We'll get to that in later stages.
+Your program should respond with a
+[bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings)
+where each line is a key-value pair separated by a colon (`:`). The tester will
+only look for the `role` key and assert that the value is `slave`.

@@ -1,8 +1,11 @@
-In this stage, you'll extend AOF logging to handle multiple write commands.
+Your server can log one write. In this stage, you'll retain successive writes in
+the AOF, so recovery can reproduce all their changes in order.
 
-### Appending Multiple Commands
+### Appending multiple commands
 
-Each write command should be appended to the AOF file in the order it was received, so the file builds up a complete log of all modifications. This applies to any command that modifies data (like `SET`, `DEL`, `INCR`, `LPUSH`, etc.), not just `SET`.
+Append the write commands your server supports in the order it processes them.
+Later writes must preserve the earlier bytes in the file. This stage exercises
+`SET`. You don't need to add commands from other extensions to attempt it.
 
 For example, if the server receives:
 
@@ -30,16 +33,14 @@ $3\r\n
 200\r\n
 ```
 
-*(The `\r\n` sequences above are shown on separate lines for readability. In the actual file, each command is a continuous sequence of bytes.)*
+_(The `\r\n` sequences above are shown on separate lines for readability. In the
+actual file, each command is a continuous sequence of bytes.)_
 
-Each command is appended immediately after the previous one with no separators between them. On replay, the RESP framing (`*3\r\n...`) is enough to tell where one command ends and the next begins.
+Each command is appended immediately after the previous one with no separators
+between them. On replay, the RESP framing (`*3\r\n...`) is enough to tell where
+one command ends and the next begins.
 
 ### Tests
-
-The tester will create the following under `<dir>/<append_dir_name>`:
-
-- A manifest whose `type i` entry names a file `<random_file_name>.1.incr.aof`
-- The corresponding empty AOF file: `<random_file_name>.1.incr.aof`
 
 The tester will execute your program like this:
 
@@ -58,10 +59,13 @@ The tester will verify that:
 
 - Both commands appear in the append-only file in the order they were sent
 - Each command is encoded in a valid RESP format
-- The writes are flushed to disk before the client receives a response (since `appendfsync` is `always`)
+
+Continue synchronizing each write before replying when `appendfsync` is
+`always`.
 
 ### Notes
 
-- If your implementation from earlier stages already appends (rather than overwrites), this stage may already pass without changes.
-- You must read the manifest to determine which file to write to. The tester uses a non-default filename.
+- If your implementation from earlier stages already appends (rather than
+  overwrites), this stage may already pass without changes.
+- Continue using the active file named in the manifest.
 - You don't need to handle `--appendfsync everysec` in this stage.

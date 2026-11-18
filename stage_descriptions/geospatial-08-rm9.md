@@ -1,28 +1,37 @@
-In this stage, you'll add support for searching locations within a given radius using the `GEOSEARCH` command.
+Your server can measure distances between stored locations. In this stage,
+you'll add `GEOSEARCH` to return the names of locations within a radius of a
+supplied longitude and latitude.
 
-### The GEOSEARCH command
+### The `GEOSEARCH` command
 
 The `GEOSEARCH` command lets you search for locations within a given radius.
 
-It supports several search modes. In our implementation, we'll focus only on the `FROMLONLAT` mode. The `FROMLONLAT` mode searches by directly specifying longitude and latitude.
+It supports several search modes. In our implementation, we'll focus only on the
+`FROMLONLAT` mode. The `FROMLONLAT` mode searches by directly specifying
+longitude and latitude.
 
 Example usage:
 
 ```bash
-> GEOSEARCH places FROMLONLAT 2 48 BYRADIUS 100 m
+> GEOSEARCH places FROMLONLAT 2 48 BYRADIUS 100000 m
 1) "Paris"
 ```
 
-The example command above searches for locations in the `places` key that are within 100 meters of the point (longitude: 2, latitude: 48).
+With the Paris location from earlier stages stored in `places`, this command
+finds it within 100,000 meters of longitude `2`, latitude `48`.
 
-The response is a RESP array containing the names of the locations that match the search criteria, each encoded as a [RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
+The response is a RESP array containing the names of the locations that match
+the search criteria, each encoded as a
+[RESP bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
 Note that there are two options we passed to the command:
 
-- `FROMLONLAT <longitude> <latitude>` — This option specifies the center point for the search.
-- `BYRADIUS <radius> <unit>` — This option searches within a circular area of the given radius and unit (m, km, mi, etc.).
+- `FROMLONLAT <longitude> <latitude>` specifies the center point for the search.
+- `BYRADIUS <radius> <unit>` specifies the circular search area. The tests use
+  `m` for meters.
 
-Redis supports other such options, but in this challenge we'll only use `FROMLONLAT` and `BYRADIUS`.
+Redis supports other such options, but in this challenge we'll only use
+`FROMLONLAT` and `BYRADIUS`.
 
 ### Tests
 
@@ -48,7 +57,7 @@ The tester will then send multiple `GEOSEARCH` commands:
 # Expecting ["Paris"]
 
 > GEOSEARCH places FROMLONLAT 2 48 BYRADIUS 500000 m
-# Expecting ["Paris, "London"] (Any order)
+# Expecting ["Paris", "London"] (Any order)
 
 > GEOSEARCH places FROMLONLAT 11 50 BYRADIUS 300000 m
 # Expecting ["Munich"]
@@ -68,4 +77,5 @@ Locations can be returned in any order.
 
 ### Notes
 
-- The tester will always use the `FROMLONLAT` and `BYRADIUS` options when sending a `GEOSEARCH` command.
+- The tester will always use the `FROMLONLAT` and `BYRADIUS` options when
+  sending a `GEOSEARCH` command.

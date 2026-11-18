@@ -1,8 +1,11 @@
-In this stage, you'll extend support for `XRANGE` to allow querying using `+`.
+Your `XRANGE` command can start at the beginning with `-`. In this stage, you'll
+accept `+` as the end, so a client can read through the latest entry without
+knowing its ID.
 
 ### Using `XRANGE` with `+`
 
-In the `XRANGE` command, the `end` argument can be specified as `+` to retrieve entries from the given `start` ID to the end of the stream.
+In the `XRANGE` command, the `end` argument can be specified as `+` to retrieve
+entries from the given `start` ID to the end of the stream.
 
 Here's an example of how that works:
 
@@ -26,7 +29,8 @@ $ redis-cli XRANGE some_key 1526985054069 +
       4) 94
 ```
 
-In the example above, `XRANGE` retrieves all the entries from `some_key` starting from the entry with ID `1526985054069-0` to the very end of the stream.
+In the example above, `XRANGE` retrieves all the entries from `some_key`
+starting from the entry with ID `1526985054069-0` to the very end of the stream.
 
 ### Tests
 
@@ -50,26 +54,17 @@ Next, it will send an `XRANGE` command using `+` as the `end` ID:
 $ redis-cli XRANGE stream_key 0-2 +
 ```
 
-Your server should respond with a RESP array containing the entries from the provided `start` ID to the end of the stream.
+Your server should respond with a RESP array containing the entries from the
+provided `start` ID to the end of the stream.
 
-From the example above, your response should look like the following, encoded as a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays):
+From the example above, your response should look like the following, encoded as
+a
+[RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays):
 
 ```json
 [
-  [
-    "0-2",
-    [
-      "bar",
-      "baz"
-    ]
-  ],
-  [
-    "0-3",
-    [
-      "baz",
-      "foo"
-    ]
-  ]
+  ["0-2", ["bar", "baz"]],
+  ["0-3", ["baz", "foo"]]
 ]
 ```
 
@@ -90,4 +85,6 @@ $3\r\nfoo\r\n
 ```
 
 ### Notes
-- In the response, the items are shown in separate lines for readability. The tester expects all of these to be in one line.
+
+- The display line breaks separate RESP fragments for readability. Send the CRLF
+  bytes represented by `\r\n`, with no additional line breaks between fragments.

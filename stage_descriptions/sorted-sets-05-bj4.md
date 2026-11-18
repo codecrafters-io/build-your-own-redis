@@ -1,4 +1,6 @@
-In this stage, you'll add support for negative indexes for the `ZRANGE` command.
+Your `ZRANGE` counts positions from the beginning. In this stage, you'll support
+negative indexes so clients can select members relative to the end of score
+order without first querying the set's size.
 
 ### `ZRANGE` with negative indexes
 
@@ -31,7 +33,11 @@ Example usage:
 3) "Ben"
 ```
 
-An index of -1 refers to the last element, -2 to the second last, and so on. If a absolute value of the negative index is out of range (i.e. >= the cardinality of the sorted set), it is treated as 0 (start of the sorted set).
+An index of `-1` refers to the last element, `-2` to the second last, and so on.
+If a negative `start` points before the first member, treat it as `0`. If a
+negative `stop` points before the first member, return an empty array. For the
+five-member set above, `ZRANGE racer_scores -6 -1` returns all five members,
+while `ZRANGE racer_scores 0 -6` returns an empty array.
 
 ### Tests
 
@@ -52,7 +58,8 @@ $ redis-cli
 > ZADD zset_key 25.0 caz (Expecting ":1\r\n")
 ```
 
-The tester will then send your program a series of `ZRANGE` commands with one or more negative indexes.
+The tester will then send your program a series of `ZRANGE` commands with one or
+more negative indexes.
 
 For example, the tester might send you this command:
 
@@ -63,7 +70,8 @@ For example, the tester might send you this command:
 3) "baz"
 ```
 
-In this case, the tester will verify that the response is the array `["paz", "bar", "baz"]`, which is RESP Encoded as:
+In this case, the tester will verify that the response is the array
+`["paz", "bar", "baz"]`, which is RESP Encoded as:
 
 ```
 *3\r\n

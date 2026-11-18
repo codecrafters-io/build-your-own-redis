@@ -1,10 +1,14 @@
-In this stage, you'll add support for setting the `default` user's password.
+Your server reports an empty password list. In this stage, you'll let
+`ACL SETUSER` add a password hash for the `default` user and remove its `nopass`
+flag.
 
-### The `ACL SETUSER` Command
+### The `ACL SETUSER` command
 
-The [`ACL SETUSER`](https://redis.io/docs/latest/commands/acl-setuser/) command modifies the properties of an existing user. 
+The [`ACL SETUSER`](https://redis.io/docs/latest/commands/acl-setuser/) command
+modifies the properties of an existing user.
 
-When the command is used with the `>` rule, it adds a password for the specified user:
+When the command is used with the `>` rule, it adds a password for the specified
+user:
 
 ```bash
 > ACL SETUSER default >mypassword
@@ -13,9 +17,10 @@ OK
 
 The server responds with `OK` encoded as a RESP simple string (`+OK\r\n`).
 
-### Password Storage
+### Password storage
 
 Adding a password for a user with `ACL SETUSER` has two effects:
+
 - The password is stored as a SHA-256 hash.
 - The `nopass` flag is automatically removed.
 
@@ -32,9 +37,13 @@ OK
  4) 1) "89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8"
 ```
 
-Notice that the `nopass` flag is now gone from the `flags` array. Also, the `mypassword` SHA-256 hash is stored as a bulk string in the `passwords` array. 
+Notice that the `nopass` flag is now gone from the `flags` array. Also, the
+`mypassword` SHA-256 hash is stored as a bulk string in the `passwords` array.
 
-Storing only the SHA-256 hash is a security best practice Redis uses to prevent password leaks if the database is compromised.
+SHA-256 produces a 256-bit value. Redis exposes it as 64 lowercase hexadecimal
+characters. Matching this format is required for compatibility. A hash avoids
+storing the plaintext password, but someone who obtains the hash can still try
+guesses against it.
 
 ### Tests
 
@@ -60,7 +69,8 @@ The tester will verify that:
 - The `nopass` flag is present in the flags array.
 - The `passwords` array is empty.
 
-Next, the tester will send a `ACL SETUSER` command, specifying the `default` user and a password:
+Next, the tester will send a `ACL SETUSER` command, specifying the `default`
+user and a password:
 
 ```bash
 # Expect: +OK\r\n
@@ -70,13 +80,14 @@ OK
 
 Your server must respond with `+OK\r\n`.
 
-Finally, the tester will send a `ACL GETUSER` command, specifying the `default` user:
+Finally, the tester will send a `ACL GETUSER` command, specifying the `default`
+user:
 
 ```bash
-# Expect RESP array: ["flags", ["nopass"], "passwords", ["89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8"]]
+# Expect RESP array: ["flags", [], "passwords", ["89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8"]]
 > ACL GETUSER default
 1) "flags"
-2) 1) "nopass"
+2) (empty array)
 3) "passwords"
 4) 1) "89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8"
 ```
@@ -84,9 +95,5 @@ Finally, the tester will send a `ACL GETUSER` command, specifying the `default` 
 The tester will validate the following for your response:
 
 - The `nopass` flag is no longer present.
-- The `passwords` array contains the SHA-256 hash of `mypassword` encoded as a bulk string.
-
-### Notes
-
-- Redis uses the SHA-256 hashing algorithm for password storage. You'll need to compute the SHA-256 hash of the provided password and store it.
-- The password hash should be stored as a lowercase hexadecimal string.
+- The `passwords` array contains the SHA-256 hash of `mypassword` encoded as a
+  bulk string.

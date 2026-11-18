@@ -1,11 +1,17 @@
-In this stage, you'll add support for executing an empty transaction.
+Your server rejects `EXEC` outside a transaction. In this stage, you'll handle
+`MULTI` followed by `EXEC` with no queued commands, and finish that transaction
+so the connection returns to normal command handling.
 
 ### Empty transactions
 
-If [EXEC](https://redis.io/docs/latest/commands/exec/) is executed soon after [MULTI](https://redis.io/docs/latest/commands/multi/),
-it returns an empty array.
+If no commands were queued between
+[MULTI](https://redis.io/docs/latest/commands/multi/) and
+[EXEC](https://redis.io/docs/latest/commands/exec/), `EXEC` returns the empty
+RESP array `*0\r\n`.
 
-The empty array signifies that no commands were queued, and that the transaction was executed successfully.
+The empty array means the transaction completed with no command results. A
+second `EXEC` on that connection must return `-ERR EXEC without MULTI\r\n` until
+another transaction starts.
 
 Example usage:
 
@@ -25,7 +31,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will then connect to your server as a Redis client and run the following commands:
+The tester will then connect to your server as a Redis client and run the
+following commands:
 
 ```bash
 $ redis-cli

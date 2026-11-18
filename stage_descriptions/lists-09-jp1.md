@@ -1,8 +1,14 @@
-In this stage, you'll add support for removing multiple elements in a single `LPOP` command.
+Your `LPOP` removes one element. In this stage, you'll accept a count so a
+client can remove several elements from the front in one request.
 
 ### `LPOP` with multiple elements
 
-The `LPOP` command accepts an optional argument that specifies how many elements to remove from a list. The command returns the removed elements in a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays).
+The `LPOP` command accepts an optional argument that specifies how many elements
+to remove from a list. The command returns the removed elements in a
+[RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays).
+
+With a count, return bulk-string elements in removal order, even if the count is
+`1`. Without a count, keep the earlier single bulk-string response.
 
 For example:
 
@@ -17,9 +23,11 @@ For example:
 2) "d"
 ```
 
-In this case, `LPOP` removes the first two elements, `a` and `b`, and the list is left with `c` and `d`. 
+In this case, `LPOP` removes the first two elements, `a` and `b`, and the list
+is left with `c` and `d`.
 
-If the number of elements to remove is greater than the list's length, the command should remove all elements in the list and return them as a RESP array.
+If the number of elements to remove is greater than the list's length, the
+command should remove all elements in the list and return them as a RESP array.
 
 ### Tests
 
@@ -37,18 +45,21 @@ $ redis-cli
 # Expect: 5 (RESP Encoded Integer)
 ```
 
-After that, it will send your program an `LPOP` command with the number of elements to remove.
+After that, it will send your program an `LPOP` command with the number of
+elements to remove.
 
 ```bash
 > LPOP list_key 2
 # Expect RESP Encoded Array: ["one", "two"]
 ```
 
-The tester will verify that the response is a RESP array of the removed elements.
+The tester will verify that the response is a RESP array of the removed
+elements.
 
-It will also use the `LRANGE` command to verify the remaining elements in the list.
+It will also use the `LRANGE` command to verify the remaining elements in the
+list.
 
 ```bash
 > LRANGE list_key 0 -1
 # Expect RESP Encoded Array: ["three", "four", "five"]
-``` 
+```

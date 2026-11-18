@@ -1,8 +1,12 @@
-In this stage, you'll implement enforcing authentication using the `AUTH` command.
+Your server blocks ordinary commands from unauthenticated connections. In this
+stage, you'll make a successful `AUTH` authenticate that connection so it can
+use those commands.
 
-### Enforcing Authentication Using `AUTH`
+### Authenticating with `AUTH`
 
-After the `AUTH` command succeeds, the connection becomes authenticated as the specified user. Once authenticated, the connection can execute commands that previously returned `NOAUTH` errors:
+After the `AUTH` command succeeds, the connection becomes authenticated as the
+specified user. Once authenticated, the connection can execute commands that
+previously returned `NOAUTH` errors:
 
 For example:
 
@@ -28,7 +32,11 @@ OK
 "default"
 ```
 
-The authentication lasts for the entire connection, so the client does not need to re-authenticate for every command.
+The authentication lasts for the entire connection, so the client does not need
+to re-authenticate for every command.
+
+A failed `AUTH` on an unauthenticated connection must leave it unauthenticated.
+Other connections keep their own authentication state.
 
 ### Tests
 
@@ -63,10 +71,14 @@ PONG
 
 The tester will verify that:
 
-1. A new client receives a `NOAUTH` error when attempting to execute commands before authenticating.
-2. The `AUTH` command returns `OK` as a simple string on successful authentication.
+1. A new client receives a `NOAUTH` error when attempting to execute commands
+   before authenticating.
+2. The `AUTH` command returns `OK` as a simple string on successful
+   authentication.
 3. The client can execute commands successfully after authentication.
 
 ### Notes
 
-- All commands except `AUTH` should return `NOAUTH` errors when executed by an unauthenticated connection. This rule applies to every command you have implemented, not only to `ACL` commands.
+- For this challenge, every implemented command except `AUTH` must return a
+  `NOAUTH` error on an unauthenticated connection. This includes `PING`, `ECHO`,
+  `SET`, `GET`, and the `ACL` commands.

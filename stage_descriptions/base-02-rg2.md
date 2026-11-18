@@ -1,8 +1,10 @@
-In this stage, you'll implement the Redis `PING` command.
+Your server can accept a connection. In this stage, you'll make it respond to
+`PING` so a client can check that the server is ready to handle commands.
 
 ### What is `PING`?
 
-Redis clients talk to Redis servers by sending **commands** and receiving **responses**.
+Redis clients talk to Redis servers by sending **commands** and receiving
+**responses**.
 
 For example:
 
@@ -14,10 +16,19 @@ redis> SET name Alice        # store the value "Alice" under the key "name"
 OK                           # server confirms success
 ```
 
-`PING` is the simplest Redis command. It’s used to check whether a Redis server is alive and responding.
+`PING` checks whether a Redis server is alive and responding. The example above
+shows a client's display. You don't need to implement `SET` yet.
 
-When a Redis server replies to `PING`, the raw response it sends over the network is actually `+PONG\r\n`, which is the string `PONG` encoded using RESP, a format Redis uses to exchange messages between clients and servers.
+The response bytes are `+PONG\r\n`. This is a **simple string** in RESP, the
+Redis Serialization Protocol. The `+` identifies the response type. The ending
+`\r\n` represents two bytes, carriage return followed by line feed, also called
+CRLF. Send those bytes over the connection, rather than printing the backslash
+characters or writing the response to your program's terminal.
 
-For this stage, your task is to simply hardcode a `+PONG\r\n` response, regardless of the incoming command.
+For this stage, you can hardcode `+PONG\r\n` as the response to received input.
+Parsing the incoming command comes in later stages.
 
-You’ll learn more about RESP and how input command parsing works in future stages.
+### Tests
+
+The tester starts your server with `./your_program.sh`, sends a `PING` command,
+and checks for the `+PONG\r\n` response.

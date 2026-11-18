@@ -1,4 +1,7 @@
-In this stage, you'll add support for the `WATCH` command.
+This extension prevents a transaction from applying changes based on stale data.
+It uses optimistic locking: other clients can still write, but changes to
+watched keys can cause a transaction to be rejected before execution. In this
+stage, you'll recognize `WATCH` and acknowledge a single key with `+OK\r\n`.
 
 <!-- ### Optimistic Locking in Redis
 
@@ -8,9 +11,16 @@ This is the "lost update problem", and it shows up whenever multiple clients rea
 
 Optimistic locking flips the approach. Instead of locking upfront, you let every client read and write freely, but you keep track of what they read. Right before a client commits its changes, you check: did any of those values change since the client read them? If so, the commit is rejected, and the client can retry with fresh data. -->
 
-### The `WATCH` Command
+### The `WATCH` command
 
-Redis uses the [`WATCH`](https://redis.io/docs/latest/commands/watch/) command to implement [optimistic locking](https://redis.io/docs/latest/develop/using-commands/transactions/#optimistic-locking-using-check-and-set). It tells the server to monitor a key for changes. Later, when the client executes a group of commands as a [transaction](https://redis.io/docs/latest/develop/using-commands/transactions/), the server checks whether any watched keys were modified in the meantime. If they were, the whole transaction is discarded.
+Redis uses the [`WATCH`](https://redis.io/docs/latest/commands/watch/) command
+to implement
+[optimistic locking](https://redis.io/docs/latest/develop/using-commands/transactions/#optimistic-locking-using-check-and-set).
+It tells the server to monitor a key for changes. Later, when the client
+executes a group of commands as a
+[transaction](https://redis.io/docs/latest/develop/using-commands/transactions/),
+the server checks whether any watched keys were modified in the meantime. If
+they were, the whole transaction is discarded.
 
 Here's what that looks like in practice:
 
@@ -24,7 +34,8 @@ Client A: EXEC                   # Try to execute...
 → (nil)                          # Transaction aborted, counter changed
 ```
 
-You'll implement this full flow in later stages. For this stage, you only need to parse the `WATCH` command and respond with `+OK\r\n`.
+You'll implement this full flow in later stages. For this stage, you only need
+to parse the `WATCH` command and respond with `+OK\r\n`.
 
 ```bash
 $ redis-cli WATCH key
@@ -46,9 +57,12 @@ $ redis-cli WATCH key
 ```
 
 The tester will verify that:
+
 - The response is `+OK\r\n` (a RESP simple string)
 - Your program doesn't crash or produce errors
 
 ### Notes
-- `WATCH` can accept multiple keys in a single command (e.g., `WATCH key1 key2 key3`), but you only need to handle a single key for now. We'll handle multiple keys in later stages.
-- The actual watch tracking and transaction abort behavior will come in later stages.
+
+- `WATCH` can accept multiple keys in a single command (e.g.,
+  `WATCH key1 key2 key3`), but you only need to handle a single key for now.
+  We'll handle multiple keys in later stages.

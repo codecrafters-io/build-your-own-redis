@@ -1,21 +1,26 @@
-In this stage, you'll add support for the `PUBLISH` command\.
+Your server knows which clients subscribe to each channel. Message delivery
+comes later. In this stage, you'll add `PUBLISH` and report how many subscribers
+a message would reach.
 
-### The `PUBLISH` Command
+### The `PUBLISH` command
 
-[The PUBLISH command](https://redis.io/docs/latest/commands/publish/) delivers a message to all clients subscribed to a channel.
+[The PUBLISH command](https://redis.io/docs/latest/commands/publish/) delivers a
+message to all clients subscribed to a channel.
 
 ```
 > PUBLISH channel_name message_contents
 (integer) 3
 ```
 
-The response to the command is the number of clients that are subscribed to the channel.
+The response to the command is the number of clients that are subscribed to the
+channel.
 
-In this stage, you will only implement responding back to the `PUBLISH` command. You don't need to deliver the message to clients yet — we'll get to this in later stages.
+Count each client subscribed to that channel once. A channel with no subscribers
+produces the RESP integer `:0\r\n`.
 
 ### Tests
 
-The tester will  run your program like this:
+The tester will run your program like this:
 
 ```bash
 $ ./your_program.sh
@@ -37,14 +42,17 @@ $ redis-cli
 > SUBSCRIBE bar
 ```
 
-The tester will then publish messages to different channels using `PUBLISH` and check whether the response matches the number of clients subscribed to the channel.
+The tester will then publish messages to different channels using `PUBLISH` and
+check whether the response matches the number of clients subscribed to the
+channel.
 
 ```
 $ redis-cli PUBLISH bar "msg"
 (integer) 2
 ```
 
-In the above example, the expected response is 2 (encoded as a RESP integer) since 2 clients are subscribed to channel bar.
+In the above example, the expected response is 2 (encoded as a RESP integer)
+since 2 clients are subscribed to channel bar.
 
 Similarly for the `foo` channel
 
@@ -53,4 +61,5 @@ $ redis-cli PUBLISH foo "msg"
 (integer) 1
 ```
 
-The tester expects the response to be 1 (encoded as a RESP integer) since only 1 client is subscribed to it.
+The tester expects the response to be 1 (encoded as a RESP integer) since only 1
+client is subscribed to it.

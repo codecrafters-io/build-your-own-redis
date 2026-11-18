@@ -1,18 +1,26 @@
-In this stage, you'll extend replay to handle append-only files with multiple commands.
+Your server restores one saved command. In this stage, you'll replay every
+command in the AOF in order, so a later write can update a value restored by an
+earlier one.
 
-### Replaying Multiple Commands
+### Replaying multiple commands
 
-An append-only file typically contains many commands, not just one. Your server needs to parse the file as a sequence of RESP-encoded commands and replay each one in order, just as if a client had sent them live.
+An AOF is a sequence of RESP-encoded commands. Applying them in file order must
+produce the same database state as processing that sequence from a client.
 
-Since RESP is self-framing (each command starts with `*<n>\r\n` indicating its length), you can read commands one after another until you reach the end of the file. Each command you parse should be executed against your server's state before moving on to the next.
+The `*<n>\r\n` prefix gives the number of elements in a command's array. Each
+bulk string then supplies its own byte length. Together, these fields mark
+command boundaries without extra separators. Continue through the end of the
+file.
 
-After replaying all commands, your database should reflect the cumulative effect of every write in the file.
+For example, if the file contains `SET foo 100` followed by `SET foo 200`, the
+restored value of `foo` is `200`.
 
 ### Tests
 
 The tester will create a directory `<dir>/<append_dir_name>` containing:
 
-- An AOF file `<random_file_name>.1.incr.aof` with multiple RESP-encoded commands (e.g., several `SET` commands for different keys)
+- An AOF file `<random_file_name>.1.incr.aof` with multiple RESP-encoded
+  commands (e.g., several `SET` commands for different keys)
 - A manifest file `<append_file_name>.manifest` pointing to that AOF file:
 
 ```
@@ -25,7 +33,8 @@ The tester will execute your program like this:
 $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_name> --appendfilename <append_file_name>
 ```
 
-After startup, the tester will send several `GET` commands to verify each key was restored:
+After startup, the tester will send several `GET` commands to verify each key
+was restored:
 
 ```bash
 $ redis-cli GET <key1>
@@ -36,10 +45,11 @@ $ redis-cli GET <key2>
 The tester will verify that:
 
 - Each `GET` returns the value from the corresponding command in the AOF file
-- All commands from the AOF file were replayed, not just the first one
+- Later writes to the same key replace the values restored by earlier writes
 
 ### Notes
 
-- If your implementation from earlier stages already loops through the file until EOF, this stage may already pass without changes.
-- You must read and replay from the file named in the manifest, not from the hardcoded filename `<append_file_name>.1.incr.aof`.
-- RESP is self-framing, so you don't need any separator between commands. Just keep parsing until you run out of bytes.
+- If your implementation from earlier stages already loops through the file
+  until EOF, this stage may already pass without changes.
+- The manifest's active filename can differ from
+  `<append_file_name>.1.incr.aof`. Continue using the name from the manifest.

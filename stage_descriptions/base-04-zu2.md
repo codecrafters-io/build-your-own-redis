@@ -1,27 +1,32 @@
-In this stage, you'll add support for multiple concurrent clients.
+Your server handles repeated commands on one connection. In this stage, you'll
+let multiple clients keep connections open and receive responses without waiting
+for another client to disconnect.
 
-### Handling Multiple Clients
+### Handling multiple clients
 
-In addition to handling multiple commands from the same client, Redis servers can also handle multiple clients at once.
+These overlapping connections are **concurrent**. Each client's `PING` needs a
+`+PONG\r\n` response on that client's connection, even while another connection
+is idle.
 
-{{#lang_is_javascript}}
-In most languages, you'd need to either use threads or implement an
-[Event Loop](https://en.wikipedia.org/wiki/Event_loop) to do this. In JavaScript, however, since [the concurrency
-model itself is based on an event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop), most
-standard library functions are designed to support this kind of concurrent behaviour out of the box. **It is very
-likely that the code you had for previous stages will pass this stage without any changes!**
-{{/lang_is_javascript}}
+{{#lang_is_javascript}} The runtime's
+[event loop](https://en.wikipedia.org/wiki/Event_loop) can handle events from
+several connections. With
+[event-driven networking](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop),
+your existing server may already support this. Check that handling one
+connection doesn't block the others. {{/lang_is_javascript}}
 
-{{#lang_is_typescript}}
-In most languages, you'd need to either use threads or implement an [Event Loop](https://en.wikipedia.org/wiki/Event_loop) to do this. In JavaScript, however, since [the concurrency
-model itself is based on an event loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop), most standard library functions are designed to support this kind of concurrent behaviour out of the box. **It is very likely that the code you had for previous stages will pass this stage without any changes!**
-{{/lang_is_typescript}}
+{{#lang_is_typescript}} The runtime's
+[event loop](https://en.wikipedia.org/wiki/Event_loop) can handle events from
+several connections. With
+[event-driven networking](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop),
+your existing server may already support this. Check that handling one
+connection doesn't block the others. {{/lang_is_typescript}}
 
-{{^lang_is_javascript}}
-  {{^lang_is_typescript}}
-To implement this, you'll need to either use threads or, if you're feeling adventurous, implement an [Event Loop](https://en.wikipedia.org/wiki/Event_loop) (like the official Redis implementation does).
-  {{/lang_is_typescript}}
-{{/lang_is_javascript}}
+{{^lang_is_javascript}} {{^lang_is_typescript}} Threads and an
+[event loop](https://en.wikipedia.org/wiki/Event_loop) are possible approaches.
+An event loop waits for activity across connections and handles each ready
+connection. You can use your language's networking facilities to choose how to
+support overlapping clients. {{/lang_is_typescript}} {{/lang_is_javascript}}
 
 ### Tests
 
@@ -31,17 +36,20 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-It'll then send two `PING` commands concurrently using two different connections:
+It'll send `PING` commands across several connections that remain open at the
+same time. For example, two clients can each send:
 
 ```bash
 # These two will be sent concurrently so that we can test your server's ability to handle concurrent clients.
 $ redis-cli PING
 $ redis-cli PING
 ```
-The tester will expect to receive two separate `+PONG\r\n` responses.
+
+The tester expects a separate `+PONG\r\n` response for each command, on the
+connection that sent it.
 
 ### Notes
 
-- Since the tester client _only_ sends the `PING` command at the moment, it's okay to
-  ignore what the client sends and hardcode a response. We'll get to parsing
-  client input in later stages.
+- Since the tester client _only_ sends the `PING` command at the moment, it's
+  okay to ignore what the client sends and hardcode a response. We'll get to
+  parsing client input in later stages.

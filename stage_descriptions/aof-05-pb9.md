@@ -1,10 +1,14 @@
-In this stage, you'll create a manifest file alongside the append-only file.
+Your server creates an incremental AOF file. In this stage, you'll create a
+manifest beside it to identify the file that recovery should replay.
 
-### The Manifest File
+### The manifest file
 
-The manifest file tells Redis which AOF files exist and in what order they should be replayed during recovery. It follows the naming convention `<appendfilename>.manifest` and lives in the same directory as the AOF file. 
+The manifest file tells Redis which AOF files to replay and their order. It
+follows the naming convention `<appendfilename>.manifest` and lives in the same
+directory as the AOF file.
 
-The manifest file contains a single line describing the AOF file you created earlier:
+The manifest file contains a single line describing the AOF file you created
+earlier:
 
 ```
 file <appendfilename>.1.incr.aof seq 1 type i
@@ -12,13 +16,14 @@ file <appendfilename>.1.incr.aof seq 1 type i
 
 Here's what each part means:
 
-| Field | Value | Meaning |
-|---|---|---|
-| `file` | `<appendfilename>.1.incr.aof` | The name of the AOF file |
-| `seq` | `1` | Sequence number for this file |
-| `type` | `i` | An incremental file, meaning it contains write commands appended one by one |
+| Field  | Value                         | Meaning                                                                     |
+| ------ | ----------------------------- | --------------------------------------------------------------------------- |
+| `file` | `<appendfilename>.1.incr.aof` | The name of the AOF file                                                    |
+| `seq`  | `1`                           | Sequence number for this file                                               |
+| `type` | `i`                           | An incremental file, meaning it contains write commands appended one by one |
 
-For example, if the server is started with `--appendfilename appendonly.aof`, the manifest file would be named `appendonly.aof.manifest` and should contain:
+For example, if the server is started with `--appendfilename appendonly.aof`,
+the manifest file would be named `appendonly.aof.manifest` and should contain:
 
 ```
 file appendonly.aof.1.incr.aof seq 1 type i
@@ -37,12 +42,15 @@ $ ./your_program.sh --dir <dir> --appendonly yes --appenddirname <append_dir_nam
 It will then verify that:
 
 - The directory `<dir>/<append_dir_name>` exists
-- The empty AOF file `<dir>/<append_dir_name>/<append_file_name>.1.incr.aof` exists
+- The empty AOF file `<dir>/<append_dir_name>/<append_file_name>.1.incr.aof`
+  exists
 - The manifest file `<dir>/<append_dir_name>/<append_file_name>.manifest` exists
-- The manifest file contains the line `file <append_file_name>.1.incr.aof seq 1 type i`
+- The manifest file contains the line
+  `file <append_file_name>.1.incr.aof seq 1 type i`
 
 ### Notes
 
 - The manifest file should be created at startup alongside the AOF file.
-- Each token in the manifest line is separated by a single space. No tabs or extra spaces.
+- Each token in the manifest line is separated by a single space. No tabs or
+  extra spaces.
 - Make sure the manifest line ends with a newline character.

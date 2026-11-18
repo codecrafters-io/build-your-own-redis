@@ -1,9 +1,12 @@
-In this stage, you'll add support for the DISCARD command.
+Your server executes queued commands with `EXEC`. In this stage, you'll add
+`DISCARD` so a client can cancel its transaction without applying any queued
+changes.
 
-### The DISCARD command
+### The `DISCARD` command
 
-[DISCARD](https://redis.io/docs/latest/commands/discard/) is used to abort a transactions. It discards all commands queued in a transaction,
-and returns `+OK\r\n`.
+[DISCARD](https://redis.io/docs/latest/commands/discard/) removes the
+connection's queued commands and exits transaction mode. Return `+OK\r\n` and
+leave the database unchanged.
 
 Example:
 
@@ -19,9 +22,8 @@ OK
 (error) ERR DISCARD without MULTI
 ```
 
-In the above example, note that the first `DISCARD` returns `OK`, but the second `DISCARD` returns an error since the transaction was aborted.
-
-### DISCARD
+In the above example, note that the first `DISCARD` returns `OK`, but the second
+`DISCARD` returns an error since the transaction was aborted.
 
 ### Tests
 
@@ -31,7 +33,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
+The tester will then connect to your server as a Redis client, and send multiple
+commands using the same connection:
 
 ```bash
 $ redis-cli

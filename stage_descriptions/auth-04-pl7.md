@@ -1,10 +1,14 @@
-In this stage, you'll add support for responding to the `ACL GETUSER` command with the `passwords` property.
+Your user configuration exposes `nopass`. In this stage, you'll add an empty
+`passwords` property, ready to expose password hashes when they are configured.
 
-### The `passwords` Property
+### The `passwords` property
 
-The `passwords` property lists all hash-encoded passwords associated with a user. 
+The `passwords` property contains password hashes. A hash is a fixed-size value
+computed from a password's bytes. Later stages will compute these hashes when a
+password is added.
 
-The `default` user does not have any associated passwords unless explicitly configured:
+The `default` user does not have any associated passwords unless explicitly
+configured:
 
 ```bash
 > ACL GETUSER default
@@ -17,7 +21,8 @@ The `default` user does not have any associated passwords unless explicitly conf
 Your `ACL GETUSER` response must now include the following:
 
 1. The string `passwords`, encoded as a bulk string.
-2. A RESP array containing the list of passwords. Since the `default` user has none, you must hardcode this to be an empty array.
+2. A RESP array containing the password hashes. No passwords have been
+   configured yet, so return an empty array.
 
 ### Tests
 
@@ -38,9 +43,12 @@ $ redis-cli ACL GETUSER default
  4) (empty array)
 ```
 
-The tester will validate that the response is a RESP array with four elements:
+Your response should include these four elements in order:
 
-1. The first element of the array is the string `flags`, encoded as a RESP bulk string.
-2. The second element of the array is a RESP array and contains the `nopass` flag.
-3. The third element of the array is the string `passwords`, encoded as a bulk string.
+1. The first element of the array is the string `flags`, encoded as a RESP bulk
+   string.
+2. The second element of the array is a RESP array and contains the `nopass`
+   flag.
+3. The third element of the array is the string `passwords`, encoded as a bulk
+   string.
 4. The fourth element of the array is an empty array.

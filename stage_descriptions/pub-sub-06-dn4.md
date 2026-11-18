@@ -1,10 +1,15 @@
-In this stage, you will add support for delivering published messages to subscribed clients.
+Your `PUBLISH` returns the subscriber count. In this stage, you'll deliver the
+message to those subscribers over their existing connections, without waiting
+for them to request it.
 
 ### Delivering messages
 
-When a client runs `PUBLISH` the command, the message is "delivered" to all clients currently subscribed to the channel.
+When a client sends `PUBLISH`, send a message array to each client currently
+subscribed to the named channel. The publishing client still receives the
+integer subscriber count.
 
-For example, if a client was subscribed to `channel_1` and the message `hello` was sent, it would see something like this:
+For example, if a client was subscribed to `channel_1` and the message `hello`
+was sent, it would see something like this:
 
 ```bash
 $ redis-cli
@@ -15,7 +20,7 @@ $ redis-cli
 
 # (client is now in subscribed mode)
 
-# When a message is published, it receives the following array: 
+# When a message is published, it receives the following array:
 1) "message"
 2) "channel_1"
 3) "hello"
@@ -27,7 +32,8 @@ Each subscribed client receives an array with 3 elements:
 1. The channel name (as a RESP bulk string)
 1. The message contents (as a RESP bulk string)
 
-In this case, each subscribed client will receive  `["message", "channel_1", "hello"]`, encoded as:
+In this case, each subscribed client will receive
+`["message", "channel_1", "hello"]`, encoded as:
 
 ```
 *3\r\n
@@ -41,7 +47,7 @@ hello\r\n
 
 ### Tests
 
-The tester will  run your program like this:
+The tester will run your program like this:
 
 ```bash
 $ ./your_program.sh
@@ -63,7 +69,8 @@ $ redis-cli
 > SUBSCRIBE bar
 ```
 
-The tester will then spawn a separate client and send `PUBLISH` commands for random channels.
+The tester will then spawn a separate client and send `PUBLISH` commands for
+random channels.
 
 ```bash
 $ redis-cli
@@ -73,9 +80,13 @@ $ redis-cli
 1
 ```
 
-It'll verify the `PUBLISH` commands returns the number of clients subscribed to the channel.
+It'll verify that each `PUBLISH` command returns the number of clients
+subscribed to the channel.
 
-For every client, it'll also assert that the client receives the message if it is subscribed. The tester will verify that each subscribed client receives an array like this: `["message", "foo", "hello"]`. When RESP-encoded, this looks like:
+For every client, it'll also assert that the client receives the message if it
+is subscribed. The tester will verify that each subscribed client receives an
+array like this: `["message", "foo", "hello"]`. When RESP-encoded, this looks
+like:
 
 ```
 *3\r\n
@@ -87,4 +98,5 @@ $5\r\n
 hello\r\n
 ```
 
-If a client isn't subscribed to a channel, the tester will validate that it doesn't receive messages sent to that channel.
+If a client isn't subscribed to a channel, the tester will validate that it
+doesn't receive messages sent to that channel.

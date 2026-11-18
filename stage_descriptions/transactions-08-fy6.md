@@ -1,11 +1,19 @@
-In this stage, you'll add support for executing a transaction that contains multiple commands.
+Your server queues commands without applying them. In this stage, you'll make
+`EXEC` apply that connection's queued commands in order and return their results
+together.
 
 ### Executing a transaction
 
-When the [EXEC](https://redis.io/docs/latest/commands/exec/) command is sent within a transaction,
-all commands queued in that transaction are executed.
+When the [EXEC](https://redis.io/docs/latest/commands/exec/) command is sent
+within a transaction, all commands queued in that transaction are executed.
 
-The response to [EXEC](https://redis.io/docs/latest/commands/exec/) is an array of the responses of the queued commands.
+The queued commands execute as one uninterrupted group: commands from other
+clients must not run between them. After execution, clear the transaction and
+return the connection to normal command handling.
+
+The response to [EXEC](https://redis.io/docs/latest/commands/exec/) is a RESP
+array containing one response per queued command, in order. Each element keeps
+its response type, such as a simple string for `SET` or an integer for `INCR`.
 
 Example:
 
@@ -22,7 +30,8 @@ QUEUED
 2) (integer) 42
 ```
 
-In the above example, `OK` is the response of the `SET` command, and `42` is the response of the `INCR` command.
+In the above example, `OK` is the response of the `SET` command, and `42` is the
+response of the `INCR` command.
 
 ### Tests
 
@@ -32,10 +41,12 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will then connect to your server as a Redis client, and send multiple commands using the same connection:
+The tester will then connect to your server as a Redis client, and send multiple
+commands using the same connection:
 
 ```bash
-$ redis-cli MULTI
+$ redis-cli
+> MULTI
 > SET foo 6 (expecting "+QUEUED\r\n")
 > INCR foo (expecting "+QUEUED\r\n")
 > INCR bar (expecting "+QUEUED\r\n")
@@ -43,7 +54,8 @@ $ redis-cli MULTI
 > EXEC (expecting an array of responses for the queued commands)
 ```
 
-Since the transaction was executed, the key `foo` should exist and have the value `7`.
+Since the transaction was executed, the key `foo` should exist and have the
+value `7`.
 
 The tester will verify this by running a GET command:
 

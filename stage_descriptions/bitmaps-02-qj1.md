@@ -1,10 +1,13 @@
-In this stage, you'll add support for retrieving a bit from a bitmap using the `GETBIT` command.
+Your server can change a bit with `SETBIT`. In this stage, you'll implement
+`GETBIT` to inspect a bit without changing the stored string.
 
-### The `GETBIT` Command
+### The `GETBIT` command
 
-The [GETBIT](https://redis.io/docs/latest/commands/getbit/) command returns the bit stored at a given `offset` in a bitmap.
+The [GETBIT](https://redis.io/docs/latest/commands/getbit/) command returns the
+bit stored at a given `offset` in a bitmap.
 
-If the key does not exist, Redis treats the bitmap as all zeros and returns `0` for any offset.
+If the key does not exist, Redis treats the bitmap as all zeros and returns `0`
+for any offset.
 
 Example usage:
 
@@ -40,7 +43,8 @@ The tester will then send a `GETBIT` command for a bit that was set.
 $ redis-cli GETBIT bit_key 2
 ```
 
-The tester will expect the response to be `:1\r\n`, which is 1 encoded as a [RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
+The tester will expect the response to be `:1\r\n`, which is 1 encoded as a
+[RESP integer](https://redis.io/docs/latest/develop/reference/protocol-spec/#integers).
 
 It will also send a `GETBIT` command for an unset offset on the same key.
 
@@ -50,7 +54,7 @@ $ redis-cli GETBIT bit_key 3
 
 The tester will expect the response to be `:0\r\n`.
 
-The tester will also send a `GETBIT` command for a key that does not exist.
+For a key that doesn't exist, the required behavior is:
 
 ```bash
 $ redis-cli GETBIT new_key 2
@@ -60,5 +64,5 @@ In this case, your program should also respond with `:0\r\n`.
 
 ### Notes
 
-- Using `GETBIT` with an offset beyond the current string length should return `0`.
-
+- Using `GETBIT` with an offset beyond the current string length should return
+  `0`.

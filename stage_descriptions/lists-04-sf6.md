@@ -1,10 +1,14 @@
-In this stage, you will add support for listing the elements of a list using the `LRANGE` command.
+Your server stores list elements in order. In this stage, you'll add `LRANGE` so
+clients can read a selected part of the list using non-negative indexes.
 
 ### The `LRANGE` command
 
-The `LRANGE` command is used to retrieve elements from a list using a `start` index and a `stop` index.
+The `LRANGE` command is used to retrieve elements from a list using a `start`
+index and a `stop` index.
 
-The index of the first element is `0`. The `stop` index is inclusive, meaning the element at that index is included in the response.
+The first element has index `0`. Both `start` and `stop` are inclusive, so
+`LRANGE list_key 0 1` returns two elements. Reading a range leaves the list
+unchanged.
 
 For example:
 
@@ -13,7 +17,7 @@ For example:
 > RPUSH list_key "a" "b" "c" "d" "e"
 (integer) 5
 
-# List first 2 items 
+# List first 2 items
 > LRANGE list_key 0 1
 1) "a"
 2) "b"
@@ -28,9 +32,12 @@ For example:
 The `LRANGE` command has several behaviors to keep in mind:
 
 - If the list doesn't exist, an empty array is returned.
-- If the `start` index is greater than or equal to the list's length, an empty array is returned.
-- If the `stop` index is greater than or equal to the list's length, the `stop` index is treated as the last element.
-- If the `start` index is greater than the `stop` index, an empty array is returned.
+- If the `start` index is greater than or equal to the list's length, an empty
+  array is returned.
+- If the `stop` index is greater than or equal to the list's length, the `stop`
+  index is treated as the last element.
+- If the `start` index is greater than the `stop` index, an empty array is
+  returned.
 
 ### Tests
 
@@ -46,7 +53,10 @@ It will then create a new list with multiple elements:
 $ redis-cli RPUSH list_key "a" "b" "c" "d" "e"
 ```
 
-After that, the tester will send your program a series of `LRANGE` commands. For each command, it will expect the response to be a [RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays) or an empty array (`*0\r\n`), depending on the test case.
+After that, the tester will send your program a series of `LRANGE` commands. For
+each command, it will expect the response to be a
+[RESP array](https://redis.io/docs/latest/develop/reference/protocol-spec/#arrays)
+or an empty array (`*0\r\n`), depending on the test case.
 
 As an example, the tester might send your program a command like this:
 
@@ -55,7 +65,8 @@ $ redis-cli LRANGE list_key 0 2
 # Expect RESP Encoded Array: ["a", "b", "c"]
 ```
 
-It will expect the response to be a RESP array `["a", "b", "c"]`, which would look like this:
+It will expect the response to be a RESP array `["a", "b", "c"]`, which would
+look like this:
 
 ```bash
 *3\r\n
@@ -69,5 +80,7 @@ c\r\n
 
 ### Notes
 
-- In this stage, you will only implement `LRANGE` with non-negative indexes. We will get to handling `LRANGE` for negative indexes in later stages.
-- If a list doesn't exist, `LRANGE` should respond with an empty RESP array (`*0\r\n`). 
+- The response block splits RESP fragments across display lines. Send the CRLF
+  bytes shown as `\r\n` without adding those display line breaks.
+- In this stage, you will only implement `LRANGE` with non-negative indexes. We
+  will get to handling `LRANGE` for negative indexes in later stages.

@@ -1,21 +1,33 @@
-In this stage, you'll extend `XADD` to support auto-generating entry IDs.
+Your server can choose a sequence number for a client-supplied time. In this
+stage, you'll support `XADD` with `*` so the server chooses the time part too.
 
-### Specifying Entry IDs in `XADD` (Recap)
+### Entry ID progress
 
 As a recap, the `XADD` command accepts IDs in three formats:
 
 - Explicit (`1526919030473-0`) (Handled in earlier stages)
-- Auto-generate only the sequence number (`1526919030474-*`) (Handled in previous stages)
+- Auto-generate only the sequence number (`1526919030474-*`) (Handled in
+  previous stages)
 - Auto-generate the time part and sequence number (`*`)
 
-For this stage, you'll handle the third case, where the entire entry ID is auto-generated.
+For this stage, you'll handle the third case, where the entire entry ID is
+auto-generated.
 
-### Auto-Generating Entry IDs
+### Auto-generating entry IDs
 
-When `*` is used with the `XADD` command, the server automatically generates a unique ID for the new entry:
+When `*` is used with the `XADD` command, the server automatically generates a
+unique ID for the new entry:
 
-- It uses the current Unix time in milliseconds for the time part and `0` for the sequence number.
-- If an entry with the same timestamp already exists in the stream, the server increments the sequence number by `1`.
+- If the current Unix time in milliseconds is greater than the last entry's time
+  part, use the current time and sequence number `0`.
+- Otherwise, keep the last entry's time part and increment its sequence number
+  by `1`. This keeps IDs increasing even if the clock moves backward or a client
+  previously supplied a time ahead of the clock.
+
+For an empty stream, use the current time and sequence number `0`.
+
+Unix time counts elapsed time since 1 January 1970 at 00:00 UTC. Here the unit
+is milliseconds, so the example's time part has thirteen digits.
 
 Here's an example:
 
@@ -35,12 +47,15 @@ $ ./your_program.sh
 It will then create an entry with `*` as the ID.
 
 ```bash
-$ redis-cli XADD stream_key * foo bar
+$ redis-cli XADD stream_key '*' foo bar
 ```
 
-Your server should respond with a string like `$15\r\n1526919030474-0\r\n`, which is `1526919030474-0` encoded as a [bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
+Your server should respond with a string like `$15\r\n1526919030474-0\r\n`,
+which is `1526919030474-0` encoded as a
+[bulk string](https://redis.io/docs/latest/develop/reference/protocol-spec/#bulk-strings).
 
 ### Notes
 
-- The time part of the ID should be the current Unix time in **milliseconds**, not seconds.
-- The tester doesn't test the case where a time part already exists in the stream and the sequence number is incremented. This is difficult to test reliably since we'd need to send two commands within the same millisecond.
+- Convert the clock value to milliseconds before using it as the time part.
+- The tester doesn't test the case where a time part already exists in the
+  stream and the sequence number is incremented.

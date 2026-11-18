@@ -1,8 +1,13 @@
-In this stage, you'll verify that watched keys are cleared after `EXEC`.
+In this stage, you'll verify the cleanup introduced with watched transactions:
+after `EXEC` succeeds or aborts, a new transaction on the same connection must
+be independent of the old watches.
 
-### Clearing Watched Keys on `EXEC`
+### Clearing watched keys on `EXEC`
 
-`WATCH` is meant to protect a single transaction. Once `EXEC` runs (whether the transaction succeeds or aborts), the connection's watch state should be cleared. Without this cleanup, stale watch state could leak into future transactions on the same connection, causing them to fail for reasons unrelated to them.
+`WATCH` is meant to protect a single transaction. Once `EXEC` runs (whether the
+transaction succeeds or aborts), the connection's watch state should be cleared.
+Without this cleanup, stale watch state could leak into future transactions on
+the same connection, causing them to fail for reasons unrelated to them.
 
 ```bash
 $ redis-cli
@@ -39,7 +44,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will spawn two clients. Using the first client, it will set two keys, watch one of them, and begin a transaction:
+The tester will spawn two clients. Using the first client, it will set two keys,
+watch one of them, and begin a transaction:
 
 ```bash
 # Client 1
@@ -63,7 +69,8 @@ Using the second client, it will modify the watched key:
 OK
 ```
 
-Back on the first client, the tester will execute the transaction (expecting it to abort), then immediately start and execute a second transaction:
+Back on the first client, the tester will execute the transaction (expecting it
+to abort), then immediately start and execute a second transaction:
 
 ```bash
 # Client 1
@@ -85,11 +92,13 @@ QUEUED
 
 The tester will verify that:
 
-- The first `EXEC` returns a RESP null array (`*-1\r\n`) because the watched key was modified
+- The first `EXEC` returns a RESP null array (`*-1\r\n`) because the watched key
+  was modified
 - The second `EXEC` succeeds because the first `EXEC` cleared the watch state
 - The second transaction's queued commands were applied
 
 ### Notes
 
-- If you have already cleared the watch state after `EXEC` (as suggested in earlier stages), this stage should pass without additional changes.
+- If you have already cleared the watch state after `EXEC` (as suggested in
+  earlier stages), this stage should pass without additional changes.
 - Clearing watched keys on `DISCARD` will be handled in later stages.

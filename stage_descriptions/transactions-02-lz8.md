@@ -1,12 +1,15 @@
-In this stage, you'll add support for handling the `INCR` command when a key does not exist.
+Your `INCR` command updates existing integers. In this stage, you'll let it
+create a missing key, treating the initial value as zero so the first increment
+stores `1`.
 
 ### Recap
 
-The implementation of [`INCR`](https://redis.io/docs/latest/commands/incr/) is split into three stages:
+The implementation of [`INCR`](https://redis.io/docs/latest/commands/incr/) is
+split into three stages:
 
-- Key exists and has a numerical value (previous stages)
+- Key exists and has an integer value (previous stages)
 - Key doesn't exist (**This stage**)
-- Key exists but doesn't have a numerical value (later stages)
+- Key exists but doesn't have an integer value (later stages)
 
 When a key doesn't exist, `INCR` sets the value to 1. Example:
 
@@ -25,7 +28,8 @@ The tester will execute your program like this:
 $ ./your_program.sh
 ```
 
-The tester will then connect to your server as a Redis client and run the following commands:
+The tester will then connect to your server as a Redis client and run the
+following commands:
 
 ```bash
 $ redis-cli

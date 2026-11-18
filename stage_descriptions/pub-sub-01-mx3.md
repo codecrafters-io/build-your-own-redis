@@ -1,10 +1,14 @@
-In this stage, you’ll add support for the  `SUBSCRIBE` command.
+This extension adds publish/subscribe messaging. A publisher sends a message to
+a named channel, and the server forwards it to clients subscribed to that
+channel. In this stage, you'll implement `SUBSCRIBE` for one client and one
+channel so the server can register a recipient.
 
-### The `SUBSCRIBE` Command
+### The `SUBSCRIBE` command
 
-[The `SUBSCRIBE` command](https://redis.io/docs/latest/commands/subscribe/) registers the client as a subscriber to a channel.
+[The `SUBSCRIBE` command](https://redis.io/docs/latest/commands/subscribe/)
+registers the client as a subscriber to a channel.
 
-Example Usage:
+Example usage:
 
 ```bash
 $ redis-cli
@@ -18,12 +22,13 @@ Reading messages... (press Ctrl-C to quit or any key to type command)
 The response is a RESP Array which contains three elements:
 
 1. "subscribe" (as a RESP bulk string)
-1. The channel name (as a RESP bulk string) 
-1. The number of channels this client has subscribed to so far (as a RESP integer)
+1. The channel name (as a RESP bulk string)
+1. The number of channels this client has subscribed to so far (as a RESP
+   integer, encoded as `:<count>\r\n`)
 
 ### Tests
 
-The tester will  run your program like this:
+The tester will run your program like this:
 
 ```bash
 $ ./your_program.sh
@@ -35,7 +40,8 @@ It will then send a `SUBSCRIBE` command with a channel name.
 $ redis-cli SUBSCRIBE foo
 ```
 
-The tester will then expect the response to be `["subscribe", "foo", 1]`, which is encoded in RESP as:
+The tester will then expect the response to be `["subscribe", "foo", 1]`, which
+is encoded in RESP as:
 
 ```
 *3\r\n
@@ -48,4 +54,8 @@ foo\r\n
 
 ### Notes
 
-- In this stage, you'll only need to handle a `SUBSCRIBE` command being sent once and from a single client. We'll get to handling multiple `SUBSCRIBE` commands in later stages.
+- The response block shows RESP fragments on separate display lines. Keep the
+  CRLF bytes represented by `\r\n` and omit the additional display line breaks.
+- In this stage, you'll only need to handle a `SUBSCRIBE` command being sent
+  once and from a single client. We'll get to handling multiple `SUBSCRIBE`
+  commands in later stages.

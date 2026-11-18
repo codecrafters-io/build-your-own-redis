@@ -1,16 +1,22 @@
-In this stage, you'll add support for validating the latitude and longitude values provided in a `GEOADD` command.
+Your `GEOADD` returns a placeholder success response. In this stage, you'll
+reject coordinates outside Redis's supported ranges while keeping the existing
+response for valid coordinates.
 
 ### Validating latitude and longitude values
 
-The latitude and longitude values used in the `GEOADD` command should be in a certain range as per [EPSG:3857](https://epsg.io/3857).
+Redis accepts the following longitude and latitude ranges, using latitude limits
+associated with [EPSG:3857](https://epsg.io/3857):
 
 - Valid longitudes are from -180° to +180°
   - Both these limits are inclusive, so -180° and +180° are both valid.
 - Valid latitudes are from -85.05112878° to +85.05112878°
-  - Both of these limits are inclusive, so -85.05112878° and +85.05112878° are both valid.
-  - The reason these limits are not -/+90° is because of the [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection) that Redis uses.
+  - Both of these limits are inclusive, so -85.05112878° and +85.05112878° are
+    both valid.
+  - These limits exclude the poles, matching the latitude range used by the
+    [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection).
 
-If either of these values aren't within the appropriate range, `GEOADD` returns an error. Examples:
+If either of these values aren't within the appropriate range, `GEOADD` returns
+an error. Examples:
 
 ```bash
 # Invalid latitude
@@ -22,7 +28,10 @@ If either of these values aren't within the appropriate range, `GEOADD` returns 
 (error) ERR invalid longitude,latitude pair 181.000000,0.300000
 ```
 
-In this stage, you'll implement validating latitude and longitude values and returning error messages as shown above. The tester is lenient with error message formats, so you don't have to use the exact error message format mentioned above.
+In this stage, you'll implement validating latitude and longitude values and
+returning error messages as shown above. The tester is lenient with error
+message formats, so you don't have to use the exact error message format
+mentioned above.
 
 ### Tests
 
@@ -44,12 +53,16 @@ $ redis-cli GEOADD location_key 200 100 foo
 
 The returned value must:
 
-- Be a [RESP simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors) i.e. start with `-` and end with `\r\n`
+- Be a
+  [RESP simple error](https://redis.io/docs/latest/develop/reference/protocol-spec/#simple-errors)
+  i.e. start with `-` and end with `\r\n`
 - The error message must start with `ERR`, like standard Redis error messages
 - The error message must contain the word "latitude" if the latitude is invalid
-- The error message must contain the word "longitude" if the longitude is invalid
+- The error message must contain the word "longitude" if the longitude is
+  invalid
 
-For example, if the latitude is invalid, valid error messages that the tester will accept are:
+For example, if the latitude is invalid, valid error messages that the tester
+will accept are:
 
 ```bash
 -ERR invalid latitude argument\r\n
@@ -59,5 +72,5 @@ For example, if the latitude is invalid, valid error messages that the tester wi
 
 ### Notes
 
-- You don't need to implement storing locations yet, we'll get to that in later stages.
-- The boundary of latitude are clipped at -/+85.05112878° instead of -/+90°. This is because of the [Web Mercator projection](https://en.wikipedia.org/wiki/Web_Mercator_projection) that Redis uses.
+- You don't need to implement storing locations yet, we'll get to that in later
+  stages.
